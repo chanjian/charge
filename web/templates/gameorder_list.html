@@ -48,9 +48,9 @@
                 <td>{{ row.custom_amount }}</td>
                 <!-- 优化后的充值链接单元格 -->
                 <td class="link-cell">
-                    <div class="link-content" data-link="{{ row.recharge_link|default:'' }}">
+                    <div class="link-content" data-link="{{ row.recharge_link|default:'' }}" title="点击复制链接">
                         {% if row.recharge_link %}
-                            <div class="link-text">{{ row.recharge_link|truncatechars:30 }}</div>
+                            <div class="link-text">{{ row.recharge_link|truncatechars:120 }}</div>
                         {% else %}
                             <div>-</div>
                         {% endif %}
@@ -59,7 +59,7 @@
                 <!-- 优化后的二维码单元格 -->
                 <td class="qrcode-cell">
                     {% if row.qr_code %}
-                        <div class="qrcode-wrapper" data-url="\{{ row.qr_code }}">
+                        <div class="qrcode-wrapper" data-url="\{{ row.qr_code }}" title="点击复制二维码">
                             <img src="\{{ row.qr_code }}" class="qrcode-img">
                         </div>
                     {% else %}
@@ -251,20 +251,24 @@ $(document).ready(function() {
 /* 充值链接样式 */
 .link-cell {
     padding: 8px !important;
+    max-width: 300px;
 }
 .link-content {
     cursor: pointer;
     position: relative;
 }
+.link-content:hover {
+    background-color: #f5f5f5;
+}
 .link-text {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 200px;
+    max-width: 100%;
     display: inline-block;
 }
 .link-clicked {
-    background-color: #f5f5f5;
+    background-color: #e0e0e0;
     transition: background-color 0.2s;
 }
 
@@ -275,6 +279,10 @@ $(document).ready(function() {
 .qrcode-wrapper {
     cursor: pointer;
     display: inline-block;
+}
+.qrcode-wrapper:hover {
+    background-color: #f5f5f5;
+    border-radius: 4px;
 }
 .qrcode-img {
     height: 80px;
