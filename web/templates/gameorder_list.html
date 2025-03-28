@@ -44,7 +44,7 @@
                 <td>{{ row.id }}</td>
                 <td>{{ row.platform }}</td>
                 <td>{{ row.game }}</td>
-                <td>{{ row.recharge_option }}</td>
+                <td class="copyable" title="点击复制" data-value="{{ row.recharge_option }}">{{ row.recharge_option }}</td>
                 <td>{{ row.custom_amount }}</td>
                 <!-- 优化后的充值链接单元格 -->
                 <td class="link-cell">
@@ -68,9 +68,9 @@
                 </td>
                 <td>{{ row.consumer }}</td>
                 <td>{{ row.created_by}}</td>
-                <td>{{ row.order_number }}</td>
-                <td>{{ row.created_time|date:"Y-m-d H:i:s" }}</td>
-                <td>{{ row.updated_time|date:"Y-m-d H:i:s" }}</td>
+                <td class="copyable" title="点击复制" data-value="{{ row.order_number }}">{{ row.order_number }}</td>
+                <td class="copyable" title="点击复制" data-value="{{ row.created_time|date:'Y-m-d H:i:s' }}">{{ row.created_time|date:"Y-m-d H:i:s" }}</td>
+                <td class="copyable" title="点击复制" data-value="{{ row.updated_time|date:'Y-m-d H:i:s' }}">{{ row.updated_time|date:"Y-m-d H:i:s" }}</td>
                 <td>{{ row.get_order_status_display }}</td>
                 {% if request|has_permission:"gameorder_edit,gameorder_delete" %}
                 <td>
@@ -106,7 +106,44 @@
 {% block js %}
 <script>
 $(document).ready(function() {
-    // =============== 1. 充值链接复制功能 ===============
+    // =============== 通用复制功能 ===============
+    function copyToClipboard(text) {
+        var $temp = $('<textarea>').css({
+            position: 'fixed',
+            left: '-9999px'
+        }).val(text);
+
+        $('body').append($temp);
+        $temp.select();
+
+        try {
+            document.execCommand('copy');
+            return true;
+        } catch (err) {
+            console.error("复制失败:", err);
+            return false;
+        } finally {
+            $temp.remove();
+        }
+    }
+
+    // =============== 1. 充值选项、订单号、时间等复制功能 ===============
+    $('.copyable').click(function() {
+        var value = $(this).data('value');
+        if (!value) return;
+
+        // 添加点击反馈
+        $(this).addClass('copy-clicked');
+        setTimeout(() => $(this).removeClass('copy-clicked'), 200);
+
+        if (copyToClipboard(value)) {
+            showToast('已复制: ' + value);
+        } else {
+            showToast('复制失败');
+        }
+    });
+
+    // =============== 2. 充值链接复制功能 ===============
     $('.link-content').click(function() {
         var link = $(this).data('link');
         if (!link) return;
@@ -115,26 +152,14 @@ $(document).ready(function() {
         $(this).addClass('link-clicked');
         setTimeout(() => $(this).removeClass('link-clicked'), 200);
 
-        // 复制到剪贴板
-        var $temp = $('<textarea>').css({
-            position: 'fixed',
-            left: '-9999px'
-        }).val(link);
-
-        $('body').append($temp);
-        $temp.select();
-
-        try {
-            document.execCommand('copy');
+        if (copyToClipboard(link)) {
             showToast('链接已复制');
-        } catch (err) {
-            console.error("复制失败:", err);
+        } else {
+            showToast('复制失败');
         }
-
-        $temp.remove();
     });
 
-    // =============== 2. 二维码图片复制功能 ===============
+    // =============== 3. 二维码图片复制功能 ===============
     $('.qrcode-wrapper').click(function() {
         var imgUrl = $(this).data('url');
         if (!imgUrl) return;
@@ -208,7 +233,7 @@ $(document).ready(function() {
         setTimeout(() => $toast.fadeOut(() => $toast.remove()), 2000);
     }
 
-    // =============== 3. 删除功能 ===============
+    // =============== 4. 删除功能 ===============
     var DELETE_ID;
 
     function bindDeleteEvent(){
@@ -248,6 +273,19 @@ $(document).ready(function() {
 </script>
 
 <style>
+/* 通用可复制单元格样式 */
+.copyable {
+    cursor: pointer;
+    position: relative;
+}
+.copyable:hover {
+    background-color: #f5f5f5;
+}
+.copy-clicked {
+    background-color: #e0e0e0;
+    transition: background-color 0.2s;
+}
+
 /* 充值链接样式 */
 .link-cell {
     padding: 8px !important;
