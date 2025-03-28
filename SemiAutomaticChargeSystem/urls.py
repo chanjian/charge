@@ -18,7 +18,14 @@ from django.contrib import admin
 from django.urls import path
 from web.views import account,level,customer,gameorder,phoneorder,gamename,gamedenomination
 
+from django.conf import settings
+from django.urls import path, re_path
+from django.views.static import serve
+
 urlpatterns = [
+    # re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}, name='media'),
+    re_path(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}, name='media'),
+
     path('admin/', admin.site.urls),
     path('', account.login),  # 根路径重定向
     path('login/', account.login, name="login"),
@@ -60,3 +67,14 @@ urlpatterns = [
 
 
 ]
+
+from django.conf.urls.static import static
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# from django.views.static import serve
+# if settings.DEBUG:
+#     urlpatterns += [
+#         path('media/<path:path>', serve, {'document_root': settings.MEDIA_ROOT}),  # 显式媒体文件路由
+#         path('static/<path:path>', serve, {'document_root': settings.STATIC_ROOT}),  # 显式静态文件路由
+#     ]

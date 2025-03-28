@@ -118,7 +118,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -241,6 +241,7 @@ PERMISSION_PUBLIC = {
 }
 PERMISSION = {
     "SUPERADMIN": {
+"media": {"text": "用户上传的媒体文件", 'parent': None},
         "home": {"text": "主页", 'parent': None},
         'order_list':{'text':'订单展示','parent':'order'},
         'order_add':{'text':'创建订单','parent':'home'},
@@ -350,9 +351,7 @@ T_SECRET_ID = '123'
 T_SECRET_KEY = '123'
 
 
-import os
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-MEDIA_URL = "/media/"
+
 
 
 IPGEOLOCATION_API_KEY = 'b49f8dd322c746578d1c734ff1118b57'
@@ -439,3 +438,9 @@ LOGGING = {
         },
     },
 }
+
+import os
+# 用于定义 用户上传文件（媒体文件）的本地存储路径
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+print('BASE_DIR:',BASE_DIR)
+MEDIA_URL = "/media/"
