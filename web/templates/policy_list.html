@@ -1,0 +1,74 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% load permission %}
+{% block content %}
+    <div style="margin-bottom: 5px">
+        {% add_permission request 'policy_add'  %}
+    </div>
+
+     <div class="panel panel-default">
+        <!-- Default panel contents -->
+        <div class="panel-heading">
+            <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+            批量上传
+        </div>
+        <div class="panel-body">
+            <form method="post" enctype="multipart/form-data" action="/policy/upload/">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type="file" name="exc">
+                </div>
+                <input type="submit" value="上传" class="btn btn-info btn-sm">
+            </form>
+        </div>
+    </div>
+
+
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>数量</th>
+            <th>价格</th>
+            {% if request|has_permission:'policy_edit,policy_delete' %}
+            <th>操作</th>
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in pager.queryset %}
+            <tr row-id="{{ row.id }}">
+                <td>{{ row.id }}</td>
+                <td>{{ row.count }}</td>
+                <td>{{ row.price }}</td>
+                {% if request|has_permission:'policy_edit,policy_delete' %}
+                <td>
+                    {% edit_permission request 'policy_edit' pk=row.id %}
+                    {% delete_permission request 'policy_delete' pk=row.id %}
+                </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+    <ul class="pagination">
+        {{ pager.html }}
+    </ul>
+
+
+    {% include 'include/delete_modal.html' %}
+
+{% endblock %}
+
+
+
+
+{% block js %}
+    <script src="{% static 'js/delete_modal.js' %}"></script>
+    <script>
+        var DELETE_ID;
+        var DELETE_URL = "{% url 'policy_delete' %}";
+    </script>
+
+{% endblock %}

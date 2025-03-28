@@ -1,0 +1,166 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% load permission %}
+
+{% block content %}
+    <div style="margin-bottom: 5px" class="clearfix">
+        {% add_permission request 'gameorder_add'  %}
+
+        <div class="right">
+            <form class="form-inline" method="get">
+                <div class="form-group">
+                    <input name="keyword" type="text" class="form-control" placeholder="请输入关键字" value="{{ keyword }}">
+                </div>
+                <button type="submit" class="btn btn-default">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+            </form>
+        </div>
+    </div>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>充值系统</th>
+            <th>游戏名称</th>
+            <th>充值选项</th>
+            <th>充值金额</th>
+            <th>充值链接</th>
+            <th>充值二维码</th>
+            <th>订单消费者</th>
+            <th>订单入库人</th>
+            <th>订单号</th>
+            <th>订单创建时间</th>
+            <th>订单更新时间</th>
+            <th>订单状态</th>
+            {% if request|has_permission:"customer_edit,customer_delete" %}
+            <th>操作</th>
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in queryset %}
+            <tr row-id="{{ row.id }}">
+                <td>{{ row.id }}</td>
+                <td>{{ row.platform }}</td>
+                <td>{{ row.game }}</td>
+                <td>{{ row.recharge_option }}</td>
+                <td>{{ row.custom_amount }}</td>
+                <td>{{ row.recharge_link }}</td>
+                <td>{{ row.qr_code }}</td>
+                <td>{{ row.consumer }}</td>
+                <td>{{ row.created_by}}</td>
+                <td>{{ row.order_number }}</td>
+                <td>{{ row.created_time|date:"Y-m-d H:i:s" }}</td>
+                <td>{{ row.updated_time|date:"Y-m-d H:i:s" }}</td>
+                <td>{{ row.get_order_status_display }}</td>
+                {% if request|has_permission:"gameorder_edit,gameorder_delete" %}
+                <td>
+                    {% edit_permission request 'gameorder_edit' pk=row.id %}
+                    {% delete_url_permission request 'gameorder_delete'  %}
+                </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+
+    <ul class="pagination">
+        {{ pager_string }}
+    </ul>
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+
+    <div class="alert alert-danger alert-dismissible fade in" role="alert">
+
+      <h4>是否确定要删除！</h4>
+      <p>Change this and that and try again. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum.</p>
+      <p>
+        <button type="button" class="btn btn-danger" id="btnConfirmDelete">确 定</button>
+        <button type="button" class="btn btn-default" id="btnCancelDelete">取 消</button>
+          <span style="color: red" id="deleteError"></span>
+      </p>
+    </div>
+
+  </div>
+</div>
+
+
+
+{##}
+{#    {% include 'include/delete_modal.html' %}#}
+{##}
+{% endblock %}
+
+
+
+{% block js %}
+{#    <script src="{% static 'js/delete_modal.js' %}"></script>#}
+{#    <script>#}
+{#        var DELETE_ID;#}
+{#        var DELETE_URL = "{% url 'customer_delete' %}";#}
+{#    </script>#}
+
+    <script>
+    var DELETE_ID
+    $(function (){
+        bindDeleteEvent();
+        bindConfirmDeleteEvent();
+    })
+
+    function bindDeleteEvent(){
+        $('.btn-delete').click(function (){
+            $("#deleteError").empty();
+
+            $('#deleteModal').modal('show');
+            var cid = $(this).attr('cid')
+            DELETE_ID = cid
+            console.log(cid);
+        })
+
+        $('#btnCancelDelete').click(function (){
+            $('#deleteModal').modal('hide');
+        })
+    }
+
+    function bindConfirmDeleteEvent(){
+        $('#btnConfirmDelete').click(function (){
+           console.log("确认删除!",DELETE_ID) ;
+
+           $.ajax({
+               url:'{% url 'customer_delete' %}',
+               type:'GET',
+               data:{cid:DELETE_ID},
+               dataType:'JSON',
+               success:function (res){
+                   if (res.status){
+                       //删除成功
+                       //方式一：做页面刷新
+                       //location.reload()
+                       //方式二：找到当前数据所在行并删除
+                       $("tr[row-id='" + DELETE_ID + "']").remove()
+                       $('#deleteModal').modal('hide');
+
+                   }else{
+                       //删除失败
+                       $("#deleteError").text(res.detail);
+                   }
+               }
+           })
+        });
+    }
+
+
+
+    function showDelete(){
+        $('#deleteModal').modal('show');
+    }
+    </script>
+
+{% endblock %}

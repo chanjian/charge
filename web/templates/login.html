@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap/css/bootstrap.css' %}">
+    <style>
+        .box {
+            width: 450px;
+            border: 1px solid #f0f0f0;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 100px;
+
+            padding-left: 40px;
+            padding-right: 40px;
+            padding-bottom: 30px;
+
+            box-shadow: 5px 10px 10px rgb(0 0 0 / 5%);
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h2 style="text-align: center;">用户登录</h2>
+    <form method="post" novalidate>
+        {% csrf_token %}
+        {% for field in form %}
+            <div class="form-group" style="position: relative;margin-bottom: 25px">
+                <label>{{ field.label }}</label>
+                {{ field }}
+                <span style="color: red;position: absolute;">{{ field.errors.0 }}</span>
+            </div>
+
+        {% endfor %}
+    {{ form.errors.username.0 }}
+    {{ form.errors.password.0 }}
+
+{#        <div class="form-group">#}
+{#            <label>角色</label>#}
+{#            <select class="form-control" name="role">#}
+{#                <option value="2">客户</option>#}
+{#                <option value="1">管理员</option>#}
+{#            </select>#}
+{#            {{ form.role }}#}
+{#        </div>#}
+{#        <div class="form-group">#}
+{#            <label>用户名</label>#}
+{#            <input type="text" class="form-control" placeholder="用户名" name="username"/>#}
+{#            {{ form.username }}#}
+{#        </div>#}
+{#        <div class="form-group">#}
+{#            <label>密码</label>#}
+{#            <input type="password" class="form-control" placeholder="密码" name="password"/>#}
+{#            {{ form.password }}#}
+{#        </div>#}
+        <button type="submit" class="btn btn-primary">登 录</button>
+        <span style="color: red;">{{ error }}</span>
+
+        <a href='{% url 'sms_login' %}' style="float: right;">短信登录</a>
+    </form>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,166 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{% static 'plugins/bootstrap/css/bootstrap.css' %}">
+    <style>
+        .box {
+            width: 450px;
+            border: 1px solid #f0f0f0;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 100px;
+
+            padding-left: 40px;
+            padding-right: 40px;
+            padding-bottom: 30px;
+
+            box-shadow: 5px 10px 10px rgb(0 0 0 / 5%);
+        }
+
+        .error-message {
+            color: red;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+<div class="box">
+    <form method="post" novalidate id="smsForm">
+        <h2 style="text-align: center;">短信登录</h2>
+        {% csrf_token %}
+
+        {% for field in form %}
+            {% if field.name == 'code' %}
+                <div class="form-group" style="position: relative;margin-bottom: 25px">
+                    <label>{{ field.label }}</label>
+                    <div class="row">
+                        <div class="col-xs-7">
+                            {{ field }}
+                            <span class="error-message">{{ field.errors.0 }}</span>
+                        </div>
+                        <div class="col-xs-5">
+                            <input id="sendBtn" type="button" value="点击获取验证码" class="btn btn-default"/>
+                        </div>
+                    </div>
+
+                </div>
+            {% else %}
+                <div class="form-group" style="position: relative;margin-bottom: 25px">
+                    <label>{{ field.label }}</label>
+                    {{ field }}
+                    <span class="error-message">{{ field.errors.0 }}</span>
+                </div>
+            {% endif %}
+        {% endfor %}
+
+{#    <ul class="errorlist">#}
+{#        <li>role#}
+{#            <ul class="errorlist">#}
+{#                <li>这个字段是必填项。</li>#}
+{#            </ul>#}
+{#        </li>#}
+{##}
+{#        <li>mobile#}
+{#            <ul class="errorlist">#}
+{#                <li>手机格式错误</li>#}
+{#            </ul>#}
+{#        </li>#}
+{#    </ul>#}
+
+
+        <button type="button" class="btn btn-primary" id="loginBtn">登 录</button>
+        <a href="{% url 'login' %}" style="float: right;">用户名登录</a>
+    </form>
+</div>
+
+<script src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+<script src="{% static 'js/csrf.js' %}"></script>
+<script>
+    $(function (){
+        bindSendSmsEvent();
+
+        bindLoginEvent();
+    })
+
+    function bindSendSmsEvent() {
+        $('#sendBtn').click(function () {
+            //1.获取手机号，向后台发送请求
+            var mobileData = $("#id_mobile").val();
+
+            //清除所有错误
+            $(".error-message").empty();
+
+            $.ajax({
+                url: "{% url 'sms_send' %}",
+                type: 'POST',
+                data: $("#smsForm").serialize(),
+                dataType: 'JSON',
+                success: function (res) {
+                    if (res.status) {
+                        //2.动态效果
+                        sendSmsRemind();
+                    }
+                    else
+                    {
+                        $.each(res.detail, function (k, v) {
+                            $("#id_" + k).next().text(v[0]);
+                        })
+                    }
+                }
+            })
+
+        });
+    }
+
+    function bindLoginEvent(){
+        $("#loginBtn").click(function (){
+
+            //清除所有错误
+            $(".error-message").empty();
+
+            $.ajax({
+                url:"{% url 'sms_login' %}",
+                type:"POST",
+                data:$("#smsForm").serialize(),
+                dataType: "JSON",
+                success:function (res){
+                    console.log(res);
+                    if (res.status){
+                        location.href = res.data;
+                    }else{
+                        $.each(res.detail, function (k, v) {
+                            $("#id_" + k).next().text(v[0]);
+                        })
+                    }
+                }
+            })
+        })
+    }
+
+    function sendSmsRemind(){
+
+              var $smsBtn = $('#sendBtn');
+              //2.1禁用
+              $smsBtn.prop('disabled', true);
+              //2.2改内容
+              var time = 60;
+              var remind = setInterval(function () {
+                  $smsBtn.val(time + '秒重新发送');
+                  time = time - 1;
+                  if (time < 1) {
+                      clearInterval(remind);
+                      $smsBtn.val('点击获取验证码');
+                      $smsBtn.prop('disabled', false);
+                  }
+              }, 1000);
+          }
+
+
+
+
+</script>
+</body>
+</html>

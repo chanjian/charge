@@ -1,0 +1,119 @@
+{% extends 'layout.html' %}
+{% load platform %}
+
+{% block content %}
+<div class="container">
+    <h1>创建充值订单</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {% for field in form %}
+{#            <div class="form-group" id="field-{{ field.name }}" style="display:{{ field|should_display_field:form.initial }};">#}
+
+
+            <div class="form-group" id="field-{{ field.name }}" style="display: {% if field.name == 'recharge_option' and form.initial.platform == 'ANDROID' %}none{% elif field.name == 'custom_amount' and form.initial.platform == 'IOS' %}none{% else %}block{% endif %};">
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.errors %}
+                    <div class="error">{{ field.errors }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
+
+
+
+        <button type="submit" class="btn btn-primary">提交订单</button>
+    </form>
+</div>
+
+
+    <ul class="pagination">
+        {{ pager_string }}
+    </ul>
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+
+    <div class="alert alert-danger alert-dismissible fade in" role="alert">
+
+      <h4>是否确定要删除！</h4>
+      <p>Change this and that and try again. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum.</p>
+      <p>
+        <button type="button" class="btn btn-danger" id="btnConfirmDelete">确 定</button>
+        <button type="button" class="btn btn-default" id="btnCancelDelete">取 消</button>
+          <span style="color: red" id="deleteError"></span>
+      </p>
+    </div>
+
+  </div>
+</div>
+
+
+
+{##}
+{#    {% include 'include/delete_modal.html' %}#}
+{##}
+{% endblock %}
+
+
+{% block js %}
+
+
+    <script>
+$(function() {
+    function loadRechargeOptions() {
+        const gameId = $('#id_game').val();
+        const platform = $('#id_platform').val();
+
+        console.log('请求参数:', { game: gameId, platform: platform }); // 调试日志
+
+        if (!gameId || !platform) {
+            $('#id_recharge_option').prop('disabled', true);
+            return;
+        }
+
+        $.ajax({
+            url: "{% url 'gameorder_load_charge_options' %}",
+            type: 'GET',
+            data: { game: gameId, platform: platform },
+            dataType: 'json',
+            success: function(res) {
+                console.log('响应数据:', res); // 调试日志
+                const $select = $('#id_recharge_option');
+                $select.empty();
+
+                if (res.status && res.options.length > 0) {
+                    $.each(res.options, function(i, option) {
+                        $select.append($('<option>', {
+                            value: option.id,
+                            text: option.display_text
+                        }));
+                    });
+                    $select.prop('disabled', false);
+                } else {
+                    $select.append($('<option>', {
+                        value: '',
+                        text: '-- 暂无可用选项 --'
+                    }));
+                    $select.prop('disabled', true);
+                }
+            },
+            error: function(xhr) {
+                console.error('请求失败:', xhr.statusText);
+            }
+        });
+    }
+
+    // 初始化加载
+    loadRechargeOptions();
+
+    // 事件监听
+    $('#id_game, #id_platform').on('change', loadRechargeOptions);
+});
+</script>
+{% endblock %}
+

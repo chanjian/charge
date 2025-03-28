@@ -1,0 +1,89 @@
+{% extends 'layout.html' %}
+{% load permission %}
+{% block css %}
+    <style>
+        .top-message-error {
+            position: fixed;
+            left: 0;
+            right: 0;
+            width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            top: 0;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div style="margin-bottom: 5px">
+        {% add_permission request 'gamedenomination_add'  %}
+    </div>
+
+     {% if messages %}
+        <div class="top-message-error">
+            {% for obj in messages %}
+                <div class="alert alert-{{ obj.level_tag }}">
+                    {{ obj.message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="panel panel-default">
+    <div class="panel-heading">
+          <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+            游戏名称
+      </div>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>充值系统类型</th>
+            <th>充值面额</th>
+            <th>基础点券</th>
+        <th>赠送点券</th>
+        <th>绑定点券</th>
+        <th>每月绑定点券限制次数</th>
+        <th>所属游戏</th>
+        <th>创建时间</th>
+            {% if request|has_permission:"gamedenomination_edit,gamedenomination_delete" %}
+            <th>操作</th>
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in queryset %}
+            <tr>
+                <td>{{ row.id }}</td>
+                <td>{{ row.platform }}</td>
+                <td>{{ row.amount }}</td>
+            <td>{{ row.base_currency }}</td>
+                <td>{{ row.gift_currency }}</td>
+            <td>{{ row.bonus_currency }}</td>
+                <td>{{ row.monthly_limit }}</td>
+            <td>{{ row.game }}</td>
+                <td>{{ row.created_time|date:"Y-m-d H:i:s" }}</td>
+                 {% if request|has_permission:"gamedenomination_edit,gamedenomination_delete" %}
+                <td>
+                    {% edit_permission request 'gamedenomination_edit' pk=row.id %}
+                    {% delete_url_permission request 'gamedenomination_delete' pk=row.id %}
+                </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+    </div>
+
+
+
+{% endblock %}
+
+{% block js %}
+    <script>
+        setTimeout(function () {
+            $(".top-message-error").addClass('hide');
+        }, 5000);
+    </script>
+{% endblock %}

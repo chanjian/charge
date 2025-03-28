@@ -1,0 +1,79 @@
+{% extends 'layout.html' %}
+{% load permission %}
+{% block css %}
+    <style>
+        .top-message-error {
+            position: fixed;
+            left: 0;
+            right: 0;
+            width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            top: 0;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div style="margin-bottom: 5px">
+        {% add_permission request 'gamename_add'  %}
+    </div>
+
+     {% if messages %}
+        <div class="top-message-error">
+            {% for obj in messages %}
+                <div class="alert alert-{{ obj.level_tag }}">
+                    {{ obj.message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="panel panel-default">
+    <div class="panel-heading">
+          <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+            游戏名称
+      </div>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>游戏名称</th>
+{#            <th>游戏图标</th>#}
+            <th>创建时间</th>
+            {% if request|has_permission:"gamename_edit,gamename_delete" %}
+            <th>操作</th>
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in queryset %}
+            <tr>
+                <td>{{ row.id }}</td>
+                <td>{{ row.name }}</td>
+{#                <td>{{ row.icon }}%</td>#}
+                <td>{{ row.created_time|date:"Y-m-d H:i:s" }}</td>
+                 {% if request|has_permission:"gamename_edit,gamename_delete" %}
+                <td>
+                    {% edit_permission request 'gamename_edit' pk=row.id %}
+                    {% delete_url_permission request 'gamename_delete' pk=row.id %}
+                </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+    </div>
+
+
+
+{% endblock %}
+
+{% block js %}
+    <script>
+        setTimeout(function () {
+            $(".top-message-error").addClass('hide');
+        }, 5000);
+    </script>
+{% endblock %}
