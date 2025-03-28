@@ -46,18 +46,22 @@
                 <td>{{ row.game }}</td>
                 <td>{{ row.recharge_option }}</td>
                 <td>{{ row.custom_amount }}</td>
-                <!-- 充值链接（截断30字符+点击复制） -->
-                <td class="copy-link" data-link="{{ row.recharge_link|default:'' }}">
-                    {% if row.recharge_link %}
-                        {{ row.recharge_link|truncatechars:30 }}
-                    {% else %}
-                        -
-                    {% endif %}
+                <!-- 优化后的充值链接单元格 -->
+                <td class="link-cell">
+                    <div class="link-content" data-link="{{ row.recharge_link|default:'' }}">
+                        {% if row.recharge_link %}
+                            <div class="link-text">{{ row.recharge_link|truncatechars:30 }}</div>
+                        {% else %}
+                            <div>-</div>
+                        {% endif %}
+                    </div>
                 </td>
-                <!-- 二维码（点击复制图片本身） -->
-                <td class="copy-qrcode" data-url="\{{ row.qr_code }}">
+                <!-- 优化后的二维码单元格 -->
+                <td class="qrcode-cell">
                     {% if row.qr_code %}
-                        <img src="\{{ row.qr_code }}" style="height: 80px;">
+                        <div class="qrcode-wrapper" data-url="\{{ row.qr_code }}">
+                            <img src="\{{ row.qr_code }}" class="qrcode-img">
+                        </div>
                     {% else %}
                         -
                     {% endif %}
@@ -103,101 +107,117 @@
 <script>
 $(document).ready(function() {
     // =============== 1. 充值链接复制功能 ===============
-    $('.copy-link').click(function() {
+    $('.link-content').click(function() {
         var link = $(this).data('link');
         if (!link) return;
 
-        // 创建临时元素实现复制
-        var $temp = $('<input>');
-        $('body').append($temp);
-        $temp.val(link).select();
-        document.execCommand('copy');
-        $temp.remove();
+        // 添加点击反馈
+        $(this).addClass('link-clicked');
+        setTimeout(() => $(this).removeClass('link-clicked'), 200);
 
-        showToast('链接已复制');
+        // 复制到剪贴板
+        var $temp = $('<textarea>').css({
+            position: 'fixed',
+            left: '-9999px'
+        }).val(link);
+
+        $('body').append($temp);
+        $temp.select();
+
+        try {
+            document.execCommand('copy');
+            showToast('链接已复制');
+        } catch (err) {
+            console.error("复制失败:", err);
+        }
+
+        $temp.remove();
     });
 
     // =============== 2. 二维码图片复制功能 ===============
-    $('.copy-qrcode').click(function() {
+    $('.qrcode-wrapper').click(function() {
         var imgUrl = $(this).data('url');
         if (!imgUrl) return;
 
-        // 方案1：现代浏览器复制图片数据
-        if (navigator.clipboard && window.ClipboardItem) {
-            // 创建临时canvas
-            var $canvas = $('<canvas>').css({position:'fixed',left:'-9999px'});
-            var $img = $('<img>').attr('crossorigin', 'anonymous').attr('src', imgUrl);
+        // 预加载图片
+        var $img = $('<img>').attr('src', imgUrl).css({
+            position: 'fixed',
+            left: '-9999px'
+        });
 
-            $('body').append($canvas).append($img);
+        $('body').append($img);
 
-            $img.on('load', function() {
-                var canvas = $canvas[0];
+        $img.on('load', function() {
+            // 现代浏览器处理
+            if (navigator.clipboard && window.ClipboardItem) {
+                var canvas = document.createElement('canvas');
                 canvas.width = this.naturalWidth;
                 canvas.height = this.naturalHeight;
                 var ctx = canvas.getContext('2d');
-                ctx.drawImage(this, 0, 0);
 
-                // 复制到剪贴板
-                canvas.toBlob(function(blob) {
-                    navigator.clipboard.write([
-                        new ClipboardItem({ 'image/png': blob })
-                    ]).then(function() {
-                        showToast('二维码已复制到剪贴板');
-                    }).catch(function(err) {
-                        console.error("复制失败:", err);
-                        fallbackCopy(imgUrl); // 降级方案
-                    }).finally(function() {
-                        $canvas.remove();
-                        $img.remove();
-                    });
-                }, 'image/png');
-            });
+                // 平滑绘制
+                requestAnimationFrame(() => {
+                    ctx.drawImage(this, 0, 0);
 
-            $img.on('error', function() {
-                showToast('图片加载失败');
-                $canvas.remove();
-                $img.remove();
-            });
-        } else {
-            // 方案2：旧浏览器降级处理
-            fallbackCopy(imgUrl);
-        }
+                    canvas.toBlob(function(blob) {
+                        navigator.clipboard.write([
+                            new ClipboardItem({ 'image/png': blob })
+                        ]).then(function() {
+                            showToast('二维码已复制');
+                        }).catch(function() {
+                            showFallback(imgUrl);
+                        });
+                    }, 'image/png');
+                });
+            } else {
+                showFallback(imgUrl);
+            }
+
+            $img.remove();
+        });
+
+        $img.on('error', function() {
+            showToast('图片加载失败');
+            $img.remove();
+        });
     });
 
-    // 降级复制方案
-    function fallbackCopy(imgUrl) {
-        // 创建提示模态框
-        var $modal = $('<div>').css({
-            'position': 'fixed',
-            'top': '0',
-            'left': '0',
-            'width': '100%',
-            'height': '100%',
-            'background': 'rgba(0,0,0,0.8)',
-            'z-index': '9999',
-            'text-align': 'center',
-            'color': 'white',
-            'padding-top': '20%'
-        }).html(`
-            <h4>您的浏览器不支持直接复制图片</h4>
-            <p>请右键下方图片选择"复制图像"</p>
-            <img src="${imgUrl}" style="max-width:80%; border:2px solid white; margin-top:20px;">
-            <p style="margin-top:20px;"><button class="btn btn-default">关闭</button></p>
-        `).click(function() {
-            $(this).remove();
+    // 降级方案
+    function showFallback(imgUrl) {
+        var $modal = $(`
+            <div class="qrcode-fallback">
+                <div class="fallback-content">
+                    <p>请右键下方图片选择"复制图片"</p>
+                    <img src="${imgUrl}" class="fallback-img">
+                    <button class="btn btn-sm btn-close">关闭</button>
+                </div>
+            </div>
+        `);
+
+        $modal.find('.btn-close').click(function() {
+            $modal.remove();
         });
 
         $('body').append($modal);
     }
 
-    // =============== 3. 删除功能（保持不变） ===============
+    // 提示信息
+    function showToast(message) {
+        var $toast = $(`<div class="toast-message">${message}</div>`);
+        $('body').append($toast);
+        setTimeout(() => $toast.fadeOut(() => $toast.remove()), 2000);
+    }
+
+    // =============== 3. 删除功能 ===============
     var DELETE_ID;
+
     function bindDeleteEvent(){
         $('.btn-delete').click(function (){
             $("#deleteError").empty();
             $('#deleteModal').modal('show');
             DELETE_ID = $(this).attr('cid');
         });
+
         $('#btnCancelDelete').click(function (){
             $('#deleteModal').modal('hide');
         });
@@ -224,50 +244,90 @@ $(document).ready(function() {
 
     bindDeleteEvent();
     bindConfirmDeleteEvent();
-
-    // =============== 工具函数 ===============
-    function showToast(message) {
-        var $toast = $('<div>').text(message).css({
-            'position': 'fixed',
-            'bottom': '20px',
-            'right': '20px',
-            'background': '#4CAF50',
-            'color': 'white',
-            'padding': '10px 20px',
-            'border-radius': '4px',
-            'z-index': '9999'
-        });
-        $('body').append($toast);
-        setTimeout(function() {
-            $toast.fadeOut(function() {
-                $(this).remove();
-            });
-        }, 2000);
-    }
 });
 </script>
 
 <style>
-/* 可点击元素样式 */
-.copy-link {
-    cursor: pointer;
-    border-bottom: 1px dashed #999;
-    display: inline-block;
-    max-width: 200px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+/* 充值链接样式 */
+.link-cell {
+    padding: 8px !important;
 }
-.copy-qrcode {
+.link-content {
     cursor: pointer;
     position: relative;
 }
-.copy-qrcode:hover img {
-    opacity: 0.9;
-    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+.link-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+    display: inline-block;
+}
+.link-clicked {
+    background-color: #f5f5f5;
+    transition: background-color 0.2s;
 }
 
-/* 表格样式微调 */
+/* 二维码样式 */
+.qrcode-cell {
+    padding: 8px !important;
+}
+.qrcode-wrapper {
+    cursor: pointer;
+    display: inline-block;
+}
+.qrcode-img {
+    height: 80px;
+    display: block;
+    margin: 0 auto;
+}
+
+/* 降级弹窗 */
+.qrcode-fallback {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.8);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.fallback-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    max-width: 90%;
+}
+.fallback-img {
+    max-width: 100%;
+    max-height: 60vh;
+    display: block;
+    margin: 15px auto;
+    border: 1px solid #ddd;
+}
+
+/* 提示信息 */
+.toast-message {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    z-index: 9999;
+    animation: fadeIn 0.3s;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 表格样式优化 */
 .table tbody tr td {
     vertical-align: middle !important;
 }
