@@ -118,9 +118,16 @@ def gameorder_list(request):
     context = {
         'pager':pager,
         'keyword':keyword,
+        'qb_target': qb_target,  # 当前QB目标值
+        'qb_discount': request.GET.get('qb_discount', '75'),  # 当前折扣设置
+        'max_combine': request.GET.get('max_combine', '3'),  # 当前组合数设置
+        'qb_results': qb_results,  # QB匹配结果
+        'start_date': start_date,  # 日期筛选相关
+        'end_date': end_date,
+        'date_field': request.GET.get('date_field', ''),  # 保留日期字段参数
     }
-    # return render(request, 'gameorder_list.html', context)
-    return render(request, 'gameorder_list.html', locals())
+    return render(request, 'gameorder_list.html', context)
+    # return render(request, 'gameorder_list.html', locals())
 
 
 from itertools import combinations_with_replacement
@@ -207,14 +214,26 @@ def build_combination(combo, discounts, client_discount, target_qb):
     else:
         remaining_text = "完全匹配"
 
-    description = (
-        f"为您安排QB处理订单：{combo_str}（合计{total_qb}QB）\n"
-        f"• {remaining_text}\n"
-        f"• 应收金额：{cost:.2f}元\n"
-        f"• 服务费：{service_fee}元\n"
-        f"• 借调费：{transfer_fee}元\n"
-        f"• 预计收益：{profit:.2f}元"
-    )
+    # 生成基础订单描述
+    order_desc = "+".join(f"{amt}" for amt in combo)
+
+    # 根据剩余QB情况生成不同文案
+    if remaining > 0:
+        description = (
+            f"客户您好，为您安排订单如下{order_desc}={total_qb}*{client_discount:.2f}={cost:.2f}元，"
+            f"剩余{remaining:.0f}QB暂无订单匹配。如果您仍然需要处理，请您耐心等待，"
+            f"我们将在后续有合适订单时，仍然按照当前折扣为您处理此订单。"
+        )
+    elif remaining < 0:
+        description = (
+            f"客户您好，为您安排订单如下{order_desc}={total_qb}*{client_discount:.2f}={cost:.2f}元，"
+            f"需要您补冲{abs(remaining):.0f}QB以配合完全处理。"
+        )
+    else:
+        description = (
+            f"客户您好，已为您完美匹配订单如下{order_desc}={total_qb}*{client_discount:.2f}={cost:.2f}元，"
+            f"数量完全吻合，感谢您的支持！"
+        )
 
     return {
         'combination': combo,

@@ -1,6 +1,7 @@
 {% extends 'layout.html' %}
 {% load static %}
 {% load permission %}
+{% load math_filters %}
 
 {% block content %}
 <div style="margin-bottom: 5px" class="clearfix">
@@ -120,7 +121,6 @@
 
 
 
-<!-- QB结果展示 -->
 <!-- QB匹配结果表格 -->
 <div class="qb-results" style="margin-top: 20px;">
     <h4 class="text-primary">
@@ -130,63 +130,61 @@
         </small>
     </h4>
 
-    <table class="table table-bordered">
-        <thead>
+    <table class="table table-bordered table-hover">
+        <thead class="thead-light">
             <tr>
                 <th>组合方案</th>
                 <th>QB总额</th>
                 <th>订单明细</th>
-                <th>应收金额</th>
+                <th>应结算QB客户金额</th>
                 <th>服务费</th>
                 <th>借调费</th>
                 <th>预计收益</th>
                 <th>剩余QB</th>
+                <th>发单文案</th>
                 <th>操作</th>
             </tr>
         </thead>
         <tbody>
             {% for result in qb_results %}
             <tr>
-                <!-- 组合方案 -->
-                <td>{{ result.combination|join:" + " }}</td>
-
-                <!-- QB总额 -->
-                <td>{{ result.total }}QB</td>
-
-                <!-- 订单明细 -->
+                <td>{{ result.combination|join:" + " }}QB</td>
+                <td>{{ result.total_qb }}QB</td>
                 <td>
-                    <ul style="padding-left: 15px; margin-bottom: 0;">
+                    <ul class="qb-order-details">
                         {% for order in result.orders %}
-                        {{ result.final_price }}
+                        <li>{{ order.amount }}QB × {{ order.discount_percent }}% = {{ order.final_price|floatformat:2 }}元</li>
                         {% endfor %}
+                        <li class="text-primary"><strong>合计: {{ result.income|floatformat:2 }}元</strong></li>
                     </ul>
                 </td>
-
-                <!-- 费用信息 -->
                 <td>{{ result.cost|floatformat:2 }}元</td>
-                <td>{{ result.service_fee }}元</td>
+                <td>{{ result.service_fee|floatformat:2 }}元</td>
                 <td>{{ result.transfer_fee|floatformat:2 }}元</td>
-                <td class="text-success">{{ result.profit|floatformat:2 }}元</td>
-                <td>{{ result.remaining }}</td>
-
-                <!-- 操作 -->
+                <td class="{% if result.profit >= 0 %}text-success{% else %}text-danger{% endif %}">
+                    {{ result.profit|floatformat:2 }}元
+                </td>
                 <td>
-                    <button class="btn btn-default btn-xs"
-                            onclick="navigator.clipboard.writeText('{{ result.description }}')"
-                            title="复制发单文案">
-                        <i class="glyphicon glyphicon-copy"></i>
-                    </button>
+                    {% if result.remaining > 0 %}
+                        <span class="badge badge-info">剩余 {{ result.remaining }}QB</span>
+                    {% elif result.remaining < 0 %}
+                        <span class="badge badge-warning">需补 {{ result.remaining|absolute }}QB</span>
+                    {% else %}
+                        <span class="badge badge-success">完全匹配</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {{ result.description }}
                 </td>
             </tr>
             {% empty %}
             <tr>
-                <td colspan="9" class="text-center text-muted">未找到匹配的订单组合</td>
+                <td colspan="9" class="text-center text-muted py-3">未找到匹配的订单组合</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
-
 
 
 <table class="table table-bordered">
@@ -282,6 +280,7 @@
 {% block js %}
 <script>
 $(document).ready(function() {
+
     // =============== QB匹配表单重置功能 ===============
     $('#resetQBButton').click(function() {
         const form = document.getElementById('qbMatchForm');
@@ -542,9 +541,6 @@ $(document).ready(function() {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* 表格样式优化 */
-.table tbody tr td {
-    vertical-align: middle !important;
-}
+
 </style>
 {% endblock %}
