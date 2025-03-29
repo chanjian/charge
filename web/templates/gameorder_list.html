@@ -3,45 +3,73 @@
 {% load permission %}
 
 {% block content %}
-    <div style="margin-bottom: 5px" class="clearfix">
-        {% add_permission request 'gameorder_add'  %}
+<div style="margin-bottom: 5px" class="clearfix">
+    <div class="left" style="margin-right: 20px;">
+        {% add_permission request 'gameorder_add' %}
+    </div>
 
 
-        <!-- 日期筛选表单 -->
-        <div>
-            <form method="get"  class="form-inline" style="margin-bottom: 20px;">
-        <div class="form-group">
-            <label for="start_date" class="control-label">开始日期</label>
-            <input type="date" class="form-control" id="start_date" name="start_date" value="{{ request.GET.start_date }}">
-        </div>
-        <div class="form-group" style="margin-left: 10px;">
-            <label for="end_date" class="control-label">结束日期</label>
-            <input type="date" class="form-control" id="end_date" name="end_date" value="{{ request.GET.end_date }}">
-        </div>
-        <div class="form-group" style="margin-left: 10px;">
-            <button type="submit" class="btn btn-primary">筛选</button>
-            <a href="?" class="btn btn-default">重置</a>
-        </div>
-        <div class="form-group" style="margin-left: 20px;">
-            <label class="control-label">快捷筛选</label>
-            <a href="?days_range=3" class="btn btn-default">近3天</a>
-            <a href="?days_range=7" class="btn btn-default">近一周</a>
-            <a href="?days_range=30" class="btn btn-default">近一月</a>
-        </div>
-    </form>
-        </div>
+    <!-- 日期筛选表单 -->
+    <div class="left">
+        <form method="get" class="form-inline" style="margin-bottom: 20px;">
+            <!-- 隐藏字段保持当前date_field -->
+            <input type="hidden" name="date_field" value="{{ request.GET.date_field|default:'created_time' }}">
 
-        <div class="right">
+            <!-- 时间字段选择 -->
+            <div class="form-group">
+                <label class="control-label">时间字段</label>
+                <select name="date_field" class="form-control" style="width: 120px; margin-left: 5px;"
+                        onchange="this.form.submit()">
+                    <option value="created_time" {% if request.GET.date_field == 'created_time' %}selected{% endif %}>创建时间</option>
+                    <option value="updated_time" {% if request.GET.date_field == 'updated_time' %}selected{% endif %}>更新时间</option>
+                    <option value="finished_time" {% if request.GET.date_field == 'finished_time' %}selected{% endif %}>结束时间</option>
+                </select>
+            </div>
+
+            <!-- 日期范围 -->
+            <div class="form-group">
+                <label class="control-label">开始日期</label>
+                <input type="date" class="form-control" name="start_date"
+                       value="{{ request.GET.start_date }}">
+            </div>
+
+            <div class="form-group" style="margin-left: 10px;">
+                <label class="control-label">结束日期</label>
+                <input type="date" class="form-control" name="end_date"
+                       value="{{ request.GET.end_date }}">
+            </div>
+
+            <!-- 操作按钮 -->
+            <div class="form-group" style="margin-left: 10px;">
+                <button type="submit" class="btn btn-primary">筛选</button>
+                <a href="?" class="btn btn-default" style="margin-left: 5px;">重置</a>
+            </div>
+
+            <!-- 快捷筛选（保持为链接但携带所有参数） -->
+            <div class="form-group" style="margin-left: 20px;">
+                <label class="control-label">快捷筛选</label>
+                <a href="?date_field={{ request.GET.date_field|default:'created_time' }}&days_range=3&start_date={% now 'Y-m-d' %}&end_date={% now 'Y-m-d' %}"
+                   class="btn btn-default {% if request.GET.days_range == '3' %}active{% endif %}">近3天</a>
+                <a href="?date_field={{ request.GET.date_field|default:'created_time' }}&days_range=7&start_date={% now 'Y-m-d' %}&end_date={% now 'Y-m-d' %}"
+                   class="btn btn-default {% if request.GET.days_range == '7' %}active{% endif %}">近一周</a>
+                <a href="?date_field={{ request.GET.date_field|default:'created_time' }}&days_range=30&start_date={% now 'Y-m-d' %}&end_date={% now 'Y-m-d' %}"
+                   class="btn btn-default {% if request.GET.days_range == '30' %}active{% endif %}">近一月</a>
+            </div>
+        </form>
+</div>
+
+
+     <div class="right">
             <form class="form-inline" method="get">
                 <div class="form-group">
-                    <input name="keyword" type="text" class="form-control" placeholder="请输入消费者用户名或者订单号" value="{{ keyword }}">
+                    <input name="keyword" type="text" class="form-control" placeholder="请输入关键字" value="{{ keyword }}">
                 </div>
                 <button type="submit" class="btn btn-default">
                     <span class="glyphicon glyphicon-search"></span>
                 </button>
             </form>
         </div>
-    </div>
+
     <table class="table table-bordered">
         <thead>
         <tr>
@@ -61,6 +89,7 @@
             <th>订单创建时间</th>
             <th>订单更新时间</th>
             <th>订单状态</th>
+            <th>订单编辑记录</th>
             {% if request|has_permission:"customer_edit,customer_delete" %}
             <th>操作</th>
             {% endif %}
@@ -99,6 +128,7 @@
                 <td class="copyable" title="点击复制" data-value="{{ row.created_time|date:'Y-m-d H:i:s' }}">{{ row.created_time|date:"Y-m-d H:i:s" }}</td>
                 <td class="copyable" title="点击复制" data-value="{{ row.updated_time|date:'Y-m-d H:i:s' }}">{{ row.updated_time|date:"Y-m-d H:i:s" }}</td>
                 <td class="copyable" title="点击复制" data-value="{{ row.get_order_status_display }}">{{ row.get_order_status_display }}</td>
+                <td><a href="">订单编辑记录</a></td>
                 {% if request|has_permission:"gameorder_edit,gameorder_delete" %}
                 <td>
                     {% edit_permission request 'gameorder_edit' pk=row.id %}

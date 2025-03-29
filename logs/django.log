@@ -9401,3 +9401,314 @@ django.core.exceptions.FieldError: Cannot resolve keyword 'generate_order_number
 2025-03-29 19:20:42 - django.server - ERROR - "GET /gameorder/list/?keyword=O20250329181629 HTTP/1.1" 500 146361
 2025-03-29 19:21:13 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
 2025-03-29 19:21:14 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-29 19:21:16 - django.server - INFO - "GET /gameorder/list/?keyword=O20250329181629 HTTP/1.1" 200 16472
+2025-03-29 19:21:21 - django.server - INFO - "GET /gameorder/list/?keyword= HTTP/1.1" 200 44421
+2025-03-29 19:22:29 - django.server - INFO - "GET /gameorder/list/?keyword= HTTP/1.1" 200 44445
+2025-03-29 19:23:46 - django.server - INFO - "GET /gameorder/list/?keyword= HTTP/1.1" 200 45602
+2025-03-29 19:24:20 - django.server - INFO - "GET /gameorder/list/?keyword= HTTP/1.1" 200 45640
+2025-03-29 19:24:21 - django.server - INFO - "GET /gameorder/list/?keyword= HTTP/1.1" 200 45640
+2025-03-29 19:26:42 - django.server - INFO - "GET /gameorder/list/?keyword= HTTP/1.1" 200 45686
+2025-03-29 19:26:42 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-03-29 19:26:42 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-03-29 19:26:42 - django.server - INFO - "GET /media/root1/2025/03/29/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 304 0
+2025-03-29 19:26:42 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 304 0
+2025-03-29 19:26:43 - django.server - INFO - "GET /gameorder/list/?keyword= HTTP/1.1" 200 45686
+2025-03-29 19:27:27 - django.server - INFO - "GET /gameorder/list/?keyword= HTTP/1.1" 200 45837
+2025-03-29 19:27:28 - django.server - INFO - "GET /gameorder/list/?keyword= HTTP/1.1" 200 45837
+2025-03-29 19:28:09 - django.server - INFO - "GET /gameorder/list/?keyword= HTTP/1.1" 200 46122
+2025-03-29 19:28:09 - django.server - INFO - "GET /gameorder/list/?keyword= HTTP/1.1" 200 46122
+2025-03-29 19:29:06 - django.server - INFO - "GET /gameorder/list/?keyword= HTTP/1.1" 200 45639
+2025-03-29 19:30:09 - django.server - INFO - "GET /gameorder/list/?keyword= HTTP/1.1" 200 46324
+2025-03-29 19:54:18 - django.server - INFO - "GET /gameorder/list/?keyword= HTTP/1.1" 200 46692
+2025-03-29 19:54:18 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-03-29 19:54:18 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-03-29 19:54:18 - django.server - INFO - "GET /media/root1/2025/03/29/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 304 0
+2025-03-29 19:54:18 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 304 0
+2025-03-29 19:55:34 - django.server - INFO - "GET /gameorder/list/?keyword= HTTP/1.1" 200 45432
+2025-03-29 19:56:12 - django.server - INFO - "GET /gameorder/list/?keyword= HTTP/1.1" 200 45466
+2025-03-29 19:56:12 - django.server - INFO - "GET /gameorder/list/?keyword= HTTP/1.1" 200 45466
+2025-03-29 19:56:13 - django.server - INFO - "GET /gameorder/list/?keyword= HTTP/1.1" 200 45466
+2025-03-29 19:56:14 - django.server - INFO - "GET /gameorder/list/?keyword= HTTP/1.1" 200 45466
+2025-03-29 19:56:14 - django.server - INFO - "GET /gameorder/list/?keyword= HTTP/1.1" 200 45466
+2025-03-29 19:56:14 - django.server - INFO - "GET /gameorder/list/?keyword= HTTP/1.1" 200 45466
+2025-03-29 19:56:14 - django.server - INFO - "GET /gameorder/list/?keyword= HTTP/1.1" 200 45466
+2025-03-29 19:56:14 - django.server - INFO - "GET /gameorder/list/?keyword= HTTP/1.1" 200 45466
+2025-03-29 19:56:15 - django.server - INFO - "GET /gameorder/list/?keyword= HTTP/1.1" 200 45466
+2025-03-29 19:56:15 - django.server - INFO - "GET /gameorder/list/?keyword= HTTP/1.1" 200 45466
+2025-03-29 19:58:24 - django.server - INFO - "GET /gameorder/list/?keyword= HTTP/1.1" 200 45546
+2025-03-29 19:58:38 - django.server - INFO - "GET /gameorder/list/?keyword= HTTP/1.1" 200 45559
+2025-03-29 19:59:52 - django.server - INFO - "GET /gameorder/list/?keyword= HTTP/1.1" 200 45587
+2025-03-29 20:00:17 - django.server - INFO - "GET /gameorder/list/?start_date=2025-02-26&end_date=2025-03-03 HTTP/1.1" 200 46142
+2025-03-29 20:09:29 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-29 20:09:29 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-29 20:09:30 - django.request - ERROR - Internal Server Error: /gameorder/list/
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 60, in gameorder_list
+    queryset, start_date, end_date, pager = filter_by_date_range(request, queryset)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\utils\time_filter.py", line 37, in filter_by_date_range
+    queryset = queryset.filter(create_datetime__range=(start_date, end_date))
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\query.py", line 941, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\query.py", line 961, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\query.py", line 968, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\sql\query.py", line 1396, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\sql\query.py", line 1415, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\sql\query.py", line 1289, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\sql\query.py", line 1115, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\sql\query.py", line 1542, in names_to_path
+    raise FieldError("Cannot resolve keyword '%s' into field. "
+django.core.exceptions.FieldError: Cannot resolve keyword 'create_datetime' into field. Choices are: active, consumer, consumer_id, created_by, created_by_id, created_time, game, game_id, id, is_creator, order_number, order_status, platform, qr_code, recharge_link, recharge_option, recharge_option_id, updated_time, user_discount_percent
+2025-03-29 20:09:30 - django.server - ERROR - "GET /gameorder/list/?start_date=2025-02-26&end_date=2025-03-03 HTTP/1.1" 500 140370
+2025-03-29 20:17:41 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\utils\time_filter.py changed, reloading.
+2025-03-29 20:17:41 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-29 20:17:42 - django.server - INFO - "GET /gameorder/list/?start_date=2025-02-26&end_date=2025-03-03 HTTP/1.1" 200 13685
+2025-03-29 20:17:47 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 45352
+2025-03-29 20:17:47 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-03-29 20:17:47 - django.server - INFO - "GET /media/root1/2025/03/29/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 304 0
+2025-03-29 20:17:47 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 304 0
+2025-03-29 20:17:47 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-03-29 20:17:48 - django.server - INFO - "GET /gameorder/list/?start_date=&end_date= HTTP/1.1" 200 45822
+2025-03-29 20:17:50 - django.server - INFO - "GET /gameorder/list/?start_date=&end_date= HTTP/1.1" 200 45822
+2025-03-29 20:19:36 - django.server - INFO - "GET /gameorder/list/?start_date=&end_date= HTTP/1.1" 200 45442
+2025-03-29 20:21:56 - django.server - INFO - "GET /gameorder/list/?page=1 HTTP/1.1" 200 45142
+2025-03-29 20:21:56 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 304 0
+2025-03-29 20:21:56 - django.server - INFO - "GET /media/root1/2025/03/29/6.png HTTP/1.1" 304 0
+2025-03-29 20:21:56 - django.server - INFO - "GET /media/root1/2025/03/29/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 304 0
+2025-03-29 20:21:56 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-03-29 20:21:56 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-03-29 20:21:56 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 304 0
+2025-03-29 20:21:56 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 304 0
+2025-03-29 20:21:56 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 304 0
+2025-03-29 20:24:10 - django.server - INFO - "GET /gameorder/list/?days_range=3 HTTP/1.1" 200 29419
+2025-03-29 20:24:25 - django.server - INFO - "GET /gameorder/list/?start_date=2025-03-13&end_date=2025-03-15 HTTP/1.1" 200 13687
+2025-03-29 20:25:38 - django.server - INFO - "GET /gameorder/list/?start_date=&end_date= HTTP/1.1" 200 45810
+2025-03-29 20:25:54 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 46218
+2025-03-29 20:46:17 - django.server - INFO - "GET /gameorder/list/?date_field=updated_time&start_date=&end_date= HTTP/1.1" 200 46218
+2025-03-29 20:46:17 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-03-29 20:46:17 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 304 0
+2025-03-29 20:46:17 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 304 0
+2025-03-29 20:46:17 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 304 0
+2025-03-29 20:46:17 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-03-29 20:46:17 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 304 0
+2025-03-29 20:46:17 - django.server - INFO - "GET /media/root1/2025/03/29/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 304 0
+2025-03-29 20:46:21 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 46218
+2025-03-29 20:48:03 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\models.py changed, reloading.
+2025-03-29 20:48:03 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-29 20:49:30 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\models.py changed, reloading.
+2025-03-29 20:49:30 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-29 20:53:41 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 46282
+2025-03-29 20:53:47 - django.server - INFO - "GET /gameorder/list/?date_field=updated_time&start_date=&end_date= HTTP/1.1" 200 46282
+2025-03-29 20:53:53 - django.server - INFO - "GET /gameorder/list/?date_field=updated_time&start_date=&end_date= HTTP/1.1" 200 46282
+2025-03-29 20:53:56 - django.server - INFO - "GET /gameorder/list/?date_field=updated_time&start_date=&end_date= HTTP/1.1" 200 46282
+2025-03-29 20:54:11 - django.server - INFO - "GET /gameorder/list/?date_field=updated_time&start_date=&end_date= HTTP/1.1" 200 46283
+2025-03-29 20:54:14 - django.server - INFO - "GET /gameorder/list/?date_field=finished_time&start_date=&end_date= HTTP/1.1" 200 46298
+2025-03-29 20:55:19 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\utils\time_filter.py changed, reloading.
+2025-03-29 20:55:20 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-29 20:55:20 - django.server - INFO - "GET /gameorder/list/?date_field=finished_time&start_date=&end_date= HTTP/1.1" 200 46298
+2025-03-29 20:55:31 - django.server - INFO - "GET /gameorder/list/?date_field=updated_time&start_date=&end_date= HTTP/1.1" 200 46283
+2025-03-29 20:55:41 - django.server - INFO - "GET /gameorder/list/?date_field=updated_time&start_date=2025-03-29&end_date=2025-03-29 HTTP/1.1" 200 37202
+2025-03-29 20:55:41 - django.server - INFO - "GET /media/root1/2025/03/29/6.png HTTP/1.1" 304 0
+2025-03-29 20:55:52 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&start_date=2025-03-29&end_date=2025-03-29 HTTP/1.1" 200 30342
+2025-03-29 20:55:58 - django.server - INFO - "GET /gameorder/list/?days_range=7 HTTP/1.1" 200 45700
+2025-03-29 20:56:01 - django.server - INFO - "GET /gameorder/list/?days_range=7 HTTP/1.1" 200 45700
+2025-03-29 20:56:02 - django.server - INFO - "GET /gameorder/list/?days_range=7 HTTP/1.1" 200 45700
+2025-03-29 20:56:03 - django.server - INFO - "GET /gameorder/list/?days_range=7 HTTP/1.1" 200 45700
+2025-03-29 20:56:04 - django.server - INFO - "GET /gameorder/list/?days_range=7 HTTP/1.1" 200 45700
+2025-03-29 20:56:05 - django.server - INFO - "GET /gameorder/list/?days_range=3 HTTP/1.1" 200 45700
+2025-03-29 20:56:23 - django.server - INFO - "GET /gameorder/list/?days_range=3 HTTP/1.1" 200 45700
+2025-03-29 20:56:24 - django.server - INFO - "GET /gameorder/list/?days_range=3 HTTP/1.1" 200 45700
+2025-03-29 20:56:25 - django.server - INFO - "GET /gameorder/list/?days_range=3 HTTP/1.1" 200 45700
+2025-03-29 20:56:26 - django.server - INFO - "GET /gameorder/list/?days_range=3 HTTP/1.1" 200 45700
+2025-03-29 20:56:27 - django.server - INFO - "GET /gameorder/list/?days_range=7 HTTP/1.1" 200 45700
+2025-03-29 20:56:28 - django.server - INFO - "GET /gameorder/list/?days_range=30 HTTP/1.1" 200 45715
+2025-03-29 20:56:31 - django.server - INFO - "GET /gameorder/list/?days_range=3 HTTP/1.1" 200 45700
+2025-03-29 20:56:33 - django.server - INFO - "GET /gameorder/list/?days_range=7 HTTP/1.1" 200 45700
+2025-03-29 20:56:35 - django.server - INFO - "GET /gameorder/list/?days_range=3 HTTP/1.1" 200 45700
+2025-03-29 20:56:36 - django.server - INFO - "GET /gameorder/list/?days_range=7 HTTP/1.1" 200 45700
+2025-03-29 20:56:37 - django.server - INFO - "GET /gameorder/list/?days_range=30 HTTP/1.1" 200 45715
+2025-03-29 20:56:37 - django.server - INFO - "GET /gameorder/list/?days_range=3 HTTP/1.1" 200 45700
+2025-03-29 20:56:38 - django.server - INFO - "GET /gameorder/list/?days_range=7 HTTP/1.1" 200 45700
+2025-03-29 20:56:38 - django.server - INFO - "GET /gameorder/list/?days_range=30 HTTP/1.1" 200 45715
+2025-03-29 20:56:39 - django.server - INFO - "GET /gameorder/list/?days_range=7 HTTP/1.1" 200 45700
+2025-03-29 20:56:39 - django.server - INFO - "GET /gameorder/list/?days_range=3 HTTP/1.1" 200 45700
+2025-03-29 20:56:39 - django.server - INFO - "GET /gameorder/list/?days_range=7 HTTP/1.1" 200 45700
+2025-03-29 20:56:40 - django.server - INFO - "GET /gameorder/list/?days_range=30 HTTP/1.1" 200 45715
+2025-03-29 21:02:07 - django.server - INFO - "GET /gameorder/list/?days_range=30 HTTP/1.1" 200 45726
+2025-03-29 21:02:07 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-03-29 21:02:07 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-03-29 21:02:07 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 304 0
+2025-03-29 21:02:07 - django.server - INFO - "GET /media/root1/2025/03/29/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 304 0
+2025-03-29 21:02:08 - django.server - INFO - "GET /gameorder/list/?days_range=30 HTTP/1.1" 200 45726
+2025-03-29 21:02:10 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=7&start_date=2025-03-29&end_date=2025-03-29 HTTP/1.1" 200 30477
+2025-03-29 21:02:11 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=3&start_date=2025-03-29&end_date=2025-03-29 HTTP/1.1" 200 30477
+2025-03-29 21:02:14 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=7&start_date=2025-03-29&end_date=2025-03-29 HTTP/1.1" 200 30477
+2025-03-29 21:02:14 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=30&start_date=2025-03-29&end_date=2025-03-29 HTTP/1.1" 200 30485
+2025-03-29 21:02:18 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&new_date_field=created_time&start_date=2025-03-29&end_date=2025-03-29 HTTP/1.1" 200 30591
+2025-03-29 21:02:20 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&new_date_field=created_time&start_date=2025-03-29&end_date=2025-03-29 HTTP/1.1" 200 30591
+2025-03-29 21:02:23 - django.server - INFO - "GET /gameorder/list/? HTTP/1.1" 200 45410
+2025-03-29 21:03:01 - django.server - INFO - "GET /gameorder/list/? HTTP/1.1" 200 45860
+2025-03-29 21:03:05 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=3&start_date=2025-03-29&end_date=2025-03-29 HTTP/1.1" 200 30927
+2025-03-29 21:03:08 - django.server - INFO - "GET /gameorder/list/? HTTP/1.1" 200 45860
+2025-03-29 21:03:11 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&new_date_field=updated_time&start_date=&end_date= HTTP/1.1" 200 47198
+2025-03-29 21:03:14 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&new_date_field=updated_time&start_date=&end_date= HTTP/1.1" 200 47198
+2025-03-29 21:03:17 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&new_date_field=finished_time&start_date=&end_date= HTTP/1.1" 200 47213
+2025-03-29 21:03:19 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&new_date_field=updated_time&start_date=&end_date= HTTP/1.1" 200 47198
+2025-03-29 21:03:24 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&new_date_field=finished_time&start_date=&end_date= HTTP/1.1" 200 47213
+2025-03-29 21:03:28 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&new_date_field=updated_time&start_date=&end_date= HTTP/1.1" 200 47198
+2025-03-29 21:03:32 - django.server - INFO - "GET /gameorder/list/? HTTP/1.1" 200 45860
+2025-03-29 21:03:34 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&new_date_field=updated_time&start_date=&end_date= HTTP/1.1" 200 47198
+2025-03-29 21:03:43 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=3&start_date=2025-03-29&end_date=2025-03-29 HTTP/1.1" 200 30927
+2025-03-29 21:04:18 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&new_date_field=updated_time&start_date=2025-03-29&end_date=2025-03-29 HTTP/1.1" 200 31041
+2025-03-29 21:04:24 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&new_date_field=finished_time&start_date=2025-03-29&end_date=2025-03-29 HTTP/1.1" 200 31049
+2025-03-29 21:04:29 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&new_date_field=updated_time&start_date=2025-03-29&end_date=2025-03-29 HTTP/1.1" 200 31041
+2025-03-29 21:04:32 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&new_date_field=updated_time&start_date=2025-03-29&end_date=2025-03-29 HTTP/1.1" 200 31041
+2025-03-29 21:04:35 - django.server - INFO - "GET /gameorder/list/? HTTP/1.1" 200 45860
+2025-03-29 21:04:36 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&new_date_field=updated_time&start_date=&end_date= HTTP/1.1" 200 47198
+2025-03-29 21:04:38 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&new_date_field=updated_time&start_date=&end_date= HTTP/1.1" 200 47198
+2025-03-29 21:04:41 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&new_date_field=finished_time&start_date=&end_date= HTTP/1.1" 200 47213
+2025-03-29 21:10:05 - django.request - ERROR - Internal Server Error: /gameorder/list/
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 470, in parse
+    compile_func = self.tags[command]
+KeyError: 'endif'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 69, in gameorder_list
+    return render(request, 'gameorder_list.html', context)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\shortcuts.py", line 19, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\backends\django.py", line 34, in get_template
+    return Template(self.engine.get_template(template_name), self)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\engine.py", line 143, in get_template
+    template, origin = self.find_template(template_name)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\engine.py", line 125, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loaders\base.py", line 29, in get_template
+    return Template(
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 155, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 193, in compile_nodelist
+    return parser.parse()
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 478, in parse
+    raise self.error(token, e)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 476, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loader_tags.py", line 278, in do_extends
+    nodelist = parser.parse()
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 478, in parse
+    raise self.error(token, e)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 476, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loader_tags.py", line 216, in do_block
+    nodelist = parser.parse(('endblock',))
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 472, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 522, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 24: 'endif', expected 'endblock'. Did you forget to register or load this tag?
+2025-03-29 21:10:05 - django.server - ERROR - "GET /gameorder/list/?date_field=created_time&new_date_field=finished_time&start_date=&end_date= HTTP/1.1" 500 200555
+2025-03-29 21:10:32 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&new_date_field=finished_time&start_date=&end_date= HTTP/1.1" 200 47149
+2025-03-29 21:10:33 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&new_date_field=finished_time&start_date=&end_date= HTTP/1.1" 200 47149
+2025-03-29 21:11:01 - django.request - ERROR - Internal Server Error: /gameorder/list/
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\smartif.py", line 175, in translate_token
+    op = OPERATORS[token]
+KeyError: "request.GET.date_field=='created_time'"
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 69, in gameorder_list
+    return render(request, 'gameorder_list.html', context)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\shortcuts.py", line 19, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\backends\django.py", line 34, in get_template
+    return Template(self.engine.get_template(template_name), self)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\engine.py", line 143, in get_template
+    template, origin = self.find_template(template_name)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\engine.py", line 125, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loaders\base.py", line 29, in get_template
+    return Template(
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 155, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 193, in compile_nodelist
+    return parser.parse()
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 478, in parse
+    raise self.error(token, e)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 476, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loader_tags.py", line 278, in do_extends
+    nodelist = parser.parse()
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 478, in parse
+    raise self.error(token, e)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 476, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loader_tags.py", line 216, in do_block
+    nodelist = parser.parse(('endblock',))
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 478, in parse
+    raise self.error(token, e)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 476, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\defaulttags.py", line 964, in do_if
+    condition = TemplateIfParser(parser, bits).parse()
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\defaulttags.py", line 897, in __init__
+    super().__init__(*args, **kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\smartif.py", line 166, in __init__
+    mapped_tokens.append(self.translate_token(token))
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\smartif.py", line 177, in translate_token
+    return self.create_var(token)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\defaulttags.py", line 900, in create_var
+    return TemplateLiteral(self.template_parser.compile_filter(value), value)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 563, in compile_filter
+    return FilterExpression(token, self)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 662, in __init__
+    raise TemplateSyntaxError("Could not parse the remainder: '%s' "
+django.template.exceptions.TemplateSyntaxError: Could not parse the remainder: '=='created_time'' from 'request.GET.date_field=='created_time''
+2025-03-29 21:11:01 - django.server - ERROR - "GET /gameorder/list/?date_field=created_time&new_date_field=finished_time&start_date=&end_date= HTTP/1.1" 500 231192
+2025-03-29 21:11:24 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&new_date_field=finished_time&start_date=&end_date= HTTP/1.1" 200 47369
+2025-03-29 21:11:27 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=3&start_date=2025-03-29&end_date=2025-03-29 HTTP/1.1" 200 31083
+2025-03-29 21:11:29 - django.server - INFO - "GET /gameorder/list/? HTTP/1.1" 200 46016
+2025-03-29 21:11:31 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&date_field=updated_time&start_date=&end_date= HTTP/1.1" 200 47294
+2025-03-29 21:11:38 - django.server - INFO - "GET /gameorder/list/?date_field=updated_time&days_range=3&start_date=2025-03-29&end_date=2025-03-29 HTTP/1.1" 200 37977
+2025-03-29 21:11:42 - django.server - INFO - "GET /gameorder/list/?date_field=updated_time&date_field=finished_time&start_date=2025-03-29&end_date=2025-03-29 HTTP/1.1" 200 14741
+2025-03-29 21:11:46 - django.server - INFO - "GET /gameorder/list/?date_field=finished_time&days_range=3&start_date=2025-03-29&end_date=2025-03-29 HTTP/1.1" 200 14747
+2025-03-29 21:11:47 - django.server - INFO - "GET /gameorder/list/?date_field=finished_time&date_field=created_time&start_date=2025-03-29&end_date=2025-03-29 HTTP/1.1" 200 31173
+2025-03-29 21:11:48 - django.server - INFO - "GET /gameorder/list/? HTTP/1.1" 200 46016
+2025-03-29 21:11:58 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&date_field=created_time&start_date=2025-03-29&end_date=2025-03-29 HTTP/1.1" 200 31165
+2025-03-29 21:12:04 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&date_field=updated_time&start_date=2025-03-29&end_date=2025-03-29 HTTP/1.1" 200 38081
+2025-03-29 21:12:08 - django.server - INFO - "GET /gameorder/list/?date_field=updated_time&date_field=created_time&start_date=2025-03-29&end_date=2025-03-29 HTTP/1.1" 200 31165
+2025-03-29 21:12:10 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=30&start_date=2025-03-29&end_date=2025-03-29 HTTP/1.1" 200 31091
+2025-03-29 21:12:11 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=30&start_date=2025-03-29&end_date=2025-03-29 HTTP/1.1" 200 31091
+2025-03-29 21:12:11 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=7&start_date=2025-03-29&end_date=2025-03-29 HTTP/1.1" 200 31083
+2025-03-29 21:12:12 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=3&start_date=2025-03-29&end_date=2025-03-29 HTTP/1.1" 200 31083
+2025-03-29 21:12:14 - django.server - INFO - "GET /gameorder/list/? HTTP/1.1" 200 46016
+2025-03-29 21:15:30 - django.utils.autoreload - INFO - Watching for file changes with StatReloader

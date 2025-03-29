@@ -8,6 +8,7 @@ class ActiveBaseModel(models.Model):
     active = models.SmallIntegerField(verbose_name="状态", default=1, choices=((1, "激活"), (0, "删除"),))
     created_time = models.DateTimeField(verbose_name="创建时间", auto_now_add=True,null=True,blank=True)
     updated_time = models.DateTimeField(verbose_name="更新时间", auto_now=True)
+    finished_time = models.DateTimeField(verbose_name="结束时间",blank=True,null=True)
 
     class Meta:
         abstract = True

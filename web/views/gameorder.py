@@ -13,6 +13,7 @@ from utils.media_path import get_upload_path
 from utils.pager import Pagination
 from utils.qr_code_to_link import qr_code_to_link
 from utils.response import BaseResponse
+from utils.time_filter import filter_by_date_range
 from web import models
 from utils.bootstrap import BootStrapForm,BootStrapModelForm
 from utils.encrypt import md5
@@ -54,6 +55,9 @@ def gameorder_list(request):
         con.children.append(('consumer__username__contains', keyword))
         con.children.append(('order_number__contains', keyword))
         queryset = queryset.filter(con)
+
+    # 调用封装好的函数进行日期过滤
+    queryset, start_date, end_date, pager = filter_by_date_range(request, queryset)
 
     pager = Pagination(request,queryset)
 
