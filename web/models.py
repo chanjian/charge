@@ -3,6 +3,7 @@ from django.core.validators import RegexValidator
 from django.db import models
 from django.db.models import Q  # 确保这行存在
 from django.db.models import F
+from decimal import Decimal
 
 class ActiveBaseModel(models.Model):
     active = models.SmallIntegerField(verbose_name="状态", default=1, choices=((1, "激活"), (0, "删除"),))
@@ -172,9 +173,10 @@ class GameOrder(ActiveBaseModel):
     @property
     def price_info(self):
         """返回包含所有价格相关信息的字典"""
-        original = self.recharge_option.amount if self.recharge_option else 0
-        discount = self.consumer.level.percent if hasattr(self.consumer, 'level') else 100
-        final = round(float(original) * float(discount) / 100, 2)
+        original = Decimal(str(self.recharge_option.amount)) if self.recharge_option else Decimal('0')
+        discount = Decimal(str(self.consumer.level.percent)) / Decimal('100') if hasattr(self.consumer,
+                                                                                         'level') else Decimal('1')
+        final = original * discount
         points = self.recharge_option.total_currency if self.recharge_option else 0
         composite = round((final * 10) / points, 2) if points > 0 else 0.0
 

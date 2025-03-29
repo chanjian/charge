@@ -339,7 +339,13 @@ PERMISSION = {
 }
 
 QUEUE_TASK_NAME = "YANG_TASK_QUEUE"
+# 使用cache存储
+# MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
+# 或
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+# 或使用fallback（默认）
+# MESSAGE_STORAGE = 'django.contrib.messages.storage.fallback.FallbackStorage'
+
 
 MESSAGE_DANGER_TAG = 50
 

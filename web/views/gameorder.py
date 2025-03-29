@@ -18,9 +18,11 @@ from web import models
 from utils.bootstrap import BootStrapForm,BootStrapModelForm
 from utils.encrypt import md5
 from django.contrib import messages
+from django.contrib import messages
 from django.contrib.messages.api import get_messages
 from web.models import GameOrder,GameDenomination,TransactionRecord
-
+from decimal import Decimal
+from itertools import combinations
 import logging
 logger = logging.getLogger('web')
 
@@ -61,12 +63,172 @@ def gameorder_list(request):
 
     pager = Pagination(request,queryset)
 
+    # QB匹配功能
+    qb_results = []
+    qb_target = request.GET.get('qb_target')
+    if qb_target:
+        try:
+            # 获取并验证参数
+            qb_target = Decimal(qb_target)
+            qb_discount = Decimal(request.GET.get('qb_discount', '75')) / Decimal('100')
+            max_combine = request.GET.get('max_combine', '3')
+
+            try:
+                max_combine = int(max_combine)
+                if max_combine < 1 or max_combine > 5:  # 限制最大组合数范围
+                    max_combine = 3
+            except ValueError:
+                max_combine = 3
+
+            # 获取有效订单（折扣>75折）
+            valid_orders = queryset.filter(
+                recharge_option__isnull=False,
+                consumer__level__percent__gt=75
+            ).select_related('recharge_option', 'consumer__level')
+
+            # 构建amount_discounts字典，记录每个QB档位的最高折扣
+            amount_discounts = {}
+            for o in valid_orders:
+                if o.recharge_option and hasattr(o.consumer, 'level'):
+                    amt = o.recharge_option.amount
+                    current_discount = o.consumer.level.percent / 100
+                    if amt not in amount_discounts or current_discount > amount_discounts[amt]:
+                        amount_discounts[amt] = current_discount
+
+            # 查找最佳组合
+            qb_results = find_qb_combinations(
+                target_qb=qb_target,
+                amount_discounts=amount_discounts,
+                client_discount=qb_discount,
+                max_combine=max_combine
+            )
+
+            # 为每个结果添加订单ID信息（实际应用中可能需要）
+            for result in qb_results:
+                result['order_ids'] = [
+                                          o.id for o in valid_orders
+                                          if o.recharge_option.amount in result['combination']
+                                      ][:len(result['combination'])]
+
+        except (ValueError, TypeError, AttributeError) as e:
+            print(f"QB匹配错误: {e}")
+            # 可以添加错误消息返回给用户
+            # messages.add_message(request, 25, f"QB匹配出错: {str(e)}")
 
     context = {
         'pager':pager,
         'keyword':keyword,
     }
-    return render(request, 'gameorder_list.html', context)
+    # return render(request, 'gameorder_list.html', context)
+    return render(request, 'gameorder_list.html', locals())
+
+
+from itertools import combinations_with_replacement
+
+def find_qb_combinations(target_qb, amount_discounts, client_discount, max_combine=3):
+    # 确保所有数值都是 Decimal
+    target_qb = Decimal(str(target_qb))
+    client_discount = Decimal(str(client_discount))
+
+    # 转换 amount_discounts 中的值为 Decimal
+    converted_amounts = {}
+    for amt, discount in amount_discounts.items():
+        converted_amounts[Decimal(str(amt))] = Decimal(str(discount))
+    amounts = sorted(amount_discounts.keys())
+    results = []
+
+    # 精确匹配检查
+    exact_match = next((a for a in amounts if a == target_qb), None)
+    if exact_match:
+        return [build_combination([exact_match], [amount_discounts[exact_match]], client_discount, target_qb)]
+
+    best_left = None
+    best_right = None
+
+    for r in range(1, max_combine + 1):
+        for combo in combinations_with_replacement(amounts, r):
+            total = sum(combo)
+            discounts = [amount_discounts[amt] for amt in combo]
+
+            # 左边界处理
+            if total <= target_qb:
+                if (not best_left or
+                    (target_qb - total) < (target_qb - best_left['total_qb'])):
+                    best_left = build_combination(combo, discounts, client_discount, target_qb)
+
+            # 右边界处理
+            if total >= target_qb:
+                if (not best_right or
+                    (total - target_qb) < (best_right['total_qb'] - target_qb)):
+                    best_right = build_combination(combo, discounts, client_discount, target_qb)
+
+    if best_left:
+        results.append(best_left)
+    if best_right and best_right != best_left:
+        results.append(best_right)
+
+    return results
+
+from decimal import Decimal, getcontext
+def build_combination(combo, discounts, client_discount, target_qb):
+    getcontext().prec = 8  # 设置精度
+    # 确保所有输入都是 Decimal
+    combo = [Decimal(str(x)) for x in combo]
+    discounts = [Decimal(str(x)) for x in discounts]
+    client_discount = Decimal(str(client_discount))
+    target_qb = Decimal(str(target_qb))
+
+    total_qb = sum(combo)
+    remaining = target_qb - total_qb
+
+    orders = []
+    income = Decimal('0')
+    for amt, discount in zip(combo, discounts):
+        amt = Decimal(str(amt))
+        final_price = amt * discount
+        orders.append({
+            'amount': amt,
+            'discount_percent': int(discount * 100),
+            'final_price': final_price
+        })
+        income += final_price
+
+    service_fee = len(combo) * Decimal('1')
+    transfer_fee = len(combo) * Decimal('0.5')
+    cost = total_qb * client_discount
+    profit = income - cost - service_fee - transfer_fee
+
+    # 生成智能文案
+    combo_str = " + ".join(f"{amt}QB" for amt in combo)
+    if remaining > 0:
+        remaining_text = f"剩余{remaining}QB"
+    elif remaining < 0:
+        remaining_text = f"需要补{-remaining}QB"
+    else:
+        remaining_text = "完全匹配"
+
+    description = (
+        f"为您安排QB处理订单：{combo_str}（合计{total_qb}QB）\n"
+        f"• {remaining_text}\n"
+        f"• 应收金额：{cost:.2f}元\n"
+        f"• 服务费：{service_fee}元\n"
+        f"• 借调费：{transfer_fee}元\n"
+        f"• 预计收益：{profit:.2f}元"
+    )
+
+    return {
+        'combination': combo,
+        'total_qb': total_qb,
+        'remaining': remaining,  # 注意这里改为有符号数，正数表示剩余，负数表示需要补
+        'orders': orders,
+        'income': income,  # 新增收入总和
+        'cost': cost,
+        'service_fee': service_fee,
+        'transfer_fee': transfer_fee,
+        'profit': profit,
+        'description': description
+    }
+
 
 class BootStrapForm:
     exclude_filed_list = []
