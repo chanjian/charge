@@ -32,7 +32,7 @@ def gamedenomination_list(request):
 class GameDenominationAddModelForm(BootStrapModelForm):
     class Meta:
         model = models.GameDenomination
-        exclude = ['active']
+        exclude = ['active','finished_time']
 
 def gamedenomination_add(request):
     if request.method == 'GET':

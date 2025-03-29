@@ -11549,3 +11549,297 @@ RecursionError: maximum recursion depth exceeded
 2025-03-30 02:21:15 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=75&max_combine=2 HTTP/1.1" 200 52535
 2025-03-30 03:13:27 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
 2025-03-30 03:13:28 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 03:13:29 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=75&max_combine=2 HTTP/1.1" 200 52525
+2025-03-30 03:13:29 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-03-30 03:13:29 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-03-30 03:13:29 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 304 0
+2025-03-30 03:13:29 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 304 0
+2025-03-30 03:13:29 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 304 0
+2025-03-30 03:13:29 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 304 0
+2025-03-30 03:13:29 - django.server - INFO - "GET /media/root1/2025/03/29/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 304 0
+2025-03-30 03:13:30 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=75&max_combine=2 HTTP/1.1" 200 52525
+2025-03-30 03:13:31 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=75&max_combine=2 HTTP/1.1" 200 52525
+2025-03-30 03:20:16 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=75&max_combine=2 HTTP/1.1" 200 52160
+2025-03-30 03:20:16 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=75&max_combine=2 HTTP/1.1" 200 52160
+2025-03-30 03:26:25 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=75&max_combine=2 HTTP/1.1" 200 52637
+2025-03-30 03:41:58 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=75&max_combine=2 HTTP/1.1" 200 56690
+2025-03-30 03:44:35 - django.server - INFO - "GET /gameorder/list/?keyword=sharon HTTP/1.1" 200 44380
+2025-03-30 03:44:40 - django.server - INFO - "GET /gameorder/list/? HTTP/1.1" 200 50170
+2025-03-30 03:44:49 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=75&max_combine=3 HTTP/1.1" 200 56690
+2025-03-30 03:50:57 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=75&max_combine=3 HTTP/1.1" 200 54526
+2025-03-30 04:16:39 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=75&max_combine=3 HTTP/1.1" 200 52039
+2025-03-30 04:16:39 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-03-30 04:16:39 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-03-30 04:16:39 - django.server - INFO - "GET /media/root1/2025/03/29/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 304 0
+2025-03-30 04:16:39 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 304 0
+2025-03-30 04:29:00 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=75&max_combine=3 HTTP/1.1" 200 46648
+2025-03-30 04:29:00 - django.request - WARNING - Not Found: /gameorder/list/media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg
+2025-03-30 04:29:00 - django.server - WARNING - "GET /gameorder/list/media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 404 6988
+2025-03-30 04:29:00 - django.request - WARNING - Not Found: /gameorder/list/media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg
+2025-03-30 04:29:00 - django.request - WARNING - Not Found: /gameorder/list/media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg
+2025-03-30 04:29:00 - django.request - WARNING - Not Found: /gameorder/list/media/root/2025/03/29/18.png
+2025-03-30 04:29:00 - django.server - WARNING - "GET /gameorder/list/media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 404 6988
+2025-03-30 04:29:00 - django.server - WARNING - "GET /gameorder/list/media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 404 6991
+2025-03-30 04:29:00 - django.server - WARNING - "GET /gameorder/list/media/root/2025/03/29/18.png HTTP/1.1" 404 6901
+2025-03-30 04:29:00 - django.request - WARNING - Not Found: /gameorder/list/media/root/2025/03/29/1.png
+2025-03-30 04:29:00 - django.request - WARNING - Not Found: /gameorder/list/media/root1/2025/03/29/b848d0436b27b899bb25a513c319a59.jpg
+2025-03-30 04:29:00 - django.server - WARNING - "GET /gameorder/list/media/root/2025/03/29/1.png HTTP/1.1" 404 6898
+2025-03-30 04:29:00 - django.server - WARNING - "GET /gameorder/list/media/root1/2025/03/29/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 404 6991
+2025-03-30 04:29:00 - django.request - WARNING - Not Found: /gameorder/list/media/root/2025/03/29/6.png
+2025-03-30 04:29:00 - django.server - WARNING - "GET /gameorder/list/media/root/2025/03/29/6.png HTTP/1.1" 404 6898
+2025-03-30 04:29:03 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=75&max_combine=3 HTTP/1.1" 200 46648
+2025-03-30 04:29:03 - django.request - WARNING - Not Found: /gameorder/list/media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg
+2025-03-30 04:29:03 - django.request - WARNING - Not Found: /gameorder/list/media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg
+2025-03-30 04:29:03 - django.server - WARNING - "GET /gameorder/list/media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 404 6988
+2025-03-30 04:29:03 - django.server - WARNING - "GET /gameorder/list/media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 404 6988
+2025-03-30 04:29:03 - django.request - WARNING - Not Found: /gameorder/list/media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg
+2025-03-30 04:29:03 - django.request - WARNING - Not Found: /gameorder/list/media/root1/2025/03/29/b848d0436b27b899bb25a513c319a59.jpg
+2025-03-30 04:29:03 - django.request - WARNING - Not Found: /gameorder/list/media/root/2025/03/29/1.png
+2025-03-30 04:29:03 - django.request - WARNING - Not Found: /gameorder/list/media/root/2025/03/29/18.png
+2025-03-30 04:29:03 - django.server - WARNING - "GET /gameorder/list/media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 404 6991
+2025-03-30 04:29:03 - django.server - WARNING - "GET /gameorder/list/media/root1/2025/03/29/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 404 6991
+2025-03-30 04:29:03 - django.request - WARNING - Not Found: /gameorder/list/media/root/2025/03/29/6.png
+2025-03-30 04:29:03 - django.server - WARNING - "GET /gameorder/list/media/root/2025/03/29/18.png HTTP/1.1" 404 6901
+2025-03-30 04:29:03 - django.server - WARNING - "GET /gameorder/list/media/root/2025/03/29/1.png HTTP/1.1" 404 6898
+2025-03-30 04:29:03 - django.server - WARNING - "GET /gameorder/list/media/root/2025/03/29/6.png HTTP/1.1" 404 6898
+2025-03-30 04:30:55 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=75&max_combine=3 HTTP/1.1" 200 46658
+2025-03-30 04:30:55 - django.request - WARNING - Not Found: /gameorder/list/media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg
+2025-03-30 04:30:55 - django.request - WARNING - Not Found: /gameorder/list/media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg
+2025-03-30 04:30:55 - django.server - WARNING - "GET /gameorder/list/media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 404 6988
+2025-03-30 04:30:55 - django.server - WARNING - "GET /gameorder/list/media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 404 6988
+2025-03-30 04:30:55 - django.request - WARNING - Not Found: /gameorder/list/media/root1/2025/03/29/b848d0436b27b899bb25a513c319a59.jpg
+2025-03-30 04:30:55 - django.request - WARNING - Not Found: /gameorder/list/media/root/2025/03/29/1.png
+2025-03-30 04:30:55 - django.server - WARNING - "GET /gameorder/list/media/root1/2025/03/29/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 404 6991
+2025-03-30 04:30:55 - django.request - WARNING - Not Found: /gameorder/list/media/root/2025/03/29/18.png
+2025-03-30 04:30:55 - django.server - WARNING - "GET /gameorder/list/media/root/2025/03/29/1.png HTTP/1.1" 404 6898
+2025-03-30 04:30:55 - django.request - WARNING - Not Found: /gameorder/list/media/root/2025/03/29/6.png
+2025-03-30 04:30:55 - django.server - WARNING - "GET /gameorder/list/media/root/2025/03/29/18.png HTTP/1.1" 404 6901
+2025-03-30 04:30:55 - django.request - WARNING - Not Found: /gameorder/list/media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg
+2025-03-30 04:30:55 - django.server - WARNING - "GET /gameorder/list/media/root/2025/03/29/6.png HTTP/1.1" 404 6898
+2025-03-30 04:30:55 - django.server - WARNING - "GET /gameorder/list/media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 404 6991
+2025-03-30 04:31:04 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=75&max_combine=3 HTTP/1.1" 200 46658
+2025-03-30 04:31:04 - django.request - WARNING - Not Found: /gameorder/list/media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg
+2025-03-30 04:31:04 - django.server - WARNING - "GET /gameorder/list/media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 404 6988
+2025-03-30 04:31:04 - django.request - WARNING - Not Found: /gameorder/list/media/root1/2025/03/29/b848d0436b27b899bb25a513c319a59.jpg
+2025-03-30 04:31:04 - django.request - WARNING - Not Found: /gameorder/list/media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg
+2025-03-30 04:31:04 - django.request - WARNING - Not Found: /gameorder/list/media/root/2025/03/29/1.png
+2025-03-30 04:31:04 - django.request - WARNING - Not Found: /gameorder/list/media/root/2025/03/29/18.png
+2025-03-30 04:31:04 - django.server - WARNING - "GET /gameorder/list/media/root1/2025/03/29/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 404 6991
+2025-03-30 04:31:04 - django.request - WARNING - Not Found: /gameorder/list/media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg
+2025-03-30 04:31:04 - django.server - WARNING - "GET /gameorder/list/media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 404 6988
+2025-03-30 04:31:04 - django.server - WARNING - "GET /gameorder/list/media/root/2025/03/29/1.png HTTP/1.1" 404 6898
+2025-03-30 04:31:04 - django.server - WARNING - "GET /gameorder/list/media/root/2025/03/29/18.png HTTP/1.1" 404 6901
+2025-03-30 04:31:04 - django.request - WARNING - Not Found: /gameorder/list/media/root/2025/03/29/6.png
+2025-03-30 04:31:04 - django.server - WARNING - "GET /gameorder/list/media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 404 6991
+2025-03-30 04:31:04 - django.server - WARNING - "GET /gameorder/list/media/root/2025/03/29/6.png HTTP/1.1" 404 6898
+2025-03-30 04:31:05 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=75&max_combine=3 HTTP/1.1" 200 46658
+2025-03-30 04:31:05 - django.request - WARNING - Not Found: /gameorder/list/media/root/2025/03/29/1.png
+2025-03-30 04:31:05 - django.request - WARNING - Not Found: /gameorder/list/media/root/2025/03/29/18.png
+2025-03-30 04:31:05 - django.server - WARNING - "GET /gameorder/list/media/root/2025/03/29/1.png HTTP/1.1" 404 6898
+2025-03-30 04:31:05 - django.request - WARNING - Not Found: /gameorder/list/media/root/2025/03/29/6.png
+2025-03-30 04:31:05 - django.request - WARNING - Not Found: /gameorder/list/media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg
+2025-03-30 04:31:05 - django.server - WARNING - "GET /gameorder/list/media/root/2025/03/29/18.png HTTP/1.1" 404 6901
+2025-03-30 04:31:05 - django.server - WARNING - "GET /gameorder/list/media/root/2025/03/29/6.png HTTP/1.1" 404 6898
+2025-03-30 04:31:05 - django.server - WARNING - "GET /gameorder/list/media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 404 6991
+2025-03-30 04:31:05 - django.request - WARNING - Not Found: /gameorder/list/media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg
+2025-03-30 04:31:05 - django.request - WARNING - Not Found: /gameorder/list/media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg
+2025-03-30 04:31:05 - django.request - WARNING - Not Found: /gameorder/list/media/root1/2025/03/29/b848d0436b27b899bb25a513c319a59.jpg
+2025-03-30 04:31:05 - django.server - WARNING - "GET /gameorder/list/media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 404 6988
+2025-03-30 04:31:05 - django.server - WARNING - "GET /gameorder/list/media/root1/2025/03/29/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 404 6991
+2025-03-30 04:31:05 - django.server - WARNING - "GET /gameorder/list/media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 404 6988
+2025-03-30 04:31:09 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-03-30 04:31:37 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=75&max_combine=3 HTTP/1.1" 200 46658
+2025-03-30 04:31:37 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-03-30 04:31:37 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-03-30 04:31:37 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-03-30 04:31:37 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-03-30 04:31:37 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-03-30 04:31:37 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-03-30 04:31:37 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-03-30 04:31:37 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-03-30 04:31:37 - django.request - WARNING - Not Found: /gameorder/list/media/root/2025/03/29/18.png
+2025-03-30 04:31:37 - django.request - WARNING - Not Found: /gameorder/list/media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg
+2025-03-30 04:31:37 - django.request - WARNING - Not Found: /gameorder/list/media/root/2025/03/29/6.png
+2025-03-30 04:31:37 - django.request - WARNING - Not Found: /gameorder/list/media/root/2025/03/29/1.png
+2025-03-30 04:31:37 - django.server - WARNING - "GET /gameorder/list/media/root/2025/03/29/18.png HTTP/1.1" 404 6901
+2025-03-30 04:31:37 - django.request - WARNING - Not Found: /gameorder/list/media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg
+2025-03-30 04:31:37 - django.server - WARNING - "GET /gameorder/list/media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 404 6988
+2025-03-30 04:31:37 - django.server - WARNING - "GET /gameorder/list/media/root/2025/03/29/1.png HTTP/1.1" 404 6898
+2025-03-30 04:31:37 - django.server - WARNING - "GET /gameorder/list/media/root/2025/03/29/6.png HTTP/1.1" 404 6898
+2025-03-30 04:31:37 - django.server - WARNING - "GET /gameorder/list/media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 404 6988
+2025-03-30 04:31:37 - django.server - INFO - "GET /static/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+2025-03-30 04:31:37 - django.request - WARNING - Not Found: /gameorder/list/media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg
+2025-03-30 04:31:37 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-03-30 04:31:37 - django.server - WARNING - "GET /gameorder/list/media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 404 6991
+2025-03-30 04:31:37 - django.request - WARNING - Not Found: /gameorder/list/media/root1/2025/03/29/b848d0436b27b899bb25a513c319a59.jpg
+2025-03-30 04:31:37 - django.server - WARNING - "GET /gameorder/list/media/root1/2025/03/29/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 404 6991
+2025-03-30 04:31:37 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-03-30 04:31:52 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=75&max_combine=3 HTTP/1.1" 200 46648
+2025-03-30 04:31:52 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-03-30 04:31:52 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-03-30 04:31:52 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-03-30 04:31:52 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-03-30 04:31:52 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-03-30 04:31:52 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-03-30 04:31:52 - django.request - WARNING - Not Found: /gameorder/list/media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg
+2025-03-30 04:31:52 - django.request - WARNING - Not Found: /gameorder/list/media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg
+2025-03-30 04:31:52 - django.request - WARNING - Not Found: /gameorder/list/media/root/2025/03/29/1.png
+2025-03-30 04:31:52 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-03-30 04:31:52 - django.server - WARNING - "GET /gameorder/list/media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 404 6988
+2025-03-30 04:31:52 - django.server - WARNING - "GET /gameorder/list/media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 404 6988
+2025-03-30 04:31:52 - django.server - WARNING - "GET /gameorder/list/media/root/2025/03/29/1.png HTTP/1.1" 404 6898
+2025-03-30 04:31:52 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-03-30 04:31:52 - django.request - WARNING - Not Found: /gameorder/list/media/root/2025/03/29/18.png
+2025-03-30 04:31:52 - django.server - INFO - "GET /static/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+2025-03-30 04:31:52 - django.server - WARNING - "GET /gameorder/list/media/root/2025/03/29/18.png HTTP/1.1" 404 6901
+2025-03-30 04:31:52 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-03-30 04:31:52 - django.request - WARNING - Not Found: /gameorder/list/media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg
+2025-03-30 04:31:52 - django.request - WARNING - Not Found: /gameorder/list/media/root/2025/03/29/6.png
+2025-03-30 04:31:52 - django.request - WARNING - Not Found: /gameorder/list/media/root1/2025/03/29/b848d0436b27b899bb25a513c319a59.jpg
+2025-03-30 04:31:52 - django.server - WARNING - "GET /gameorder/list/media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 404 6991
+2025-03-30 04:31:52 - django.server - WARNING - "GET /gameorder/list/media/root1/2025/03/29/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 404 6991
+2025-03-30 04:31:52 - django.server - WARNING - "GET /gameorder/list/media/root/2025/03/29/6.png HTTP/1.1" 404 6898
+2025-03-30 04:31:52 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-03-30 04:32:00 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=75&max_combine=3 HTTP/1.1" 200 52039
+2025-03-30 04:32:00 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-03-30 04:32:00 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-03-30 04:32:00 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-03-30 04:32:00 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-03-30 04:32:00 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-03-30 04:32:00 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-03-30 04:32:00 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-03-30 04:32:00 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-03-30 04:32:00 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 04:32:00 - django.server - INFO - "GET /static/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+2025-03-30 04:32:00 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-03-30 04:32:00 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 200 173200
+2025-03-30 04:32:00 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-03-30 04:32:00 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-03-30 04:32:00 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 200 428773
+2025-03-30 04:32:00 - django.server - INFO - "GET /media/root1/2025/03/29/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 200 64586
+2025-03-30 04:32:00 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 200 931909
+2025-03-30 04:32:00 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 200 944652
+2025-03-30 05:08:37 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=75&max_combine=3 HTTP/1.1" 200 52209
+2025-03-30 05:08:37 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-03-30 05:08:37 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-03-30 05:08:37 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-03-30 05:08:38 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-03-30 05:08:38 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-03-30 05:08:38 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-03-30 05:08:38 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-03-30 05:08:38 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-03-30 05:08:38 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 05:08:38 - django.server - INFO - "GET /static/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+2025-03-30 05:08:38 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-03-30 05:08:38 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 200 173200
+2025-03-30 05:08:38 - django.server - INFO - "GET /media/root1/2025/03/29/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 200 64586
+2025-03-30 05:08:38 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 200 428773
+2025-03-30 05:08:38 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-03-30 05:08:38 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-03-30 05:08:38 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 200 931909
+2025-03-30 05:08:38 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 200 944652
+2025-03-30 05:08:39 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=75&max_combine=3 HTTP/1.1" 200 52209
+2025-03-30 05:08:39 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-03-30 05:08:39 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-03-30 05:08:39 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-03-30 05:08:39 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-03-30 05:08:39 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-03-30 05:08:39 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-03-30 05:08:39 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-03-30 05:08:39 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-03-30 05:08:39 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 05:08:39 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 200 173200
+2025-03-30 05:08:39 - django.server - INFO - "GET /media/root1/2025/03/29/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 200 64586
+2025-03-30 05:08:39 - django.server - INFO - "GET /static/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+2025-03-30 05:08:39 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-03-30 05:08:39 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-03-30 05:08:39 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 200 428773
+2025-03-30 05:08:39 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-03-30 05:08:39 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 200 931909
+2025-03-30 05:08:39 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 200 944652
+2025-03-30 05:08:45 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 05:08:53 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 05:09:37 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=75&max_combine=3&page=2 HTTP/1.1" 200 26849
+2025-03-30 05:09:37 - django.server - INFO - "GET /media/root1/2025/03/29/6.png HTTP/1.1" 304 0
+2025-03-30 05:09:44 - django.server - INFO - "GET /gameorder/list/? HTTP/1.1" 200 46375
+2025-03-30 05:13:08 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=100&max_combine=3 HTTP/1.1" 200 52230
+2025-03-30 05:13:23 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=75&max_combine=3 HTTP/1.1" 200 52209
+2025-03-30 05:13:27 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=65&max_combine=3 HTTP/1.1" 200 52211
+2025-03-30 05:13:52 - django.server - INFO - "GET /gameorder/add/ HTTP/1.1" 200 9359
+2025-03-30 05:13:56 - django.server - INFO - "GET /gameorder/load-options/?game=1&platform=IOS HTTP/1.1" 200 141
+2025-03-30 05:14:00 - django.server - INFO - "GET /gameorder/load-options/?game=1&platform=ANDROID HTTP/1.1" 200 142
+2025-03-30 05:14:08 - django.server - INFO - "GET /level/list/ HTTP/1.1" 200 5611
+2025-03-30 05:14:11 - django.server - INFO - "GET /customer/list/ HTTP/1.1" 200 8131
+2025-03-30 05:14:17 - django.request - ERROR - Internal Server Error: /logout/
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\utils\deprecation.py", line 116, in __call__
+    response = self.process_request(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\middleware\loginmiddleware.py", line 39, in process_request
+    request.userdict = UserDict(**user_dict)
+TypeError: UserDict.__init__() got an unexpected keyword argument 'role'
+2025-03-30 05:14:17 - django.server - ERROR - "GET /logout/ HTTP/1.1" 500 86600
+2025-03-30 05:14:23 - django.server - INFO - "GET /logout/ HTTP/1.1" 302 0
+2025-03-30 05:14:23 - django.server - INFO - "GET /login/ HTTP/1.1" 200 1738
+2025-03-30 05:14:31 - django.server - INFO - "POST /login/ HTTP/1.1" 302 0
+2025-03-30 05:14:31 - django.server - INFO - "GET /home/ HTTP/1.1" 200 3040
+2025-03-30 05:14:32 - django.server - INFO - "GET /level/list/ HTTP/1.1" 200 4668
+2025-03-30 05:14:36 - django.server - INFO - "GET /gamename/list/ HTTP/1.1" 200 4996
+2025-03-30 05:14:37 - django.server - INFO - "GET /gamename/add/ HTTP/1.1" 200 4324
+2025-03-30 05:14:42 - django.server - INFO - "GET /gamename/list/ HTTP/1.1" 200 4996
+2025-03-30 05:14:47 - django.server - INFO - "GET /gamedenomination/list/ HTTP/1.1" 200 6794
+2025-03-30 05:14:51 - django.server - INFO - "GET /gamedenomination/add/ HTTP/1.1" 200 8241
+2025-03-30 05:15:48 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gamedenomination.py changed, reloading.
+2025-03-30 05:15:48 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 05:15:50 - django.server - INFO - "GET /gamedenomination/add/ HTTP/1.1" 200 7672
+2025-03-30 05:15:53 - django.server - INFO - "GET /customer/list/ HTTP/1.1" 200 11095
+2025-03-30 05:15:53 - django.server - INFO - "GET /level/list/ HTTP/1.1" 200 4668
+2025-03-30 05:15:54 - django.server - INFO - "GET /level/add/ HTTP/1.1" 200 5163
+2025-03-30 05:15:57 - django.server - INFO - "GET /customer/list/ HTTP/1.1" 200 11095
+2025-03-30 05:15:58 - django.request - WARNING - Not Found: /policy/list/
+2025-03-30 05:15:58 - django.server - WARNING - "GET /policy/list/ HTTP/1.1" 404 6808
+2025-03-30 05:16:07 - django.server - INFO - "GET /gamedenomination/list/ HTTP/1.1" 200 6794
+2025-03-30 05:16:08 - django.server - INFO - "GET /gamedenomination/add/ HTTP/1.1" 200 7672
+2025-03-30 05:16:18 - django.server - INFO - "GET /gamename/list/ HTTP/1.1" 200 4996
+2025-03-30 05:16:19 - django.server - INFO - "GET /gamename/add/ HTTP/1.1" 200 4324
+2025-03-30 05:16:21 - django.server - INFO - "GET /gamename/add/ HTTP/1.1" 200 4324
+2025-03-30 05:16:23 - django.server - INFO - "GET /gamename/list/ HTTP/1.1" 200 4996
+2025-03-30 05:16:25 - django.server - INFO - "GET /gamename/list/ HTTP/1.1" 200 4996
+2025-03-30 05:16:26 - django.server - INFO - "GET /gamename/add/ HTTP/1.1" 200 4324
+2025-03-30 05:17:15 - django.server - INFO - "GET /level/list/ HTTP/1.1" 200 4668
+2025-03-30 05:17:16 - django.server - INFO - "GET /level/add/ HTTP/1.1" 200 5163
+2025-03-30 05:17:18 - django.server - INFO - "GET /customer/list/ HTTP/1.1" 200 11095
+2025-03-30 05:17:19 - django.server - INFO - "GET /customer/add/ HTTP/1.1" 200 7762
+2025-03-30 05:17:22 - django.request - WARNING - Not Found: /policy/list/
+2025-03-30 05:17:22 - django.server - WARNING - "GET /policy/list/ HTTP/1.1" 404 6808
+2025-03-30 05:17:24 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 45882
+2025-03-30 05:17:24 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 05:17:24 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-03-30 05:17:24 - django.server - INFO - "GET /media/root1/2025/03/29/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 200 64586
+2025-03-30 05:17:24 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 200 173200
+2025-03-30 05:17:24 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 200 428773
+2025-03-30 05:17:24 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 200 931909
+2025-03-30 05:17:24 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 200 944652
+2025-03-30 05:17:34 - django.server - INFO - "GET /gamename/list/ HTTP/1.1" 200 4996
+2025-03-30 05:17:35 - django.server - INFO - "GET /gamename/add/ HTTP/1.1" 200 4324
+2025-03-30 05:17:54 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gamename.py changed, reloading.
+2025-03-30 05:17:54 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 05:17:55 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 45882
+2025-03-30 05:17:57 - django.server - INFO - "GET /gamename/list/ HTTP/1.1" 200 4996
+2025-03-30 05:17:57 - django.server - INFO - "GET /gamename/add/ HTTP/1.1" 200 3755
+2025-03-30 05:18:15 - django.server - INFO - "POST /gamename/add/ HTTP/1.1" 302 0
+2025-03-30 05:18:15 - django.server - INFO - "GET /gamename/list/ HTTP/1.1" 200 5437
+2025-03-30 05:18:18 - django.server - INFO - "GET /gamedenomination/list/ HTTP/1.1" 200 6794
+2025-03-30 05:18:19 - django.server - INFO - "GET /gamedenomination/add/ HTTP/1.1" 200 7721
+2025-03-30 05:18:38 - django.server - INFO - "POST /gamedenomination/add/ HTTP/1.1" 302 0
+2025-03-30 05:18:38 - django.server - INFO - "GET /gamedenomination/list/ HTTP/1.1" 200 7414
+2025-03-30 05:18:43 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 46375
+2025-03-30 05:18:46 - django.server - INFO - "GET /gameorder/add/ HTTP/1.1" 200 9408
+2025-03-30 05:18:50 - django.server - INFO - "GET /gameorder/load-options/?game=3&platform=ANDROID HTTP/1.1" 200 31
+2025-03-30 05:18:52 - django.server - INFO - "GET /gameorder/load-options/?game=3&platform=IOS HTTP/1.1" 200 146
+2025-03-30 05:19:04 - django.server - INFO - "POST /gameorder/add/ HTTP/1.1" 302 0
+2025-03-30 05:19:04 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 46367
+2025-03-30 05:19:04 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 05:19:09 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=100&max_combine=3 HTTP/1.1" 200 49856
+2025-03-30 05:19:09 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0

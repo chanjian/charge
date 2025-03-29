@@ -24,7 +24,7 @@ def gamename_list(request):
 class GameNameAddModelForm(BootStrapModelForm):
     class Meta:
         model = models.GameName
-        exclude = ['active']
+        exclude = ['active','finished_time']
 
 def gamename_add(request):
     if request.method == 'GET':

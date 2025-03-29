@@ -119,8 +119,6 @@
     </form>
 </div>
 
-
-
 <!-- QB匹配结果表格 -->
 <div class="qb-results" style="margin-top: 20px;">
     <h4 class="text-primary">
@@ -133,7 +131,8 @@
     <table class="table table-bordered table-hover">
         <thead class="thead-light">
             <tr>
-                <th>组合方案</th>
+                <th>方案名称</th>
+                <th>充值组合</th>
                 <th>QB总额</th>
                 <th>订单明细</th>
                 <th>应结算QB客户金额</th>
@@ -142,15 +141,17 @@
                 <th>预计收益</th>
                 <th>剩余QB</th>
                 <th>发单文案</th>
+                <th>相关订单号</th>
                 <th>操作</th>
             </tr>
         </thead>
         <tbody>
             {% for result in qb_results %}
             <tr>
-                <td>{{ result.combination|join:" + " }}QB</td>
-                <td>{{ result.total_qb }}QB</td>
-                <td>
+                <td>123</td>
+                <td class="copyable" data-value="{{ result.combination|join:' + ' }}QB">{{ result.combination|join:" + " }}QB</td>
+                <td class="copyable" data-value="{{ result.total_qb }}QB">{{ result.total_qb }}QB</td>
+                <td class="copyable">
                     <ul class="qb-order-details">
                         {% for order in result.orders %}
                         <li>{{ order.amount }}QB × {{ order.discount_percent }}% = {{ order.final_price|floatformat:2 }}元</li>
@@ -158,34 +159,40 @@
                         <li class="text-primary"><strong>合计: {{ result.income|floatformat:2 }}元</strong></li>
                     </ul>
                 </td>
-                <td>{{ result.cost|floatformat:2 }}元</td>
-                <td>{{ result.service_fee|floatformat:2 }}元</td>
-                <td>{{ result.transfer_fee|floatformat:2 }}元</td>
-                <td class="{% if result.profit >= 0 %}text-success{% else %}text-danger{% endif %}">
+                <td class="copyable" data-value="{{ result.cost|floatformat:2 }}元">{{ result.cost|floatformat:2 }}元</td>
+                <td class="copyable" data-value="{{ result.service_fee|floatformat:2 }}元">{{ result.service_fee|floatformat:2 }}元</td>
+                <td class="copyable" data-value="{{ result.transfer_fee|floatformat:2 }}元">{{ result.transfer_fee|floatformat:2 }}元</td>
+                <td class="copyable {% if result.profit >= 0 %}text-success{% else %}text-danger{% endif %}"
+                    data-value="{{ result.profit|floatformat:2 }}元">
                     {{ result.profit|floatformat:2 }}元
                 </td>
-                <td>
+                <td class="copyable">
                     {% if result.remaining > 0 %}
-                        <span class="badge badge-info">剩余 {{ result.remaining }}QB</span>
+                        <span class="badge badge-info" data-value="剩余 {{ result.remaining }}QB">剩余 {{ result.remaining }}QB</span>
                     {% elif result.remaining < 0 %}
-                        <span class="badge badge-warning">需补 {{ result.remaining|absolute }}QB</span>
+                        <span class="badge badge-warning" data-value="需补 {{ result.remaining|absolute }}QB">需补 {{ result.remaining|absolute }}QB</span>
                     {% else %}
-                        <span class="badge badge-success">完全匹配</span>
+                        <span class="badge badge-success" data-value="完全匹配">完全匹配</span>
                     {% endif %}
                 </td>
-                <td>
+                <td class="copyable" data-value="{{ result.description }}">
                     {{ result.description }}
+                </td>
+                <td>订单号</td>
+                <td>
+                    <button class="btn btn-sm btn-primary copy-btn" data-value="{{ result.description }}">
+                        <i class="glyphicon glyphicon-copy"></i> 复制文案
+                    </button>
                 </td>
             </tr>
             {% empty %}
             <tr>
-                <td colspan="9" class="text-center text-muted py-3">未找到匹配的订单组合</td>
+                <td colspan="10" class="text-center text-muted py-3">未找到匹配的订单组合</td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
-
 
 <table class="table table-bordered">
     <thead>
@@ -215,15 +222,15 @@
     <tbody>
     {% for row in pager.queryset %}
         <tr row-id="{{ row.id }}">
-            <td class="copyable" title="点击复制" data-value="{{ row.id }}">{{ row.id }}</td>
-            <td class="copyable" title="点击复制" data-value="{{ row.get_platform_display }}">{{ row.get_platform_display }}</td>
-            <td class="copyable" title="点击复制" data-value="{{ row.game.name }}">{{ row.game.name }}</td>
-            <td class="copyable" title="点击复制" data-value="{{ row.recharge_option }}">{{ row.recharge_option }}</td>
-            <td class="copyable" title="点击复制" data-value="{{ row.price_info.original }}">{{ row.price_info.original }}</td>
-            <td class="copyable" title="点击复制" data-value="{{ row.price_info.discount_percent }}%">{{ row.price_info.discount_percent }}%</td>
-            <td class="copyable" title="点击复制" data-value="{{ row.price_info.final }}元">{{ row.price_info.final }}元</td>
-            <td class="copyable" title="点击复制" data-value="{{ row.description_text }}">{{ row.description_text }}</td>
-            <td class="copyable link-cell" title="点击复制链接" data-value="{{ row.recharge_link|default:'' }}">
+            <td class="copyable" data-value="{{ row.id }}">{{ row.id }}</td>
+            <td class="copyable" data-value="{{ row.get_platform_display }}">{{ row.get_platform_display }}</td>
+            <td class="copyable" data-value="{{ row.game.name }}">{{ row.game.name }}</td>
+            <td class="copyable" data-value="{{ row.recharge_option }}">{{ row.recharge_option }}</td>
+            <td class="copyable" data-value="{{ row.price_info.original }}">{{ row.price_info.original }}</td>
+            <td class="copyable" data-value="{{ row.price_info.discount_percent }}%">{{ row.price_info.discount_percent }}%</td>
+            <td class="copyable" data-value="{{ row.price_info.final }}元">{{ row.price_info.final }}元</td>
+            <td class="copyable" data-value="{{ row.description_text }}">{{ row.description_text }}</td>
+            <td class="copyable link-cell" data-value="{{ row.recharge_link|default:'' }}">
                 {% if row.recharge_link %}
                     <div class="link-text">{{ row.recharge_link }}</div>
                 {% else %}
@@ -232,20 +239,20 @@
             </td>
             <td class="qrcode-cell">
                 {% if row.qr_code %}
-                    <div class="qrcode-wrapper" data-url="\{{ row.qr_code }}" title="点击复制二维码">
+                    <div class="qrcode-wrapper" data-url="\{{ row.qr_code }}">
                         <img src="\{{ row.qr_code }}" class="qrcode-img">
                     </div>
                 {% else %}
                     -
                 {% endif %}
             </td>
-            <td class="copyable" title="点击复制" data-value="{{ row.consumer.username }}">{{ row.consumer.username }}</td>
-            <td class="copyable" title="点击复制" data-value="{{ row.created_by.username }}">{{ row.created_by.username }}</td>
-            <td class="copyable" title="点击复制" data-value="{{ row.order_number }}">{{ row.order_number }}</td>
-            <td class="copyable" title="点击复制" data-value="{{ row.created_time|date:'Y-m-d H:i:s' }}">{{ row.created_time|date:"Y-m-d H:i:s" }}</td>
-            <td class="copyable" title="点击复制" data-value="{{ row.updated_time|date:'Y-m-d H:i:s' }}">{{ row.updated_time|date:"Y-m-d H:i:s" }}</td>
-            <td class="copyable" title="点击复制" data-value="{{ row.get_order_status_display }}">{{ row.get_order_status_display }}</td>
-            <td><a href="">订单编辑记录</a></td>
+            <td class="copyable" data-value="{{ row.consumer.username }}">{{ row.consumer.username }}</td>
+            <td class="copyable" data-value="{{ row.created_by.username }}">{{ row.created_by.username }}</td>
+            <td class="copyable" data-value="{{ row.order_number }}">{{ row.order_number }}</td>
+            <td class="copyable" data-value="{{ row.created_time|date:'Y-m-d H:i:s' }}">{{ row.created_time|date:"Y-m-d H:i:s" }}</td>
+            <td class="copyable" data-value="{{ row.updated_time|date:'Y-m-d H:i:s' }}">{{ row.updated_time|date:"Y-m-d H:i:s" }}</td>
+            <td class="copyable" data-value="{{ row.get_order_status_display }}">{{ row.get_order_status_display }}</td>
+            <td class="copyable"><a href="">订单编辑记录</a></td>
             {% if request|has_permission:"gameorder_edit,gameorder_delete" %}
             <td>
                 {% edit_permission request 'gameorder_edit' pk=row.id %}
@@ -280,18 +287,6 @@
 {% block js %}
 <script>
 $(document).ready(function() {
-
-    // =============== QB匹配表单重置功能 ===============
-    $('#resetQBButton').click(function() {
-        const form = document.getElementById('qbMatchForm');
-        if (!form) return;
-
-        form.qb_target.value = '';
-        form.qb_discount.value = '100';
-        form.max_combine.value = '3';
-        form.submit();
-    });
-
     // =============== 通用复制功能 ===============
     function copyToClipboard(text) {
         var $temp = $('<textarea>').css({
@@ -313,14 +308,38 @@ $(document).ready(function() {
         }
     }
 
-    // 为所有可复制元素绑定点击事件
-    $('.copyable').click(function() {
-        var value = $(this).data('value');
-        if (!value && value !== 0) {
-            value = $(this).text().trim();
-            // 处理特殊值
-            if (value === '-') return;
+    function showToast(message) {
+        var $toast = $(`<div class="toast-message">${message}</div>`);
+        $('body').append($toast);
+        setTimeout(() => $toast.fadeOut(() => $toast.remove()), 2000);
+    }
+
+    function getCopyValue($element) {
+        // 优先使用data-value属性
+        var value = $element.data('value');
+
+        // 如果没有data-value，则获取元素文本
+        if (value === undefined) {
+            value = $element.text().trim();
         }
+
+        // 处理特殊值
+        if (value === '-' || value === '') {
+            return null;
+        }
+
+        return value;
+    }
+
+    // 为所有可复制元素绑定点击事件
+    $(document).on('click', '.copyable', function(e) {
+        // 如果点击的是链接，不触发复制
+        if ($(e.target).is('a') || $(e.target).closest('a').length) {
+            return;
+        }
+
+        var value = getCopyValue($(this));
+        if (value === null) return;
 
         // 添加点击反馈
         $(this).addClass('copy-clicked');
@@ -333,8 +352,20 @@ $(document).ready(function() {
         }
     });
 
+    // 为复制按钮绑定事件
+    $(document).on('click', '.copy-btn', function() {
+        var value = $(this).data('value');
+        if (!value) return;
+
+        if (copyToClipboard(value)) {
+            showToast('已复制文案');
+        } else {
+            showToast('复制失败');
+        }
+    });
+
     // =============== 二维码图片复制功能 ===============
-    $('.qrcode-wrapper').click(function() {
+    $(document).on('click', '.qrcode-wrapper', function() {
         var imgUrl = $(this).data('url');
         if (!imgUrl) return;
 
@@ -400,12 +431,16 @@ $(document).ready(function() {
         $('body').append($modal);
     }
 
-    // 提示信息
-    function showToast(message) {
-        var $toast = $(`<div class="toast-message">${message}</div>`);
-        $('body').append($toast);
-        setTimeout(() => $toast.fadeOut(() => $toast.remove()), 2000);
-    }
+    // =============== QB匹配表单重置功能 ===============
+    $('#resetQBButton').click(function() {
+        const form = document.getElementById('qbMatchForm');
+        if (!form) return;
+
+        form.qb_target.value = '';
+        form.qb_discount.value = '100';
+        form.max_combine.value = '3';
+        form.submit();
+    });
 
     // =============== 删除功能 ===============
     var DELETE_ID;
@@ -447,12 +482,39 @@ $(document).ready(function() {
 </script>
 
 <style>
-/* 修改后的链接单元格样式 */
+/* 通用表格样式 */
+.table {
+    width: 100%;
+    margin-bottom: 20px;
+    border-collapse: collapse;
+}
+.table th, .table td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    vertical-align: middle;
+}
+.table th {
+    background-color: #f5f5f5;
+    text-align: center;
+}
+
+/* 可复制单元格样式 */
+.copyable {
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.2s;
+}
+.copyable:hover {
+    background-color: #f5f5f5;
+}
+.copy-clicked {
+    background-color: #e0e0e0;
+}
+
+/* 特殊单元格样式 */
 .link-cell {
     padding: 8px !important;
-    width: 150px;
     max-width: 150px;
-    cursor: pointer;
 }
 .link-text {
     word-wrap: break-word;
@@ -465,35 +527,52 @@ $(document).ready(function() {
     line-height: 1.2;
 }
 
-/* 通用可复制单元格样式 */
-.copyable {
-    cursor: pointer;
-    position: relative;
-}
-.copyable:hover {
-    background-color: #f5f5f5;
-}
-.copy-clicked {
-    background-color: #e0e0e0;
-    transition: background-color 0.2s;
-}
-
-/* 二维码样式 */
 .qrcode-cell {
     padding: 8px !important;
+    text-align: center;
 }
 .qrcode-wrapper {
     cursor: pointer;
     display: inline-block;
+    padding: 5px;
+    border-radius: 4px;
+    transition: background-color 0.2s;
 }
 .qrcode-wrapper:hover {
     background-color: #f5f5f5;
-    border-radius: 4px;
 }
 .qrcode-img {
     height: 80px;
     display: block;
     margin: 0 auto;
+}
+
+/* 按钮样式 */
+.btn-sm {
+    padding: 3px 8px;
+    font-size: 12px;
+}
+.copy-btn {
+    margin: 2px;
+    padding: 3px 8px;
+}
+
+/* 提示信息 */
+.toast-message {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 4px;
+    z-index: 9999;
+    animation: fadeIn 0.3s;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* 降级弹窗 */
@@ -515,6 +594,7 @@ $(document).ready(function() {
     border-radius: 8px;
     text-align: center;
     max-width: 90%;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 .fallback-img {
     max-width: 100%;
@@ -523,24 +603,27 @@ $(document).ready(function() {
     margin: 15px auto;
     border: 1px solid #ddd;
 }
-
-/* 提示信息 */
-.toast-message {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #4CAF50;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 4px;
-    z-index: 9999;
-    animation: fadeIn 0.3s;
-}
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+.btn-close {
+    margin-top: 10px;
+    background: #f0f0f0;
+    border: 1px solid #ddd;
 }
 
-
+/* QB结果表格样式 */
+.qb-results {
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+.qb-results h4 {
+    margin-bottom: 15px;
+}
+.qb-order-details {
+    margin: 0;
+    padding-left: 20px;
+}
+.qb-order-details li {
+    list-style-type: disc;
+    margin-bottom: 3px;
+}
 </style>
 {% endblock %}
