@@ -24,8 +24,11 @@
             <th>充值系统</th>
             <th>游戏名称</th>
             <th>充值选项</th>
-            <th>充值金额</th>
-            <th>充值链接</th>
+            <th>原价</th>
+            <th>充值折扣</th>
+            <th>折扣后金额</th>
+            <th>说明文案</th>
+            <th style="width: 150px;">充值链接</th>
             <th>充值二维码</th>
             <th>订单消费者</th>
             <th>订单入库人</th>
@@ -45,18 +48,17 @@
                 <td>{{ row.platform }}</td>
                 <td>{{ row.game }}</td>
                 <td class="copyable" title="点击复制" data-value="{{ row.recharge_option }}">{{ row.recharge_option }}</td>
-                <td>{{ row.custom_amount }}</td>
-                <!-- 优化后的充值链接单元格 -->
-                <td class="link-cell">
-                    <div class="link-content" data-link="{{ row.recharge_link|default:'' }}" title="点击复制链接">
-                        {% if row.recharge_link %}
-                            <div class="link-text">{{ row.recharge_link|truncatechars:120 }}</div>
-                        {% else %}
-                            <div>-</div>
-                        {% endif %}
-                    </div>
+                <td>{{ row.price_info.original }}</td>
+                <td>{{ row.price_info.discount_percent }}%</td>
+                <td>{{ row.price_info.final }}元</td>
+                <td>{{ row.description_text }}</td>
+                <td class="copyable link-cell" title="点击复制链接" data-value="{{ row.recharge_link|default:'' }}">
+                    {% if row.recharge_link %}
+                        <div class="link-text">{{ row.recharge_link }}</div>
+                    {% else %}
+                        <div>-</div>
+                    {% endif %}
                 </td>
-                <!-- 优化后的二维码单元格 -->
                 <td class="qrcode-cell">
                     {% if row.qr_code %}
                         <div class="qrcode-wrapper" data-url="\{{ row.qr_code }}" title="点击复制二维码">
@@ -127,7 +129,7 @@ $(document).ready(function() {
         }
     }
 
-    // =============== 1. 充值选项、订单号、时间等复制功能 ===============
+    // 为所有可复制元素绑定点击事件
     $('.copyable').click(function() {
         var value = $(this).data('value');
         if (!value) return;
@@ -137,29 +139,13 @@ $(document).ready(function() {
         setTimeout(() => $(this).removeClass('copy-clicked'), 200);
 
         if (copyToClipboard(value)) {
-            showToast('已复制: ' + value);
+            showToast('已复制: ' + (value.length > 50 ? value.substring(0, 50) + '...' : value));
         } else {
             showToast('复制失败');
         }
     });
 
-    // =============== 2. 充值链接复制功能 ===============
-    $('.link-content').click(function() {
-        var link = $(this).data('link');
-        if (!link) return;
-
-        // 添加点击反馈
-        $(this).addClass('link-clicked');
-        setTimeout(() => $(this).removeClass('link-clicked'), 200);
-
-        if (copyToClipboard(link)) {
-            showToast('链接已复制');
-        } else {
-            showToast('复制失败');
-        }
-    });
-
-    // =============== 3. 二维码图片复制功能 ===============
+    // =============== 二维码图片复制功能 ===============
     $('.qrcode-wrapper').click(function() {
         var imgUrl = $(this).data('url');
         if (!imgUrl) return;
@@ -233,7 +219,7 @@ $(document).ready(function() {
         setTimeout(() => $toast.fadeOut(() => $toast.remove()), 2000);
     }
 
-    // =============== 4. 删除功能 ===============
+    // =============== 删除功能 ===============
     var DELETE_ID;
 
     function bindDeleteEvent(){
@@ -273,6 +259,24 @@ $(document).ready(function() {
 </script>
 
 <style>
+/* 修改后的链接单元格样式 */
+.link-cell {
+    padding: 8px !important;
+    width: 150px;
+    max-width: 150px;
+    cursor: pointer;
+}
+.link-text {
+    word-wrap: break-word;
+    white-space: normal;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    max-height: 60px;
+    line-height: 1.2;
+}
+
 /* 通用可复制单元格样式 */
 .copyable {
     cursor: pointer;
@@ -282,30 +286,6 @@ $(document).ready(function() {
     background-color: #f5f5f5;
 }
 .copy-clicked {
-    background-color: #e0e0e0;
-    transition: background-color 0.2s;
-}
-
-/* 充值链接样式 */
-.link-cell {
-    padding: 8px !important;
-    max-width: 300px;
-}
-.link-content {
-    cursor: pointer;
-    position: relative;
-}
-.link-content:hover {
-    background-color: #f5f5f5;
-}
-.link-text {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%;
-    display: inline-block;
-}
-.link-clicked {
     background-color: #e0e0e0;
     transition: background-color 0.2s;
 }

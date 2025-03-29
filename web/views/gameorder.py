@@ -30,7 +30,19 @@ def gameorder_list(request):
     if usertype == 'CUSTOMER':
         queryset = models.GameOrder.objects.filter(consumer=request.userinfo,active=1).all()
     else:
-        queryset = models.GameOrder.objects.filter(active=1).all()
+        from django.db.models import F, Case, When, Value, IntegerField
+        queryset = models.GameOrder.objects.filter(active=1).annotate(
+            user_discount_percent=models.F('consumer__level__percent'),  # 获取用户等级对应的折扣百分比
+            is_creator=Case(
+                When(created_by=request.userinfo, then=Value(1)),
+                default=Value(0),
+                output_field=IntegerField()
+            )
+        ).order_by(
+            '-is_creator',  # 当前用户创建的订单优先
+            'user_discount_percent',  # 折扣百分比小的排前面（折扣更大）
+            '-id'  # 最后按ID降序作为次要排序条件
+        )
 
     context = {
         'queryset':queryset,

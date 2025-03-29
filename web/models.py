@@ -2,6 +2,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.db import models
 from django.db.models import Q  # 确保这行存在
+from django.db.models import F
 
 class ActiveBaseModel(models.Model):
     active = models.SmallIntegerField(verbose_name="状态", default=1, choices=((1, "激活"), (0, "删除"),))
@@ -20,20 +21,11 @@ class Level(ActiveBaseModel):
         ('SUPPLIER', '供应商等级'),
     )
 
-    level_type = models.CharField(verbose_name="等级类型", max_length=16,
-                                  choices=LEVEL_TYPE_CHOICES, db_index=True, default='CUSTOMER')
+    level_type = models.CharField(verbose_name="等级类型", max_length=16,choices=LEVEL_TYPE_CHOICES, db_index=True, default='CUSTOMER')
     title = models.CharField(verbose_name="等级名称", max_length=32)
     percent = models.IntegerField(verbose_name="折扣百分比", help_text="0-100整数，如90表示90折")
-
     # 添加创建者字段
-    creator = models.ForeignKey(
-        to='UserInfo',
-        verbose_name="创建者",
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-        related_name='created_levels'
-    )
+    creator = models.ForeignKey(to='UserInfo',verbose_name="创建者",on_delete=models.CASCADE,null=True,blank=True,related_name='created_levels')
 
     class Meta:
         verbose_name = "用户等级"
@@ -138,7 +130,7 @@ class GameDenomination(ActiveBaseModel):
 
     @property
     def display_text(self):
-        return f"{self.amount}元(总{self.total_currency}点券: {self.base_currency}基础+{self.gift_currency}赠送+{self.bonus_currency}绑定)"
+        return f"{self.amount}元档位(总{self.total_currency}点券: {self.base_currency}基础+{self.gift_currency}赠送+{self.bonus_currency}绑定)"
 
 
 class GameOrder(ActiveBaseModel):
@@ -174,8 +166,38 @@ class GameOrder(ActiveBaseModel):
 
     def generate_order_number(self):
         from datetime import datetime
-        return f"ORD{datetime.now().strftime('%Y%m%d%H%M%S')}"
+        return f"O{datetime.now().strftime('%Y%m%d%H%M%S')}"
 
+    @property
+    def price_info(self):
+        """返回包含所有价格相关信息的字典"""
+        original = self.recharge_option.amount if self.recharge_option else 0
+        discount = self.consumer.level.percent if hasattr(self.consumer, 'level') else 100
+        final = round(float(original) * float(discount) / 100, 2)
+        points = self.recharge_option.total_currency if self.recharge_option else 0
+        composite = round((final * 10) / points, 2) if points > 0 else 0.0
+
+        return {
+            'original': original,
+            'discount_percent': discount,
+            'final': final,
+            'received_points': points,
+            'composite_discount': composite
+        }
+
+    @property
+    def description_text(self):
+        """动态生成说明文案（基于price_info的数据）"""
+        info = self.price_info
+        parts = [
+            f"本次充值系统为{self.get_platform_display()}",
+            f"档位为{self.recharge_option.amount if self.recharge_option else '无'}",
+            f"折扣为{info['discount_percent']}%",
+            f"实际付款金额应为{info['final']:.2f}元",
+            f"实际到账点券为{info['received_points']}",
+            f"综合折扣为{info['composite_discount']:.2f}，即{info['composite_discount']*100:.0f}%"
+        ]
+        return "，".join(parts)
 
 
 class TransactionRecord(ActiveBaseModel):
