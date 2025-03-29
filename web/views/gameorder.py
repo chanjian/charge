@@ -1,5 +1,5 @@
 import os
-
+from utils.pager import Pagination
 from django import forms
 from django.conf import settings
 from django.core.exceptions import ValidationError
@@ -27,6 +27,9 @@ def gameorder_list(request):
     messages = get_messages(request)
     for msg in messages:
         print(msg)
+
+    keyword = request.GET.get('keyword', '').strip()
+
     usertype = request.userdict.usertype
     if usertype == 'CUSTOMER':
         queryset = models.GameOrder.objects.filter(consumer=request.userinfo,active=1).all()
@@ -45,8 +48,19 @@ def gameorder_list(request):
             '-id'  # 最后按ID降序作为次要排序条件
         )
 
+    con = Q()
+    if keyword:
+        con.connector = 'OR'
+        con.children.append(('consumer__username__contains', keyword))
+        con.children.append(('order_number__contains', keyword))
+        queryset = queryset.filter(con)
+
+    pager = Pagination(request,queryset)
+
+
     context = {
-        'queryset':queryset,
+        'pager':pager,
+        'keyword':keyword,
     }
     return render(request, 'gameorder_list.html', context)
 

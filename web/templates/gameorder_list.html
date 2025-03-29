@@ -6,10 +6,35 @@
     <div style="margin-bottom: 5px" class="clearfix">
         {% add_permission request 'gameorder_add'  %}
 
+
+        <!-- 日期筛选表单 -->
+        <div>
+            <form method="get"  class="form-inline" style="margin-bottom: 20px;">
+        <div class="form-group">
+            <label for="start_date" class="control-label">开始日期</label>
+            <input type="date" class="form-control" id="start_date" name="start_date" value="{{ request.GET.start_date }}">
+        </div>
+        <div class="form-group" style="margin-left: 10px;">
+            <label for="end_date" class="control-label">结束日期</label>
+            <input type="date" class="form-control" id="end_date" name="end_date" value="{{ request.GET.end_date }}">
+        </div>
+        <div class="form-group" style="margin-left: 10px;">
+            <button type="submit" class="btn btn-primary">筛选</button>
+            <a href="?" class="btn btn-default">重置</a>
+        </div>
+        <div class="form-group" style="margin-left: 20px;">
+            <label class="control-label">快捷筛选</label>
+            <a href="?days_range=3" class="btn btn-default">近3天</a>
+            <a href="?days_range=7" class="btn btn-default">近一周</a>
+            <a href="?days_range=30" class="btn btn-default">近一月</a>
+        </div>
+    </form>
+        </div>
+
         <div class="right">
             <form class="form-inline" method="get">
                 <div class="form-group">
-                    <input name="keyword" type="text" class="form-control" placeholder="请输入关键字" value="{{ keyword }}">
+                    <input name="keyword" type="text" class="form-control" placeholder="请输入消费者用户名或者订单号" value="{{ keyword }}">
                 </div>
                 <button type="submit" class="btn btn-default">
                     <span class="glyphicon glyphicon-search"></span>
@@ -42,7 +67,7 @@
         </tr>
         </thead>
         <tbody>
-        {% for row in queryset %}
+        {% for row in pager.queryset %}
             <tr row-id="{{ row.id }}">
                 <td class="copyable" title="点击复制" data-value="{{ row.id }}">{{ row.id }}</td>
                 <td class="copyable" title="点击复制" data-value="{{ row.get_platform_display }}">{{ row.get_platform_display }}</td>
@@ -86,7 +111,7 @@
     </table>
 
     <ul class="pagination">
-        {{ pager_string }}
+            {{ pager.html }}
     </ul>
 
     <!-- 删除确认模态框 -->
