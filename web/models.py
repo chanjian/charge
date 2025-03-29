@@ -200,6 +200,8 @@ class GameOrder(ActiveBaseModel):
         return "，".join(parts)
 
 
+
+
 class TransactionRecord(ActiveBaseModel):
     """ 交易记录 """
     charge_type_class_mapping = {

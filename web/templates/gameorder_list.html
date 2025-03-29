@@ -44,14 +44,14 @@
         <tbody>
         {% for row in queryset %}
             <tr row-id="{{ row.id }}">
-                <td>{{ row.id }}</td>
-                <td>{{ row.platform }}</td>
-                <td>{{ row.game }}</td>
+                <td class="copyable" title="点击复制" data-value="{{ row.id }}">{{ row.id }}</td>
+                <td class="copyable" title="点击复制" data-value="{{ row.get_platform_display }}">{{ row.get_platform_display }}</td>
+                <td class="copyable" title="点击复制" data-value="{{ row.game.name }}">{{ row.game.name }}</td>
                 <td class="copyable" title="点击复制" data-value="{{ row.recharge_option }}">{{ row.recharge_option }}</td>
-                <td>{{ row.price_info.original }}</td>
-                <td>{{ row.price_info.discount_percent }}%</td>
-                <td>{{ row.price_info.final }}元</td>
-                <td>{{ row.description_text }}</td>
+                <td class="copyable" title="点击复制" data-value="{{ row.price_info.original }}">{{ row.price_info.original }}</td>
+                <td class="copyable" title="点击复制" data-value="{{ row.price_info.discount_percent }}%">{{ row.price_info.discount_percent }}%</td>
+                <td class="copyable" title="点击复制" data-value="{{ row.price_info.final }}元">{{ row.price_info.final }}元</td>
+                <td class="copyable" title="点击复制" data-value="{{ row.description_text }}">{{ row.description_text }}</td>
                 <td class="copyable link-cell" title="点击复制链接" data-value="{{ row.recharge_link|default:'' }}">
                     {% if row.recharge_link %}
                         <div class="link-text">{{ row.recharge_link }}</div>
@@ -68,12 +68,12 @@
                         -
                     {% endif %}
                 </td>
-                <td>{{ row.consumer }}</td>
-                <td>{{ row.created_by}}</td>
+                <td class="copyable" title="点击复制" data-value="{{ row.consumer.username }}">{{ row.consumer.username }}</td>
+                <td class="copyable" title="点击复制" data-value="{{ row.created_by.username }}">{{ row.created_by.username }}</td>
                 <td class="copyable" title="点击复制" data-value="{{ row.order_number }}">{{ row.order_number }}</td>
                 <td class="copyable" title="点击复制" data-value="{{ row.created_time|date:'Y-m-d H:i:s' }}">{{ row.created_time|date:"Y-m-d H:i:s" }}</td>
                 <td class="copyable" title="点击复制" data-value="{{ row.updated_time|date:'Y-m-d H:i:s' }}">{{ row.updated_time|date:"Y-m-d H:i:s" }}</td>
-                <td>{{ row.get_order_status_display }}</td>
+                <td class="copyable" title="点击复制" data-value="{{ row.get_order_status_display }}">{{ row.get_order_status_display }}</td>
                 {% if request|has_permission:"gameorder_edit,gameorder_delete" %}
                 <td>
                     {% edit_permission request 'gameorder_edit' pk=row.id %}
@@ -132,7 +132,11 @@ $(document).ready(function() {
     // 为所有可复制元素绑定点击事件
     $('.copyable').click(function() {
         var value = $(this).data('value');
-        if (!value) return;
+        if (!value && value !== 0) {
+            value = $(this).text().trim();
+            // 处理特殊值
+            if (value === '-') return;
+        }
 
         // 添加点击反馈
         $(this).addClass('copy-clicked');

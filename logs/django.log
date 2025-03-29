@@ -8710,3 +8710,12 @@ AttributeError: module 'web.models' has no attribute 'F'
 2025-03-29 17:53:37 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 28782
 2025-03-29 17:56:05 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\models.py changed, reloading.
 2025-03-29 17:56:05 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-29 17:56:06 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 28796
+2025-03-29 17:56:06 - django.server - INFO - "GET /media/root1/2025/03/29/6.png HTTP/1.1" 304 0
+2025-03-29 17:58:40 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 28817
+2025-03-29 17:58:42 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 28817
+2025-03-29 18:11:20 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-29 18:11:21 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-29 18:11:21 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 17886
+2025-03-29 18:12:22 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-29 18:12:23 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
