@@ -450,3 +450,7 @@ import os
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 print('BASE_DIR:',BASE_DIR)
 MEDIA_URL = "/media/"
+
+
+SYS_FEE = 1
+THIRD_FEE = 0.5

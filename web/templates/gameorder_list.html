@@ -88,7 +88,7 @@
         <div class="form-group" style="margin-left: 10px;">
             <label class="control-label">给客户的报价折扣(%)：</label>
             <input type="number" class="form-control" name="qb_discount"
-                   value="{{ request.GET.qb_discount|default:'100' }}" min="1" max="100"
+                   value="{{ request.GET.qb_discount|default:'78' }}" min="1" max="100"
                    style="width: 80px;">
         </div>
 
@@ -118,6 +118,10 @@
         {% endif %}
     </form>
 </div>
+
+
+
+
 
 <!-- QB匹配结果表格 -->
 <div class="qb-results" style="margin-top: 20px;">
@@ -178,7 +182,7 @@
                 <td class="copyable" data-value="{{ result.description }}">
                     {{ result.description }}
                 </td>
-                <td>订单号</td>
+                <td>{{ result.report_text }}</td>
                 <td>
                     <button class="btn btn-sm btn-primary copy-btn" data-value="{{ result.description }}">
                         <i class="glyphicon glyphicon-copy"></i> 复制文案

@@ -11843,3 +11843,1550 @@ TypeError: UserDict.__init__() got an unexpected keyword argument 'role'
 2025-03-30 05:19:04 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
 2025-03-30 05:19:09 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=100&max_combine=3 HTTP/1.1" 200 49856
 2025-03-30 05:19:09 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-03-30 05:31:08 - django.request - ERROR - Internal Server Error: /gameorder/list/
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 129, in gameorder_list
+    return render(request, 'gameorder_list.html', context)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\shortcuts.py", line 19, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\backends\django.py", line 34, in get_template
+    return Template(self.engine.get_template(template_name), self)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\engine.py", line 143, in get_template
+    template, origin = self.find_template(template_name)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\engine.py", line 125, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loaders\base.py", line 29, in get_template
+    return Template(
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 155, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 193, in compile_nodelist
+    return parser.parse()
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 478, in parse
+    raise self.error(token, e)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 476, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loader_tags.py", line 278, in do_extends
+    nodelist = parser.parse()
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 478, in parse
+    raise self.error(token, e)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 476, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loader_tags.py", line 216, in do_block
+    nodelist = parser.parse(('endblock',))
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 478, in parse
+    raise self.error(token, e)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 476, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\defaulttags.py", line 814, in do_for
+    nodelist_loop = parser.parse(('empty', 'endfor',))
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 445, in parse
+    raise self.error(token, 'Empty variable tag on line %d' % token.lineno)
+django.template.exceptions.TemplateSyntaxError: Empty variable tag on line 150
+2025-03-30 05:31:08 - django.server - ERROR - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=100&max_combine=3 HTTP/1.1" 500 220720
+2025-03-30 05:31:20 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=100&max_combine=3 HTTP/1.1" 200 49923
+2025-03-30 05:31:20 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-03-30 05:42:30 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 05:42:30 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 05:42:31 - django.request - ERROR - Internal Server Error: /gameorder/list/
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 111, in gameorder_list
+    qb_results = find_qb_combinations(
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 180, in find_qb_combinations
+    build_combination([exact_match], [amount_discounts[exact_match]], client_discount, target_qb))
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 235, in build_combination
+    getcontext().prec = 8  # 设置精度
+NameError: name 'getcontext' is not defined
+2025-03-30 05:42:31 - django.server - ERROR - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=100&max_combine=3 HTTP/1.1" 500 106984
+2025-03-30 05:43:09 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 05:43:09 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 05:43:11 - django.request - WARNING - Not Found: /policy/list/
+2025-03-30 05:43:11 - django.server - WARNING - "GET /policy/list/ HTTP/1.1" 404 6808
+2025-03-30 05:43:13 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 46446
+2025-03-30 05:43:13 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-03-30 05:43:17 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=100&max_combine=3 HTTP/1.1" 200 52150
+2025-03-30 05:43:28 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=100&max_combine=3 HTTP/1.1" 200 52150
+2025-03-30 05:44:05 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 05:44:05 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 05:44:18 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 05:44:19 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 05:44:19 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=100&max_combine=3 HTTP/1.1" 200 49999
+2025-03-30 05:57:10 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 05:57:10 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 05:58:43 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 05:58:43 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 05:59:04 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 05:59:04 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 05:59:05 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=100&max_combine=3 HTTP/1.1" 200 48298
+2025-03-30 05:59:05 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-03-30 05:59:08 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=100&max_combine=3 HTTP/1.1" 200 48298
+2025-03-30 05:59:10 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=100&max_combine=3 HTTP/1.1" 200 48298
+2025-03-30 05:59:12 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=100&max_combine=3 HTTP/1.1" 200 48298
+2025-03-30 05:59:16 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=75&max_combine=3 HTTP/1.1" 200 48281
+2025-03-30 05:59:18 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=75&max_combine=3 HTTP/1.1" 200 48281
+2025-03-30 05:59:28 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=75&max_combine=3 HTTP/1.1" 200 48281
+2025-03-30 05:59:29 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 46446
+2025-03-30 05:59:33 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=100&max_combine=3 HTTP/1.1" 200 48298
+2025-03-30 06:00:00 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-03-30 06:00:05 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=100&max_combine=3 HTTP/1.1" 200 48298
+2025-03-30 06:00:05 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-03-30 06:00:05 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-03-30 06:00:05 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-03-30 06:00:05 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-03-30 06:00:05 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-03-30 06:00:05 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-03-30 06:00:05 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-03-30 06:00:05 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-03-30 06:00:05 - django.server - INFO - "GET /static/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+2025-03-30 06:00:05 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-03-30 06:00:05 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 06:00:05 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 06:00:05 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 200 173200
+2025-03-30 06:00:05 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-03-30 06:00:05 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 200 428773
+2025-03-30 06:00:05 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 200 931909
+2025-03-30 06:00:05 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 200 944652
+2025-03-30 06:00:05 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-03-30 06:00:05 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 302 0
+2025-03-30 06:00:05 - django.server - INFO - "GET /login/ HTTP/1.1" 200 1738
+2025-03-30 06:00:10 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 302 0
+2025-03-30 06:00:10 - django.server - INFO - "GET /login/ HTTP/1.1" 200 1738
+2025-03-30 06:00:10 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 302 0
+2025-03-30 06:00:10 - django.server - INFO - "GET /login/ HTTP/1.1" 200 1738
+2025-03-30 06:07:25 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 06:07:25 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 06:07:26 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=100&max_combine=3 HTTP/1.1" 200 50164
+2025-03-30 06:07:26 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-03-30 06:08:40 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=100&max_combine=3 HTTP/1.1" 200 50164
+2025-03-30 06:09:09 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 06:09:10 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 06:11:16 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 06:11:16 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 06:11:36 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 06:11:37 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 06:11:38 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=100&max_combine=3 HTTP/1.1" 200 50005
+2025-03-30 06:11:46 - django.request - ERROR - Internal Server Error: /gameorder/list/
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 99, in gameorder_list
+    qb_results = find_qb_combinations(
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 164, in find_qb_combinations
+    best_left = build_combination(combo, discounts, client_discount, target_qb)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 246, in build_combination
+    'description': description
+UnboundLocalError: local variable 'description' referenced before assignment
+2025-03-30 06:11:46 - django.server - ERROR - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=100&max_combine=3 HTTP/1.1" 500 108290
+2025-03-30 06:13:36 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 06:13:37 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 06:13:43 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=100&max_combine=3 HTTP/1.1" 200 52301
+2025-03-30 06:13:43 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-03-30 06:35:36 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 06:35:37 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 06:35:37 - django.request - ERROR - Internal Server Error: /gameorder/list/
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 85, in gameorder_list
+    max_combine = min(max(int(request.GET.get('max_combine', 3)), 5))  # 修复括号闭合问题
+TypeError: 'int' object is not iterable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 158, in gameorder_list
+    messages.error(request, f"QB匹配出错: {str(e)}")
+AttributeError: 'SessionStorage' object has no attribute 'error'
+2025-03-30 06:35:37 - django.server - ERROR - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=100&max_combine=3 HTTP/1.1" 500 100891
+2025-03-30 06:35:57 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 06:35:57 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 06:35:58 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=100&max_combine=3 HTTP/1.1" 200 48298
+2025-03-30 06:35:58 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-03-30 06:36:01 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=100&max_combine=3 HTTP/1.1" 200 48298
+2025-03-30 06:36:02 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=100&max_combine=3 HTTP/1.1" 200 48298
+2025-03-30 06:36:02 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=100&max_combine=3 HTTP/1.1" 200 48298
+2025-03-30 06:36:03 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=100&max_combine=3 HTTP/1.1" 200 48298
+2025-03-30 06:36:03 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=100&max_combine=3 HTTP/1.1" 200 48298
+2025-03-30 06:36:03 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=100&max_combine=3 HTTP/1.1" 200 48298
+2025-03-30 06:36:03 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=100&max_combine=3 HTTP/1.1" 200 48298
+2025-03-30 06:45:10 - django.request - ERROR - Internal Server Error: /gameorder/list/
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 172, in gameorder_list
+    return render(request, 'gameorder_list.html', context)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\shortcuts.py", line 19, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\backends\django.py", line 34, in get_template
+    return Template(self.engine.get_template(template_name), self)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\engine.py", line 143, in get_template
+    template, origin = self.find_template(template_name)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\engine.py", line 125, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loaders\base.py", line 29, in get_template
+    return Template(
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 155, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 193, in compile_nodelist
+    return parser.parse()
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 478, in parse
+    raise self.error(token, e)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 476, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loader_tags.py", line 278, in do_extends
+    nodelist = parser.parse()
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 478, in parse
+    raise self.error(token, e)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 476, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loader_tags.py", line 216, in do_block
+    nodelist = parser.parse(('endblock',))
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 478, in parse
+    raise self.error(token, e)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 476, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\defaulttags.py", line 814, in do_for
+    nodelist_loop = parser.parse(('empty', 'endfor',))
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 478, in parse
+    raise self.error(token, e)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 476, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\defaulttags.py", line 814, in do_for
+    nodelist_loop = parser.parse(('empty', 'endfor',))
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 478, in parse
+    raise self.error(token, e)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 476, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\defaulttags.py", line 973, in do_if
+    nodelist = parser.parse(('elif', 'else', 'endif'))
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 449, in parse
+    raise self.error(token, e)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 447, in parse
+    filter_expression = self.compile_filter(token.contents)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 563, in compile_filter
+    return FilterExpression(token, self)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 657, in __init__
+    filter_func = parser.find_filter(filter_name)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 569, in find_filter
+    raise TemplateSyntaxError("Invalid filter: '%s'" % filter_name)
+django.template.exceptions.TemplateSyntaxError: Invalid filter: 'abs'
+2025-03-30 06:45:10 - django.server - ERROR - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=100&max_combine=3 HTTP/1.1" 500 267069
+2025-03-30 06:45:39 - django.request - ERROR - Internal Server Error: /gameorder/list/
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 470, in parse
+    compile_func = self.tags[command]
+KeyError: 'elif'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 172, in gameorder_list
+    return render(request, 'gameorder_list.html', context)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\shortcuts.py", line 19, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\backends\django.py", line 34, in get_template
+    return Template(self.engine.get_template(template_name), self)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\engine.py", line 143, in get_template
+    template, origin = self.find_template(template_name)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\engine.py", line 125, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loaders\base.py", line 29, in get_template
+    return Template(
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 155, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 193, in compile_nodelist
+    return parser.parse()
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 478, in parse
+    raise self.error(token, e)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 476, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loader_tags.py", line 278, in do_extends
+    nodelist = parser.parse()
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 478, in parse
+    raise self.error(token, e)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 476, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loader_tags.py", line 216, in do_block
+    nodelist = parser.parse(('endblock',))
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 472, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 522, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 186: 'elif', expected 'endblock'. Did you forget to register or load this tag?
+2025-03-30 06:45:39 - django.server - ERROR - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=100&max_combine=3 HTTP/1.1" 500 208911
+2025-03-30 06:45:48 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 06:45:51 - django.request - ERROR - Internal Server Error: /gameorder/list/
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 470, in parse
+    compile_func = self.tags[command]
+KeyError: 'elif'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 172, in gameorder_list
+    return render(request, 'gameorder_list.html', context)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\shortcuts.py", line 19, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\backends\django.py", line 34, in get_template
+    return Template(self.engine.get_template(template_name), self)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\engine.py", line 143, in get_template
+    template, origin = self.find_template(template_name)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\engine.py", line 125, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loaders\base.py", line 29, in get_template
+    return Template(
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 155, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 193, in compile_nodelist
+    return parser.parse()
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 478, in parse
+    raise self.error(token, e)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 476, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loader_tags.py", line 278, in do_extends
+    nodelist = parser.parse()
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 478, in parse
+    raise self.error(token, e)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 476, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loader_tags.py", line 216, in do_block
+    nodelist = parser.parse(('endblock',))
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 472, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 522, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 186: 'elif', expected 'endblock'. Did you forget to register or load this tag?
+2025-03-30 06:45:51 - django.server - ERROR - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=100&max_combine=3 HTTP/1.1" 500 208911
+2025-03-30 06:45:52 - django.request - ERROR - Internal Server Error: /gameorder/list/
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 470, in parse
+    compile_func = self.tags[command]
+KeyError: 'elif'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 172, in gameorder_list
+    return render(request, 'gameorder_list.html', context)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\shortcuts.py", line 19, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\backends\django.py", line 34, in get_template
+    return Template(self.engine.get_template(template_name), self)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\engine.py", line 143, in get_template
+    template, origin = self.find_template(template_name)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\engine.py", line 125, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loaders\base.py", line 29, in get_template
+    return Template(
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 155, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 193, in compile_nodelist
+    return parser.parse()
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 478, in parse
+    raise self.error(token, e)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 476, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loader_tags.py", line 278, in do_extends
+    nodelist = parser.parse()
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 478, in parse
+    raise self.error(token, e)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 476, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loader_tags.py", line 216, in do_block
+    nodelist = parser.parse(('endblock',))
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 472, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 522, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 186: 'elif', expected 'endblock'. Did you forget to register or load this tag?
+2025-03-30 06:45:52 - django.server - ERROR - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=100&max_combine=3 HTTP/1.1" 500 208911
+2025-03-30 06:45:54 - django.request - ERROR - Internal Server Error: /gameorder/list/
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 470, in parse
+    compile_func = self.tags[command]
+KeyError: 'elif'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 172, in gameorder_list
+    return render(request, 'gameorder_list.html', context)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\shortcuts.py", line 19, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\backends\django.py", line 34, in get_template
+    return Template(self.engine.get_template(template_name), self)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\engine.py", line 143, in get_template
+    template, origin = self.find_template(template_name)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\engine.py", line 125, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loaders\base.py", line 29, in get_template
+    return Template(
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 155, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 193, in compile_nodelist
+    return parser.parse()
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 478, in parse
+    raise self.error(token, e)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 476, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loader_tags.py", line 278, in do_extends
+    nodelist = parser.parse()
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 478, in parse
+    raise self.error(token, e)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 476, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loader_tags.py", line 216, in do_block
+    nodelist = parser.parse(('endblock',))
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 472, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 522, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 186: 'elif', expected 'endblock'. Did you forget to register or load this tag?
+2025-03-30 06:45:54 - django.server - ERROR - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=100&max_combine=3 HTTP/1.1" 500 208911
+2025-03-30 06:45:55 - django.request - ERROR - Internal Server Error: /gameorder/list/
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 470, in parse
+    compile_func = self.tags[command]
+KeyError: 'elif'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 172, in gameorder_list
+    return render(request, 'gameorder_list.html', context)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\shortcuts.py", line 19, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loader.py", line 15, in get_template
+    return engine.get_template(template_name)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\backends\django.py", line 34, in get_template
+    return Template(self.engine.get_template(template_name), self)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\engine.py", line 143, in get_template
+    template, origin = self.find_template(template_name)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\engine.py", line 125, in find_template
+    template = loader.get_template(name, skip=skip)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loaders\base.py", line 29, in get_template
+    return Template(
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 155, in __init__
+    self.nodelist = self.compile_nodelist()
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 193, in compile_nodelist
+    return parser.parse()
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 478, in parse
+    raise self.error(token, e)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 476, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loader_tags.py", line 278, in do_extends
+    nodelist = parser.parse()
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 478, in parse
+    raise self.error(token, e)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 476, in parse
+    compiled_result = compile_func(self, token)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\loader_tags.py", line 216, in do_block
+    nodelist = parser.parse(('endblock',))
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 472, in parse
+    self.invalid_block_tag(token, command, parse_until)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\template\base.py", line 522, in invalid_block_tag
+    raise self.error(
+django.template.exceptions.TemplateSyntaxError: Invalid block tag on line 186: 'elif', expected 'endblock'. Did you forget to register or load this tag?
+2025-03-30 06:45:55 - django.server - ERROR - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=100&max_combine=3 HTTP/1.1" 500 208911
+2025-03-30 06:46:35 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=100&max_combine=3 HTTP/1.1" 200 48500
+2025-03-30 06:46:35 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-03-30 06:46:41 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=100&max_combine=3 HTTP/1.1" 200 48500
+2025-03-30 06:46:42 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=100&max_combine=3 HTTP/1.1" 200 48500
+2025-03-30 06:46:44 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=100&max_combine=3 HTTP/1.1" 200 48500
+2025-03-30 06:46:45 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=100&max_combine=3 HTTP/1.1" 200 48500
+2025-03-30 06:46:45 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=100&max_combine=3 HTTP/1.1" 200 48500
+2025-03-30 06:46:46 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=100&max_combine=3 HTTP/1.1" 200 48500
+2025-03-30 06:46:46 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=100&max_combine=3 HTTP/1.1" 200 48500
+2025-03-30 06:46:47 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=100&max_combine=3 HTTP/1.1" 200 48500
+2025-03-30 06:46:48 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=100&max_combine=3 HTTP/1.1" 200 48500
+2025-03-30 06:46:53 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=3 HTTP/1.1" 200 48482
+2025-03-30 06:47:23 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=3 HTTP/1.1" 200 48285
+2025-03-30 06:47:25 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=3 HTTP/1.1" 200 48285
+2025-03-30 06:59:02 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 06:59:02 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 06:59:03 - django.request - ERROR - Internal Server Error: /gameorder/list/
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 76, in gameorder_list
+    max_combine = min(max(int(request.GET.get('max_combine', 3)), 5))
+TypeError: 'int' object is not iterable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 138, in gameorder_list
+    messages.error(request, f"QB匹配出错: {str(e)}")
+AttributeError: 'SessionStorage' object has no attribute 'error'
+2025-03-30 06:59:03 - django.server - ERROR - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=3 HTTP/1.1" 500 100919
+2025-03-30 06:59:15 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 06:59:16 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 06:59:16 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=3 HTTP/1.1" 200 48285
+2025-03-30 06:59:16 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-03-30 06:59:18 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=3 HTTP/1.1" 200 48285
+2025-03-30 06:59:19 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=3 HTTP/1.1" 200 48285
+2025-03-30 06:59:20 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=3 HTTP/1.1" 200 48285
+2025-03-30 06:59:20 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=3 HTTP/1.1" 200 48285
+2025-03-30 06:59:20 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=3 HTTP/1.1" 200 48285
+2025-03-30 06:59:20 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=3 HTTP/1.1" 200 48285
+2025-03-30 06:59:20 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=3 HTTP/1.1" 200 48285
+2025-03-30 06:59:21 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=3 HTTP/1.1" 200 48285
+2025-03-30 06:59:21 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=3 HTTP/1.1" 200 48285
+2025-03-30 06:59:21 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=3 HTTP/1.1" 200 48285
+2025-03-30 06:59:21 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=3 HTTP/1.1" 200 48285
+2025-03-30 06:59:21 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=3 HTTP/1.1" 200 48285
+2025-03-30 06:59:22 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=3 HTTP/1.1" 200 48285
+2025-03-30 06:59:22 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=3 HTTP/1.1" 200 48285
+2025-03-30 06:59:22 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=3 HTTP/1.1" 200 48285
+2025-03-30 06:59:22 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=3 HTTP/1.1" 200 48285
+2025-03-30 06:59:23 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=3 HTTP/1.1" 200 48285
+2025-03-30 06:59:23 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=3 HTTP/1.1" 200 48285
+2025-03-30 06:59:26 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=3 HTTP/1.1" 200 48285
+2025-03-30 07:00:24 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=3&page=2 HTTP/1.1" 200 25783
+2025-03-30 07:00:24 - django.server - INFO - "GET /media/root1/2025/03/29/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 304 0
+2025-03-30 07:00:24 - django.server - INFO - "GET /media/root1/2025/03/29/6.png HTTP/1.1" 304 0
+2025-03-30 07:00:26 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=3&page=1 HTTP/1.1" 200 48395
+2025-03-30 07:01:17 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 07:01:18 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 07:01:18 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=3&page=1 HTTP/1.1" 200 52394
+2025-03-30 07:01:38 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=3&page=2 HTTP/1.1" 200 29782
+2025-03-30 07:08:13 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 07:08:13 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 07:08:13 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=3&page=2 HTTP/1.1" 200 29026
+2025-03-30 07:08:16 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=3&page=2 HTTP/1.1" 200 29026
+2025-03-30 07:08:28 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=3 HTTP/1.1" 200 51528
+2025-03-30 07:11:34 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=3 HTTP/1.1" 200 51526
+2025-03-30 07:11:34 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-03-30 07:11:34 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-03-30 07:11:34 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 304 0
+2025-03-30 07:11:34 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-03-30 07:13:55 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=4 HTTP/1.1" 200 49921
+2025-03-30 07:14:20 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=5 HTTP/1.1" 200 49921
+2025-03-30 07:14:22 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=3 HTTP/1.1" 200 51526
+2025-03-30 07:14:25 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=4 HTTP/1.1" 200 49921
+2025-03-30 07:14:30 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=4 HTTP/1.1" 200 49921
+2025-03-30 07:14:41 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=3 HTTP/1.1" 200 51526
+2025-03-30 07:14:48 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=2 HTTP/1.1" 200 51476
+2025-03-30 07:20:27 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:20:28 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:20:29 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:20:30 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:25:08 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 07:25:08 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 07:25:10 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:25:10 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-03-30 07:25:10 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:27:27 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 07:27:29 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:27:30 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:27:31 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:27:32 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:27:33 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:30:29 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 07:30:30 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 07:30:31 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:30:32 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:30:33 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:30:33 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:30:33 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:30:33 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:30:34 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:30:34 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:30:35 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:30:35 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:30:36 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:30:36 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:30:36 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:30:36 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:30:37 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:30:37 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:30:38 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:30:38 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:30:38 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:30:38 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:30:38 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:30:38 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:30:39 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:30:39 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:30:40 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:30:41 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:30:46 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 48046
+2025-03-30 07:30:48 - django.request - WARNING - Not Found: /policy/list/
+2025-03-30 07:30:48 - django.server - WARNING - "GET /policy/list/ HTTP/1.1" 404 6808
+2025-03-30 07:30:49 - django.server - INFO - "GET /customer/list/ HTTP/1.1" 200 8131
+2025-03-30 07:30:50 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 46449
+2025-03-30 07:31:16 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 07:31:17 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 07:31:19 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 46449
+2025-03-30 07:31:40 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 46449
+2025-03-30 07:31:47 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 49771
+2025-03-30 07:31:58 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=78&max_combine=4 HTTP/1.1" 200 49925
+2025-03-30 07:46:23 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 07:46:23 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 08:10:41 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 08:10:41 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 08:37:30 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 08:37:31 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 09:00:48 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 09:00:48 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 10:09:34 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 10:19:23 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 10:19:23 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 10:34:03 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 10:34:03 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 10:36:09 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 10:36:09 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 10:41:43 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 10:41:44 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 10:42:38 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 10:42:38 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 10:42:39 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:42:39 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-03-30 10:42:39 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-03-30 10:42:39 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-03-30 10:42:39 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 304 0
+2025-03-30 10:42:39 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 304 0
+2025-03-30 10:42:39 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 304 0
+2025-03-30 10:42:39 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 304 0
+2025-03-30 10:42:42 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:42:43 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:42:44 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:42:44 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:42:45 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:42:45 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:42:45 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:42:45 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:42:45 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:42:46 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:42:46 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:42:46 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:42:46 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:42:46 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:42:47 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:42:47 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:42:47 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:42:47 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:42:52 - django.server - INFO - "GET /customer/list/ HTTP/1.1" 200 8131
+2025-03-30 10:42:52 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 46449
+2025-03-30 10:42:57 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:43:16 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 10:43:17 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 10:43:17 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:43:19 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:43:19 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:43:19 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:43:19 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:43:20 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:43:20 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:43:21 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:43:21 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:43:21 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:44:00 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 10:44:01 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 10:44:01 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:44:02 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:44:02 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:44:02 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:44:03 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:44:21 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 10:44:23 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:44:24 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:44:24 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:44:25 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 46449
+2025-03-30 10:44:25 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 46449
+2025-03-30 10:44:26 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 46449
+2025-03-30 10:44:30 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:44:35 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-03-30 10:44:38 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:44:38 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-03-30 10:44:38 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-03-30 10:44:38 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-03-30 10:44:38 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-03-30 10:44:38 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-03-30 10:44:38 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-03-30 10:44:38 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-03-30 10:44:38 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-03-30 10:44:38 - django.server - INFO - "GET /static/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+2025-03-30 10:44:38 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 10:44:38 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 10:44:38 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-03-30 10:44:38 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 200 173200
+2025-03-30 10:44:38 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-03-30 10:44:38 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 200 428773
+2025-03-30 10:44:38 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 200 931909
+2025-03-30 10:44:38 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 200 944652
+2025-03-30 10:44:38 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-03-30 10:44:38 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 302 0
+2025-03-30 10:44:38 - django.server - INFO - "GET /login/ HTTP/1.1" 200 1738
+2025-03-30 10:44:38 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 302 0
+2025-03-30 10:44:38 - django.server - INFO - "GET /login/ HTTP/1.1" 200 1738
+2025-03-30 10:46:50 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:46:52 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:46:53 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:46:54 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:46:55 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:46:56 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:46:56 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:46:56 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:46:57 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:48:06 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 10:48:06 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 10:48:13 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 49978
+2025-03-30 10:48:14 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 49978
+2025-03-30 10:52:03 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-03-30 10:52:31 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 49978
+2025-03-30 10:52:31 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-03-30 10:52:31 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-03-30 10:52:31 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-03-30 10:52:31 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-03-30 10:52:31 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-03-30 10:52:31 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-03-30 10:52:31 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-03-30 10:52:31 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-03-30 10:52:31 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 10:52:31 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 10:52:31 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 200 173200
+2025-03-30 10:52:31 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-03-30 10:52:31 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-03-30 10:52:31 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 200 428773
+2025-03-30 10:52:31 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 200 931909
+2025-03-30 10:52:31 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 200 944652
+2025-03-30 10:52:31 - django.server - INFO - "GET /static/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+2025-03-30 10:52:31 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-03-30 10:52:32 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 49978
+2025-03-30 10:52:32 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-03-30 10:52:32 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-03-30 10:52:32 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-03-30 10:52:32 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-03-30 10:52:32 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-03-30 10:52:32 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-03-30 10:52:32 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-03-30 10:52:32 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-03-30 10:52:32 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 10:52:32 - django.server - INFO - "GET /static/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+2025-03-30 10:52:32 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 10:52:32 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-03-30 10:52:32 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 200 173200
+2025-03-30 10:52:32 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 200 428773
+2025-03-30 10:52:32 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-03-30 10:52:32 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 200 931909
+2025-03-30 10:52:32 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-03-30 10:52:32 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 200 944652
+2025-03-30 10:59:15 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 10:59:15 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 10:59:16 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:59:17 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-03-30 10:59:17 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-03-30 10:59:17 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-03-30 10:59:17 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 10:59:17 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-03-30 10:59:17 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-03-30 10:59:17 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-03-30 10:59:17 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-03-30 10:59:17 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 10:59:17 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-03-30 10:59:17 - django.server - INFO - "GET /static/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+2025-03-30 10:59:17 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-03-30 10:59:17 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 200 173200
+2025-03-30 10:59:17 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-03-30 10:59:17 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 200 428773
+2025-03-30 10:59:17 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 200 931909
+2025-03-30 10:59:17 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 200 944652
+2025-03-30 10:59:17 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-03-30 10:59:20 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:59:20 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-03-30 10:59:20 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-03-30 10:59:20 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-03-30 10:59:20 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-03-30 10:59:20 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-03-30 10:59:20 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-03-30 10:59:20 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-03-30 10:59:20 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-03-30 10:59:20 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 10:59:20 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 10:59:20 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 200 173200
+2025-03-30 10:59:20 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 200 428773
+2025-03-30 10:59:20 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-03-30 10:59:20 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 200 931909
+2025-03-30 10:59:20 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 200 944652
+2025-03-30 10:59:20 - django.server - INFO - "GET /static/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+2025-03-30 10:59:20 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-03-30 10:59:20 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-03-30 10:59:21 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:59:21 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-03-30 10:59:21 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-03-30 10:59:21 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-03-30 10:59:21 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-03-30 10:59:21 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-03-30 10:59:21 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-03-30 10:59:21 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-03-30 10:59:21 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-03-30 10:59:21 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 10:59:21 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 10:59:21 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 200 173200
+2025-03-30 10:59:21 - django.server - INFO - "GET /static/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+2025-03-30 10:59:21 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-03-30 10:59:21 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-03-30 10:59:21 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 200 428773
+2025-03-30 10:59:21 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 200 931909
+2025-03-30 10:59:21 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 200 944652
+2025-03-30 10:59:21 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-03-30 10:59:21 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 10:59:21 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-03-30 10:59:21 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-03-30 10:59:21 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-03-30 10:59:21 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-03-30 10:59:21 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-03-30 10:59:21 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-03-30 10:59:21 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-03-30 10:59:21 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-03-30 10:59:21 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 10:59:21 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 10:59:21 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 200 173200
+2025-03-30 10:59:21 - django.server - INFO - "GET /static/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+2025-03-30 10:59:21 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-03-30 10:59:21 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-03-30 10:59:21 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 200 428773
+2025-03-30 10:59:21 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 200 931909
+2025-03-30 10:59:21 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 200 944652
+2025-03-30 10:59:21 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-03-30 11:01:12 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 11:01:12 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 11:01:13 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 11:01:13 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-03-30 11:01:13 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-03-30 11:01:13 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-03-30 11:01:13 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-03-30 11:01:13 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-03-30 11:01:13 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-03-30 11:01:13 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-03-30 11:01:13 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:01:13 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:01:13 - django.server - INFO - "GET /static/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+2025-03-30 11:01:13 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-03-30 11:01:13 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-03-30 11:01:13 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 200 173200
+2025-03-30 11:01:13 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 200 428773
+2025-03-30 11:01:13 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-03-30 11:01:13 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 200 931909
+2025-03-30 11:01:13 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 200 944652
+2025-03-30 11:01:13 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-03-30 11:03:11 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 11:03:11 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 11:03:12 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 11:03:12 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-03-30 11:03:12 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-03-30 11:03:12 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-03-30 11:03:12 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-03-30 11:03:12 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-03-30 11:03:12 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-03-30 11:03:12 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-03-30 11:03:12 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-03-30 11:03:12 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:03:12 - django.server - INFO - "GET /static/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+2025-03-30 11:03:12 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-03-30 11:03:12 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:03:12 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 200 173200
+2025-03-30 11:03:12 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 200 428773
+2025-03-30 11:03:12 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-03-30 11:03:12 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 200 931909
+2025-03-30 11:03:12 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 200 944652
+2025-03-30 11:03:12 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-03-30 11:03:14 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 11:03:14 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-03-30 11:03:14 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-03-30 11:03:14 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-03-30 11:03:14 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-03-30 11:03:14 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-03-30 11:03:14 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-03-30 11:03:14 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-03-30 11:03:14 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-03-30 11:03:14 - django.server - INFO - "GET /static/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+2025-03-30 11:03:14 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:03:14 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-03-30 11:03:14 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:03:14 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 200 173200
+2025-03-30 11:03:14 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-03-30 11:03:14 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 200 931909
+2025-03-30 11:03:14 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 200 428773
+2025-03-30 11:03:14 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-03-30 11:03:14 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 200 944652
+2025-03-30 11:07:03 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 11:07:03 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 11:07:04 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 11:07:04 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-03-30 11:07:04 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-03-30 11:07:04 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-03-30 11:07:04 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-03-30 11:07:04 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-03-30 11:07:04 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-03-30 11:07:04 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-03-30 11:07:04 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-03-30 11:07:04 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:07:04 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:07:04 - django.server - INFO - "GET /static/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+2025-03-30 11:07:04 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-03-30 11:07:04 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 200 173200
+2025-03-30 11:07:04 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-03-30 11:07:04 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 200 428773
+2025-03-30 11:07:04 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 200 931909
+2025-03-30 11:07:04 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 200 944652
+2025-03-30 11:07:04 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-03-30 11:07:05 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 11:07:05 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-03-30 11:07:05 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-03-30 11:07:05 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-03-30 11:07:05 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-03-30 11:07:05 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-03-30 11:07:05 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-03-30 11:07:05 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-03-30 11:07:05 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-03-30 11:07:05 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:07:05 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:07:05 - django.server - INFO - "GET /static/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+2025-03-30 11:07:05 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-03-30 11:07:05 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 200 173200
+2025-03-30 11:07:05 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-03-30 11:07:05 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 200 428773
+2025-03-30 11:07:05 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 200 931909
+2025-03-30 11:07:05 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 200 944652
+2025-03-30 11:07:05 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-03-30 11:08:57 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 11:08:57 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 11:08:58 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 49765
+2025-03-30 11:08:58 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-03-30 11:08:58 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-03-30 11:08:58 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-03-30 11:08:58 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-03-30 11:08:58 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-03-30 11:08:58 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-03-30 11:08:58 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-03-30 11:08:58 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-03-30 11:08:58 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:08:58 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:08:58 - django.server - INFO - "GET /static/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+2025-03-30 11:08:58 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 200 173200
+2025-03-30 11:08:58 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-03-30 11:08:58 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-03-30 11:08:58 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 200 428773
+2025-03-30 11:08:58 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 200 931909
+2025-03-30 11:08:58 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 200 944652
+2025-03-30 11:08:58 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-03-30 11:09:04 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 49765
+2025-03-30 11:09:04 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-03-30 11:09:04 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-03-30 11:09:04 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-03-30 11:09:04 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-03-30 11:09:04 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-03-30 11:09:04 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-03-30 11:09:04 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-03-30 11:09:04 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-03-30 11:09:04 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:09:04 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:09:04 - django.server - INFO - "GET /static/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+2025-03-30 11:09:04 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-03-30 11:09:04 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 200 173200
+2025-03-30 11:09:04 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-03-30 11:09:04 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-03-30 11:09:04 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 200 428773
+2025-03-30 11:09:04 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 200 944652
+2025-03-30 11:09:04 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 200 931909
+2025-03-30 11:09:16 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=78&max_combine=4 HTTP/1.1" 200 49897
+2025-03-30 11:09:17 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-03-30 11:09:17 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-03-30 11:09:17 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-03-30 11:09:17 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-03-30 11:09:17 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-03-30 11:09:17 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-03-30 11:09:17 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-03-30 11:09:17 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-03-30 11:09:17 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:09:17 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:09:17 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 200 173200
+2025-03-30 11:09:17 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 200 428773
+2025-03-30 11:09:17 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-03-30 11:09:17 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 200 931909
+2025-03-30 11:09:17 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 200 944652
+2025-03-30 11:09:17 - django.server - INFO - "GET /static/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+2025-03-30 11:09:17 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-03-30 11:09:17 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-03-30 11:09:27 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=236&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 11:09:27 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-03-30 11:09:27 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-03-30 11:09:27 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-03-30 11:09:27 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-03-30 11:09:27 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-03-30 11:09:27 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-03-30 11:09:27 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-03-30 11:09:27 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-03-30 11:09:28 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:09:28 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:09:28 - django.server - INFO - "GET /static/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+2025-03-30 11:09:28 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-03-30 11:09:28 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 200 173200
+2025-03-30 11:09:28 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-03-30 11:09:28 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 200 428773
+2025-03-30 11:09:28 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-03-30 11:09:28 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 200 931909
+2025-03-30 11:09:28 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 200 944652
+2025-03-30 11:09:36 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=233&qb_discount=78&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 11:09:36 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-03-30 11:09:36 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-03-30 11:09:36 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-03-30 11:09:36 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-03-30 11:09:36 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-03-30 11:09:36 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-03-30 11:09:36 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-03-30 11:09:36 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-03-30 11:09:36 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:09:36 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:09:36 - django.server - INFO - "GET /static/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+2025-03-30 11:09:36 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-03-30 11:09:36 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 200 173200
+2025-03-30 11:09:36 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-03-30 11:09:36 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 200 428773
+2025-03-30 11:09:36 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-03-30 11:09:36 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 200 931909
+2025-03-30 11:09:36 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 200 944652
+2025-03-30 11:09:42 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=233&qb_discount=75&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 11:09:42 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-03-30 11:09:42 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-03-30 11:09:42 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-03-30 11:09:42 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-03-30 11:09:42 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-03-30 11:09:42 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-03-30 11:09:42 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-03-30 11:09:42 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:09:42 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-03-30 11:09:42 - django.server - INFO - "GET /static/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+2025-03-30 11:09:42 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:09:42 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-03-30 11:09:42 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 200 173200
+2025-03-30 11:09:42 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-03-30 11:09:42 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 200 428773
+2025-03-30 11:09:42 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 200 944652
+2025-03-30 11:09:42 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 200 931909
+2025-03-30 11:09:42 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-03-30 11:09:47 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=4 HTTP/1.1" 200 49897
+2025-03-30 11:09:47 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-03-30 11:09:47 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-03-30 11:09:47 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-03-30 11:09:47 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-03-30 11:09:47 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-03-30 11:09:47 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-03-30 11:09:47 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-03-30 11:09:47 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-03-30 11:09:47 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:09:47 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:09:47 - django.server - INFO - "GET /static/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+2025-03-30 11:09:47 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-03-30 11:09:47 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 200 173200
+2025-03-30 11:09:47 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-03-30 11:09:47 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 200 428773
+2025-03-30 11:09:47 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 200 944652
+2025-03-30 11:09:47 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-03-30 11:09:47 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 200 931909
+2025-03-30 11:09:56 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=236&qb_discount=75&max_combine=4 HTTP/1.1" 200 48285
+2025-03-30 11:09:57 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-03-30 11:09:57 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-03-30 11:09:57 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-03-30 11:09:57 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-03-30 11:09:57 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-03-30 11:09:57 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-03-30 11:09:57 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-03-30 11:09:57 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-03-30 11:09:57 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:09:57 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:09:57 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 200 173200
+2025-03-30 11:09:57 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 200 428773
+2025-03-30 11:09:57 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-03-30 11:09:57 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 200 931909
+2025-03-30 11:09:57 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 200 944652
+2025-03-30 11:09:57 - django.server - INFO - "GET /static/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+2025-03-30 11:09:57 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-03-30 11:09:57 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-03-30 11:10:05 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=4 HTTP/1.1" 200 49897
+2025-03-30 11:10:05 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-03-30 11:10:05 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-03-30 11:10:05 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-03-30 11:10:05 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-03-30 11:10:05 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-03-30 11:10:05 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-03-30 11:10:05 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-03-30 11:10:05 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-03-30 11:10:05 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:10:05 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:10:05 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 200 173200
+2025-03-30 11:10:05 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-03-30 11:10:05 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-03-30 11:10:05 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 200 428773
+2025-03-30 11:10:05 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 200 931909
+2025-03-30 11:10:05 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 200 944652
+2025-03-30 11:10:05 - django.server - INFO - "GET /static/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+2025-03-30 11:10:05 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-03-30 11:10:51 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 11:10:51 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 11:10:52 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=4 HTTP/1.1" 200 50003
+2025-03-30 11:10:52 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-03-30 11:10:52 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-03-30 11:10:52 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-03-30 11:10:52 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-03-30 11:10:52 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-03-30 11:10:52 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:10:52 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:10:52 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-03-30 11:10:52 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-03-30 11:10:52 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-03-30 11:10:52 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 200 173200
+2025-03-30 11:10:52 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 200 428773
+2025-03-30 11:10:52 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-03-30 11:10:52 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 200 931909
+2025-03-30 11:10:52 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 200 944652
+2025-03-30 11:10:52 - django.server - INFO - "GET /static/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+2025-03-30 11:10:52 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-03-30 11:10:52 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-03-30 11:12:05 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 11:12:05 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 11:12:06 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=4 HTTP/1.1" 200 50003
+2025-03-30 11:12:06 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-03-30 11:12:06 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-03-30 11:12:06 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-03-30 11:12:06 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-03-30 11:12:06 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-03-30 11:12:06 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-03-30 11:12:06 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-03-30 11:12:06 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:12:06 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:12:06 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-03-30 11:12:06 - django.server - INFO - "GET /static/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+2025-03-30 11:12:06 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-03-30 11:12:06 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 200 173200
+2025-03-30 11:12:07 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-03-30 11:12:07 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 200 428773
+2025-03-30 11:12:07 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 200 944652
+2025-03-30 11:12:07 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-03-30 11:12:07 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 200 931909
+2025-03-30 11:12:07 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=4 HTTP/1.1" 200 50003
+2025-03-30 11:12:07 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-03-30 11:12:07 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-03-30 11:12:07 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-03-30 11:12:07 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-03-30 11:12:07 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-03-30 11:12:07 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-03-30 11:12:07 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-03-30 11:12:07 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-03-30 11:12:07 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:12:07 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:12:07 - django.server - INFO - "GET /static/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+2025-03-30 11:12:07 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-03-30 11:12:07 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 200 173200
+2025-03-30 11:12:07 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-03-30 11:12:07 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-03-30 11:12:07 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 200 428773
+2025-03-30 11:12:07 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 200 931909
+2025-03-30 11:12:07 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 200 944652
+2025-03-30 11:12:07 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=4 HTTP/1.1" 200 50003
+2025-03-30 11:12:07 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-03-30 11:12:07 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-03-30 11:12:07 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-03-30 11:12:07 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-03-30 11:12:07 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-03-30 11:12:07 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-03-30 11:12:07 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-03-30 11:12:07 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-03-30 11:12:07 - django.server - INFO - "GET /static/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+2025-03-30 11:12:07 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:12:07 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:12:07 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-03-30 11:12:07 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 200 173200
+2025-03-30 11:12:07 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-03-30 11:12:07 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 200 931909
+2025-03-30 11:12:07 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 200 428773
+2025-03-30 11:12:07 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-03-30 11:12:07 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 200 944652
+2025-03-30 11:12:24 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 11:12:24 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 11:12:44 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=75&max_combine=4 HTTP/1.1" 200 50426
+2025-03-30 11:12:44 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-03-30 11:12:44 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-03-30 11:12:44 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-03-30 11:12:44 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-03-30 11:12:45 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-03-30 11:12:45 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-03-30 11:12:45 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-03-30 11:12:45 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:12:45 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-03-30 11:12:45 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:12:45 - django.server - INFO - "GET /static/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+2025-03-30 11:12:45 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-03-30 11:12:45 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 200 173200
+2025-03-30 11:12:45 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 200 428773
+2025-03-30 11:12:45 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-03-30 11:12:45 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 200 931909
+2025-03-30 11:12:45 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-03-30 11:12:45 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 200 944652
+2025-03-30 11:13:24 - django.server - INFO - "GET /gameorder/list/? HTTP/1.1" 200 46449
+2025-03-30 11:13:24 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-03-30 11:13:24 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-03-30 11:13:24 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-03-30 11:13:24 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-03-30 11:13:24 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-03-30 11:13:24 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-03-30 11:13:24 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-03-30 11:13:25 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-03-30 11:13:25 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:13:25 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:13:25 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 200 173200
+2025-03-30 11:13:25 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-03-30 11:13:25 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 200 428773
+2025-03-30 11:13:25 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-03-30 11:13:25 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 200 931909
+2025-03-30 11:13:25 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 200 944652
+2025-03-30 11:13:25 - django.server - INFO - "GET /static/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+2025-03-30 11:13:25 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-03-30 11:13:41 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=348&qb_discount=78&max_combine=4 HTTP/1.1" 200 49977
+2025-03-30 11:14:07 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=348&qb_discount=78&max_combine=4&page=2 HTTP/1.1" 200 27475
+2025-03-30 11:14:07 - django.server - INFO - "GET /media/root1/2025/03/29/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 304 0
+2025-03-30 11:14:07 - django.server - INFO - "GET /media/root1/2025/03/29/6.png HTTP/1.1" 304 0
+2025-03-30 11:14:13 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=348&qb_discount=78&max_combine=4&page=1 HTTP/1.1" 200 50087
+2025-03-30 11:14:20 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=348&qb_discount=78&max_combine=4&page=2 HTTP/1.1" 200 27475
+2025-03-30 11:14:28 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=100&qb_discount=78&max_combine=4 HTTP/1.1" 200 49971
+2025-03-30 11:15:32 - django.server - INFO - "GET /gameorder/add/ HTTP/1.1" 200 9410
+2025-03-30 11:15:36 - django.server - INFO - "GET /level/list/ HTTP/1.1" 200 5616
+2025-03-30 11:15:38 - django.server - INFO - "GET /gamename/list/ HTTP/1.1" 200 4966
+2025-03-30 11:15:38 - django.server - INFO - "GET /gamedenomination/list/ HTTP/1.1" 200 6331
+2025-03-30 11:15:45 - django.server - INFO - "GET /gamedenomination/list/ HTTP/1.1" 200 6331
+2025-03-30 11:15:54 - django.server - INFO - "GET /gamedenomination/list/ HTTP/1.1" 200 7414
+2025-03-30 11:15:56 - django.server - INFO - "GET /gamedenomination/add/ HTTP/1.1" 200 7721
+2025-03-30 11:16:08 - django.server - INFO - "POST /gamedenomination/add/ HTTP/1.1" 302 0
+2025-03-30 11:16:08 - django.server - INFO - "GET /gamedenomination/list/ HTTP/1.1" 200 8032
+2025-03-30 11:16:14 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 46587
+2025-03-30 11:16:14 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 304 0
+2025-03-30 11:16:14 - django.server - INFO - "GET /media/root1/2025/03/29/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 304 0
+2025-03-30 11:16:14 - django.server - INFO - "GET /media/root1/2025/03/29/6.png HTTP/1.1" 304 0
+2025-03-30 11:16:14 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-03-30 11:16:14 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-03-30 11:16:14 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 304 0
+2025-03-30 11:16:14 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 304 0
+2025-03-30 11:16:14 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-03-30 11:16:14 - django.server - INFO - "GET /gameorder/add/ HTTP/1.1" 200 9410
+2025-03-30 11:16:19 - django.server - INFO - "GET /gameorder/load-options/?game=3&platform=IOS HTTP/1.1" 200 262
+2025-03-30 11:16:25 - django.server - INFO - "POST /gameorder/add/ HTTP/1.1" 302 0
+2025-03-30 11:16:25 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 46677
+2025-03-30 11:16:25 - django.server - INFO - "GET /media/root1/2025/03/30/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 200 64586
+2025-03-30 11:16:32 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=1152&qb_discount=78&max_combine=4 HTTP/1.1" 200 50180
+2025-03-30 11:16:32 - django.server - INFO - "GET /media/root1/2025/03/30/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 200 64586
+2025-03-30 11:30:46 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 11:30:47 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 11:30:48 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=1152&qb_discount=78&max_combine=4 HTTP/1.1" 200 48470
+2025-03-30 11:30:48 - django.server - INFO - "GET /media/root1/2025/03/30/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 304 0
+2025-03-30 11:30:50 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=1152&qb_discount=78&max_combine=4 HTTP/1.1" 200 48470
+2025-03-30 11:30:51 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=1152&qb_discount=78&max_combine=4 HTTP/1.1" 200 48470
+2025-03-30 11:30:51 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=1152&qb_discount=78&max_combine=4 HTTP/1.1" 200 48470
+2025-03-30 11:30:52 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=1152&qb_discount=78&max_combine=4 HTTP/1.1" 200 48470
+2025-03-30 11:30:57 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=1152&qb_discount=78&max_combine=4 HTTP/1.1" 200 48470
+2025-03-30 11:30:57 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=1152&qb_discount=78&max_combine=4 HTTP/1.1" 200 48470
+2025-03-30 11:30:58 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=1152&qb_discount=78&max_combine=4 HTTP/1.1" 200 48470
+2025-03-30 11:30:58 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=1152&qb_discount=78&max_combine=4 HTTP/1.1" 200 48470
+2025-03-30 11:30:58 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=1152&qb_discount=78&max_combine=4 HTTP/1.1" 200 48470
+2025-03-30 11:30:58 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=1152&qb_discount=78&max_combine=4 HTTP/1.1" 200 48470
+2025-03-30 11:31:02 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=1152&qb_discount=78&max_combine=5 HTTP/1.1" 200 48470
+2025-03-30 11:31:03 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=1152&qb_discount=78&max_combine=3 HTTP/1.1" 200 48470
+2025-03-30 11:31:17 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 11:31:17 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 11:31:18 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=1152&qb_discount=78&max_combine=3 HTTP/1.1" 200 48470
+2025-03-30 11:31:19 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=1152&qb_discount=78&max_combine=3 HTTP/1.1" 200 48470
+2025-03-30 11:32:29 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 11:32:29 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 11:32:30 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=1152&qb_discount=78&max_combine=3 HTTP/1.1" 200 50184
+2025-03-30 11:32:30 - django.server - INFO - "GET /media/root1/2025/03/30/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 304 0
+2025-03-30 11:32:31 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=1152&qb_discount=78&max_combine=3 HTTP/1.1" 200 50184
+2025-03-30 11:32:32 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=1152&qb_discount=78&max_combine=3 HTTP/1.1" 200 50184
+2025-03-30 11:33:04 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 11:33:04 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 11:33:05 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=1152&qb_discount=78&max_combine=3 HTTP/1.1" 200 50180
+2025-03-30 11:33:07 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=1152&qb_discount=78&max_combine=3 HTTP/1.1" 200 50180
+2025-03-30 11:33:08 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=1152&qb_discount=78&max_combine=3 HTTP/1.1" 200 50180
+2025-03-30 11:41:27 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 11:41:28 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 11:41:29 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=1152&qb_discount=78&max_combine=3 HTTP/1.1" 200 50184
+2025-03-30 11:41:29 - django.server - INFO - "GET /media/root1/2025/03/30/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 304 0
+2025-03-30 11:41:30 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=1152&qb_discount=78&max_combine=3 HTTP/1.1" 200 50184
+2025-03-30 11:43:00 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 11:43:00 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 11:43:02 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=1152&qb_discount=78&max_combine=3 HTTP/1.1" 200 50205
+2025-03-30 11:43:20 - django.server - INFO - "GET /gameorder/list/?date_field= HTTP/1.1" 200 46897
+2025-03-30 11:43:22 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=78&max_combine=4 HTTP/1.1" 200 48198
+2025-03-30 11:43:26 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=1152&qb_discount=78&max_combine=4 HTTP/1.1" 200 50205
+2025-03-30 11:43:31 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 50138
+2025-03-30 12:39:37 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=236&qb_discount=78&max_combine=4 HTTP/1.1" 200 48453
+2025-03-30 12:39:37 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-03-30 12:39:37 - django.server - INFO - "GET /media/root1/2025/03/30/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 304 0
+2025-03-30 12:39:39 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=236&qb_discount=78&max_combine=4 HTTP/1.1" 200 48453
+2025-03-30 12:41:59 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 50138
+2025-03-30 12:44:36 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 12:44:36 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 12:44:37 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 48436
+2025-03-30 12:44:40 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 48436
+2025-03-30 12:44:41 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 48436
+2025-03-30 12:44:42 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 48436
+2025-03-30 12:44:45 - django.server - INFO - "GET /customer/list/ HTTP/1.1" 200 8131
+2025-03-30 12:44:45 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 46617
+2025-03-30 12:44:51 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 48436
+2025-03-30 12:44:55 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=3 HTTP/1.1" 200 48436
+2025-03-30 12:45:37 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 12:45:37 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 12:45:40 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 46617
+2025-03-30 12:45:43 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 50138
+2025-03-30 12:46:52 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 12:46:53 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 12:46:57 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 50138
+2025-03-30 12:55:55 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 12:55:55 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 12:55:56 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 50063
+2025-03-30 12:55:56 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-03-30 12:55:56 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-03-30 12:55:56 - django.server - INFO - "GET /media/root1/2025/03/30/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 304 0
+2025-03-30 12:55:56 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 50063
+2025-03-30 12:55:59 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 50063
+2025-03-30 12:56:00 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 50063
+2025-03-30 12:56:00 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 50063
+2025-03-30 12:56:00 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 50063
+2025-03-30 12:56:01 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 50063
+2025-03-30 13:00:16 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 13:00:16 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 13:00:16 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 50096
+2025-03-30 13:00:18 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 50096
+2025-03-30 13:02:17 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 50096
+2025-03-30 13:06:13 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 13:06:14 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 13:06:15 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=78&max_combine=4 HTTP/1.1" 200 48258
+2025-03-30 13:06:15 - django.server - INFO - "GET /media/root1/2025/03/30/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 304 0
+2025-03-30 13:06:15 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 304 0
+2025-03-30 13:06:15 - django.server - INFO - "GET /media/root1/2025/03/29/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 304 0
+2025-03-30 13:06:15 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-03-30 13:06:15 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-03-30 13:06:15 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-03-30 13:06:18 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 50155
+2025-03-30 13:06:32 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 50155
+2025-03-30 13:06:33 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 50155
+2025-03-30 13:06:34 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 50155
+2025-03-30 13:11:45 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 13:11:46 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 13:11:48 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 50037
+2025-03-30 13:11:48 - django.server - INFO - "GET /media/root1/2025/03/30/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 304 0
+2025-03-30 13:15:54 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 13:15:54 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 13:15:56 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 50037
+2025-03-30 13:20:36 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 13:20:36 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 13:20:37 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 50031
+2025-03-30 13:20:39 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 50031
+2025-03-30 13:20:39 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 50031
+2025-03-30 13:20:40 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 50031
+2025-03-30 13:20:40 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 50031
+2025-03-30 13:20:49 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 13:20:49 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 13:20:51 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 50029
+2025-03-30 13:20:52 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 50029
+2025-03-30 13:22:19 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 13:22:20 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 13:22:21 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 50029
+2025-03-30 13:22:23 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 50029
+2025-03-30 13:23:19 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 13:23:20 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 13:23:22 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 50029
+2025-03-30 13:23:22 - django.server - INFO - "GET /media/root1/2025/03/30/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 304 0
+2025-03-30 13:24:25 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 13:24:25 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 13:24:25 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 50029
+2025-03-30 13:24:25 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-03-30 13:30:59 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 13:30:59 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 13:39:20 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 13:39:20 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 13:39:22 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 50034
+2025-03-30 13:39:22 - django.server - INFO - "GET /media/root1/2025/03/30/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 304 0
+2025-03-30 13:39:59 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 13:39:59 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 13:39:59 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 49902
+2025-03-30 13:40:31 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=1152&qb_discount=78&max_combine=4 HTTP/1.1" 200 50155
+2025-03-30 13:41:23 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 13:41:23 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 13:41:25 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=1152&qb_discount=78&max_combine=4 HTTP/1.1" 200 50127
+2025-03-30 13:42:21 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=235&qb_discount=78&max_combine=4 HTTP/1.1" 200 50049
+2025-03-30 13:42:25 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=236&qb_discount=78&max_combine=4 HTTP/1.1" 200 48453
+2025-03-30 13:50:39 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 13:50:39 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 13:50:41 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4 HTTP/1.1" 200 48453
+2025-03-30 13:50:44 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 48436
+2025-03-30 13:50:45 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 48436
+2025-03-30 13:50:46 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 48436
+2025-03-30 13:50:46 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 48436
+2025-03-30 13:50:47 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 48436
+2025-03-30 13:50:53 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 48436
+2025-03-30 14:02:34 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 14:02:35 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-30 14:02:35 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 49609
+2025-03-30 14:02:35 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 304 0
+2025-03-30 14:02:35 - django.server - INFO - "GET /media/root1/2025/03/30/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 304 0
+2025-03-30 14:02:39 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 49609
+2025-03-30 14:02:40 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 49609
+2025-03-30 14:02:40 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 49609
+2025-03-30 19:05:16 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 49609
+2025-03-30 19:05:16 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-03-30 19:05:16 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-03-30 19:05:16 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 304 0
+2025-03-30 19:05:16 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-03-30 19:05:16 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 304 0
+2025-03-30 19:05:16 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 304 0
+2025-03-30 19:05:16 - django.server - INFO - "GET /media/root1/2025/03/30/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 304 0
+2025-03-30 19:05:19 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 49609
+2025-03-30 19:05:20 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 49609
+2025-03-30 19:23:53 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-30 19:23:54 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-31 03:44:15 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-31 03:44:16 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 49609
+2025-03-31 03:44:16 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-03-31 03:44:16 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-03-31 03:44:16 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-03-31 03:44:16 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 304 0
+2025-03-31 03:44:16 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 304 0
+2025-03-31 03:44:16 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 304 0
+2025-03-31 03:44:16 - django.server - INFO - "GET /media/root1/2025/03/30/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 304 0
+2025-03-31 03:46:55 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 49609
+2025-03-31 03:47:27 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4&page=2 HTTP/1.1" 200 29664
+2025-03-31 03:47:27 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 304 0
+2025-03-31 03:47:27 - django.server - INFO - "GET /media/root1/2025/03/29/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 304 0
+2025-03-31 03:47:27 - django.server - INFO - "GET /media/root1/2025/03/29/6.png HTTP/1.1" 304 0
+2025-03-31 03:47:30 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4&page=1 HTTP/1.1" 200 49719
+2025-03-31 03:47:36 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4&page=2 HTTP/1.1" 200 29664
+2025-03-31 03:47:42 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=348&qb_discount=78&max_combine=4 HTTP/1.1" 200 49626
+2025-03-31 05:12:28 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-31 05:12:28 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-31 05:12:29 - django.request - ERROR - Internal Server Error: /gameorder/list/
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 102, in gameorder_list
+    qb_results = find_qb_combinations(
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 163, in find_qb_combinations
+    return [build_combination(request, exact_matches_list, qb_discount, qb_target)]
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 237, in build_combination
+    return optimize_results(results)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 251, in optimize_results
+    key = (tuple(r['order_numbers']), r['total_qb'])
+KeyError: 'total_qb'
+2025-03-31 05:12:29 - django.server - ERROR - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=348&qb_discount=78&max_combine=4 HTTP/1.1" 500 122790
+2025-03-31 05:13:52 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-31 05:13:52 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-31 05:13:53 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=348&qb_discount=78&max_combine=4 HTTP/1.1" 200 49626
+2025-03-31 05:13:56 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=348&qb_discount=78&max_combine=4 HTTP/1.1" 200 49626
+2025-03-31 05:13:57 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=348&qb_discount=78&max_combine=4 HTTP/1.1" 200 49626
+2025-03-31 05:21:03 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-31 05:21:03 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-31 05:21:04 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=348&qb_discount=78&max_combine=4 HTTP/1.1" 200 49626
+2025-03-31 05:21:05 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=348&qb_discount=78&max_combine=4 HTTP/1.1" 200 49626
+2025-03-31 05:21:05 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=348&qb_discount=78&max_combine=4 HTTP/1.1" 200 49626
+2025-03-31 05:24:16 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-31 05:24:16 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-31 05:24:17 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=348&qb_discount=78&max_combine=4 HTTP/1.1" 200 51530
+2025-03-31 05:24:17 - django.server - INFO - "GET /media/root1/2025/03/30/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 304 0
+2025-03-31 05:24:20 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=348&qb_discount=78&max_combine=4 HTTP/1.1" 200 51530
+2025-03-31 06:20:23 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-31 06:20:23 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-31 06:20:24 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=348&qb_discount=78&max_combine=4 HTTP/1.1" 200 53381
+2025-03-31 06:20:24 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-03-31 06:20:37 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 54991
+2025-03-31 06:36:21 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-31 06:36:22 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-31 06:36:22 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 53726
+2025-03-31 06:36:23 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 53726
+2025-03-31 06:36:24 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 53726
+2025-03-31 06:36:25 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 53726
+2025-03-31 06:36:26 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 53726
+2025-03-31 06:36:27 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 53726
+2025-03-31 06:36:29 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 53726
+2025-03-31 06:36:30 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 53726
+2025-03-31 06:36:30 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 53726
+2025-03-31 06:36:31 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 53726
+2025-03-31 06:36:31 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 53726
+2025-03-31 06:36:31 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 53726
+2025-03-31 06:36:31 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 53726
+2025-03-31 06:36:32 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 53726
+2025-03-31 06:36:32 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 53726
+2025-03-31 06:36:32 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 53726
+2025-03-31 06:49:32 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-31 06:49:33 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-03-31 06:49:38 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 49609
+2025-03-31 06:49:40 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 49609
+2025-03-31 06:49:41 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 49609
+2025-03-31 06:49:44 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 49609
+2025-03-31 06:49:46 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 46617
+2025-03-31 06:49:50 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4 HTTP/1.1" 200 49609
+2025-03-31 06:50:04 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-03-31 06:50:04 - django.utils.autoreload - INFO - Watching for file changes with StatReloader

@@ -2,7 +2,7 @@ from datetime import datetime
 from django.conf import settings
 from django import forms
 from django.db.models import Q
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render, redirect ,HttpResponse
 from utils.media_path import get_upload_path
 from utils.pager import Pagination
 from utils.qr_code_to_link import qr_code_to_link
@@ -11,10 +11,9 @@ from utils.time_filter import filter_by_date_range
 from web import models
 from django.contrib import messages
 from django.contrib.messages.api import get_messages
-from web.models import GameOrder, GameDenomination, TransactionRecord
+from web.models import GameOrder,GameDenomination,TransactionRecord
 
 import logging
-
 logger = logging.getLogger('web')
 
 
@@ -37,7 +36,7 @@ def gameorder_list(request):
         # 一次性加载 consumer 和 consumer.level
         # consumer__level 被预加载，后续访问 consumer.level 或 consumer__level__percent 不会触发新查询
         queryset = models.GameOrder.objects.filter(active=1).select_related('consumer__level'
-                                                                            ).annotate(
+        ).annotate(
             user_discount_percent=models.F('consumer__level__percent'),  # 获取用户等级对应的折扣百分比
             is_creator=Case(
                 When(created_by=request.userinfo, then=Value(1)),
@@ -50,7 +49,7 @@ def gameorder_list(request):
             '-id'  # 最后按ID降序作为次要排序条件
         )
 
-    # 关键字查询
+    #关键字查询
     con = Q()
     if keyword:
         con.connector = 'OR'
@@ -61,7 +60,7 @@ def gameorder_list(request):
     # 调用封装好的函数进行日期过滤
     queryset, start_date, end_date, pager = filter_by_date_range(request, queryset)
 
-    pager = Pagination(request, queryset)
+    pager = Pagination(request,queryset)
 
     # QB匹配功能
     qb_results = []
@@ -77,8 +76,8 @@ def gameorder_list(request):
             # 获取有效订单（折扣>用户设置的折扣）
             # 在上面的查询条件的基础上再增加过滤条件进行查询过滤
             valid_orders = queryset.filter(
-                recharge_option__isnull=False,  # 必须关联了充值选项
-                consumer__level__percent__gt=qb_discount * 100  # 用户等级折扣必须大于给QB用户的报价折扣
+                recharge_option__isnull=False, # 必须关联了充值选项
+                consumer__level__percent__gt=qb_discount*100 # 用户等级折扣必须大于给QB用户的报价折扣
             ).select_related('recharge_option', 'consumer__level')
 
             # 构建订单列表，每个订单包含id、金额和折扣
@@ -89,11 +88,10 @@ def gameorder_list(request):
                     # 核心计算字段
                     'id': o.id,
                     'amount': Decimal(str(o.recharge_option.amount)),
-                    # 点券订单用户的充值折扣
                     'discount': Decimal(str(o.consumer.level.percent)) / Decimal('100'),
-                    # 新增审计字段
+                     # 新增审计字段
                     'order_number': o.order_number,  # 订单号
-                    'consumer_admin': o.consumer.parent if o.consumer else None,  # 消费者管理员
+                    'consumer_admin': o.consumer.created_by.username if o.consumer.created_by else None,  # 消费者管理员
                 }
                 for o in valid_orders
             ]
@@ -101,10 +99,9 @@ def gameorder_list(request):
             # 查找最佳组合
             qb_results = find_qb_combinations(
                 request=request,
+                target_qb=qb_target,
                 orders=orders,
-
-                qb_target=qb_target,
-                qb_discount=qb_discount,
+                client_discount=qb_discount,
                 max_combine=max_combine
             )
 
@@ -112,8 +109,8 @@ def gameorder_list(request):
             print(f"QB匹配错误: {e}")
 
     context = {
-        'pager': pager,
-        'keyword': keyword,
+        'pager':pager,
+        'keyword':keyword,
         'qb_target': qb_target,  # 当前QB目标值
         'qb_discount': request.GET.get('qb_discount', '75'),  # 当前折扣设置
         'max_combine': request.GET.get('max_combine', '4'),  # 当前组合数设置
@@ -129,18 +126,16 @@ def gameorder_list(request):
 from itertools import combinations
 
 
-def find_qb_combinations(request, qb_target, orders, qb_discount, max_combine=4):
-    qb_target = Decimal(str(qb_target))
-    qb_discount = Decimal(str(qb_discount))
-    max_combine = int(str(max_combine))
-
+def find_qb_combinations(request,target_qb, orders, client_discount, max_combine=4):
+    target_qb = Decimal(str(target_qb))
+    client_discount = Decimal(str(client_discount))
     results = []
     best_left = None
     best_right = None
-    exact_matches_list = []
+    exact_match = None
 
     # 检查精确匹配
-    # 这段代码的作用是 在订单列表 orders 中寻找一个组合，使得该组合的订单金额之和精确等于目标值 qb_target
+    # 这段代码的作用是 在订单列表 orders 中寻找一个组合，使得该组合的订单金额之和精确等于目标值 target_qb
     # r 表示当前尝试的组合大小（即选取 r 个订单进行组合）
     # max_combine 是允许的最大组合订单数（例如最多尝试 3 个订单的组合）
     # 从 r=1（单订单）开始，逐步增加组合大小，直到 r=max_combine
@@ -155,37 +150,32 @@ def find_qb_combinations(request, qb_target, orders, qb_discount, max_combine=4)
             # 对每个组合 combo，计算其中所有订单的 amount 字段之和
             # combo 是 tuple 类型，即使只有一个元素也会显示为 (order,)
             total = sum(order['amount'] for order in combo)
-            if total == qb_target:
-                exact_matches_list.append(list(combo))  # 转换为list方便后续处理
+            if total == target_qb:
+                exact_match = combo
+                break
+        if exact_match:
+            break
 
-    if exact_matches_list:
-        # 如果exact_matches_list有值，则将该组合格式化后返回（包装成列表）
-        return build_combination(request, exact_matches_list, qb_discount, qb_target)
+    if exact_match:
+        # 如果找到一个精确匹配的组合（exact_match），则将该组合格式化后返回（包装成列表）
+        return [build_combination(request,exact_match, client_discount, target_qb)]
 
-    # # 如果有精确匹配，返回所有组合的详细信息
-    # if exact_matches_list:
-    #     all_results = []
-    #     for combo in exact_matches_list:
-    #         result = build_single_combination(request, combo, qb_discount, qb_target)
-    #         all_results.append(result)
-    #     return all_results
+    # 寻找最近邻组合
+    for r in range(1, max_combine + 1):
+        for combo in combinations(orders, r):
+            total = sum(order['amount'] for order in combo)
 
-    # # 寻找最近邻组合
-    # for r in range(1, max_combine + 1):
-    #     for combo in combinations(orders, r):
-    #         total = sum(order['amount'] for order in combo)
-    #
-    #         # 左边界（总QB <= 目标）
-    #         if total <= target_qb:
-    #             if not best_left or (target_qb - total) < (target_qb - best_left['qb_target']):
-    #                 current = build_combination(combo, client_discount, target_qb)
-    #                 best_left = current
-    #
-    #         # 右边界（总QB >= 目标）
-    #         if total >= target_qb:
-    #             if not best_right or (total - target_qb) < (best_right['qb_target'] - target_qb):
-    #                 current = build_combination(combo, client_discount, target_qb)
-    #                 best_right = current
+            # 左边界（总QB <= 目标）
+            if total <= target_qb:
+                if not best_left or (target_qb - total) < (target_qb - best_left['total_qb']):
+                    current = build_combination(combo, client_discount, target_qb)
+                    best_left = current
+
+            # 右边界（总QB >= 目标）
+            if total >= target_qb:
+                if not best_right or (total - target_qb) < (best_right['total_qb'] - target_qb):
+                    current = build_combination(combo, client_discount, target_qb)
+                    best_right = current
 
     # 收集结果并排序
     if best_left:
@@ -200,250 +190,117 @@ def find_qb_combinations(request, qb_target, orders, qb_discount, max_combine=4)
 from decimal import Decimal, getcontext
 
 
-def build_single_combination(request, combo_orders, qb_discount, qb_target):
-    """构建单个组合的详细信息"""
-    qb_total = sum(order['amount'] for order in combo_orders)
-    remaining = qb_target - qb_total
+def build_combination(request,combo_orders, client_discount, target_qb):
 
+    # 查询后的组合所有订单的QB总额，也是档位金额总额
+    total_qb = sum(order['amount'] for order in combo_orders)
+    remaining = target_qb - total_qb
+
+    # 点券订单的客户需要被扣款的金额，也就是我的进账
     income = sum(order['amount'] * order['discount'] for order in combo_orders)
-    cost = qb_total * qb_discount
+    # QB订单的客户需要支付给他的金额，也就是我的出项
+    cost = total_qb * client_discount
 
     service_fee = len(combo_orders) * Decimal(settings.SYS_FEE)
-    total_fee, fee_details, report_text = calculate_fee(combo_orders, request.userinfo)
+    total_fee, fee_details, report_text = calculate_transfer_fee_with_logging(combo_orders, request.userinfo)
+    transfer_fee = total_fee
 
-    profit = income - cost - service_fee - total_fee
+    # 我的利润 = 进账 - 出账 - 系统服务费 - 第三方订单借调费
+    profit = income - cost - service_fee - transfer_fee
+
+    combo_str = " + ".join(f"{order['amount']}" for order in combo_orders)
+    description = (
+        f"组合：{combo_str}\n"
+        f"总QB：{total_qb}，剩余：{remaining if remaining > 0 else -remaining}\n"
+        f"成本：{cost:.2f}元，利润：{profit:.2f}元"
+    )
 
     return {
-        'order_numbers': [order['order_number'] for order in combo_orders],
-        'qb_total': qb_total,
+        'order_ids': [order['id'] for order in combo_orders],
+        'total_qb': total_qb,
         'remaining': remaining,
         'income': income,
         'cost': cost,
         'profit': profit,
+        'description': description,
         'combination': [order['amount'] for order in combo_orders],
-        'description': f"组合：{' + '.join(str(o['amount']) for o in combo_orders)}",
-        'orders': [{
-            'amount': o['amount'],
-            'discount_percent': int(o['discount'] * 100),
-            'final_price': o['amount'] * o['discount']
-        } for o in combo_orders],
-        'report_text': report_text,
-        'efficiency': float(profit / qb_total) if qb_total else 0.0
+        # 'report_text':report_text,
     }
 
 
-def build_combination(request, combo_orders_list, qb_discount, qb_target):
-    qb_discount = Decimal(str(qb_discount))
-    qb_target = Decimal(str(qb_target))
-
-    results = []
-    for combo_orders in combo_orders_list:
-        # 查询后的组合所有订单的QB总额，也是档位金额总额
-        qb_total= sum(order['amount'] for order in combo_orders)
-        remaining = qb_target - qb_total
-
-        # 点券订单的客户需要被扣款的金额，也就是我的进账
-        income = sum(order['amount'] * order['discount'] for order in combo_orders)
-        # QB订单的客户需要支付给他的金额，也就是我的出项
-        cost = qb_total * qb_discount
-
-        service_fee = len(combo_orders) * Decimal(settings.SYS_FEE)
-        total_fee, fee_details, report_text = calculate_fee(combo_orders, request.userinfo)
-        transfer_fee = total_fee
-
-        # 我的利润 = 进账 - 出账 - 系统服务费 - 第三方订单借调费
-        profit = income - cost - service_fee - transfer_fee
-
-        combo_str = " + ".join(f"{order['amount']}" for order in combo_orders)
-        description = (
-            f"组合：{combo_str}\n"
-            f"总QB：{qb_total}，剩余：{remaining if remaining > 0 else -remaining}\n"
-            f"成本：{cost:.2f}元，利润：{profit:.2f}元"
-        )
-
-        # 构建结果字典（优化内存占用）
-        results.append({
-            'order_numbers': tuple(order['order_number'] for order in combo_orders),  # 使用元组节省内存 #方案中所有订单的订单号元组
-            'qb_total': qb_total,
-            'remaining': remaining,
-            'income': income,
-            'cost': cost,
-            'profit': profit,
-            'combination': tuple(order['amount'] for order in combo_orders),  # 不可变数据
-            'efficiency': float(profit / qb_total) if qb_total else 0.0  # 新增效益指标
-        })
-
-        # 后处理优化
-    return optimize_results(results)
-
-
-def optimize_results(results):
-    """
-    对结果进行二次优化处理
-    """
-    # 按利润降序排序
-    results.sort(key=lambda x: x['profit'], reverse=True)
-
-    # 去重处理（如果组合内容相同）
-    seen = set()
-    unique_results = []
-    for r in results:
-        key = (tuple(r['order_numbers']), r['qb_total'])
-        if key not in seen:
-            seen.add(key)
-            unique_results.append(r)
-
-    return unique_results
-
-# def build_combination(request,combo_orders, client_discount, target_qb):
-#
-#     # 查询后的组合所有订单的QB总额，也是档位金额总额
-#     total_qb = sum(order['amount'] for order in combo_orders)
-#     remaining = target_qb - total_qb
-#
-#     # 点券订单的客户需要被扣款的金额，也就是我的进账
-#     income = sum(order['amount'] * order['discount'] for order in combo_orders)
-#     # QB订单的客户需要支付给他的金额，也就是我的出项
-#     cost = total_qb * client_discount
-#
-#     service_fee = len(combo_orders) * Decimal(settings.SYS_FEE)
-#     total_fee, fee_details, report_text = calculate_transfer_fee_with_logging(combo_orders, request.userinfo)
-#     transfer_fee = total_fee
-#
-#     # 我的利润 = 进账 - 出账 - 系统服务费 - 第三方订单借调费
-#     profit = income - cost - service_fee - transfer_fee
-#
-#     combo_str = " + ".join(f"{order['amount']}" for order in combo_orders)
-#     description = (
-#         f"组合：{combo_str}\n"
-#         f"总QB：{total_qb}，剩余：{remaining if remaining > 0 else -remaining}\n"
-#         f"成本：{cost:.2f}元，利润：{profit:.2f}元"
-#     )
-#
-#     return {
-#         'order_numbers': [order['order_number'] for order in combo_orders],
-#         'total_qb': total_qb,
-#         'remaining': remaining,
-#         'income': income,
-#         'cost': cost,
-#         'profit': profit,
-#         'description': description,
-#         'combination': [order['amount'] for order in combo_orders],
-#         'report_text':report_text,
-#     }
-
-
-def calculate_fee(combo_orders, current_user):
-    """
-    combo_orders:某个方案中的订单组合列表
-    """
-    system_fee_per_order = Decimal(settings.SYS_FEE)  # 系统费
-    external_fee_per_order = Decimal(settings.THIRD_FEE)  # 三方系统订单借调费单价
-    # fee_per_order = int(settings.THIRD_FEE)  int() 会直接截断小数部分，将 0.5 转换为 0
-    external_orders = []
+def calculate_transfer_fee_with_logging(combo_orders, current_user):
+    #三方系统订单借调费单价
+    fee_per_order = int(settings.THIRD_FEE)
+    fee_details = []
     internal_orders = []
 
-    # combo_orders是符合方案的组合订单列表
-    # 而order,是订单列表中一个，被依次遍历循环处理。这里的order，不是原始数据，是简化字典
     for order in combo_orders:
         order_amount = order['amount']
         discount = order['discount']
-        # 这里的金额，是应该付款给点券订单用户的金额
         final_amount = order_amount * discount
 
         # 判断是否为内部订单
-        # print('123:', order['consumer_admin'], type(order['consumer_admin']))
-        # print('345:', current_user.username, type(current_user.username))
-        # print('678:', current_user.parent, type(current_user.parent))
-        # 以下是以上的输出，可以看出，注释的判断是否为内部订单的逻辑，是有问题的。
-        # 123: root1 <class 'web.models.UserInfo'>
-        # 345: root <class 'str'>
-        # 678: None <class 'NoneType'>
-        # is_internal = (
-        #         order.get('consumer_admin') == current_user.username or
-        #         order.get('consumer_admin') == getattr(current_user, 'parent', None)
-        # )
+        is_internal = (
+                order.get('consumer_admin') == current_user.username or
+                order.get('consumer_admin') == getattr(current_user.created_by, 'username', None)
+        )
 
-        # 更健壮的内部订单判断逻辑
-        # 获取当前订单的消费者的管理员
-        consumer_admin = order.get('consumer_admin')
-        is_internal = False
-
-        # 情况1：consumer_admin 是当前用户自己
-        # 如果当前订单的消费者的管理员，就是当前登录系统的用户，即出库用户  一家人，圈内人
-        if str(consumer_admin) == str(current_user.username):
-            is_internal = True
-
-        # 情况2：consumer_admin 是当前用户的上级
-        # 如果当前登录用户，即出库用户，有父级，即是被管理员创建的  并且，其创建者，与当前订单的消费者的创建者是同一个人
-        elif hasattr(current_user, 'parent') and str(consumer_admin) == str(current_user.parent):
-            is_internal = True
-
-        # 情况3：当前用户是 consumer_admin 的上级（如果需要）
-        # 根据你的业务逻辑决定是否添加这个条件
-
-        # 如果当前订单是内部的
         if is_internal:
-            # 将当前订单的订单号，充值面额,订单消费者的管理员作为字典中的三条数据，打包添加到内部订单列表中
             internal_orders.append({
                 'order_number': order['order_number'],
                 'amount': final_amount,
                 'admin': order['consumer_admin']
             })
         else:
-            # 否则，将当前订单的订单号，充值面额，订单消费者的创建者，出库人所在圈子的创建者，此订单的三方借调费用，时间戳作为字典，添加到外部订单列表中
-            external_orders.append({
+            fee_details.append({
                 'order_number': order['order_number'],
                 'amount': final_amount,
-                'source_admin': order['consumer_admin'],  # 订单入库人所在圈子的管理员
-                'target_admin': current_user.username,  # 订单出库人所在圈子的管理员
-                'fee': external_fee_per_order,  # 每单的借调费
+                'source_admin': order['consumer_admin'],
+                'target_admin': current_user.username,
+                'fee': fee_per_order,
                 'timestamp': datetime.now().isoformat()
             })
 
-    # 计算总的第三方订单借调费用
-    external_total_fee = sum(item['fee'] for item in external_orders)
-
-    # 计算总的第三方订单借调费用
-    system_total_fee = system_fee_per_order * len(combo_orders)
+    # 计算总费用
+    total_fee = sum(item['fee'] for item in fee_details)
 
     # 生成详细文案
-    report_text = generate_fee_report(internal_orders, external_orders, combo_orders)
+    report_text = generate_fee_report(internal_orders, fee_details)
 
-    return external_total_fee, system_total_fee , report_text
+    return total_fee, fee_details, report_text
 
 
-def generate_fee_report(internal_orders, external_orders, combo_orders):
+def generate_fee_report(internal_orders, fee_details):
     """生成易读的费用报告文案"""
-    internal_fee_summary = []
-    external_fee_summary = []
-    system_fee_summary = []
-
-    if internal_orders:
-        system_fee_summary.append("\n【系统费明细】")
-        line = f"该方案共计{len(internal_orders)}内部单，这些订单无三方费用，仅有系统费."
-        system_fee_summary.append(line)
-    internal_fee_summary_to_string = "".join(internal_fee_summary)
+    report_lines = []
 
     # 添加第三方订单详情
-    if external_orders:
-        external_fee_summary.append("【第三方订单费用明细】")
-        for item in external_orders:
-            line = (f"订单号{item['order_number']}的订单是{item['source_admin']}管理员所属，"
+    if fee_details:
+        report_lines.append("【第三方订单费用明细】")
+        for item in fee_details:
+            line = (f"订单 {item['order_number']} 是 {item['source_admin']} 管理员所属，"
                     f"需要支付第三方借调费 {item['fee']}，"
-                    f"{item['source_admin']} 管理员需向你转账金额 {item['amount']}")
-            external_fee_summary.append(line)
-    external_summary_to_string = "".join(external_fee_summary)
+                    f"需转账金额 {item['amount']}")
+            report_lines.append(line)
 
-    #
-    if combo_orders:
-        system_fee_summary.append("\n【系统费明细】")
-        line = f"该方案共计{len(combo_orders)}单，故而，系统费总额为{len(combo_orders)}*{settings.SYS_FEE}."
-        system_fee_summary.append(line)
-    system_fee_summary_to_string = "".join(system_fee_summary)
+    # 添加内部订单详情
+    if internal_orders:
+        report_lines.append("\n【内部订单明细】")
+        for item in internal_orders:
+            line = f"订单 {item['order_number']} 是 {item['admin']} 管理员所属 (内部订单，免手续费)"
+            report_lines.append(line)
 
+    # 添加汇总信息
+    if fee_details:
+        total_fee = sum(item['fee'] for item in fee_details)
+        total_amount = sum(item['amount'] for item in fee_details)
+        report_lines.append(
+            f"\n总计：{len(fee_details)} 笔第三方订单，"
+            f"总手续费 {total_fee}，"
+            f"总转账金额 {total_amount}"
+        )
 
-    return external_summary_to_string+internal_fee_summary_to_string+system_fee_summary_to_string
+    return "\n".join(report_lines)
 
 
 class BootStrapForm:
@@ -458,7 +315,6 @@ class BootStrapForm:
                 continue
             field.widget.attrs['class'] = "form-control"
             field.widget.attrs['placeholder'] = "请输入{}".format(field.label)
-
 
 # class GameOrderAddModelForm(BootStrapForm,forms.ModelForm):
 #     class Meta:
@@ -522,7 +378,7 @@ def gameorder_add(request):
         form = GameOrderAddModelForm()
         return render(request, 'gameorder_add.html', {'form': form})
 
-    form = GameOrderAddModelForm(data=request.POST, files=request.FILES)
+    form = GameOrderAddModelForm(data=request.POST,files=request.FILES)
 
     if not form.is_valid():
         print('1')
@@ -535,12 +391,13 @@ def gameorder_add(request):
     if request.POST.get('recharge_method') == 'qrcode':
         qr_code_file = form.cleaned_data['qr_code']
 
+
         try:
             # 获取存储路径
             # qr_code_path = get_upload_path(qr_code_file,username)
             # # full_path = os.path.join(settings.MEDIA_ROOT, qr_code_path)
             # full_path = os.path.join(settings.MEDIA_ROOT, qr_code_path)
-            qr_code_path, full_path = get_upload_path(qr_code_file, username)
+            qr_code_path,full_path = get_upload_path(qr_code_file,username)
 
             # 保存文件
             with open(full_path, 'wb+') as destination:
@@ -573,6 +430,7 @@ def gameorder_add(request):
 
 
 from django.http import JsonResponse
+
 
 # def gameorder_load_charge_options(request):
 #     game_id = request.GET.get('game')
@@ -608,7 +466,6 @@ from django.http import JsonResponse
 from django.http import JsonResponse
 from web.models import GameDenomination
 
-
 def gameorder_load_charge_options(request):
     game_id = request.GET.get('game')
     platform = request.GET.get('platform')
@@ -637,7 +494,8 @@ def gameorder_load_charge_options(request):
         return JsonResponse({'status': False, 'error': str(e)}, status=500)
 
 
-def gameorder_edit(request, pk):
+
+def gameorder_edit(request,pk):
     pass
 
 
