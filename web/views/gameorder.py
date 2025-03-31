@@ -13,6 +13,7 @@ from django.contrib import messages
 from django.contrib.messages.api import get_messages
 from web.models import GameOrder, GameDenomination, TransactionRecord
 from decimal import Decimal, getcontext
+from django.db.models import Case, When, Value, IntegerField, F
 import logging
 
 logger = logging.getLogger('web')
@@ -26,29 +27,18 @@ def gameorder_list(request):
     keyword = request.GET.get('keyword', '').strip()
     usertype = request.userdict.usertype
 
-    # 如果时是消费者，查询消费者是当前消费者的所有订单
+    # 基础查询集
     if usertype == 'CUSTOMER':
         queryset = models.GameOrder.objects.filter(consumer=request.userinfo, active=1).all()
-    # 否则，查询所有获取所有活跃的 GameOrder 记录，并为每条记录添加两个额外信息
-    # 1.关联消费者的等级折扣百分比
-    # 2.标记当前请求用户是否是订单的创建者(1表示是，0表示不是)
     else:
-        from django.db.models import F, Case, When, Value, IntegerField
-        # 一次性加载 consumer 和 consumer.level
-        # consumer__level 被预加载，后续访问 consumer.level 或 consumer__level__percent 不会触发新查询
-        queryset = models.GameOrder.objects.filter(active=1).select_related('consumer__level'
-                                                                            ).annotate(
-            user_discount_percent=models.F('consumer__level__percent'),  # 获取用户等级对应的折扣百分比
+        queryset = models.GameOrder.objects.filter(active=1).select_related('consumer__level').annotate(
+            user_discount_percent=F('consumer__level__percent'),
             is_creator=Case(
                 When(created_by=request.userinfo, then=Value(1)),
                 default=Value(0),
                 output_field=IntegerField()
             )
-        ).order_by(
-            '-is_creator',  # 当前用户创建的订单优先
-            'user_discount_percent',  # 折扣百分比小的排前面（折扣更大）
-            '-id'  # 最后按ID降序作为次要排序条件
-        )
+        ).order_by('-is_creator', 'user_discount_percent', '-id')
 
     # 关键字查询
     con = Q()
@@ -58,87 +48,104 @@ def gameorder_list(request):
         con.children.append(('order_number__contains', keyword))
         queryset = queryset.filter(con)
 
-    # 调用封装好的函数进行日期过滤
+    # 日期过滤
     queryset, start_date, end_date, pager = filter_by_date_range(request, queryset)
 
-    pager = Pagination(request, queryset)
-
-    # QB匹配功能
+    # 初始化qb_results为空列表
     qb_results = []
-    qb_target = request.GET.get('qb_target')
 
-    if qb_target:
+    # 处理应用方案逻辑
+    applied_orders = request.GET.get('applied_orders')
+    if applied_orders:
+        # 分割订单号并过滤主查询集
+        applied_order_list = applied_orders.split(',')
+        queryset = queryset.filter(order_number__in=applied_order_list)
+
         try:
-            # 获取并验证参数
-            qb_target = Decimal(qb_target)
+            # 获取这些订单的详细信息
+            applied_orders_data = []
+            for order in queryset:
+                applied_orders_data.append({
+                    'id': order.id,
+                    'amount': Decimal(str(order.recharge_option.amount)),
+                    'discount': Decimal(str(order.consumer.level.percent)) / Decimal('100'),
+                    'order_number': order.order_number,
+                    'consumer_admin': order.consumer.parent if order.consumer.parent else None,
+                })
+
+            # 直接构建单个结果
+            if applied_orders_data:
+                qb_target = sum(o['amount'] for o in applied_orders_data)
+                result = find_qb_combinations(
+                    request=request,
+                    orders=applied_orders_data,
+                    qb_target=qb_target,
+                    qb_discount=Decimal(request.GET.get('qb_discount', '75')) / 100,
+                    max_combine=len(applied_orders_data)
+                )
+                qb_results = result[:1] if result else []
+
+        except Exception as e:
+            logger.error(f"构建应用方案出错: {e}")
+
+    # 正常QB匹配逻辑
+    elif request.GET.get('qb_target'):
+        try:
+            qb_target = Decimal(request.GET.get('qb_target'))
             qb_discount = Decimal(request.GET.get('qb_discount', '75')) / Decimal('100')
             max_combine = int(request.GET.get('max_combine', '4'))
 
-            # 获取有效订单（折扣>用户设置的折扣）
-            # 在上面的查询条件的基础上再增加过滤条件进行查询过滤
             valid_orders = queryset.filter(
-                recharge_option__isnull=False,  # 必须关联了充值选项
-                consumer__level__percent__gt=qb_discount * 100  # 用户等级折扣必须大于给QB用户的报价折扣
+                recharge_option__isnull=False,
+                consumer__level__percent__gt=qb_discount * 100
             ).select_related('recharge_option', 'consumer__level')
 
-            # 构建订单列表，每个订单包含id、金额和折扣
-            # 简化字典，只存储必要的个字段，内存占用更小，对于大规模订单列表(如10万+条)优势明显
-            # 相较于完整的对象，完整的对象内存消耗可能要高出这种简化字典的3-5倍
             orders = [
                 {
-                    # 核心计算字段
                     'id': o.id,
                     'amount': Decimal(str(o.recharge_option.amount)),
-                    # 点券订单用户的充值折扣
                     'discount': Decimal(str(o.consumer.level.percent)) / Decimal('100'),
-                    # 新增审计字段
-                    'order_number': o.order_number,  # 订单号
-                    'consumer_admin': o.consumer.parent if o.consumer else None,  # 消费者管理员
+                    'order_number': o.order_number,
+                    'consumer_admin': o.consumer.parent if o.consumer.parent else None,
                 }
                 for o in valid_orders
             ]
 
-            # 查找最佳组合
             qb_results = find_qb_combinations(
                 request=request,
                 orders=orders,
-
                 qb_target=qb_target,
                 qb_discount=qb_discount,
                 max_combine=max_combine
             )
 
         except (ValueError, TypeError, AttributeError) as e:
-            print(f"QB匹配错误: {e}")
+            logger.error(f"QB匹配错误: {e}")
+            qb_results = []
 
-    # 处理应用方案的逻辑（修正版）
-    applied_orders = request.GET.get('applied_orders')
-    if applied_orders:
-        applied_order_list = applied_orders.split(',')
-        queryset = queryset.filter(order_number__in=applied_order_list)
+    # 分页处理
+    pager = Pagination(request, queryset)
 
-        # 保留其他筛选参数
-        new_get = request.GET.copy()
-        new_get.pop('qb_target', None)
-        request.GET = new_get
-
-        # 添加调试信息
-        logger.debug(f"应用方案订单: {applied_order_list}")
+    # 准备清除应用方案的链接参数
+    cleaned_query = request.GET.copy()
+    if 'applied_orders' in cleaned_query:
+        del cleaned_query['applied_orders']
 
     context = {
         'pager': pager,
         'keyword': keyword,
-        'qb_target': qb_target,  # 当前QB目标值
-        'qb_discount': request.GET.get('qb_discount', '75'),  # 当前折扣设置
-        'max_combine': request.GET.get('max_combine', '4'),  # 当前组合数设置
-        'qb_results': qb_results,  # QB匹配结果
-        'start_date': start_date,  # 日期筛选相关
+        'qb_target': request.GET.get('qb_target'),
+        'qb_discount': request.GET.get('qb_discount', '75'),
+        'max_combine': request.GET.get('max_combine', '4'),
+        'qb_results': qb_results,  # 现在这个变量总是有定义
+        'start_date': start_date,
         'end_date': end_date,
-        'date_field': request.GET.get('date_field', ''),  # 保留日期字段参数
-        'tolerance': request.GET.get('tolerance', '10'),  # 新增
+        'date_field': request.GET.get('date_field', ''),
+        'tolerance': request.GET.get('tolerance', '10'),
+        'applied_orders': applied_orders,
+        'cleaned_query': cleaned_query.urlencode(),
     }
     return render(request, 'gameorder_list.html', context)
-    # return render(request, 'gameorder_list.html', locals())
 
 
 from itertools import combinations

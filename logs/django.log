@@ -14061,3 +14061,21 @@ UnboundLocalError: local variable 'qb_results' referenced before assignment
 2025-04-01 02:37:13 - django.server - ERROR - "GET /gameorder/list/ HTTP/1.1" 500 90451
 2025-04-01 02:39:43 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
 2025-04-01 02:39:44 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-01 02:39:45 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 50094
+2025-04-01 02:39:47 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 50094
+2025-04-01 02:39:51 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=358&qb_discount=78&max_combine=4&tolerance=10 HTTP/1.1" 200 197535
+2025-04-01 02:40:01 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4&tolerance=10 HTTP/1.1" 200 63730
+2025-04-01 02:41:02 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-04-01 02:41:02 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-01 02:41:03 - django.request - ERROR - Internal Server Error: /gameorder/list/
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 34, in gameorder_list
+    user_discount_percent=F('consumer__level__percent'),
+NameError: name 'F' is not defined
+2025-04-01 02:41:03 - django.server - ERROR - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4&tolerance=10 HTTP/1.1" 500 90442
+2025-04-01 02:41:35 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-04-01 02:41:36 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
