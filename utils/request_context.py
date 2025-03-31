@@ -376,13 +376,13 @@ class GameOrderAddModelForm(BootStrapForm, forms.ModelForm):
 def gameorder_add(request):
     if request.method == 'GET':
         form = GameOrderAddModelForm()
-        return render(request, 'gameorder_add.html', {'form': form})
+        return render(request, 'gameorder_form.html', {'form': form})
 
     form = GameOrderAddModelForm(data=request.POST,files=request.FILES)
 
     if not form.is_valid():
         print('1')
-        return render(request, 'gameorder_add.html', {'form': form})
+        return render(request, 'gameorder_form.html', {'form': form})
 
     # 获取用户名 - 根据你的实际用户模型调整
     username = request.userdict.username
@@ -409,7 +409,7 @@ def gameorder_add(request):
             if not qr_link:
                 form.add_error('consumer', '无法解析二维码内容')
                 print('2')
-                return render(request, 'gameorder_add.html', {'form': form})
+                return render(request, 'gameorder_form.html', {'form': form})
 
             # 更新表单数据
             form.instance.recharge_link = qr_link
@@ -418,7 +418,7 @@ def gameorder_add(request):
         except Exception as e:
             form.add_error('consumer', f'文件处理出错: {str(e)}')
             print(e)
-            return render(request, 'gameorder_add.html', {'form': form})
+            return render(request, 'gameorder_form.html', {'form': form})
 
     # 保存订单
     order = form.save(commit=False)

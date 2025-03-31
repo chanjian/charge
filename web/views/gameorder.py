@@ -458,22 +458,26 @@ class GameOrderAddModelForm(BootStrapForm, forms.ModelForm):
                 ).order_by('amount')
             except (ValueError, TypeError):
                 pass
-        elif self.instance.pk:
-            self.fields['recharge_option'].queryset = self.instance.game.order_options.filter(
-                platform=self.instance.platform
-            )
+        elif self.instance.pk and self.instance.game:
+            # 使用默认的反向关系名称 gamedenomination_set
+            # 或者如果您已经添加了 related_name='order_options'，可以保持原样
+            self.fields['recharge_option'].queryset = GameDenomination.objects.filter(
+                game=self.instance.game,
+                platform=self.instance.platform,
+                active=True
+            ).order_by('amount')
 
 
 def gameorder_add(request):
     if request.method == 'GET':
         form = GameOrderAddModelForm()
-        return render(request, 'gameorder_add.html', {'form': form})
+        return render(request, 'gameorder_form.html', {'form': form})
 
     form = GameOrderAddModelForm(data=request.POST, files=request.FILES)
 
     if not form.is_valid():
         print('1')
-        return render(request, 'gameorder_add.html', {'form': form})
+        return render(request, 'gameorder_form.html', {'form': form})
 
     # 获取用户名 - 根据你的实际用户模型调整
     username = request.userdict.username
@@ -499,7 +503,7 @@ def gameorder_add(request):
             if not qr_link:
                 form.add_error('consumer', '无法解析二维码内容')
                 print('2')
-                return render(request, 'gameorder_add.html', {'form': form})
+                return render(request, 'gameorder_form.html', {'form': form})
 
             # 更新表单数据
             form.instance.recharge_link = qr_link
@@ -508,7 +512,7 @@ def gameorder_add(request):
         except Exception as e:
             form.add_error('consumer', f'文件处理出错: {str(e)}')
             print(e)
-            return render(request, 'gameorder_add.html', {'form': form})
+            return render(request, 'gameorder_form.html', {'form': form})
 
     # 保存订单
     order = form.save(commit=False)
@@ -519,38 +523,6 @@ def gameorder_add(request):
     return redirect('gameorder_list')
 
 
-from django.http import JsonResponse
-
-# def gameorder_load_charge_options(request):
-#     game_id = request.GET.get('game')
-#     platform = request.GET.get('platform')
-#
-#     if not game_id or not platform:
-#         return JsonResponse({'status': False, 'error': '缺少参数'})
-#
-#     options = GameDenomination.objects.filter(
-#         game_id=game_id,
-#         platform=platform,
-#         active=True
-#     ).order_by('amount').values('id', 'amount', 'base_currency', 'gift_currency' ,'bonus_currency')
-#
-#     # 构造包含完整显示文本的选项列表
-#     option_list = []
-#     for option in options:
-#         option_list.append({
-#             'id': option.id,
-#             'amount': str(option.amount),
-#             'base_currency': option.base_currency,
-#             'gift_currency': option.gift_currency,
-#             'bonus_currency': option.bonus_currency,
-#             'total_currency': option.base_currency + option.gift_currency + option.bonus_currency,
-#             'display_text': str(option)  # 这会调用__str__方法，即display_text属性
-#         })
-#
-#     return JsonResponse({
-#         'status': True,
-#         'options': option_list
-#     })
 
 from django.http import JsonResponse
 from web.models import GameDenomination
@@ -585,8 +557,93 @@ def gameorder_load_charge_options(request):
 
 
 def gameorder_edit(request, pk):
-    pass
+    try:
+        order = GameOrder.objects.get(pk=pk, active=1)
+    except GameOrder.DoesNotExist:
+        messages.error(request, '订单不存在或已被删除')
+        return redirect('gameorder_list')
+
+    if request.method == 'GET':
+        form = GameOrderAddModelForm(instance=order)
+        return render(request, 'gameorder_form.html', {'form': form, 'is_edit': True})
+
+    form = GameOrderAddModelForm(data=request.POST, files=request.FILES, instance=order)
+
+    if not form.is_valid():
+        return render(request, 'gameorder_form.html', {'form': form, 'is_edit': True})
+
+    # Handle QR code upload if recharge method is qrcode
+    if request.POST.get('recharge_method') == 'qrcode':
+        qr_code_file = form.cleaned_data.get('qr_code')
+
+        if qr_code_file:  # Only process if a new QR code was uploaded
+            username = request.userdict.username
+
+            try:
+                # Get upload path and save file
+                qr_code_path, full_path = get_upload_path(qr_code_file, username)
+
+                with open(full_path, 'wb+') as destination:
+                    for chunk in qr_code_file.chunks():
+                        destination.write(chunk)
+
+                # Parse QR code
+                qr_link = qr_code_to_link(full_path)
+                if not qr_link:
+                    form.add_error('consumer', '无法解析二维码内容')
+                    return render(request, 'gameorder_form.html', {'form': form, 'is_edit': True})
+
+                # Update form data
+                form.instance.recharge_link = qr_link
+                form.instance.qr_code = qr_code_path
+
+            except Exception as e:
+                form.add_error('consumer', f'文件处理出错: {str(e)}')
+                return render(request, 'gameorder_form.html', {'form': form, 'is_edit': True})
+        else:
+            # If no new QR code was uploaded but method is qrcode, keep existing values
+            if order.qr_code:
+                form.instance.qr_code = order.qr_code
+            if order.recharge_link:
+                form.instance.recharge_link = order.recharge_link
+
+    # Save the order
+    order = form.save(commit=False)
+    order.save()
+
+    messages.success(request, '订单更新成功')
+    return redirect('gameorder_list')
 
 
 def gameorder_delete(request):
-    pass
+    """
+    删除游戏订单（软删除，设置active=0）
+    请求参数：
+    - oid: 订单ID
+    """
+    oid = request.GET.get('oid', 0)
+
+    # 验证订单ID是否存在
+    if not oid:
+        res = BaseResponse(status=False, detail="请选择要删除的订单")
+        return JsonResponse(res.dict)
+
+    try:
+        # 检查订单是否存在且是激活状态
+        exists = models.GameOrder.objects.filter(id=oid, active=1).exists()
+        if not exists:
+            res = BaseResponse(status=False, detail="要删除的订单不存在或已被删除")
+            return JsonResponse(res.dict)
+
+        # 执行软删除（设置active=0）
+        models.GameOrder.objects.filter(id=oid).update(active=0)
+
+        # 可以在这里添加相关的交易记录（如果需要）
+        # 例如记录删除操作到TransactionRecord
+
+        res = BaseResponse(status=True, detail="订单删除成功")
+        return JsonResponse(res.dict)
+
+    except Exception as e:
+        res = BaseResponse(status=False, detail=f"删除订单时出错: {str(e)}")
+        return JsonResponse(res.dict)

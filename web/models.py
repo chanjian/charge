@@ -116,7 +116,7 @@ class GameDenomination(ActiveBaseModel):
     gift_currency = models.PositiveIntegerField(verbose_name='赠送点券',default=0,help_text='用户获得的额外赠送点券')
     bonus_currency = models.PositiveIntegerField(verbose_name='绑定点券',default=0)
     monthly_limit = models.PositiveIntegerField(default=5, verbose_name='每月限购次数')
-    game = models.ForeignKey(GameName, on_delete=models.CASCADE, verbose_name='所属游戏',default=None,null=True)
+    game = models.ForeignKey(GameName, on_delete=models.CASCADE, verbose_name='所属游戏',default=None,null=True,related_name='denominations')
 
     class Meta:
         verbose_name = '充值面额'

@@ -14079,3 +14079,181 @@ NameError: name 'F' is not defined
 2025-04-01 02:41:03 - django.server - ERROR - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4&tolerance=10 HTTP/1.1" 500 90442
 2025-04-01 02:41:35 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
 2025-04-01 02:41:36 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-01 02:41:36 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4&tolerance=10 HTTP/1.1" 200 63730
+2025-04-01 02:41:38 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 50094
+2025-04-01 02:41:42 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=45&qb_discount=78&max_combine=4&tolerance=10 HTTP/1.1" 200 63730
+2025-04-01 02:41:46 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=358&qb_discount=78&max_combine=4&tolerance=10 HTTP/1.1" 200 197535
+2025-04-01 02:41:48 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=358&qb_discount=78&max_combine=4&tolerance=10&applied_orders=O20250331091738%2CO20250329182119%2CORD20250329063358%2CORD20250329063304 HTTP/1.1" 200 40345
+2025-04-01 02:41:57 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=358&qb_discount=78&max_combine=4&tolerance=10&applied_orders=O20250331091738%2CO20250329182119%2CORD20250329063358%2CORD20250329063304 HTTP/1.1" 200 40345
+2025-04-01 02:42:14 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=358&qb_discount=78&max_combine=4&tolerance=10&applied_orders=O20250331091738%2CO20250329182119%2CORD20250329063358%2CORD20250329063304 HTTP/1.1" 200 40345
+2025-04-01 02:42:17 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=358&qb_discount=78&max_combine=4&tolerance=10 HTTP/1.1" 200 197535
+2025-04-01 02:42:27 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=358&qb_discount=78&max_combine=4&tolerance=10&applied_orders=O20250331091738%2CORD20250329063951%2CORD20250329063358%2CO20250329164243 HTTP/1.1" 200 40580
+2025-04-01 02:42:27 - django.server - INFO - "GET /media/root1/2025/03/29/6.png HTTP/1.1" 304 0
+2025-04-01 02:45:27 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=100&max_combine=3 HTTP/1.1" 200 51899
+2025-04-01 02:45:27 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 304 0
+2025-04-01 02:45:27 - django.server - INFO - "GET /media/root1/2025/03/30/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 304 0
+2025-04-01 02:45:27 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 304 0
+2025-04-01 02:45:27 - django.server - INFO - "GET /media/root1/2025/03/29/6.png HTTP/1.1" 304 0
+2025-04-01 02:45:27 - django.server - INFO - "GET /media/root1/2025/03/29/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 304 0
+2025-04-01 02:45:27 - django.server - INFO - "GET /media/root/2025/03/30/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-04-01 02:45:27 - django.server - INFO - "GET /media/root/2025/03/29/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-04-01 02:45:27 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-04-01 02:45:27 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 304 0
+2025-04-01 02:45:27 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 304 0
+2025-04-01 02:45:27 - django.server - INFO - "GET /media/root/2025/03/31/68673c244810eac27fb447a576835af.jpg HTTP/1.1" 200 94998
+2025-04-01 02:45:31 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=358&qb_discount=100&max_combine=3&tolerance=10 HTTP/1.1" 200 52390
+2025-04-01 02:45:34 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=358&qb_discount=100&max_combine=3&tolerance=10 HTTP/1.1" 200 52390
+2025-04-01 02:45:35 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=358&qb_discount=100&max_combine=3&tolerance=10 HTTP/1.1" 200 52390
+2025-04-01 02:45:37 - django.server - INFO - "GET /gameorder/list/?date_field= HTTP/1.1" 200 50582
+2025-04-01 02:45:41 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=356&qb_discount=78&max_combine=4&tolerance=10 HTTP/1.1" 200 205176
+2025-04-01 02:45:57 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=356&qb_discount=78&max_combine=4&tolerance=10&applied_orders=O20250331091738%2CO20250330051904 HTTP/1.1" 200 33144
+2025-04-01 02:48:40 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=356&qb_discount=78&max_combine=4&tolerance=10&applied_orders=O20250331091738%2CO20250330051904 HTTP/1.1" 200 33144
+2025-04-01 02:54:47 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=356&qb_discount=78&max_combine=4&tolerance=10&applied_orders=O20250331091738%2CO20250330051904 HTTP/1.1" 200 33144
+2025-04-01 02:56:06 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=234&qb_discount=78&max_combine=4&tolerance=10 HTTP/1.1" 200 126839
+2025-04-01 02:56:13 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 50302
+2025-04-01 02:56:14 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 50302
+2025-04-01 02:56:15 - django.server - INFO - "GET /level/list/ HTTP/1.1" 200 5616
+2025-04-01 02:56:15 - django.server - INFO - "GET /customer/list/ HTTP/1.1" 200 8136
+2025-04-01 02:56:16 - django.server - INFO - "GET /level/list/ HTTP/1.1" 200 5616
+2025-04-01 02:56:19 - django.server - INFO - "GET /customer/list/ HTTP/1.1" 200 8136
+2025-04-01 02:56:19 - django.request - WARNING - Not Found: /policy/list/
+2025-04-01 02:56:19 - django.server - WARNING - "GET /policy/list/ HTTP/1.1" 404 6808
+2025-04-01 02:57:04 - django.server - INFO - "GET /customer/add/ HTTP/1.1" 200 8394
+2025-04-01 02:57:09 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 50302
+2025-04-01 02:57:17 - django.server - INFO - "GET /gameorder/add/ HTTP/1.1" 200 9410
+2025-04-01 02:57:22 - django.server - INFO - "GET /gameorder/load-options/?game=3&platform=ANDROID HTTP/1.1" 200 31
+2025-04-01 02:57:33 - django.server - INFO - "POST /gameorder/add/ HTTP/1.1" 302 0
+2025-04-01 02:57:33 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 50776
+2025-04-01 02:57:33 - django.server - INFO - "GET /media/root1/2025/04/01/bceb03b8f380fcb72b73c91c3b032bf.jpg HTTP/1.1" 200 646394
+2025-04-01 02:57:48 - django.request - ERROR - Internal Server Error: /gameorder/edit/35/
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 188, in _get_response
+    self.check_response(response, callback)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 309, in check_response
+    raise ValueError(
+ValueError: The view web.views.gameorder.gameorder_edit didn't return an HttpResponse object. It returned None instead.
+2025-04-01 02:57:48 - django.server - ERROR - "GET /gameorder/edit/35/ HTTP/1.1" 500 88670
+2025-04-01 02:58:12 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=365&qb_discount=75&max_combine=4&tolerance=10 HTTP/1.1" 200 211549
+2025-04-01 02:58:12 - django.server - INFO - "GET /media/root1/2025/04/01/bceb03b8f380fcb72b73c91c3b032bf.jpg HTTP/1.1" 304 0
+2025-04-01 02:59:04 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=365&qb_discount=75&max_combine=4&tolerance=10&applied_orders=O20250329182140%2CO20250329164243%2CO20250331091738%2CORD20250329063358 HTTP/1.1" 200 40770
+2025-04-01 03:06:28 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-04-01 03:06:28 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-01 03:06:29 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=358&qb_discount=78&max_combine=4&tolerance=10&applied_orders=O20250331091738%2CORD20250329063951%2CORD20250329063358%2CO20250329164243 HTTP/1.1" 200 40580
+2025-04-01 03:06:29 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 304 0
+2025-04-01 03:06:30 - django.request - ERROR - Internal Server Error: /gameorder/edit/34/
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 564, in gameorder_edit
+    if not request.userinfo.is_superuser and order.created_by != request.userinfo:
+AttributeError: 'UserInfo' object has no attribute 'is_superuser'
+2025-04-01 03:06:30 - django.server - ERROR - "GET /gameorder/edit/34/?_filter=date_field%3D%26start_date%3D%26end_date%3D%26keyword%3D%26qb_target%3D358%26qb_discount%3D78%26max_combine%3D4%26tolerance%3D10%26applied_orders%3DO20250331091738%252CORD20250329063951%252CORD20250329063358%252CO20250329164243 HTTP/1.1" 500 90301
+2025-04-01 03:06:40 - django.request - ERROR - Internal Server Error: /gameorder/edit/34/
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 564, in gameorder_edit
+    if not request.userinfo.is_superuser and order.created_by != request.userinfo:
+AttributeError: 'UserInfo' object has no attribute 'is_superuser'
+2025-04-01 03:06:40 - django.server - ERROR - "GET /gameorder/edit/34/?_filter=date_field%3D%26start_date%3D%26end_date%3D%26keyword%3D%26qb_target%3D358%26qb_discount%3D78%26max_combine%3D4%26tolerance%3D10%26applied_orders%3DO20250331091738%252CORD20250329063951%252CORD20250329063358%252CO20250329164243 HTTP/1.1" 500 90301
+2025-04-01 03:08:00 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-04-01 03:08:01 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-01 03:08:02 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=358&qb_discount=78&max_combine=4&tolerance=10&applied_orders=O20250331091738%2CORD20250329063951%2CORD20250329063358%2CO20250329164243 HTTP/1.1" 200 40580
+2025-04-01 03:08:04 - django.request - ERROR - Internal Server Error: /gameorder/edit/34/
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 570, in gameorder_edit
+    form = GameOrderAddModelForm(instance=order)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 462, in __init__
+    self.fields['recharge_option'].queryset = self.instance.game.order_options.filter(
+AttributeError: 'GameName' object has no attribute 'order_options'
+2025-04-01 03:08:04 - django.server - ERROR - "GET /gameorder/edit/34/?_filter=date_field%3D%26start_date%3D%26end_date%3D%26keyword%3D%26qb_target%3D358%26qb_discount%3D78%26max_combine%3D4%26tolerance%3D10%26applied_orders%3DO20250331091738%252CORD20250329063951%252CORD20250329063358%252CO20250329164243 HTTP/1.1" 500 94613
+2025-04-01 03:13:16 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-04-01 03:13:16 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-01 03:13:16 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=358&qb_discount=78&max_combine=4&tolerance=10&applied_orders=O20250331091738%2CORD20250329063951%2CORD20250329063358%2CO20250329164243 HTTP/1.1" 200 40580
+2025-04-01 03:13:17 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 50094
+2025-04-01 03:13:19 - django.request - ERROR - Internal Server Error: /gameorder/edit/34/
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 563, in gameorder_edit
+    form = GameOrderAddModelForm(instance=order)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 462, in __init__
+    self.fields['recharge_option'].queryset = self.instance.game.order_options.filter(
+AttributeError: 'GameName' object has no attribute 'order_options'
+2025-04-01 03:13:19 - django.server - ERROR - "GET /gameorder/edit/34/ HTTP/1.1" 500 92549
+2025-04-01 03:17:49 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\models.py changed, reloading.
+2025-04-01 03:17:49 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-01 03:17:50 - django.request - ERROR - Internal Server Error: /gameorder/edit/34/
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 563, in gameorder_edit
+    form = GameOrderAddModelForm(instance=order)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 462, in __init__
+    self.fields['recharge_option'].queryset = self.instance.game.order_options.filter(
+AttributeError: 'GameName' object has no attribute 'order_options'
+2025-04-01 03:17:50 - django.server - ERROR - "GET /gameorder/edit/34/ HTTP/1.1" 500 92686
+2025-04-01 03:17:52 - django.request - ERROR - Internal Server Error: /gameorder/edit/34/
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 563, in gameorder_edit
+    form = GameOrderAddModelForm(instance=order)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 462, in __init__
+    self.fields['recharge_option'].queryset = self.instance.game.order_options.filter(
+AttributeError: 'GameName' object has no attribute 'order_options'
+2025-04-01 03:17:52 - django.server - ERROR - "GET /gameorder/edit/34/ HTTP/1.1" 500 92549
+2025-04-01 03:18:21 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 50094
+2025-04-01 03:18:23 - django.request - ERROR - Internal Server Error: /gameorder/edit/34/
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 563, in gameorder_edit
+    form = GameOrderAddModelForm(instance=order)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 462, in __init__
+    self.fields['recharge_option'].queryset = self.instance.game.order_options.filter(
+AttributeError: 'GameName' object has no attribute 'order_options'
+2025-04-01 03:18:23 - django.server - ERROR - "GET /gameorder/edit/34/ HTTP/1.1" 500 92549
+2025-04-01 03:19:46 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-04-01 03:19:46 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-01 03:19:47 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 50094
+2025-04-01 03:19:49 - django.server - INFO - "GET /gameorder/edit/34/ HTTP/1.1" 200 10000
+2025-04-01 03:19:49 - django.server - INFO - "GET /gameorder/load-options/?game=2&platform=IOS HTTP/1.1" 200 143
+2025-04-01 03:19:59 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 50094
+2025-04-01 03:20:15 - django.server - INFO - "GET /gameorder/edit/34/ HTTP/1.1" 200 10000
+2025-04-01 03:20:15 - django.server - INFO - "GET /gameorder/load-options/?game=2&platform=IOS HTTP/1.1" 200 143
+2025-04-01 03:20:27 - django.server - INFO - "POST /gameorder/edit/34/ HTTP/1.1" 302 0
+2025-04-01 03:20:27 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 49391
+2025-04-01 03:20:39 - django.server - INFO - "GET /gameorder/edit/34/ HTTP/1.1" 200 9498
+2025-04-01 03:20:39 - django.server - INFO - "GET /gameorder/load-options/?game=2&platform=IOS HTTP/1.1" 200 143
+2025-04-01 03:20:46 - django.server - INFO - "POST /gameorder/edit/34/ HTTP/1.1" 302 0
+2025-04-01 03:20:46 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 50036
+2025-04-01 03:20:46 - django.server - INFO - "GET /media/root/2025/04/01/18.png HTTP/1.1" 200 173200
+2025-04-01 03:20:58 - django.server - INFO - "GET /gameorder/edit/34/ HTTP/1.1" 200 9942
+2025-04-01 03:20:58 - django.server - INFO - "GET /gameorder/load-options/?game=2&platform=IOS HTTP/1.1" 200 143
+2025-04-01 03:21:11 - django.server - INFO - "POST /gameorder/edit/34/ HTTP/1.1" 302 0
+2025-04-01 03:21:11 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 50636
+2025-04-01 03:21:11 - django.server - INFO - "GET /media/root/2025/04/01/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-04-01 03:21:31 - django.server - INFO - "GET /customer/list/ HTTP/1.1" 200 8131
+2025-04-01 03:21:52 - django.server - INFO - "GET /gamedenomination/list/ HTTP/1.1" 200 6669
+2025-04-01 03:21:54 - django.server - INFO - "GET /customer/list/ HTTP/1.1" 200 8131
+2025-04-01 03:23:11 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-04-01 03:23:12 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
