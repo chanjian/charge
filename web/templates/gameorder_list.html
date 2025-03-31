@@ -102,6 +102,13 @@
             </select>
         </div>
 
+        <div class="form-group" style="margin-left: 10px;">
+            <label class="control-label">精度范围(QB)：</label>
+            <input type="number" class="form-control" name="tolerance"
+                   value="{{ request.GET.tolerance|default:'10' }}" min="0" max="100"
+                   style="width: 80px;">
+        </div>
+
         <button type="submit" class="btn btn-primary" style="margin-left: 10px;">
             <i class="glyphicon glyphicon-search"></i> 查找匹配
         </button>
@@ -138,14 +145,15 @@
                 <th>方案名称</th>
                 <th>充值组合</th>
                 <th>QB总额</th>
-                <th>订单明细</th>
+                <th>应扣款点券客户金额</th>
                 <th>应结算QB客户金额</th>
                 <th>服务费</th>
                 <th>借调费</th>
                 <th>预计收益</th>
                 <th>剩余QB</th>
                 <th>发单文案</th>
-                <th>相关订单号</th>
+                <th>订单fee总结</th>
+                <th>涉及的订单号</th>
                 <th>操作</th>
             </tr>
         </thead>
@@ -153,23 +161,55 @@
             {% for result in qb_results %}
             <tr>
                 <td>123</td>
-                <td class="copyable" data-value="{{ result.combination|join:' + ' }}QB">{{ result.combination|join:" + " }}QB</td>
-                <td class="copyable" data-value="{{ result.total_qb }}QB">{{ result.total_qb }}QB</td>
-                <td class="copyable">
-                    <ul class="qb-order-details">
-                        {% for order in result.orders %}
-                        <li>{{ order.amount }}QB × {{ order.discount_percent }}% = {{ order.final_price|floatformat:2 }}元</li>
-                        {% endfor %}
-                        <li class="text-primary"><strong>合计: {{ result.income|floatformat:2 }}元</strong></li>
-                    </ul>
-                </td>
-                <td class="copyable" data-value="{{ result.cost|floatformat:2 }}元">{{ result.cost|floatformat:2 }}元</td>
+                <td class="copyable" data-value="{{ result.combination|join:' + ' }}">{{ result.combination|join:" + " }}</td>
+                <td class="copyable" data-value="{{ result.total_qb }}QB">{{ result.qb_total }}QB</td>
+<td class="compact-amount-cell">
+    <table class="amount-table">
+        {% for order in result.orders %}
+        <tr class="amount-row">
+            <td class="qb">{{ order.amount }}QB</td>
+            <td class="operator">×</td>
+            <td class="percent">{{ order.discount_percent }}%</td>
+            <td class="operator">=</td>
+            <td class="price">{{ order.final_price|floatformat:2 }}元</td>
+        </tr>
+        {% endfor %}
+        <tr class="total-row">
+            <td colspan="5">合计：{{ result.income|floatformat:2 }}元</td>
+        </tr>
+    </table>
+</td>
+                <td class="compact-amount-cell">
+    <table class="amount-table">
+        {% for order in result.orders %}
+        <tr class="amount-row">
+            <td class="qb">{{ order.amount }}QB</td>
+            <td class="operator">×</td>
+            <td class="percent">{{ qb_discount }}%</td>
+            <td class="operator">=</td>
+            <td class="price">{{ order.amount|mul:qb_discount|div:100|floatformat:2 }}元</td>
+        </tr>
+        {% endfor %}
+        <tr class="total-row">
+            <td colspan="5">合计：{{ result.cost|floatformat:2 }}元</td>
+        </tr>
+    </table>
+</td>
                 <td class="copyable" data-value="{{ result.service_fee|floatformat:2 }}元">{{ result.service_fee|floatformat:2 }}元</td>
                 <td class="copyable" data-value="{{ result.transfer_fee|floatformat:2 }}元">{{ result.transfer_fee|floatformat:2 }}元</td>
-                <td class="copyable {% if result.profit >= 0 %}text-success{% else %}text-danger{% endif %}"
-                    data-value="{{ result.profit|floatformat:2 }}元">
-                    {{ result.profit|floatformat:2 }}元
-                </td>
+<!--                <td class="copyable {% if result.profit >= 0 %}text-success{% else %}text-danger{% endif %}"-->
+<!--                    data-value="{{ result.profit|floatformat:2 }}元">-->
+<!--                    {{ result.profit|floatformat:2 }}元-->
+<!--                </td>-->
+
+<td class="copyable"
+    data-value="预计收益: {{ result.profit|floatformat:2 }}元 ({{ result.income|floatformat:2 }}收入 - {{ result.cost|floatformat:2 }}QB结算 - {{ result.service_fee|floatformat:2 }}服务费 - {{ result.transfer_fee|floatformat:2 }}借调费)"
+    title="收入{{ result.income|floatformat:2 }} - QB结算{{ result.cost|floatformat:2 }} - 服务费{{ result.service_fee|floatformat:2 }} - 借调费{{ result.transfer_fee|floatformat:2 }} = {{ result.profit|floatformat:2 }}">
+
+    <span class="{% if result.profit >= 0 %}text-success{% else %}text-danger{% endif %}">
+        {{ result.profit|floatformat:2 }}元
+    </span>
+</td>
                 <td class="copyable">
                     {% if result.remaining > 0 %}
                         <span class="badge badge-info" data-value="剩余 {{ result.remaining }}QB">剩余 {{ result.remaining }}QB</span>
@@ -182,12 +222,27 @@
                 <td class="copyable" data-value="{{ result.description }}">
                     {{ result.description }}
                 </td>
-                <td>{{ result.report_text }}</td>
+                <td class="text-wrap" style="width: fit-content;">
+    {{ result.report_text }}
+</td>
+                <!-- 修改订单号显示部分 -->
+<td class="order-numbers-cell">
+    <div class="order-numbers-list">
+        {% for order in result.order_details %}
+        <div class="order-number-row">
+            <span class="order-number">{{ order.number }}</span>
+            <span class="order-details">({{ order.amount }}QB @ {{ order.discount_percent }}%)</span>
+        </div>
+        {% endfor %}
+    </div>
+</td>
                 <td>
-                    <button class="btn btn-sm btn-primary copy-btn" data-value="{{ result.description }}">
-                        <i class="glyphicon glyphicon-copy"></i> 复制文案
-                    </button>
-                </td>
+   // 修改按钮的data属性为完整的订单号列表
+<button class="btn btn-sm btn-primary apply-solution"
+        data-orders="{{ result.order_numbers|join:',' }}">
+    <i class="glyphicon glyphicon-ok"></i> 应用此方案
+</button>
+</td>
             </tr>
             {% empty %}
             <tr>
@@ -335,6 +390,27 @@ $(document).ready(function() {
         return value;
     }
 
+
+
+
+// 更新点击事件处理
+$(document).on('click', '.apply-solution', function() {
+    const orderNumbers = $(this).data('orders');
+    const urlParams = new URLSearchParams(window.location.search);
+
+    // 设置应用参数
+    urlParams.set('applied_orders', orderNumbers);
+    urlParams.delete('qb_page'); // 清除分页
+
+    // 保留其他必要参数
+    ['date_field', 'start_date', 'end_date', 'keyword'].forEach(param => {
+        if(urlParams.has(param)) urlParams.set(param, urlParams.get(param));
+    });
+
+    window.location.search = urlParams.toString();
+});
+
+
     // 为所有可复制元素绑定点击事件
     $(document).on('click', '.copyable', function(e) {
         // 如果点击的是链接，不触发复制
@@ -367,6 +443,9 @@ $(document).ready(function() {
             showToast('复制失败');
         }
     });
+
+
+
 
     // =============== 二维码图片复制功能 ===============
     $(document).on('click', '.qrcode-wrapper', function() {
@@ -441,8 +520,9 @@ $(document).ready(function() {
         if (!form) return;
 
         form.qb_target.value = '';
-        form.qb_discount.value = '100';
+        form.qb_discount.value = '80';
         form.max_combine.value = '3';
+        form.tolerance.value = '10';  // 重置精度范围
         form.submit();
     });
 
@@ -629,5 +709,146 @@ $(document).ready(function() {
     list-style-type: disc;
     margin-bottom: 3px;
 }
+
+/* 订单号显示样式 */
+.order-numbers-cell {
+    padding: 8px !important;
+    min-width: 200px;
+}
+.order-numbers-wrapper {
+    max-height: 200px;
+    overflow-y: auto;
+}
+.order-number-item {
+    padding: 3px 5px;
+    margin-bottom: 3px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.order-number-item:hover {
+    background-color: #f5f5f5;
+}
+.order-number-item small {
+    opacity: 0.7;
+    font-size: 0.8em;
+}
+
+/* 紧凑型订单明细样式 */
+.compact-order-details {
+    line-height: 1.5;
+    padding: 5px;
+}
+
+.order-line {
+    padding: 2px 0;
+    border-bottom: 1px dashed #eee;
+}
+
+.order-line:last-child {
+    border-bottom: none;
+}
+
+.order-total {
+    margin-top: 5px;
+    padding-top: 5px;
+    border-top: 1px solid #ddd;
+    font-size: 1.05em;
+}
+
+/* 强制宽度设置 */
+.order-amount-cell {
+    width: 300px !important; /* 固定宽度 */
+    min-width: 300px !important;
+    max-width: 300px !important;
+    padding: 8px 12px !important;
+}
+
+.order-amount-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.order-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* 允许换行 */
+    line-height: 1.5;
+}
+
+.order-line > span {
+    margin: 0 2px;
+}
+
+.qb, .price {
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.operator {
+    color: #666;
+}
+
+.order-total {
+    margin-top: 6px;
+    padding-top: 6px;
+    border-top: 1px solid #eee;
+    text-align: right;
+    font-size: 1.05em;
+}
+
+/* 响应式调整 */
+@media (max-width: 1200px) {
+    .order-amount-cell {
+        width: 280px !important;
+        min-width: 280px !important;
+        max-width: 280px !important;
+    }
+}
+
+@media (max-width: 992px) {
+    .order-amount-cell {
+        width: 240px !important;
+        min-width: 240px !important;
+        max-width: 240px !important;
+    }
+}
+
+.order-numbers-cell {
+    padding: 8px !important;
+    min-width: 200px;
+}
+
+.order-numbers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.order-number-row {
+    line-height: 1.4;
+    padding: 2px 0;
+    white-space: nowrap;  /* 防止内容换行 */
+    overflow: hidden;     /* 隐藏溢出内容 */
+    text-overflow: ellipsis; /* 超出显示省略号 */
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.order-number-row:last-child {
+    border-bottom: none;
+}
+
+.order-number {
+    font-weight: 500;
+}
+
+.order-details {
+    font-size: 0.85em;
+    color: #666;
+    margin-left: 2px;
+}
+
 </style>
 {% endblock %}

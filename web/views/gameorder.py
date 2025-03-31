@@ -12,7 +12,7 @@ from web import models
 from django.contrib import messages
 from django.contrib.messages.api import get_messages
 from web.models import GameOrder, GameDenomination, TransactionRecord
-
+from decimal import Decimal, getcontext
 import logging
 
 logger = logging.getLogger('web')
@@ -111,6 +111,20 @@ def gameorder_list(request):
         except (ValueError, TypeError, AttributeError) as e:
             print(f"QB匹配错误: {e}")
 
+    # 处理应用方案的逻辑（修正版）
+    applied_orders = request.GET.get('applied_orders')
+    if applied_orders:
+        applied_order_list = applied_orders.split(',')
+        queryset = queryset.filter(order_number__in=applied_order_list)
+
+        # 保留其他筛选参数
+        new_get = request.GET.copy()
+        new_get.pop('qb_target', None)
+        request.GET = new_get
+
+        # 添加调试信息
+        logger.debug(f"应用方案订单: {applied_order_list}")
+
     context = {
         'pager': pager,
         'keyword': keyword,
@@ -121,6 +135,7 @@ def gameorder_list(request):
         'start_date': start_date,  # 日期筛选相关
         'end_date': end_date,
         'date_field': request.GET.get('date_field', ''),  # 保留日期字段参数
+        'tolerance': request.GET.get('tolerance', '10'),  # 新增
     }
     return render(request, 'gameorder_list.html', context)
     # return render(request, 'gameorder_list.html', locals())
@@ -134,204 +149,129 @@ def find_qb_combinations(request, qb_target, orders, qb_discount, max_combine=4)
     qb_discount = Decimal(str(qb_discount))
     max_combine = int(str(max_combine))
 
-    results = []
-    best_left = None
-    best_right = None
-    exact_matches_list = []
+    # 获取精度范围参数，默认为10
+    try:
+        tolerance = Decimal(request.GET.get('tolerance', '10'))
+    except:
+        tolerance = Decimal('10')
 
-    # 检查精确匹配
-    # 这段代码的作用是 在订单列表 orders 中寻找一个组合，使得该组合的订单金额之和精确等于目标值 qb_target
-    # r 表示当前尝试的组合大小（即选取 r 个订单进行组合）
-    # max_combine 是允许的最大组合订单数（例如最多尝试 3 个订单的组合）
-    # 从 r=1（单订单）开始，逐步增加组合大小，直到 r=max_combine
-    # +1 是为了确保循环能覆盖到 max_combine 本身，在 Python 的 range(start, stop) 函数中，stop 参数是 不包含在范围内的
+    getcontext().prec = 8  # 设置Decimal精度
+
+    all_results = []
+    seen_combinations = set()  # 用于去重
+
+    # 1. 查找所有符合条件的组合（精确匹配和近似匹配）
     for r in range(1, max_combine + 1):
-        # combinations(orders, r) 是 Python itertools 模块提供的函数，用于生成 orders 中所有长度为 r 的可能组合（不重复、顺序无关）
-        # 例如，若 orders = [A, B, C]，则：
-        # r=1 → 组合为 [A], [B], [C]
-        # r=2 → 组合为 [A, B], [A, C], [B, C]
-        # r=3 → 组合为 [A, B, C]
         for combo in combinations(orders, r):
-            # 对每个组合 combo，计算其中所有订单的 amount 字段之和
-            # combo 是 tuple 类型，即使只有一个元素也会显示为 (order,)
             total = sum(order['amount'] for order in combo)
-            if total == qb_target:
-                exact_matches_list.append(list(combo))  # 转换为list方便后续处理
+            difference = abs(total - qb_target)
 
-    if exact_matches_list:
-        # 如果exact_matches_list有值，则将该组合格式化后返回（包装成列表）
-        return build_combination(request, exact_matches_list, qb_discount, qb_target)
+            # 只保留在精度范围内的组合
+            if difference > tolerance:
+                continue
 
-    # # 如果有精确匹配，返回所有组合的详细信息
-    # if exact_matches_list:
-    #     all_results = []
-    #     for combo in exact_matches_list:
-    #         result = build_single_combination(request, combo, qb_discount, qb_target)
-    #         all_results.append(result)
-    #     return all_results
+            # 生成组合的唯一标识用于去重
+            combo_key = tuple(sorted(order['id'] for order in combo))
+            if combo_key in seen_combinations:
+                continue
+            seen_combinations.add(combo_key)
 
-    # # 寻找最近邻组合
-    # for r in range(1, max_combine + 1):
-    #     for combo in combinations(orders, r):
-    #         total = sum(order['amount'] for order in combo)
-    #
-    #         # 左边界（总QB <= 目标）
-    #         if total <= target_qb:
-    #             if not best_left or (target_qb - total) < (target_qb - best_left['qb_target']):
-    #                 current = build_combination(combo, client_discount, target_qb)
-    #                 best_left = current
-    #
-    #         # 右边界（总QB >= 目标）
-    #         if total >= target_qb:
-    #             if not best_right or (total - target_qb) < (best_right['qb_target'] - target_qb):
-    #                 current = build_combination(combo, client_discount, target_qb)
-    #                 best_right = current
+            # 构建结果
+            result = build_single_combination(request, list(combo), qb_discount, qb_target)
+            result['difference'] = float(difference)  # 添加差异值字段
+            all_results.append(result)
 
-    # 收集结果并排序
-    if best_left:
-        results.append(best_left)
-    if best_right and best_right != best_left:
-        results.append(best_right)
+    # 2. 如果没有找到任何匹配，尝试放宽条件（仅当tolerance>0时）
+    if not all_results and tolerance > 0:
+        # 查找最接近的1-2个组合
+        closest_combinations = []
+        for r in range(1, max_combine + 1):
+            for combo in combinations(orders, r):
+                total = sum(order['amount'] for order in combo)
+                difference = abs(total - qb_target)
 
-    results.sort(key=lambda x: abs(x['remaining']))
-    return results
+                if not closest_combinations or difference < closest_combinations[0]['difference']:
+                    closest_combinations = [{
+                        'combo': combo,
+                        'difference': difference
+                    }]
+                elif difference == closest_combinations[0]['difference']:
+                    closest_combinations.append({
+                        'combo': combo,
+                        'difference': difference
+                    })
 
+        # 添加最接近的组合（最多2个）
+        for item in closest_combinations[:2]:
+            combo_key = tuple(sorted(order['id'] for order in item['combo']))
+            if combo_key not in seen_combinations:
+                result = build_single_combination(request, list(item['combo']), qb_discount, qb_target)
+                result['difference'] = float(item['difference'])
+                all_results.append(result)
+                seen_combinations.add(combo_key)
 
-from decimal import Decimal, getcontext
+    # 3. 结果排序：先按差异值排序，再按组合大小排序
+    all_results.sort(key=lambda x: (x['difference'], len(x['combination'])))
+
+    return all_results
 
 
 def build_single_combination(request, combo_orders, qb_discount, qb_target):
     """构建单个组合的详细信息"""
     qb_total = sum(order['amount'] for order in combo_orders)
     remaining = qb_target - qb_total
+    difference = abs(remaining)
 
+    # 计算财务数据
     income = sum(order['amount'] * order['discount'] for order in combo_orders)
     cost = qb_total * qb_discount
-
     service_fee = len(combo_orders) * Decimal(settings.SYS_FEE)
     total_fee, fee_details, report_text = calculate_fee(combo_orders, request.userinfo)
-
     profit = income - cost - service_fee - total_fee
 
+    # 生成描述信息
+    combo_str = " + ".join(f"{order['amount']}" for order in combo_orders)
+    if remaining == 0:
+        match_type = 'exact'
+        desc = f"完美匹配组合：{combo_str} = {qb_total}QB"
+    elif difference <= 10:  # 这里的10可以和前端的默认值保持一致
+        match_type = 'near'
+        desc = f"近似匹配组合：{combo_str} = {qb_total}QB (误差:{difference}QB)"
+    else:
+        match_type = 'boundary'
+        desc = f"边界匹配组合：{combo_str} = {qb_total}QB (误差:{difference}QB)"
+
     return {
+        'order_numbers_list': [order['order_number'] for order in combo_orders],  # 新增：单独列出订单号
+        'order_details': [
+            {
+                'number': order['order_number'],
+                'amount': int(order['amount']),  # 强制转换为整数
+                'discount_percent': int(order['discount'] * 100),  # 新增预计算字段
+                'consumer': order.get('consumer_username', '')
+            }
+            for order in combo_orders
+        ],
         'order_numbers': [order['order_number'] for order in combo_orders],
-        'qb_total': qb_total,
-        'remaining': remaining,
-        'income': income,
+        'qb_total': int(qb_total),  # 总QB转为整数
+        'remaining': int(remaining),  # 剩余QB转为整数
+        'difference': float(difference),  # 用于排序
+        'income': round(income, 2),  # 合计金额保留2位小数
         'cost': cost,
         'profit': profit,
         'combination': [order['amount'] for order in combo_orders],
-        'description': f"组合：{' + '.join(str(o['amount']) for o in combo_orders)}",
+        'description': desc,
         'orders': [{
-            'amount': o['amount'],
+            'amount': int(o['amount']),
             'discount_percent': int(o['discount'] * 100),
             'final_price': o['amount'] * o['discount']
         } for o in combo_orders],
         'report_text': report_text,
-        'efficiency': float(profit / qb_total) if qb_total else 0.0
+        'efficiency': float(profit / qb_total) if qb_total else 0.0,
+        'match_type': match_type,
+        'service_fee': service_fee,
+        'transfer_fee': total_fee
     }
-
-
-def build_combination(request, combo_orders_list, qb_discount, qb_target):
-    qb_discount = Decimal(str(qb_discount))
-    qb_target = Decimal(str(qb_target))
-
-    results = []
-    for combo_orders in combo_orders_list:
-        # 查询后的组合所有订单的QB总额，也是档位金额总额
-        qb_total= sum(order['amount'] for order in combo_orders)
-        remaining = qb_target - qb_total
-
-        # 点券订单的客户需要被扣款的金额，也就是我的进账
-        income = sum(order['amount'] * order['discount'] for order in combo_orders)
-        # QB订单的客户需要支付给他的金额，也就是我的出项
-        cost = qb_total * qb_discount
-
-        service_fee = len(combo_orders) * Decimal(settings.SYS_FEE)
-        total_fee, fee_details, report_text = calculate_fee(combo_orders, request.userinfo)
-        transfer_fee = total_fee
-
-        # 我的利润 = 进账 - 出账 - 系统服务费 - 第三方订单借调费
-        profit = income - cost - service_fee - transfer_fee
-
-        combo_str = " + ".join(f"{order['amount']}" for order in combo_orders)
-        description = (
-            f"组合：{combo_str}\n"
-            f"总QB：{qb_total}，剩余：{remaining if remaining > 0 else -remaining}\n"
-            f"成本：{cost:.2f}元，利润：{profit:.2f}元"
-        )
-
-        # 构建结果字典（优化内存占用）
-        results.append({
-            'order_numbers': tuple(order['order_number'] for order in combo_orders),  # 使用元组节省内存 #方案中所有订单的订单号元组
-            'qb_total': qb_total,
-            'remaining': remaining,
-            'income': income,
-            'cost': cost,
-            'profit': profit,
-            'combination': tuple(order['amount'] for order in combo_orders),  # 不可变数据
-            'efficiency': float(profit / qb_total) if qb_total else 0.0  # 新增效益指标
-        })
-
-        # 后处理优化
-    return optimize_results(results)
-
-
-def optimize_results(results):
-    """
-    对结果进行二次优化处理
-    """
-    # 按利润降序排序
-    results.sort(key=lambda x: x['profit'], reverse=True)
-
-    # 去重处理（如果组合内容相同）
-    seen = set()
-    unique_results = []
-    for r in results:
-        key = (tuple(r['order_numbers']), r['qb_total'])
-        if key not in seen:
-            seen.add(key)
-            unique_results.append(r)
-
-    return unique_results
-
-# def build_combination(request,combo_orders, client_discount, target_qb):
-#
-#     # 查询后的组合所有订单的QB总额，也是档位金额总额
-#     total_qb = sum(order['amount'] for order in combo_orders)
-#     remaining = target_qb - total_qb
-#
-#     # 点券订单的客户需要被扣款的金额，也就是我的进账
-#     income = sum(order['amount'] * order['discount'] for order in combo_orders)
-#     # QB订单的客户需要支付给他的金额，也就是我的出项
-#     cost = total_qb * client_discount
-#
-#     service_fee = len(combo_orders) * Decimal(settings.SYS_FEE)
-#     total_fee, fee_details, report_text = calculate_transfer_fee_with_logging(combo_orders, request.userinfo)
-#     transfer_fee = total_fee
-#
-#     # 我的利润 = 进账 - 出账 - 系统服务费 - 第三方订单借调费
-#     profit = income - cost - service_fee - transfer_fee
-#
-#     combo_str = " + ".join(f"{order['amount']}" for order in combo_orders)
-#     description = (
-#         f"组合：{combo_str}\n"
-#         f"总QB：{total_qb}，剩余：{remaining if remaining > 0 else -remaining}\n"
-#         f"成本：{cost:.2f}元，利润：{profit:.2f}元"
-#     )
-#
-#     return {
-#         'order_numbers': [order['order_number'] for order in combo_orders],
-#         'total_qb': total_qb,
-#         'remaining': remaining,
-#         'income': income,
-#         'cost': cost,
-#         'profit': profit,
-#         'description': description,
-#         'combination': [order['amount'] for order in combo_orders],
-#         'report_text':report_text,
-#     }
-
 
 def calculate_fee(combo_orders, current_user):
     """
@@ -420,17 +360,17 @@ def generate_fee_report(internal_orders, external_orders, combo_orders):
     system_fee_summary = []
 
     if internal_orders:
-        system_fee_summary.append("\n【系统费明细】")
+        system_fee_summary.append("\n【内部订单明细】")
         line = f"该方案共计{len(internal_orders)}内部单，这些订单无三方费用，仅有系统费."
         system_fee_summary.append(line)
     internal_fee_summary_to_string = "".join(internal_fee_summary)
 
     # 添加第三方订单详情
     if external_orders:
-        external_fee_summary.append("【第三方订单费用明细】")
+        external_fee_summary.append("\n【第三方订单费用明细】")
         for item in external_orders:
             line = (f"订单号{item['order_number']}的订单是{item['source_admin']}管理员所属，"
-                    f"需要支付第三方借调费 {item['fee']}，"
+                    f"需要支付第三方借调费 {item['fee']}元，"
                     f"{item['source_admin']} 管理员需向你转账金额 {item['amount']}")
             external_fee_summary.append(line)
     external_summary_to_string = "".join(external_fee_summary)
@@ -438,12 +378,12 @@ def generate_fee_report(internal_orders, external_orders, combo_orders):
     #
     if combo_orders:
         system_fee_summary.append("\n【系统费明细】")
-        line = f"该方案共计{len(combo_orders)}单，故而，系统费总额为{len(combo_orders)}*{settings.SYS_FEE}."
+        line = f"该方案共计{len(combo_orders)}单，故而，系统费总额为{len(combo_orders)}*{settings.SYS_FEE}元."
         system_fee_summary.append(line)
     system_fee_summary_to_string = "".join(system_fee_summary)
 
 
-    return external_summary_to_string+internal_fee_summary_to_string+system_fee_summary_to_string
+    return internal_fee_summary_to_string+external_summary_to_string+system_fee_summary_to_string
 
 
 class BootStrapForm:
