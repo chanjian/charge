@@ -621,22 +621,22 @@ def gameorder_delete(request):
     请求参数：
     - oid: 订单ID
     """
-    oid = request.GET.get('oid', 0)
+    cid = request.GET.get('cid', 0)
 
     # 验证订单ID是否存在
-    if not oid:
+    if not cid:
         res = BaseResponse(status=False, detail="请选择要删除的订单")
         return JsonResponse(res.dict)
 
     try:
         # 检查订单是否存在且是激活状态
-        exists = models.GameOrder.objects.filter(id=oid, active=1).exists()
+        exists = models.GameOrder.objects.filter(id=cid, active=1).exists()
         if not exists:
             res = BaseResponse(status=False, detail="要删除的订单不存在或已被删除")
             return JsonResponse(res.dict)
 
         # 执行软删除（设置active=0）
-        models.GameOrder.objects.filter(id=oid).update(active=0)
+        models.GameOrder.objects.filter(id=cid).update(active=0)
 
         # 可以在这里添加相关的交易记录（如果需要）
         # 例如记录删除操作到TransactionRecord

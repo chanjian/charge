@@ -160,7 +160,7 @@
         <tbody>
             {% for result in qb_results %}
             <tr>
-                <td>123</td>
+                <td>方案{{ forloop.counter }}</td>
                 <td class="copyable" data-value="{{ result.combination|join:' + ' }}">{{ result.combination|join:" + " }}</td>
                 <td class="copyable" data-value="{{ result.total_qb }}QB">{{ result.qb_total }}QB</td>
 <td class="compact-amount-cell">
@@ -315,7 +315,7 @@
             {% if request|has_permission:"gameorder_edit,gameorder_delete" %}
             <td>
                 {% edit_permission request 'gameorder_edit' pk=row.id %}
-                {% delete_url_permission request 'gameorder_delete'  %}
+                {% delete_permission request 'gameorder_delete' pk=row.id %}
             </td>
             {% endif %}
         </tr>
@@ -344,7 +344,10 @@
 {% endblock %}
 
 {% block js %}
+<script src="{% static 'js/delete_modal.js' %}"></script>
 <script>
+var DELETE_ID;
+        var DELETE_URL = "{% url 'gameorder_delete' %}";
 $(document).ready(function() {
     // =============== 通用复制功能 ===============
     function copyToClipboard(text) {
@@ -391,28 +394,26 @@ $(document).ready(function() {
     }
 
 
-
-
 // 更新点击事件处理
-$(document).on('click', '.apply-solution', function() {
-    const orderNumbers = $(this).data('orders');
-    const urlParams = new URLSearchParams(window.location.search);
+    $(document).on('click', '.apply-solution', function () {
+        const orderNumbers = $(this).data('orders');
+        const urlParams = new URLSearchParams(window.location.search);
 
-    // 设置应用参数
-    urlParams.set('applied_orders', orderNumbers);
-    urlParams.delete('qb_page'); // 清除分页
+        // 设置应用参数
+        urlParams.set('applied_orders', orderNumbers);
+        urlParams.delete('qb_page'); // 清除分页
 
-    // 保留其他必要参数
-    ['date_field', 'start_date', 'end_date', 'keyword'].forEach(param => {
-        if(urlParams.has(param)) urlParams.set(param, urlParams.get(param));
+        // 保留其他必要参数
+        ['date_field', 'start_date', 'end_date', 'keyword'].forEach(param => {
+            if (urlParams.has(param)) urlParams.set(param, urlParams.get(param));
+        });
+
+        window.location.search = urlParams.toString();
     });
-
-    window.location.search = urlParams.toString();
-});
 
 
     // 为所有可复制元素绑定点击事件
-    $(document).on('click', '.copyable', function(e) {
+    $(document).on('click', '.copyable', function (e) {
         // 如果点击的是链接，不触发复制
         if ($(e.target).is('a') || $(e.target).closest('a').length) {
             return;
@@ -433,7 +434,7 @@ $(document).on('click', '.apply-solution', function() {
     });
 
     // 为复制按钮绑定事件
-    $(document).on('click', '.copy-btn', function() {
+    $(document).on('click', '.copy-btn', function () {
         var value = $(this).data('value');
         if (!value) return;
 
@@ -445,10 +446,8 @@ $(document).on('click', '.apply-solution', function() {
     });
 
 
-
-
     // =============== 二维码图片复制功能 ===============
-    $(document).on('click', '.qrcode-wrapper', function() {
+    $(document).on('click', '.qrcode-wrapper', function () {
         var imgUrl = $(this).data('url');
         if (!imgUrl) return;
 
@@ -460,7 +459,7 @@ $(document).on('click', '.apply-solution', function() {
 
         $('body').append($img);
 
-        $img.on('load', function() {
+        $img.on('load', function () {
             // 现代浏览器处理
             if (navigator.clipboard && window.ClipboardItem) {
                 var canvas = document.createElement('canvas');
@@ -472,12 +471,12 @@ $(document).on('click', '.apply-solution', function() {
                 requestAnimationFrame(() => {
                     ctx.drawImage(this, 0, 0);
 
-                    canvas.toBlob(function(blob) {
+                    canvas.toBlob(function (blob) {
                         navigator.clipboard.write([
-                            new ClipboardItem({ 'image/png': blob })
-                        ]).then(function() {
+                            new ClipboardItem({'image/png': blob})
+                        ]).then(function () {
                             showToast('二维码已复制');
-                        }).catch(function() {
+                        }).catch(function () {
                             showFallback(imgUrl);
                         });
                     }, 'image/png');
@@ -489,7 +488,7 @@ $(document).on('click', '.apply-solution', function() {
             $img.remove();
         });
 
-        $img.on('error', function() {
+        $img.on('error', function () {
             showToast('图片加载失败');
             $img.remove();
         });
@@ -507,7 +506,7 @@ $(document).on('click', '.apply-solution', function() {
             </div>
         `);
 
-        $modal.find('.btn-close').click(function() {
+        $modal.find('.btn-close').click(function () {
             $modal.remove();
         });
 
@@ -515,7 +514,7 @@ $(document).on('click', '.apply-solution', function() {
     }
 
     // =============== QB匹配表单重置功能 ===============
-    $('#resetQBButton').click(function() {
+    $('#resetQBButton').click(function () {
         const form = document.getElementById('qbMatchForm');
         if (!form) return;
 
@@ -525,44 +524,8 @@ $(document).on('click', '.apply-solution', function() {
         form.tolerance.value = '10';  // 重置精度范围
         form.submit();
     });
-
-    // =============== 删除功能 ===============
-    var DELETE_ID;
-
-    function bindDeleteEvent(){
-        $('.btn-delete').click(function (){
-            $("#deleteError").empty();
-            $('#deleteModal').modal('show');
-            DELETE_ID = $(this).attr('cid');
-        });
-
-        $('#btnCancelDelete').click(function (){
-            $('#deleteModal').modal('hide');
-        });
-    }
-
-    function bindConfirmDeleteEvent(){
-        $('#btnConfirmDelete').click(function (){
-           $.ajax({
-               url:'{% url 'customer_delete' %}',
-               type:'GET',
-               data:{cid:DELETE_ID},
-               dataType:'JSON',
-               success:function (res){
-                   if (res.status){
-                       $("tr[row-id='" + DELETE_ID + "']").remove();
-                       $('#deleteModal').modal('hide');
-                   }else{
-                       $("#deleteError").text(res.detail);
-                   }
-               }
-           });
-        });
-    }
-
-    bindDeleteEvent();
-    bindConfirmDeleteEvent();
 });
+
 </script>
 
 <style>
