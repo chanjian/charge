@@ -11,19 +11,15 @@ from utils.time_filter import filter_by_date_range
 from web import models
 from django.contrib import messages
 from django.contrib.messages.api import get_messages
-from web.models import GameOrder, GameDenomination, TransactionRecord
+from web.models import GameOrder, GameDenomination, TransactionRecord,UserInfo
 from decimal import Decimal, getcontext
 from django.db.models import Case, When, Value, IntegerField, F
+from itertools import combinations
 import logging
 
 logger = logging.getLogger('web')
 
-
 def gameorder_list(request):
-    messages = get_messages(request)
-    for msg in messages:
-        print(msg)
-
     keyword = request.GET.get('keyword', '').strip()
     usertype = request.userdict.usertype
 
@@ -132,13 +128,14 @@ def gameorder_list(request):
         del cleaned_query['applied_orders']
 
     context = {
+        # 最重要的两个数据，分别用于订单循环和命中查询循环
         'pager': pager,
+        'qb_results': qb_results,  # 现在这个变量总是有定义
+
         'keyword': keyword,
         'qb_target': request.GET.get('qb_target'),
         'qb_discount': request.GET.get('qb_discount', '75'),
         'max_combine': request.GET.get('max_combine', '4'),
-        'qb_results': qb_results,  # 现在这个变量总是有定义
-        'start_date': start_date,
         'end_date': end_date,
         'date_field': request.GET.get('date_field', ''),
         'tolerance': request.GET.get('tolerance', '10'),
@@ -146,9 +143,6 @@ def gameorder_list(request):
         'cleaned_query': cleaned_query.urlencode(),
     }
     return render(request, 'gameorder_list.html', context)
-
-
-from itertools import combinations
 
 
 def find_qb_combinations(request, qb_target, orders, qb_discount, max_combine=4):
@@ -407,45 +401,24 @@ class BootStrapForm:
             field.widget.attrs['placeholder'] = "请输入{}".format(field.label)
 
 
-# class GameOrderAddModelForm(BootStrapForm,forms.ModelForm):
-#     class Meta:
-#         model = GameOrder
-#         fields = ['platform', 'game_name', 'recharge_option', 'custom_amount', 'recharge_link', 'qr_code', 'consumer']
-#
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         platform = self.initial.get('platform') or self.data.get('platform')
-#
-#         if platform == 'IOS':
-#             # 苹果用户：保留原有属性，设置 HiddenInput
-#             self.fields['custom_amount'].widget = forms.HiddenInput(
-#                 attrs=self.fields['custom_amount'].widget.attrs  # ✅ 保留原有属性
-#             )
-#             self.fields['custom_amount'].required = False
-#         elif platform == 'ANDROID':
-#             # 安卓用户：保留原有属性，设置 HiddenInput 和 NumberInput
-#             self.fields['recharge_option'].widget = forms.HiddenInput(
-#                 attrs=self.fields['recharge_option'].widget.attrs  # ✅ 保留原有属性
-#             )
-#             self.fields['recharge_option'].required = False
-#
-#             # 设置 NumberInput 并保留原有属性
-#             attrs = self.fields['custom_amount'].widget.attrs.copy()
-#             attrs['step'] = '1'
-#             self.fields['custom_amount'].widget = forms.NumberInput(attrs=attrs)
+
 
 class GameOrderAddModelForm(BootStrapForm, forms.ModelForm):
     class Meta:
         model = GameOrder
-        fields = ['platform', 'game', 'recharge_option', 'recharge_link', 'qr_code', 'consumer']
+        fields = ['platform','QV', 'game', 'recharge_option', 'recharge_link', 'qr_code', 'consumer']
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self,  *args, **kwargs):
+        self.request = kwargs.pop('request', None)
         super().__init__(*args, **kwargs)
         self.fields['recharge_link'].required = False
         self.fields['qr_code'].required = False
         # 初始化时设置空的recharge_option queryset
         self.fields['recharge_option'].queryset = GameDenomination.objects.none()
-
+        if self.request.userinfo.usertype == 'ADMIN':
+            self.fields['consumer'].queryset = UserInfo.objects.filter(parent__username=self.request.userinfo.username).filter(active=1).all()
+        else:
+            self.fields['consumer'].queryset = UserInfo.objects.filter()
         # 如果有初始数据，设置对应的选项
         if 'game' in self.data and 'platform' in self.data:
             try:
@@ -470,10 +443,10 @@ class GameOrderAddModelForm(BootStrapForm, forms.ModelForm):
 
 def gameorder_add(request):
     if request.method == 'GET':
-        form = GameOrderAddModelForm()
+        form = GameOrderAddModelForm(request=request)
         return render(request, 'gameorder_form.html', {'form': form})
 
-    form = GameOrderAddModelForm(data=request.POST, files=request.FILES)
+    form = GameOrderAddModelForm(request=request,data=request.POST, files=request.FILES)
 
     if not form.is_valid():
         print('1')
@@ -555,6 +528,13 @@ def gameorder_load_charge_options(request):
     except Exception as e:
         return JsonResponse({'status': False, 'error': str(e)}, status=500)
 
+from django.forms.models import model_to_dict
+from django.forms.models import model_to_dict
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from web.models import GameOrder, OrderEditLog
+# from web.forms import GameOrderAddModelForm
+
 
 def gameorder_edit(request, pk):
     try:
@@ -563,11 +543,18 @@ def gameorder_edit(request, pk):
         messages.error(request, '订单不存在或已被删除')
         return redirect('gameorder_list')
 
+    # 保存原始数据 - 确保获取的是可序列化的值
+    original_data = model_to_dict(order)
+
+    # 特殊处理可能包含对象的字段
+    if hasattr(order, 'recharge_option') and order.recharge_option:
+        original_data['recharge_option'] = order.recharge_option.id  # 存储ID而不是对象
+
     if request.method == 'GET':
-        form = GameOrderAddModelForm(instance=order)
+        form = GameOrderAddModelForm(instance=order,request=request)
         return render(request, 'gameorder_form.html', {'form': form, 'is_edit': True})
 
-    form = GameOrderAddModelForm(data=request.POST, files=request.FILES, instance=order)
+    form = GameOrderAddModelForm(data=request.POST, files=request.FILES, instance=order,request=request)
 
     if not form.is_valid():
         return render(request, 'gameorder_form.html', {'form': form, 'is_edit': True})
@@ -607,13 +594,51 @@ def gameorder_edit(request, pk):
             if order.recharge_link:
                 form.instance.recharge_link = order.recharge_link
 
+    # 获取变更的字段并确保值可序列化
+    changed_fields = {}
+    for field in form.changed_data:
+        old_value = original_data.get(field)
+        new_value = form.cleaned_data.get(field)
+
+        # 特殊处理recharge_option字段
+        if field == 'recharge_option' and new_value:
+            new_value = {
+                'id': new_value.id,
+                'display': str(new_value),  # 使用对象的字符串表示
+                # 可以添加其他需要的属性
+            }
+            if old_value and hasattr(old_value, 'id'):
+                old_value = {
+                    'id': old_value.id,
+                    'display': str(old_value),
+                }
+
+        # 处理ImageField/FileField
+        elif hasattr(new_value, 'name'):  # 处理文件字段
+            new_value = new_value.name if new_value else None
+            if old_value and hasattr(old_value, 'name'):
+                old_value = old_value.name
+
+        changed_fields[field] = {
+            'old': old_value,
+            'new': new_value
+        }
+
     # Save the order
     order = form.save(commit=False)
     order.save()
 
+    # 记录修改日志
+    OrderEditLog.objects.create(
+        order=order,
+        operator=request.userinfo,
+        action='update',
+        changed_fields=changed_fields,
+        ip_address=request.META.get('REMOTE_ADDR')
+    )
+
     messages.success(request, '订单更新成功')
     return redirect('gameorder_list')
-
 
 def gameorder_delete(request):
     """
@@ -647,3 +672,39 @@ def gameorder_delete(request):
     except Exception as e:
         res = BaseResponse(status=False, detail=f"删除订单时出错: {str(e)}")
         return JsonResponse(res.dict)
+
+
+from django import forms
+from web.models import OrderEditLog
+
+
+class OrderEditLogForm(forms.ModelForm):
+    class Meta:
+        model = OrderEditLog
+        fields = ['action', 'changed_fields']  # 使用模型中的实际字段名
+        widgets = {
+            'action': forms.Select(attrs={
+                'class': 'form-control'
+            }),
+            'changed_fields': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 3,
+                'placeholder': '请输入变更说明...'
+            })
+        }
+
+def gameorder_edit_log(request, pk):
+    """查看订单修改记录（只读）"""
+    try:
+        order = GameOrder.objects.get(id=pk, active=1)
+    except GameOrder.DoesNotExist:
+        messages.error(request, '订单不存在或已被删除')
+        return redirect('gameorder_list')
+
+    logs = order.edit_logs.all().order_by('-operation_time')
+
+    context = {
+        'order': order,
+        'logs': logs,
+    }
+    return render(request, 'gameorder_edit_log.html', context)

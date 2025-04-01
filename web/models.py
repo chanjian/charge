@@ -140,10 +140,15 @@ class GameOrder(ActiveBaseModel):
         ('IOS', '苹果'),
         ('ANDROID', '安卓'),
     ]
+    QV_CHOICES = [
+        ('Q', 'Q区'),
+        ('V', 'V区'),
+    ]
 
     platform = models.CharField(max_length=10, choices=PLATFORM_CHOICES, verbose_name='充值系统', default='ANDROID')
+    QV = models.CharField(max_length=10,choices=QV_CHOICES,verbose_name='Q区还是V区',default='')
     recharge_option = models.ForeignKey(to=GameDenomination, on_delete=models.PROTECT, null=True, blank=True,verbose_name='充值选项')
-    recharge_link = models.URLField(verbose_name='充值链接', blank=True, null=True)
+    recharge_link = models.URLField(verbose_name='充值链接',max_length=500, blank=True, null=True)
     qr_code = models.ImageField(upload_to='qrcodes/', verbose_name='充值二维码', blank=True, null=True)
     consumer = models.ForeignKey(to=UserInfo, on_delete=models.PROTECT, related_name='consumer_orders',verbose_name='订单消费者')
     created_by = models.ForeignKey(to=UserInfo, on_delete=models.PROTECT, related_name='created_orders',verbose_name='订单入库人')
@@ -174,9 +179,8 @@ class GameOrder(ActiveBaseModel):
     def price_info(self):
         """返回包含所有价格相关信息的字典"""
         original = Decimal(str(self.recharge_option.amount)) if self.recharge_option else Decimal('0')
-        discount = Decimal(str(self.consumer.level.percent)) / Decimal('100') if hasattr(self.consumer,
-                                                                                         'level') else Decimal('1')
-        final = original * discount
+        discount = Decimal(str(self.consumer.level.percent))# / Decimal('100') if hasattr(self.consumer,'level') else Decimal('1')
+        final = original * discount / Decimal('100') if hasattr(self.consumer,'level') else Decimal('1')
         points = self.recharge_option.total_currency if self.recharge_option else 0
         composite = round((final * 10) / points, 2) if points > 0 else 0.0
 
@@ -203,6 +207,28 @@ class GameOrder(ActiveBaseModel):
         return "，".join(parts)
 
 
+class OrderEditLog(models.Model):
+    """订单修改记录（只读）"""
+    ACTION_TYPES = (
+        ('create', '创建'),
+        ('update', '更新'),
+        ('delete', '删除'),
+    )
+
+    order = models.ForeignKey('GameOrder', on_delete=models.CASCADE, related_name='edit_logs')
+    operator = models.ForeignKey('UserInfo', on_delete=models.CASCADE, verbose_name='操作人')
+    action = models.CharField('操作类型', max_length=10, choices=ACTION_TYPES)
+    changed_fields = models.JSONField('变更字段', default=dict)
+    operation_time = models.DateTimeField('操作时间', auto_now_add=True)
+    ip_address = models.GenericIPAddressField('IP地址', null=True, blank=True)
+
+    class Meta:
+        ordering = ['-operation_time']
+        verbose_name = '订单修改记录'
+        verbose_name_plural = '订单修改记录'
+
+    def __str__(self):
+        return f"{self.order.order_number}-{self.get_action_display()}-{self.operator.username}"
 
 
 class TransactionRecord(ActiveBaseModel):
@@ -218,7 +244,7 @@ class TransactionRecord(ActiveBaseModel):
     charge_type = models.SmallIntegerField(verbose_name="类型", choices=charge_type_choices)
     amount = models.DecimalField(verbose_name="金额", default=0, max_digits=10, decimal_places=2)
     order_oid = models.CharField(verbose_name="订单号", max_length=64, null=True, blank=True, db_index=True)
-    create_datetime = models.DateTimeField(verbose_name="交易时间", auto_now_add=True)
+
     memo = models.TextField(verbose_name="备注", null=True, blank=True)
 
     customer = models.ForeignKey(verbose_name="客户", to="UserInfo", related_name='customer_transactions',on_delete=models.CASCADE, null=True,blank=True)

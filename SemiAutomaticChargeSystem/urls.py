@@ -54,11 +54,13 @@ urlpatterns = [
     path('gameorder/edit/<int:pk>/',gameorder.gameorder_edit,name='gameorder_edit'),
     path('gameorder/delete/',gameorder.gameorder_delete,name='gameorder_delete'),
     path('gameorder/load-options/', gameorder.gameorder_load_charge_options, name='gameorder_load_charge_options'),
+    path('gameorder/edit/log/<int:pk>/', gameorder.gameorder_edit_log, name='gameorder_edit_log'),
 
     path('gamename/list/',gamename.gamename_list,name='gamename_list'),
     path('gamename/add/',gamename.gamename_add,name='gamename_add'),
     path('gamename/edit/<int:pk>/',gamename.gamename_edit,name='gamename_edit'),
     path('gamename/delete/<int:pk>/',gamename.gamename_delete,name='gamename_delete'),
+
 
     path('gamedenomination/list/',gamedenomination.gamedenomination_list,name='gamedenomination_list'),
     path('gamedenomination/add/',gamedenomination.gamedenomination_add,name='gamedenomination_add'),

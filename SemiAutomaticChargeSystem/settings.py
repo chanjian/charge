@@ -238,6 +238,7 @@ PERMISSION_PUBLIC = {
     "client_info_view": {"text": "info", 'parent': None},
     # "sms_send": {"text": "发送短信", 'parent': None},
     "qbsearch": {"text": "info", 'parent': None},
+    "gameorder_edit_log": {"text": "游戏订单编辑日志", 'parent': None},
 }
 PERMISSION = {
     "SUPERADMIN": {
