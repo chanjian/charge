@@ -1,0 +1,315 @@
+{% extends 'layout.html' %}
+{% load static %}
+
+{% block css %}
+<style>
+    .chart-container {
+        height: 400px;
+        min-width: 300px;
+    }
+    .panel-heading .pull-right {
+        margin-top: -5px;
+    }
+    .date-filter {
+        margin-bottom: 20px;
+        padding: 15px;
+        background: #f5f5f5;
+        border-radius: 4px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <!-- 日期筛选表单 -->
+    <div class="date-filter">
+        <form method="get" class="form-inline">
+            <input type="hidden" name="date_field" value="{{ request.GET.date_field|default:'created_time' }}">
+
+            <div class="form-group">
+                <label>时间字段：</label>
+                <select name="date_field" class="form-control" style="width:120px;" onchange="this.form.submit()">
+                    <option value="created_time" {% if request.GET.date_field == 'created_time' %}selected{% endif %}>创建时间</option>
+                    <option value="updated_time" {% if request.GET.date_field == 'updated_time' %}selected{% endif %}>更新时间</option>
+                    <option value="finished_time" {% if request.GET.date_field == 'finished_time' %}selected{% endif %}>结束时间</option>
+                </select>
+            </div>
+
+            <div class="form-group" style="margin-left:15px;">
+                <label>日期范围：</label>
+                <input type="date" class="form-control" name="start_date" value="{{ request.GET.start_date }}">
+                <span>至</span>
+                <input type="date" class="form-control" name="end_date" value="{{ request.GET.end_date }}">
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="margin-left:15px;">筛选</button>
+            <a href="?" class="btn btn-default" style="margin-left:10px;">重置</a>
+
+            <div class="pull-right">
+                <span>快捷筛选：</span>
+                <a href="?date_field={{ request.GET.date_field|default:'created_time' }}&start_date={% now 'Y-m-d' %}&end_date={% now 'Y-m-d' %}"
+                   class="btn btn-default btn-sm">今日</a>
+                <a href="?date_field={{ request.GET.date_field|default:'created_time' }}&start_date={% now 'Y-m-d' %}&end_date={% now 'Y-m-d' %}"
+                   class="btn btn-default btn-sm">近7天</a>
+                <a href="?date_field={{ request.GET.date_field|default:'created_time' }}&start_date={% now 'Y-m-d' %}&end_date={% now 'Y-m-d' %}"
+                   class="btn btn-default btn-sm">本月</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- 第一行：交易流水 -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    交易流水趋势
+                    <div class="pull-right">
+                        <select id="barChartType" class="form-control input-sm" style="width:100px;">
+                            <option value="bar">柱状图</option>
+                            <option value="line">折线图</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div id="chartBar" class="chart-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 第二行：三个饼图 -->
+    <div class="row">
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">跨圈借调分布</div>
+                <div class="panel-body">
+                    <div id="chartPieCross" class="chart-container"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">圈内订单构成</div>
+                <div class="panel-body">
+                    <div id="chartPieInternal" class="chart-container"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">圈外订单分布</div>
+                <div class="panel-body">
+                    <div id="chartPieExternal" class="chart-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/echarts.js' %}"></script>
+<script>
+// 全局图表实例
+var chartInstances = {};
+
+// 初始化所有图表
+function initCharts() {
+    initBarChart();
+    initPieCross();
+    initPieInternal();
+    initPieExternal();
+
+    // 监听窗口变化自动调整图表大小
+    $(window).on('resize', function() {
+        $.each(chartInstances, function(_, chart) {
+            chart.resize();
+        });
+    });
+}
+
+// 获取查询参数
+function getQueryParams() {
+    return {
+        date_field: $('[name="date_field"]').val(),
+        start_date: $('[name="start_date"]').val(),
+        end_date: $('[name="end_date"]').val()
+    };
+}
+
+// 柱状图/折线图
+function initBarChart() {
+    const chartDom = document.getElementById('chartBar');
+    chartInstances.barChart = echarts.init(chartDom);
+
+    const params = getQueryParams();
+    showLoading(chartInstances.barChart);
+
+    $.get('{% url "chart_bar" %}', params, function(response) {
+        if (!response.status) {
+            showError(chartInstances.barChart, response.error);
+            return;
+        }
+
+        const option = {
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: { type: 'shadow' }
+            },
+            legend: {
+                data: ['收入', '支出']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: {
+                type: 'category',
+                data: response.data.x_axis
+            },
+            yAxis: {
+                type: 'value',
+                axisLabel: {
+                    formatter: '{value} 元'
+                }
+            },
+            series: response.data.series
+        };
+
+        chartInstances.barChart.setOption(option);
+        hideLoading(chartInstances.barChart);
+    }).fail(function() {
+        showError(chartInstances.barChart, '数据加载失败');
+    });
+
+    // 切换图表类型
+    $('#barChartType').change(function() {
+        const type = $(this).val();
+        const option = chartInstances.barChart.getOption();
+        option.series.forEach(series => {
+            series.type = type;
+        });
+        chartInstances.barChart.setOption(option);
+    });
+}
+
+// 跨圈借调饼图
+function initPieCross() {
+    const chartDom = document.getElementById('chartPieCross');
+    chartInstances.pieCross = echarts.init(chartDom);
+
+    const params = getQueryParams();
+    showLoading(chartInstances.pieCross);
+
+    $.get('{% url "chart_pie_cross" %}', params, function(response) {
+        if (!response.status) {
+            showError(chartInstances.pieCross, response.error);
+            return;
+        }
+
+        const option = {
+            tooltip: {
+                trigger: 'item',
+                formatter: function(params) {
+                    return `
+                        <strong>${params.name}</strong><br/>
+                        订单数: ${params.data.order_count}<br/>
+                        借调费: ${params.data.fee.toFixed(2)}元<br/>
+                        总金额: ${params.data.total.toFixed(2)}元<br/>
+                        结算金额: ${params.value.toFixed(2)}元
+                    `;
+                }
+            },
+            legend: {
+                orient: 'vertical',
+                right: 10,
+                top: 'center'
+            },
+            series: [{
+                name: '跨圈借调',
+                type: 'pie',
+                radius: ['40%', '70%'],
+                avoidLabelOverlap: false,
+                itemStyle: {
+                    borderRadius: 10,
+                    borderColor: '#fff',
+                    borderWidth: 2
+                },
+                label: {
+                    show: true,
+                    formatter: '{b}: {c}元 ({d}%)'
+                },
+                emphasis: {
+                    label: {
+                        show: true,
+                        fontSize: '18',
+                        fontWeight: 'bold'
+                    }
+                },
+                data: response.data.map(item => ({
+                    value: item.value,
+                    name: item.name,
+                    order_count: item.order_count,
+                    fee: item.fee,
+                    total: item.total
+                }))
+            }]
+        };
+
+        chartInstances.pieCross.setOption(option);
+        hideLoading(chartInstances.pieCross);
+    }).fail(function() {
+        showError(chartInstances.pieCross, '数据加载失败');
+    });
+}
+
+// 显示加载动画
+function showLoading(chart) {
+    chart.showLoading('default', {
+        text: '数据加载中...',
+        color: '#c23531',
+        textColor: '#333',
+        maskColor: 'rgba(255, 255, 255, 0.8)',
+        zlevel: 0
+    });
+}
+
+// 隐藏加载动画
+function hideLoading(chart) {
+    chart.hideLoading();
+}
+
+// 显示错误信息
+function showError(chart, message) {
+    chart.setOption({
+        graphic: {
+            elements: [{
+                type: 'text',
+                left: 'center',
+                top: 'middle',
+                style: {
+                    text: message,
+                    fontSize: 16,
+                    fontWeight: 'bold',
+                    fill: '#ff4d4f'
+                }
+            }]
+        }
+    });
+}
+
+// 初始化页面
+$(document).ready(function() {
+    initCharts();
+
+    // 表单提交时刷新图表
+    $('form').on('submit', function(e) {
+        e.preventDefault();
+        initCharts();
+        return false;
+    });
+});
+</script>
+{% endblock %}

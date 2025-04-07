@@ -160,6 +160,17 @@ WHITE_URL = [
 NB_MENU = {
     'SUPERADMIN': [
         {
+            'text': "数据看板",
+            'icon': "fa-bed",
+            'children': [
+                {'text': "数据详情", 'url': "/dashboard/", 'name': "dashboard_list"},
+                {'text': "客户管理", 'url': "/customer/list/", 'name': "customer_list"},
+                {'text': "交易记录", 'url': "/policy/list/", 'name': "policy_list"},
+            ]
+        },
+
+
+        {
             'text': "用户信息",
             'icon': "fa-bed",
             'children': [
@@ -174,7 +185,7 @@ NB_MENU = {
             'icon': "fa-bed",
             'children': [
                 {'text': "待支付游戏订单", 'url': "/gameorder/list/", 'name': "gameorder_list"},
-                {'text': "已处理游戏订单", 'url': "/upload/list2/", 'name': "policy_list2"},
+                {'text': "已处理游戏订单", 'url': "/gameorder/finished/list/", 'name': "gameorder_finished_list"},
                 {'text': "游戏名称", 'url': "/gamename/list/", 'name': "gamename_list"},
                 {'text': "游戏面额", 'url': "/gamedenomination/list/", 'name': "gamedenomination_list"},
                 # {'text': "城市列表", 'url': "/city/list/", 'name': "city_list"},
@@ -185,6 +196,16 @@ NB_MENU = {
 
     'ADMIN': [
         {
+            'text': "数据看板",
+            'icon': "fa-bed",
+            'children': [
+                {'text': "数据详情", 'url': "/dashboard/", 'name': "dashboard_list"},
+                {'text': "客户管理", 'url': "/customer/list/", 'name': "customer_list"},
+                {'text': "交易记录", 'url': "/policy/list/", 'name': "policy_list"},
+            ]
+        },
+
+        {
             'text': "用户信息",
             'icon': "fa-bed",
             'children': [
@@ -199,7 +220,7 @@ NB_MENU = {
             'icon': "fa-bed",
             'children': [
                 {'text': "待支付游戏订单", 'url': "/gameorder/list/", 'name': "gameorder_list"},
-                {'text': "已处理游戏订单", 'url': "/upload/list2/", 'name': "policy_list2"},
+                {'text': "已处理游戏订单", 'url': "/gameorder/finished/list/", 'name': "gameorder_finished_list"},
                 {'text': "游戏名称", 'url': "/gamename/list/", 'name': "gamename_list"},
                 {'text': "游戏面额", 'url': "/gamedenomination/list/", 'name': "gamedenomination_list"},
                 # {'text': "城市列表", 'url': "/city/list/", 'name': "city_list"},
@@ -239,6 +260,14 @@ PERMISSION_PUBLIC = {
     # "sms_send": {"text": "发送短信", 'parent': None},
     "qbsearch": {"text": "info", 'parent': None},
     "gameorder_edit_log": {"text": "游戏订单编辑日志", 'parent': None},
+
+    "chart_list":{"text":"123","parent":None},
+    "chart_bar":{"text":"123","parent":None},
+    "chart_pie_cross":{"text":"123","parent":None},
+    "chart_pie_internel":{"text":"123","parent":None},
+    "chart_pie_external":{"text":"123","parent":None},
+
+
 }
 PERMISSION = {
     "SUPERADMIN": {
@@ -268,6 +297,8 @@ PERMISSION = {
         "gameorder_delete": {"text": "删除游戏订单", 'parent': 'gameorder_list'},
         "gameorder_load_charge_options": {"text": "批量上传价格策略", 'parent': 'gameorder_list'},
 
+        "gameorder_finished_list": {"text": "客户列表", 'parent': None},
+
         "gamename_list": {"text": "游戏名称列表", 'parent': None},
         "gamename_add": {"text": "添加游戏名称", 'parent': 'gamename_list'},
         "gamename_edit": {"text": "编辑游戏名称", 'parent': 'gamename_list'},
@@ -295,6 +326,8 @@ PERMISSION = {
         'order_list':{'text':'订单展示','parent':'order'},
         'order_add':{'text':'创建订单','parent':'home'},
 
+        'dashboard_list':{'text':'数据看板','parent':None},
+
         "level_list": {"text": "级别列表", 'parent': None},
         "level_add": {"text": "新建级别", 'parent': 'level_list'},
         "level_edit": {"text": "编辑级别", 'parent': 'level_list'},
@@ -315,6 +348,9 @@ PERMISSION = {
         "gameorder_edit": {"text": "编辑游戏订单", 'parent': 'gameorder_list'},
         "gameorder_delete": {"text": "删除游戏订单", 'parent': 'gameorder_list'},
         "gameorder_load_charge_options": {"text": "批量上传价格策略", 'parent': 'gameorder_list'},
+        "gameorder_out": {"text": "出库游戏订单", 'parent': 'gameorder_list'},
+
+        "gameorder_finished_list": {"text": "客户列表", 'parent': None},
 
         "gamename_list": {"text": "游戏名称列表", 'parent': None},
         "gamedenomination_list": {"text": "游戏面额表", 'parent': None},

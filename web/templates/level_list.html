@@ -103,6 +103,44 @@
     </table>
     </div>
 
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+          <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+            客服等级列表
+      </div>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>标题</th>
+            <th>折扣</th>
+            <th>类型</th>
+            {% if request|has_permission:"level_edit,level_delete" %}
+            <th>操作</th>
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in queryset_supplier %}
+            <tr>
+                <td>{{ row.id }}</td>
+                <td>{{ row.title }}</td>
+                <td>{{ row.percent }}%</td>
+                <td>{{row.get_level_type_display}}</td>
+                 {% if request|has_permission:"level_edit,level_delete" %}
+                <td>
+                    {% edit_permission request 'level_edit' pk=row.id %}
+                    {% delete_url_permission request 'level_delete' pk=row.id %}
+                </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+    </div>
+
 {% endblock %}
 
 {% block js %}

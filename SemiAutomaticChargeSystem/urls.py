@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from web.views import account,level,customer,gameorder,phoneorder,gamename,gamedenomination
+from web.views import account,level,customer,gameorder,phoneorder,gamename,gamedenomination,dashboard,chart
 
 from django.conf import settings
 from django.urls import path, re_path
@@ -35,6 +35,8 @@ urlpatterns = [
     path('home/', account.home, name="home"),
     path('order/',account.order,name='order'),
 
+    path('dashboard/',dashboard.dashboard_list,name="dashboard_list"),
+
     path('level/list/', level.level_list, name="level_list"),
     path('level/add/', level.level_add, name="level_add"),
     path('level/edit/<int:pk>/', level.level_edit, name="level_edit"),
@@ -50,11 +52,13 @@ urlpatterns = [
     path('customer/login/log/<int:pk>/',customer.customer_login_log,name='customer_login_log'),
 
     path('gameorder/list/',gameorder.gameorder_list,name='gameorder_list'),
+    path('gameorder/finished/list/',gameorder.gameorder_finished_list,name='gameorder_finished_list'),
     path('gameorder/add/',gameorder.gameorder_add,name='gameorder_add'),
     path('gameorder/edit/<int:pk>/',gameorder.gameorder_edit,name='gameorder_edit'),
     path('gameorder/delete/',gameorder.gameorder_delete,name='gameorder_delete'),
     path('gameorder/load-options/', gameorder.gameorder_load_charge_options, name='gameorder_load_charge_options'),
     path('gameorder/edit/log/<int:pk>/', gameorder.gameorder_edit_log, name='gameorder_edit_log'),
+    path('gameorder/out/<int:pk>',gameorder.gameorder_out,name='gameorder_out'),
 
     path('gamename/list/',gamename.gamename_list,name='gamename_list'),
     path('gamename/add/',gamename.gamename_add,name='gamename_add'),
@@ -66,6 +70,12 @@ urlpatterns = [
     path('gamedenomination/add/',gamedenomination.gamedenomination_add,name='gamedenomination_add'),
     path('gamedenomination/edit/<int:pk>/',gamedenomination.gamedenomination_edit,name='gamedenomination_edit'),
     path('gamedenomination/delete/<int:pk>/',gamedenomination.gamedenomination_delete,name='gamedenomination_delete'),
+
+path('chart/list/', chart.chart_list, name='chart_list'),
+    path('chart/bar/', chart.chart_bar,name='chart_bar'),
+    path('chart/pie/cross/', chart.chart_pie_cross,name='chart_pie_cross'),
+    # path('chart/pie/internal/', chart.chart_pie_internal,name='chart_pie_internal'),
+    # path('chart/pie/external/', chart.chart_pie_external,name='chart_pie_external'),
 
 
 ]

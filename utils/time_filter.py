@@ -26,6 +26,7 @@ def filter_by_date_range(request, queryset):
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
 
+    # 4.应用日期过滤
     if start_date:
         try:
             start_date = timezone.datetime.strptime(start_date, '%Y-%m-%d').date()
@@ -41,8 +42,8 @@ def filter_by_date_range(request, queryset):
         except ValueError:
             pass
 
-    # 4. 返回格式化日期字符串
+    # 5. 返回格式化日期字符串
     start_str = start_date.strftime('%Y-%m-%d') if start_date else ''
     end_str = (end_date - timedelta(days=1)).strftime('%Y-%m-%d') if end_date else ''
 
-    return queryset, start_str, end_str, date_fields
+    return queryset, start_str, end_str, date_field

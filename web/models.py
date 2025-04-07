@@ -1,3 +1,6 @@
+import datetime
+import random
+
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.db import models
@@ -21,6 +24,7 @@ class Level(ActiveBaseModel):
     LEVEL_TYPE_CHOICES = (
         ('CUSTOMER', '消费者等级'),
         ('SUPPLIER', '供应商等级'),
+        ('SUPPORT', '客服等级'),
     )
 
     level_type = models.CharField(verbose_name="等级类型", max_length=16,choices=LEVEL_TYPE_CHOICES, db_index=True, default='CUSTOMER')
@@ -76,6 +80,13 @@ class UserInfo(ActiveBaseModel):
     def __str__(self):
         return self.username
 
+    def get_root_admin(self):
+        """获取当前用户的顶级管理员（递归查找父级）"""
+        if self.usertype in ['SUPERADMIN', 'ADMIN'] and not self.parent:
+            return self
+        if self.parent:
+            return self.parent.get_root_admin()
+        return None  # 如果没有管理员则返回None
 
 class LoginLog(models.Model):
     """登录日志"""
@@ -178,9 +189,13 @@ class GameOrder(ActiveBaseModel):
     @property
     def price_info(self):
         """返回包含所有价格相关信息的字典"""
+        # 充值面额一比一的价格
         original = Decimal(str(self.recharge_option.amount)) if self.recharge_option else Decimal('0')
+        # 给消费者的折扣
         discount = Decimal(str(self.consumer.level.percent))# / Decimal('100') if hasattr(self.consumer,'level') else Decimal('1')
+        # 消费者最终支付价格
         final = original * discount / Decimal('100') if hasattr(self.consumer,'level') else Decimal('1')
+        # 最终充值点券到账数目
         points = self.recharge_option.total_currency if self.recharge_option else 0
         composite = round((final * 10) / points, 2) if points > 0 else 0.0
 
@@ -234,18 +249,65 @@ class OrderEditLog(models.Model):
 class TransactionRecord(ActiveBaseModel):
     """ 交易记录 """
     charge_type_class_mapping = {
-        1: "success",
-        2: "danger",
-        3: "default",
-        4: "info",
-        5: "primary",
+        'recharge': "success",  # 充值 -> 绿色
+        'deduction': "danger",  # 扣款 -> 红色
+        'system_fee': "default",  # 系统费用 -> 默认
+        'cross_circle_fee': "info",  # 跨圈借调费 -> 蓝色
+        'commission': "primary",  # 提成费用 -> 深蓝
+        'order_create': "warning",  # 创建订单 -> 黄色
+        'order_cancel': "secondary",  # 取消订单 -> 灰色
     }
-    charge_type_choices = ((1, "充值"), (2, "扣款"), (3, "创建订单"), (4, "删除订单"), (5, "撤单"),)
-    charge_type = models.SmallIntegerField(verbose_name="类型", choices=charge_type_choices)
-    amount = models.DecimalField(verbose_name="金额", default=0, max_digits=10, decimal_places=2)
-    order_oid = models.CharField(verbose_name="订单号", max_length=64, null=True, blank=True, db_index=True)
+    TRANSACTION_TYPE_CHOICES = (
+        # 账户操作类
+        ('recharge', '充值'),
+        ('deduction', '扣款'),
 
+        # 订单交易类
+        ('system_fee', '系统费用'),
+        ('cross_circle_fee', '跨圈借调费'),
+        ('commission', '提成费用'),
+        ('advance_pay', '垫付款项'),
+        ('supplier_pay', '供应商结算'),
+
+        # 订单状态类
+        ('order_create', '创建订单'),
+        ('order_cancel', '取消订单'),
+    )
+
+    charge_type = models.CharField(verbose_name="类型", choices=TRANSACTION_TYPE_CHOICES,max_length=32)
+    amount = models.DecimalField(verbose_name="金额", default=0, max_digits=10, decimal_places=2)
+    t_id = models.CharField(verbose_name="交易编号", max_length=64, null=True, blank=True, db_index=True)
+    customer = models.ForeignKey(verbose_name="客户", to="UserInfo",related_name='customer_userinfo', on_delete=models.CASCADE, null=True, blank=True)
+    creator = models.ForeignKey(verbose_name="管理员", to="UserInfo", related_name='creator_userinfo',on_delete=models.CASCADE, null=True, blank=True)
     memo = models.TextField(verbose_name="备注", null=True, blank=True)
 
-    customer = models.ForeignKey(verbose_name="客户", to="UserInfo", related_name='customer_transactions',on_delete=models.CASCADE, null=True,blank=True)
-    creator = models.ForeignKey(verbose_name="管理员", to="UserInfo", related_name='created_transactions',on_delete=models.CASCADE, null=True,blank=True)
+    # 关联信息（可选）
+    is_cross_circle = models.BooleanField(default=False, verbose_name="是否跨圈")
+    order = models.ForeignKey(GameOrder, on_delete=models.SET_NULL, null=True, blank=True, related_name='transactions')
+
+    # 资金流向信息
+    # 记录资金转出方（谁付钱/扣款）
+    from_user = models.ForeignKey(UserInfo, on_delete=models.PROTECT, related_name='out_transactions', null=True,blank=True)
+    # 记录资金接收方（谁收钱/入账）
+    to_user = models.ForeignKey(UserInfo, on_delete=models.PROTECT, related_name='in_transactions', null=True,blank=True)
+
+    # 费用明细（新增核心字段）
+    system_fee = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="系统费用")
+    cross_fee = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="跨圈费用")
+    commission = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="客服提成金额")
+    support_payment = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="客服垫付款")
+    supplier_payment = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="供应商结算")
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['from_user', 'charge_type']),
+            models.Index(fields=['is_cross_circle', 'created_time']),
+        ]
+
+    def generate_tid(self):
+        """生成T+年月日时分秒+3位随机数的交易号"""
+        now = datetime.datetime.now()
+        # 格式: T + 年月日时分秒 + 3位随机数 (示例: T20240403092548123)
+        time_part = now.strftime("%Y%m%d%H%M%S")
+        random_part = str(random.randint(100, 999))  # 3位随机数
+        return f"T{time_part}{random_part}"

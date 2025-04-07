@@ -3,37 +3,11 @@
 {% load permission %}
 {% load math_filters %}
 
-{% block css %}
-    <style>
-        .top-message {
-            position: fixed;
-            left: 0;
-            right: 0;
-            width: 400px;
-            margin-left: auto;
-            margin-right: auto;
-            top: 0;
-        }
-    </style>
-{% endblock %}
-
-
 {% block content %}
 <div style="margin-bottom: 5px" class="clearfix">
     <div class="left" style="margin-right: 20px;">
         {% add_permission request 'gameorder_add' %}
     </div>
-
-    {% if messages %}
-        <div class="top-message">
-            {% for obj in messages %}
-                <div class="alert alert-{{ obj.level_tag }}">
-                    {{ obj.message }}
-                </div>
-            {% endfor %}
-
-        </div>
-    {% endif %}
 
     <!-- 日期筛选表单 -->
     <div class="left">
@@ -566,11 +540,6 @@
             form.submit();
         });
     });
-
-
-    setTimeout(function () {
-            $(".top-message").addClass('hide');
-        }, 5000);
 
 </script>
 

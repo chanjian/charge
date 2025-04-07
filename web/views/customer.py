@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib import messages
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.db.models import Q
@@ -95,6 +96,8 @@ def customer_add(request):
 
     form.instance.parent = user_object
     form.save()
+
+    messages.add_message(request, messages.SUCCESS, "添加客户成功")
     return redirect('/customer/list/')
 
 
@@ -185,19 +188,26 @@ def customer_delete(request):
 
 
 class CustomerChargeModelForm(BootStrapForm,forms.ModelForm):
-    charge_type = forms.TypedChoiceField(
-        label='类型',
-        choices=[(1,'充值'),(2,'扣款')],
-        coerce=int,
-    )
-
+    # charge_type = forms.TypedChoiceField(
+    #     label='类型',
+    #     choices=[(1,'充值'),(2,'扣款')],
+    #     coerce=int,
+    # )
+    #
+    # class Meta:
+    #     model = models.TransactionRecord
+    #     fields = ['charge_type','amount']
     class Meta:
         model = models.TransactionRecord
-        fields = ['charge_type','amount']
+        fields = ['charge_type', 'amount','memo']
+
+    charge_type = forms.ChoiceField(
+        choices=(('recharge', '充值'),('deduction', '扣款'),),
+        label="类型"
+    )
 
 
-from django.utils import timezone
-from datetime import timedelta
+from utils.time_filter import filter_by_date_range
 def customer_charge(request,pk):
     # 获取查询参数
     start_date = request.GET.get('start_date')
@@ -205,31 +215,10 @@ def customer_charge(request,pk):
     days_range = request.GET.get('days_range')
     print('request.GET',request.GET)
 
-    queryset = models.TransactionRecord.objects.filter(UserInfo_id=pk,UserInfo__active=1,active=1).select_related('UserInfo').order_by('-id')
-    pager = Pagination(request,queryset)
+    queryset = models.TransactionRecord.objects.filter(customer_id=pk,customer__active=1,active=1).all().order_by('-id')
 
-
-    # 根据动态范围计算日期区间
-    if days_range:
-        days_range = int(days_range)
-        end_date = timezone.now()
-        start_date = end_date - timedelta(days=days_range)
-    else:
-        # 将字符串日期转换为带时区的 datetime 对象
-        if start_date and end_date:
-            start_date = timezone.make_aware(
-                timezone.datetime.strptime(start_date, '%Y-%m-%d')
-            )
-            end_date = timezone.make_aware(
-                timezone.datetime.strptime(end_date, '%Y-%m-%d')
-            )
-        else:
-            start_date = None
-            end_date = None
-
-    # 根据日期筛选数据
-    if start_date and end_date:
-        queryset = queryset.filter(create_datetime__range=(start_date, end_date))
+    # 日期过滤
+    queryset, start_date, end_date, pager = filter_by_date_range(request, queryset)
 
     pager = Pagination(request,queryset)
     form = CustomerChargeModelForm()
@@ -237,18 +226,9 @@ def customer_charge(request,pk):
         'pager':pager,
         'form':form,
         'pk':pk,
-        'start_date': start_date.strftime('%Y-%m-%d') if start_date else '',
-        'end_date': end_date.strftime('%Y-%m-%d') if end_date else '',
     }
     # return render(request,'customer_charge.html',context)
     return render(request, 'customer_charge.html', locals())
-
-    # form = CustomerModelForm(data=request.POST)
-    # if not form.is_valid():
-    #     return render(request, 'customer_charge.html', {'form': form})
-    # return
-
-
 
 
 def customer_charge_add(request,pk):
@@ -262,17 +242,17 @@ def customer_charge_add(request,pk):
         with transaction.atomic():
             cus_object = models.UserInfo.objects.filter(id=pk,active=1).select_for_update().first()
 
-            if charge_type == 2 and cus_object.balance < amount:
+            if charge_type == 'deduction' and cus_object.account < amount:
                 return JsonResponse(
-                    {'status': False, 'detail': {"amount": ["余额不足，账户总余额只有:{}".format(cus_object.balance)]}})
+                    {'status': False, 'detail': {"amount": ["余额不足，账户总余额只有:{}".format(cus_object.account)]}})
 
-            if charge_type == 1:
-                cus_object.balance = cus_object.balance + amount
+            if charge_type == 'recharge':
+                cus_object.account = cus_object.account + amount
             else:
-                cus_object.balance = cus_object.balance - amount
+                cus_object.account = cus_object.account - amount
             cus_object.save()
 
-            form.instance.UserInfo = cus_object
+            form.instance.customer = cus_object
             form.instance.creator_id = request.userinfo.id
             form.save()
     except Exception as e:

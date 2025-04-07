@@ -11,7 +11,7 @@ from utils.time_filter import filter_by_date_range
 from web import models
 from django.contrib import messages
 from django.contrib.messages.api import get_messages
-from web.models import GameOrder, GameDenomination, TransactionRecord,UserInfo
+from web.models import GameOrder, GameDenomination, TransactionRecord, UserInfo, Level
 from decimal import Decimal, getcontext
 from django.db.models import Case, When, Value, IntegerField, F
 from itertools import combinations
@@ -25,9 +25,9 @@ def gameorder_list(request):
 
     # 基础查询集
     if usertype == 'CUSTOMER':
-        queryset = models.GameOrder.objects.filter(consumer=request.userinfo, active=1).all()
+        queryset = models.GameOrder.objects.filter(consumer=request.userinfo, active=1,order_status=1).all()
     else:
-        queryset = models.GameOrder.objects.filter(active=1).select_related('consumer__level').annotate(
+        queryset = models.GameOrder.objects.filter(active=1,order_status=1).select_related('consumer__level').annotate(
             user_discount_percent=F('consumer__level__percent'),
             is_creator=Case(
                 When(created_by=request.userinfo, then=Value(1)),
@@ -144,6 +144,56 @@ def gameorder_list(request):
     }
     return render(request, 'gameorder_list.html', context)
 
+
+def gameorder_finished_list(request):
+    keyword = request.GET.get('keyword', '').strip()
+    usertype = request.userdict.usertype
+
+    # 基础查询集
+    if usertype == 'CUSTOMER':
+        queryset = models.GameOrder.objects.filter(consumer=request.userinfo).exclude(order_status=1).all()
+    else:
+        queryset = models.GameOrder.objects.filter(active=1).exclude(order_status=1).select_related('consumer__level').annotate(
+            user_discount_percent=F('consumer__level__percent'),
+            is_creator=Case(
+                When(created_by=request.userinfo, then=Value(1)),
+                default=Value(0),
+                output_field=IntegerField()
+            )
+        ).order_by('-is_creator', 'user_discount_percent', '-id')
+
+    # 关键字查询
+    con = Q()
+    if keyword:
+        con.connector = 'OR'
+        con.children.append(('consumer__username__contains', keyword))
+        con.children.append(('order_number__contains', keyword))
+        queryset = queryset.filter(con)
+
+    # 日期过滤
+    queryset, start_date, end_date, pager = filter_by_date_range(request, queryset)
+
+    # 分页处理
+    pager = Pagination(request, queryset)
+
+    # 准备清除应用方案的链接参数
+    cleaned_query = request.GET.copy()
+    if 'applied_orders' in cleaned_query:
+        del cleaned_query['applied_orders']
+
+    context = {
+        # 最重要的两个数据，分别用于订单循环和命中查询循环
+        'pager': pager,
+        'keyword': keyword,
+        'qb_target': request.GET.get('qb_target'),
+        'qb_discount': request.GET.get('qb_discount', '75'),
+        'max_combine': request.GET.get('max_combine', '4'),
+        'end_date': end_date,
+        'date_field': request.GET.get('date_field', ''),
+        'tolerance': request.GET.get('tolerance', '10'),
+        'cleaned_query': cleaned_query.urlencode(),
+    }
+    return render(request, 'gameorder_finished_list.html', context)
 
 def find_qb_combinations(request, qb_target, orders, qb_discount, max_combine=4):
     qb_target = Decimal(str(qb_target))
@@ -482,6 +532,8 @@ def gameorder_add(request):
             form.instance.recharge_link = qr_link
             form.instance.qr_code = qr_code_path
 
+
+
         except Exception as e:
             form.add_error('consumer', f'文件处理出错: {str(e)}')
             print(e)
@@ -492,7 +544,7 @@ def gameorder_add(request):
     order.created_by = request.userinfo  # 或 request.userinfo
     order.save()
 
-    messages.success(request, '订单创建成功')
+    messages.add_message(request, messages.SUCCESS, "新建订单成功")
     return redirect('gameorder_list')
 
 
@@ -708,3 +760,205 @@ def gameorder_edit_log(request, pk):
         'logs': logs,
     }
     return render(request, 'gameorder_edit_log.html', context)
+
+from django.db import transaction
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponseForbidden
+def gameorder_out(request,pk):
+    """ 完成订单（出库操作） """
+    with transaction.atomic():
+        # 获取订单和操作用户
+        order = get_object_or_404(GameOrder, pk=pk)
+        operator = request.userinfo
+
+        # 验证操作权限
+        if not operator.usertype in ['ADMIN','SUPPORT','SUPPLIER']:
+            return HttpResponseForbidden("无操作权限")
+
+        # 计算核心费用项
+        fee_details = calculate_fees(order, operator)
+
+        # 创建交易记录
+        create_transaction_records(order, operator, fee_details)
+
+        # 更新订单状态
+        order.order_status = 2  # 已完成
+        order.out_user = operator
+        order.save()
+
+        # 更新相关账户余额
+        update_account_balances(fee_details)
+
+        # return JsonResponse({'status': 'success', 'fee_details': fee_details})
+        return redirect('gameorder_list')
+
+
+def calculate_fees(order, operator):
+    """ 计算费用明细 """
+    price_info = order.price_info  # 假设已实现价格计算
+    in_admin = order.created_by.get_root_admin()
+    out_admin = operator.get_root_admin()
+    is_same_circle = (in_admin == out_admin)
+
+    fees = {
+        'system_fee': Decimal('5.00'),  # 示例系统费
+        'cross_circle_fee': Decimal(0),
+        'commission': Decimal(0),
+        'support_payment': Decimal(0),
+        'supplier_payment': Decimal(0),
+        'cross_admin': None
+    }
+
+    # 获取操作者对应的等级配置
+    try:
+        operator_level = Level.objects.get(
+            creator=operator.get_root_admin(),
+            level_type=operator.usertype,  # 假设usertype与LEVEL_TYPE_CHOICES匹配
+            active=1
+        )
+        discount = Decimal(operator_level.percent) / 100  # 将百分比转为小数（如90%→0.9）
+    except Level.DoesNotExist:
+        # 默认费率（根据业务需求设置）
+        discount = Decimal('0.9') if operator.usertype == 'SUPPORT' else Decimal('0.8')
+        operator_level = None
+
+
+    if is_same_circle:
+        # 圈内逻辑
+        fees['system_fee'] == 1
+        if operator.usertype == 'SUPPORT':
+            # 圈内客服提成
+            fees['commission'] = 1
+            fees['support_payment'] = price_info['original'] * discount
+        elif operator.usertype == 'SUPPLIER':
+            # 圈内供应商结算
+            fees['supplier_payment'] = price_info['original'] * discount
+        else:
+            # 其他类型（如管理员）
+            pass
+    else:
+        # 跨圈逻辑
+        fees['system_fee'] == 1
+        # 统一收取借调费
+        fees['cross_circle_fee'] = price_info['final'] * Decimal('0.1')
+        fees['cross_admin'] = out_admin
+
+        # 跨圈时区分操作者类型
+        if operator.usertype == 'SUPPORT':
+            # 跨圈客服提成（可能费率不同）
+            fees['commission'] = 1
+            fees['support_payment'] = price_info['original'] * discount
+        elif operator.usertype == 'SUPPLIER':
+            # 跨圈供应商结算（可能比例不同）
+            fees['supplier_payment'] = price_info['original'] * discount
+    return fees
+
+
+def create_transaction_records(order, operator, fees):
+    """创建交易记录（适配Level模型）"""
+    base_data = {
+        'order': order,
+        'customer': order.consumer,
+        'creator': operator,
+        'active': 1,
+        'is_cross_circle': bool(fees.get('cross_admin')),
+        't_id': order.order_number
+    }
+
+    # 系统费用
+    if fees['system_fee'] > 0:
+        TransactionRecord.objects.create(
+            **base_data,
+            charge_type='system_fee',
+            amount=fees['system_fee'],
+            system_fee=fees['system_fee'],
+            from_user=operator if fees.get('cross_admin') else order.consumer.get_root_admin(),
+            to_user=order.consumer.get_root_admin(),
+            memo=f"系统服务费（{'跨圈' if fees.get('cross_admin') else '圈内'}）"
+        )
+
+    # 跨圈借调费
+    if fees['cross_circle_fee'] > 0:
+        TransactionRecord.objects.create(
+            **base_data,
+            charge_type='cross_circle_fee',
+            amount=fees['cross_circle_fee'],
+            cross_fee=fees['cross_circle_fee'],
+            from_user=operator.get_root_admin(),
+            to_user=order.consumer.get_root_admin(),
+            memo=f"跨圈借调费（费率10%，管理员ID：{fees['cross_admin'].id})"
+        )
+
+    # 客服相关费用
+    if operator.usertype == 'SUPPORT':
+        # 获取客服等级信息用于备注
+        try:
+            level_info = Level.objects.get(
+                creator=operator.get_root_admin(),
+                level_type='SUPPORT',
+                active=1
+            )
+            level_memo = f"{level_info.title}({level_info.percent}%)"
+        except Level.DoesNotExist:
+            level_memo = "默认费率"
+
+        # 客服提成
+        if fees['commission'] > 0:
+            TransactionRecord.objects.create(
+                **base_data,
+                charge_type='commission',
+                amount=fees['commission'],
+                commission=fees['commission'],
+                from_user=order.consumer.get_root_admin(),
+                to_user=operator,
+                memo=f"客服提成（等级：{level_memo}，提成金额：{fees['commission']})"
+            )
+
+        # 客服垫付
+        if fees['support_payment'] > 0:
+            TransactionRecord.objects.create(
+                **base_data,
+                charge_type='advance_pay',
+                amount=fees['support_payment'],
+                support_payment=fees['support_payment'],
+                from_user=operator,
+                to_user=order.consumer,
+                memo=f"客服垫付款（等级：{level_memo}，垫付价：{fees['support_payment']}/原价：{order.price_info['original']})"
+            )
+
+    # 供应商结算
+    if operator.usertype == 'SUPPLIER' and fees['supplier_payment'] > 0:
+        try:
+            level_info = Level.objects.get(
+                creator=operator.get_root_admin(),
+                level_type='SUPPLIER',
+                active=1
+            )
+            level_memo = f"{level_info.title}({level_info.percent}%)"
+        except Level.DoesNotExist:
+            level_memo = "默认费率"
+
+        TransactionRecord.objects.create(
+            **base_data,
+            charge_type='supplier_pay',
+            amount=fees['supplier_payment'],
+            supplier_payment=fees['supplier_payment'],
+            from_user=order.consumer.get_root_admin(),
+            to_user=operator,
+            memo=f"供应商结算（等级：{level_memo}，结算价：{fees['supplier_payment']}/最终价：{order.price_info['final']})"
+        )
+
+
+def update_account_balances(fees):
+    """ 更新账户余额（示例逻辑） """
+    # 这里需要根据实际支付关系更新相关账户
+    # 例如：扣除客服垫付款、增加供应商结算款等
+    # 使用F()表达式保证原子操作
+    if fees['support_payment'] > 0:
+        UserInfo.objects.filter(pk=fees['operator'].pk).update(
+            account=F('account') - fees['support_payment']
+        )
+    if fees['supplier_payment'] > 0:
+        UserInfo.objects.filter(pk=fees['supplier'].pk).update(
+            account=F('account') + fees['supplier_payment']
+        )

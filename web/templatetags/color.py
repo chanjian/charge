@@ -9,5 +9,5 @@ register = Library()
 
 
 @register.filter
-def color(num):
-    return models.TransactionRecord.charge_type_class_mapping[num]
+def color(charge_type):
+    return models.TransactionRecord.charge_type_class_mapping.get(charge_type, 'default')
