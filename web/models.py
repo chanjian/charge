@@ -285,11 +285,11 @@ class TransactionRecord(ActiveBaseModel):
     is_cross_circle = models.BooleanField(default=False, verbose_name="是否跨圈")
     order = models.ForeignKey(GameOrder, on_delete=models.SET_NULL, null=True, blank=True, related_name='transactions')
 
-    # 资金流向信息
-    # 记录资金转出方（谁付钱/扣款）
-    from_user = models.ForeignKey(UserInfo, on_delete=models.PROTECT, related_name='out_transactions', null=True,blank=True)
-    # 记录资金接收方（谁收钱/入账）
-    to_user = models.ForeignKey(UserInfo, on_delete=models.PROTECT, related_name='in_transactions', null=True,blank=True)
+
+    # 入库人所属圈子的管理员
+    from_user = models.ForeignKey(verbose_name="入库人圈子管理员",to="UserInfo", on_delete=models.PROTECT, related_name='in_transactions', null=True,blank=True)
+    # 出库人所属圈子的管理员
+    to_user = models.ForeignKey(verbose_name="出库人圈子管理员",to="UserInfo", on_delete=models.PROTECT, related_name='out_transactions', null=True,blank=True)
 
     # 费用明细（新增核心字段）
     system_fee = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="系统费用")

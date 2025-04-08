@@ -3,56 +3,55 @@ from django.db.models.functions import TruncDate, ExtractMonth
 from django.http import JsonResponse
 from django.shortcuts import render
 from datetime import datetime, timedelta
+
+from utils.time_filter import filter_by_date_range
 from web.models import TransactionRecord, UserInfo
 
 
 def chart_list(request):
     """数据看板主页面"""
-    return render(request, 'dashboard_list.html')
+
+    # 获取当前用户
+    current_admin = UserInfo.objects.filter(username=request.userinfo.username).first()
+
+    # 设置默认日期范围（今天）
+    today = datetime.now().date()
+    start_date = request.GET.get('start_date', today.strftime('%Y-%m-%d'))
+    end_date = request.GET.get('end_date', today.strftime('%Y-%m-%d'))
+
+    context = {
+        'start_date': start_date,
+        'end_date': end_date,
+        'date_field': request.GET.get('date_field', 'created_time'),
+    }
+    return render(request, 'dashboard_list.html', context)
 
 
 def chart_bar(request):
     """交易流水柱状图数据"""
     try:
-        # 获取当前管理员
-        current_admin = request.userinfo.get_root_admin()
-        if not current_admin:
-            return JsonResponse({"status": False, "error": "管理员不存在"})
-
-        # 获取筛选参数
-        date_field = request.GET.get('date_field', 'created_time')
-        start_date = request.GET.get('start_date')
-        end_date = request.GET.get('end_date')
-
-        # 验证日期字段
-        if date_field not in ['created_time', 'updated_time', 'finished_time']:
-            date_field = 'created_time'
-
-        # 设置默认日期范围（最近7天）
-        if not start_date or not end_date:
-            end_date = datetime.now().date()
-            start_date = end_date - timedelta(days=7)
+        # # 获取当前管理员
+        # current_admin = request.userinfo.get_root_admin()
+        # if not current_admin:
+        #     return JsonResponse({"status": False, "error": "管理员不存在"})
+        # if request.userinfo.usertype == 'ADMIN':
+        current_admin = UserInfo.objects.filter(username=request.userinfo.username).first()
 
         # 基础查询
-        qs = TransactionRecord.objects.filter(
-            Q(from_user=current_admin) | Q(to_user=current_admin),
-            active=1
-        )
+        queryset = TransactionRecord.objects.filter(Q(from_user=current_admin) | Q(to_user=current_admin), active=1)
 
-        # 应用日期过滤
-        date_filter = {
-            f"{date_field}__date__gte": start_date,
-            f"{date_field}__date__lte": end_date
-        }
-        qs = qs.filter(**date_filter)
+        # 2. 应用日期过滤（使用您的函数）
+        queryset, start_date_str, end_date_str, date_field = filter_by_date_range(request, queryset)
+
 
         # 按天分组统计
-        data = qs.annotate(
-            date=TruncDate(date_field)
-        ).values('date').annotate(
+        data = queryset.annotate(date=TruncDate(date_field)).values('date').annotate(
             income=Sum('amount', filter=Q(to_user=current_admin)),
             expense=Sum('amount', filter=Q(from_user=current_admin))
         ).order_by('date')
+        # print('data',data)
+        # print('queryset',queryset)
+        # print('queryset.ordernum',queryset.values('order_number'))
 
         result = {
             "status": True,
@@ -87,28 +86,18 @@ def chart_pie_cross(request):
         if not current_admin:
             return JsonResponse({"status": False, "error": "管理员不存在"})
 
-        # 获取筛选参数
-        date_field = request.GET.get('date_field', 'created_time')
-        start_date = request.GET.get('start_date')
-        end_date = request.GET.get('end_date')
-
-        # 查询跨圈借调数据
-        qs = TransactionRecord.objects.filter(
+        # 基础查询
+        queryset = TransactionRecord.objects.filter(
             charge_type='cross_circle_fee',
             is_cross_circle=True,
             from_user=current_admin,
             active=1
         )
+        # 2. 应用日期过滤（使用您的函数）
+        queryset, start_date_str, end_date_str, date_field = filter_by_date_range(request, queryset)
 
-        # 应用日期过滤
-        if start_date and end_date:
-            date_filter = {
-                f"{date_field}__date__gte": start_date,
-                f"{date_field}__date__lte": end_date
-            }
-            qs = qs.filter(**date_filter)
 
-        data = qs.values('to_user__username').annotate(
+        data = queryset.values('to_user__username').annotate(
             order_count=Count('order'),
             total_fee=Sum('cross_fee'),
             total_amount=Sum('amount'),

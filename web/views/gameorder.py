@@ -45,7 +45,7 @@ def gameorder_list(request):
         queryset = queryset.filter(con)
 
     # 日期过滤
-    queryset, start_date, end_date, pager = filter_by_date_range(request, queryset)
+    queryset, start_date_str, end_date_str, date_fields = filter_by_date_range(request, queryset)
 
     # 初始化qb_results为空列表
     qb_results = []
@@ -136,8 +136,11 @@ def gameorder_list(request):
         'qb_target': request.GET.get('qb_target'),
         'qb_discount': request.GET.get('qb_discount', '75'),
         'max_combine': request.GET.get('max_combine', '4'),
-        'end_date': end_date,
-        'date_field': request.GET.get('date_field', ''),
+
+        'start_date': start_date_str,  # 格式: 'YYYY-MM-DD'
+        'end_date': end_date_str,      # 格式: 'YYYY-MM-DD'
+        'date_field': request.GET.get('date_field', 'created_time'),
+
         'tolerance': request.GET.get('tolerance', '10'),
         'applied_orders': applied_orders,
         'cleaned_query': cleaned_query.urlencode(),
@@ -171,7 +174,7 @@ def gameorder_finished_list(request):
         queryset = queryset.filter(con)
 
     # 日期过滤
-    queryset, start_date, end_date, pager = filter_by_date_range(request, queryset)
+    queryset, start_date_str, end_date_str, date_fields = filter_by_date_range(request, queryset)
 
     # 分页处理
     pager = Pagination(request, queryset)
@@ -188,8 +191,11 @@ def gameorder_finished_list(request):
         'qb_target': request.GET.get('qb_target'),
         'qb_discount': request.GET.get('qb_discount', '75'),
         'max_combine': request.GET.get('max_combine', '4'),
-        'end_date': end_date,
-        'date_field': request.GET.get('date_field', ''),
+
+        'start_date': start_date_str,  # 格式: 'YYYY-MM-DD'
+        'end_date': end_date_str,      # 格式: 'YYYY-MM-DD'
+        'date_field': request.GET.get('date_field', 'created_time'),
+
         'tolerance': request.GET.get('tolerance', '10'),
         'cleaned_query': cleaned_query.urlencode(),
     }
@@ -796,7 +802,9 @@ def gameorder_out(request,pk):
 def calculate_fees(order, operator):
     """ 计算费用明细 """
     price_info = order.price_info  # 假设已实现价格计算
+    # 入库人所属圈子的管理员
     in_admin = order.created_by.get_root_admin()
+    # 出库人所属圈子的管理员
     out_admin = operator.get_root_admin()
     is_same_circle = (in_admin == out_admin)
 
@@ -811,15 +819,20 @@ def calculate_fees(order, operator):
 
     # 获取操作者对应的等级配置
     try:
+        # 由于，只有客服，供应商，消费者有等级。另外，只有客服，供应商，管理员可以出库。因此，符合条件的只有客服和供应商，故而，此处考虑这两种角色
         operator_level = Level.objects.get(
+            # 当前用户对象的创建者，即管理员
             creator=operator.get_root_admin(),
             level_type=operator.usertype,  # 假设usertype与LEVEL_TYPE_CHOICES匹配
             active=1
         )
+        # 对于供应商，此处获取的折扣，是为了计算订单完成时，应该结算给供应商多少钱
+        # 对于客服，此处获取的折扣，是为了计算订单完成时，应该结算给客服的钱，因为钱是客服垫付的。此处的折扣，是提前给客服设置的出价策略
         discount = Decimal(operator_level.percent) / 100  # 将百分比转为小数（如90%→0.9）
     except Level.DoesNotExist:
-        # 默认费率（根据业务需求设置）
-        discount = Decimal('0.9') if operator.usertype == 'SUPPORT' else Decimal('0.8')
+        # 而当找不到的时候，即try失败的时候，说明此时的用户是管理员身份
+        # 而对于管理员，并没有折扣的需求，暂定默认费率（根据业务需求设置）
+        discount = Decimal('0.9') if operator.usertype == 'ADMIN' else Decimal('0.8')
         operator_level = None
 
 
@@ -854,6 +867,14 @@ def calculate_fees(order, operator):
     return fees
 
 
+import random
+from datetime import datetime
+def generate_trade_number():
+    """生成交易号：T + 年月日 + 6位随机数"""
+    date_part = datetime.now()
+    random_part = "".join([str(random.randint(0, 9)) for _ in range(6)])
+    return f"T{date_part}{random_part}"
+
 def create_transaction_records(order, operator, fees):
     """创建交易记录（适配Level模型）"""
     base_data = {
@@ -862,7 +883,7 @@ def create_transaction_records(order, operator, fees):
         'creator': operator,
         'active': 1,
         'is_cross_circle': bool(fees.get('cross_admin')),
-        't_id': order.order_number
+        't_id': generate_trade_number()  # 使用生成器
     }
 
     # 系统费用
@@ -872,8 +893,11 @@ def create_transaction_records(order, operator, fees):
             charge_type='system_fee',
             amount=fees['system_fee'],
             system_fee=fees['system_fee'],
-            from_user=operator if fees.get('cross_admin') else order.consumer.get_root_admin(),
-            to_user=order.consumer.get_root_admin(),
+            # 入库人所属圈子的管理员
+            from_user= order.consumer.get_root_admin(),
+            # 出库人所属圈子的管理员
+            to_user= operator if fees.get('cross_admin') else order.consumer.get_root_admin(),
+
             memo=f"系统服务费（{'跨圈' if fees.get('cross_admin') else '圈内'}）"
         )
 
@@ -882,10 +906,10 @@ def create_transaction_records(order, operator, fees):
         TransactionRecord.objects.create(
             **base_data,
             charge_type='cross_circle_fee',
-            amount=fees['cross_circle_fee'],
+            # amount=fees['cross_circle_fee'],
             cross_fee=fees['cross_circle_fee'],
-            from_user=operator.get_root_admin(),
-            to_user=order.consumer.get_root_admin(),
+            from_user= order.consumer.get_root_admin(),
+            to_user= operator.get_root_admin(),
             memo=f"跨圈借调费（费率10%，管理员ID：{fees['cross_admin'].id})"
         )
 
@@ -907,10 +931,10 @@ def create_transaction_records(order, operator, fees):
             TransactionRecord.objects.create(
                 **base_data,
                 charge_type='commission',
-                amount=fees['commission'],
+                # amount=fees['commission'],
                 commission=fees['commission'],
                 from_user=order.consumer.get_root_admin(),
-                to_user=operator,
+                to_user=operator.get_root_admin(),
                 memo=f"客服提成（等级：{level_memo}，提成金额：{fees['commission']})"
             )
 
@@ -921,8 +945,8 @@ def create_transaction_records(order, operator, fees):
                 charge_type='advance_pay',
                 amount=fees['support_payment'],
                 support_payment=fees['support_payment'],
-                from_user=operator,
-                to_user=order.consumer,
+                from_user=order.consumer.get_root_admin(),
+                to_user=operator.get_root_admin(),
                 memo=f"客服垫付款（等级：{level_memo}，垫付价：{fees['support_payment']}/原价：{order.price_info['original']})"
             )
 

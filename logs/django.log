@@ -18894,3 +18894,342 @@ django.urls.exceptions.NoReverseMatch: Reverse for 'chart_pie_internal' not foun
 2025-04-08 05:38:50 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=2025-04-08&end_date=2025-04-08 HTTP/1.1" 200 470
 2025-04-08 05:40:29 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py changed, reloading.
 2025-04-08 05:40:29 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-08 05:40:30 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 13559
+2025-04-08 05:40:30 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 283
+2025-04-08 05:40:30 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 109
+2025-04-08 05:41:13 - django.server - INFO - "GET /dashboard/?date_field=created_time&start_date=2025-04-08&end_date=2025-04-08 HTTP/1.1" 200 13587
+2025-04-08 05:41:13 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=2025-04-08&end_date=2025-04-08 HTTP/1.1" 200 241
+2025-04-08 05:41:13 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=2025-04-08&end_date=2025-04-08 HTTP/1.1" 200 28
+2025-04-08 05:41:18 - django.server - INFO - "GET /dashboard/?date_field=created_time&start_date=2025-04-08&end_date=2025-04-08 HTTP/1.1" 200 13587
+2025-04-08 05:41:18 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=2025-04-08&end_date=2025-04-08 HTTP/1.1" 200 241
+2025-04-08 05:41:18 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=2025-04-08&end_date=2025-04-08 HTTP/1.1" 200 28
+2025-04-08 05:42:43 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py changed, reloading.
+2025-04-08 05:42:43 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-08 05:42:44 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 13559
+2025-04-08 05:42:44 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 283
+2025-04-08 05:42:44 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 109
+2025-04-08 05:42:45 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 13559
+2025-04-08 05:42:45 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 283
+2025-04-08 05:42:45 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 109
+2025-04-08 05:50:28 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py changed, reloading.
+2025-04-08 05:50:29 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-08 05:50:38 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 47094
+2025-04-08 05:50:41 - django.server - INFO - "GET /gameorder/add/ HTTP/1.1" 200 10402
+2025-04-08 05:50:46 - django.server - INFO - "GET /gameorder/load-options/?game=2&platform=ANDROID HTTP/1.1" 200 146
+2025-04-08 05:50:54 - django.server - INFO - "POST /gameorder/add/ HTTP/1.1" 302 0
+2025-04-08 05:50:54 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 50226
+2025-04-08 05:50:54 - django.server - INFO - "GET /media/root/2025/04/08/68673c244810eac27fb447a576835af.jpg HTTP/1.1" 200 94998
+2025-04-08 05:51:00 - django.server - INFO - "GET /gameorder/out/45 HTTP/1.1" 302 0
+2025-04-08 05:51:00 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 47094
+2025-04-08 05:51:01 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 13559
+2025-04-08 05:51:01 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 285
+2025-04-08 05:51:01 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 109
+2025-04-08 05:59:13 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py changed, reloading.
+2025-04-08 05:59:13 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-08 06:02:20 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py changed, reloading.
+2025-04-08 06:02:20 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-08 06:02:21 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 13559
+2025-04-08 06:02:21 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 109
+2025-04-08 06:02:21 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 335
+2025-04-08 06:02:41 - django.server - WARNING - "GET /static/js/echarts.js.map HTTP/1.1" 404 1679
+2025-04-08 06:02:41 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-04-08 06:02:45 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 13559
+2025-04-08 06:02:45 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-04-08 06:02:45 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-04-08 06:02:45 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-04-08 06:02:45 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-04-08 06:02:45 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-04-08 06:02:45 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-04-08 06:02:45 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-04-08 06:02:45 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-04-08 06:02:45 - django.server - INFO - "GET /static/js/echarts.js HTTP/1.1" 200 3277175
+2025-04-08 06:02:45 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-04-08 06:02:45 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-04-08 06:02:45 - django.server - WARNING - "GET /static/js/echarts.js.map HTTP/1.1" 404 1679
+2025-04-08 06:02:45 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 335
+2025-04-08 06:02:45 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 109
+2025-04-08 06:05:01 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py changed, reloading.
+2025-04-08 06:05:01 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-08 06:05:02 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 13559
+2025-04-08 06:05:02 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 285
+2025-04-08 06:05:02 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 109
+2025-04-08 06:05:35 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py changed, reloading.
+2025-04-08 06:05:36 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-08 06:05:36 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 13559
+2025-04-08 06:05:36 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 109
+2025-04-08 06:05:36 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 285
+2025-04-08 06:52:21 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\models.py changed, reloading.
+2025-04-08 06:52:21 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-08 08:04:59 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-08 08:05:01 - django.server - INFO - "GET /level/list/ HTTP/1.1" 200 6673
+2025-04-08 08:05:02 - django.server - INFO - "GET /level/list/ HTTP/1.1" 200 6673
+2025-04-08 08:05:05 - django.server - INFO - "GET /customer/list/ HTTP/1.1" 200 14356
+2025-04-08 08:05:07 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 47094
+2025-04-08 08:05:09 - django.server - INFO - "GET /gameorder/add/ HTTP/1.1" 200 10402
+2025-04-08 08:05:13 - django.server - INFO - "GET /gameorder/load-options/?game=2&platform=ANDROID HTTP/1.1" 200 146
+2025-04-08 08:05:17 - django.server - INFO - "POST /gameorder/add/ HTTP/1.1" 302 0
+2025-04-08 08:05:17 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 50768
+2025-04-08 08:05:17 - django.server - INFO - "GET /media/root/2025/04/08/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-04-08 08:05:21 - django.server - INFO - "GET /gameorder/out/46 HTTP/1.1" 302 0
+2025-04-08 08:05:21 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 47094
+2025-04-08 08:05:23 - django.server - INFO - - Broken pipe from ('127.0.0.1', 55685)
+
+2025-04-08 08:05:23 - django.server - INFO - - Broken pipe from ('127.0.0.1', 55686)
+
+2025-04-08 08:05:23 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 13559
+2025-04-08 08:05:24 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 109
+2025-04-08 08:05:24 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 285
+2025-04-08 08:11:08 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py changed, reloading.
+2025-04-08 08:11:09 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-08 08:11:09 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 13559
+2025-04-08 08:11:09 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 285
+2025-04-08 08:11:09 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 109
+2025-04-08 08:14:13 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py changed, reloading.
+2025-04-08 08:14:13 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-08 08:14:32 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 13559
+2025-04-08 08:14:32 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 373
+2025-04-08 08:14:32 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 109
+2025-04-08 08:15:02 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py changed, reloading.
+2025-04-08 08:15:02 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-08 08:15:03 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 13559
+2025-04-08 08:15:03 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 109
+2025-04-08 08:15:03 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 285
+2025-04-08 08:18:36 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py changed, reloading.
+2025-04-08 08:18:37 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-08 08:18:37 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 13559
+2025-04-08 08:18:37 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 285
+2025-04-08 08:18:37 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 109
+2025-04-08 08:23:37 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 47094
+2025-04-08 08:23:39 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=3&start_date=2025-04-08&end_date=2025-04-08 HTTP/1.1" 200 23476
+2025-04-08 08:23:46 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=7&start_date=2025-04-08&end_date=2025-04-08 HTTP/1.1" 200 23476
+2025-04-08 08:23:47 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=30&start_date=2025-04-08&end_date=2025-04-08 HTTP/1.1" 200 23476
+2025-04-08 08:25:53 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=3&start_date=2025-04-08&end_date=2025-04-08 HTTP/1.1" 200 23476
+2025-04-08 08:25:54 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=3&start_date=2025-04-08&end_date=2025-04-08 HTTP/1.1" 200 23476
+2025-04-08 08:25:55 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=3&start_date=2025-04-08&end_date=2025-04-08 HTTP/1.1" 200 23476
+2025-04-08 08:25:56 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=7&start_date=2025-04-08&end_date=2025-04-08 HTTP/1.1" 200 23476
+2025-04-08 08:25:57 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=30&start_date=2025-04-08&end_date=2025-04-08 HTTP/1.1" 200 23476
+2025-04-08 08:25:58 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=7&start_date=2025-04-08&end_date=2025-04-08 HTTP/1.1" 200 23476
+2025-04-08 08:25:58 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=3&start_date=2025-04-08&end_date=2025-04-08 HTTP/1.1" 200 23476
+2025-04-08 08:28:36 - django.server - INFO - "GET /gameorder/list/? HTTP/1.1" 200 47094
+2025-04-08 08:28:46 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&date_field=created_time&start_date=2025-04-04&end_date=2025-04-07 HTTP/1.1" 200 33521
+2025-04-08 08:28:59 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&date_field=created_time&start_date=2025-04-08&end_date=2025-04-08 HTTP/1.1" 200 23470
+2025-04-08 08:29:02 - django.server - INFO - "GET /gameorder/finished/list/ HTTP/1.1" 200 53574
+2025-04-08 08:29:02 - django.server - INFO - "GET /media/root/2025/04/08/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-04-08 08:29:02 - django.server - INFO - "GET /media/root/2025/04/08/68673c244810eac27fb447a576835af.jpg HTTP/1.1" 304 0
+2025-04-08 08:29:02 - django.server - INFO - "GET /media/root/2025/04/07/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-04-08 08:29:09 - django.server - INFO - "GET /gameorder/finished/list/?date_field=created_time&date_field=created_time&start_date=2025-04-08&end_date=2025-04-08 HTTP/1.1" 200 33244
+2025-04-08 08:29:20 - django.server - INFO - "GET /gameorder/finished/list/?date_field=created_time&days_range=3&start_date=2025-04-08&end_date=2025-04-08 HTTP/1.1" 200 33184
+2025-04-08 08:29:21 - django.server - INFO - "GET /gameorder/finished/list/?date_field=created_time&days_range=7&start_date=2025-04-08&end_date=2025-04-08 HTTP/1.1" 200 33184
+2025-04-08 08:29:22 - django.server - INFO - "GET /gameorder/finished/list/?date_field=created_time&days_range=30&start_date=2025-04-08&end_date=2025-04-08 HTTP/1.1" 200 33190
+2025-04-08 08:29:23 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 47094
+2025-04-08 08:29:27 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=3&start_date=2025-04-08&end_date=2025-04-08 HTTP/1.1" 200 23476
+2025-04-08 08:30:40 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\utils\time_filter.py changed, reloading.
+2025-04-08 08:30:41 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-08 08:30:41 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=3&start_date=2025-04-08&end_date=2025-04-08 HTTP/1.1" 200 23476
+2025-04-08 08:30:43 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=7&start_date=2025-04-08&end_date=2025-04-08 HTTP/1.1" 200 23476
+2025-04-08 08:30:47 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 47094
+2025-04-08 08:30:49 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=3&start_date=2025-04-08&end_date=2025-04-08 HTTP/1.1" 200 23476
+2025-04-08 08:30:50 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=7&start_date=2025-04-08&end_date=2025-04-08 HTTP/1.1" 200 23476
+2025-04-08 08:35:10 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\utils\time_filter.py changed, reloading.
+2025-04-08 08:35:11 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-08 08:35:11 - django.request - ERROR - Internal Server Error: /gameorder/list/
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 48, in gameorder_list
+    queryset, start_date, end_date, pager = filter_by_date_range(request, queryset)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\utils\time_filter.py", line 42, in filter_by_date_range
+    start_date = timezone.datetime.strptime(start_date, '%Y-%m-%d').date()
+TypeError: strptime() argument 1 must be str, not datetime.date
+2025-04-08 08:35:11 - django.server - ERROR - "GET /gameorder/list/?date_field=created_time&days_range=7&start_date=2025-04-08&end_date=2025-04-08 HTTP/1.1" 500 98121
+2025-04-08 08:36:58 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\utils\time_filter.py changed, reloading.
+2025-04-08 08:36:59 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-08 08:36:59 - django.request - ERROR - Internal Server Error: /gameorder/list/
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 48, in gameorder_list
+    queryset, start_date, end_date, pager = filter_by_date_range(request, queryset)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\utils\time_filter.py", line 42, in filter_by_date_range
+    start_date = timezone.datetime.strptime(start_date, '%Y-%m-%d').date()
+TypeError: strptime() argument 1 must be str, not datetime.date
+2025-04-08 08:36:59 - django.server - ERROR - "GET /gameorder/list/?date_field=created_time&days_range=7&start_date=2025-04-08&end_date=2025-04-08 HTTP/1.1" 500 98121
+2025-04-08 08:37:05 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-08 08:37:06 - django.server - INFO - "GET /level/list/ HTTP/1.1" 200 6673
+2025-04-08 08:37:08 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 47094
+2025-04-08 08:37:10 - django.request - ERROR - Internal Server Error: /gameorder/list/
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 48, in gameorder_list
+    queryset, start_date, end_date, pager = filter_by_date_range(request, queryset)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\utils\time_filter.py", line 42, in filter_by_date_range
+    start_date = timezone.datetime.strptime(start_date, '%Y-%m-%d').date()
+TypeError: strptime() argument 1 must be str, not datetime.date
+2025-04-08 08:37:10 - django.server - ERROR - "GET /gameorder/list/?date_field=created_time&days_range=3&start_date=2025-04-08&end_date=2025-04-08 HTTP/1.1" 500 97893
+2025-04-08 08:38:24 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\utils\time_filter.py changed, reloading.
+2025-04-08 08:38:24 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-08 08:38:26 - django.server - INFO - "GET /level/list/ HTTP/1.1" 200 6673
+2025-04-08 08:38:26 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 47094
+2025-04-08 08:38:28 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=3&start_date=2025-04-08&end_date=2025-04-08 HTTP/1.1" 200 33461
+2025-04-08 08:38:31 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=7&start_date=2025-04-08&end_date=2025-04-08 HTTP/1.1" 200 33461
+2025-04-08 08:38:32 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=30&start_date=2025-04-08&end_date=2025-04-08 HTTP/1.1" 200 42402
+2025-04-08 08:39:02 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=30&start_date=2025-04-08&end_date=2025-04-08 HTTP/1.1" 200 43110
+2025-04-08 08:39:04 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 47796
+2025-04-08 08:39:05 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=3 HTTP/1.1" 200 33853
+2025-04-08 08:39:08 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=7 HTTP/1.1" 200 33853
+2025-04-08 08:39:09 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=3 HTTP/1.1" 200 33853
+2025-04-08 08:39:10 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=7 HTTP/1.1" 200 33853
+2025-04-08 08:39:10 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=30 HTTP/1.1" 200 42644
+2025-04-08 08:39:11 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=7 HTTP/1.1" 200 33853
+2025-04-08 08:39:12 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=3 HTTP/1.1" 200 33853
+2025-04-08 08:39:13 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=30 HTTP/1.1" 200 42644
+2025-04-08 08:39:13 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=7 HTTP/1.1" 200 33853
+2025-04-08 08:39:14 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=3 HTTP/1.1" 200 33853
+2025-04-08 08:39:15 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=7 HTTP/1.1" 200 33853
+2025-04-08 08:39:15 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=30 HTTP/1.1" 200 42644
+2025-04-08 08:39:16 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=7 HTTP/1.1" 200 33853
+2025-04-08 08:39:17 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=3 HTTP/1.1" 200 33853
+2025-04-08 08:39:17 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=7 HTTP/1.1" 200 33853
+2025-04-08 08:39:18 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=30 HTTP/1.1" 200 42644
+2025-04-08 08:39:19 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=7 HTTP/1.1" 200 33853
+2025-04-08 08:39:19 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=3 HTTP/1.1" 200 33853
+2025-04-08 08:42:21 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-04-08 08:42:21 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-08 08:42:22 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=3 HTTP/1.1" 200 33853
+2025-04-08 08:42:24 - django.server - INFO - "GET /gameorder/list/? HTTP/1.1" 200 47796
+2025-04-08 08:42:24 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=3 HTTP/1.1" 200 33853
+2025-04-08 08:42:26 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=7 HTTP/1.1" 200 33853
+2025-04-08 08:42:27 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=3 HTTP/1.1" 200 33853
+2025-04-08 08:43:33 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-04-08 08:43:33 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-08 08:43:36 - django.server - INFO - "GET /gameorder/list/? HTTP/1.1" 200 47796
+2025-04-08 08:43:37 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 47796
+2025-04-08 08:43:38 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=3 HTTP/1.1" 200 33873
+2025-04-08 08:43:50 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=7 HTTP/1.1" 200 33873
+2025-04-08 08:43:51 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=7 HTTP/1.1" 200 33873
+2025-04-08 08:43:58 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=3 HTTP/1.1" 200 33873
+2025-04-08 08:44:00 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=30 HTTP/1.1" 200 42664
+2025-04-08 08:44:02 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=3 HTTP/1.1" 200 33873
+2025-04-08 08:47:03 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=7 HTTP/1.1" 200 33873
+2025-04-08 08:47:08 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=30 HTTP/1.1" 200 42664
+2025-04-08 08:47:58 - django.server - INFO - "GET /gameorder/list/?date_field=created_time&days_range=30 HTTP/1.1" 200 42001
+2025-04-08 08:48:02 - django.server - INFO - "GET /gameorder/list/? HTTP/1.1" 200 47139
+2025-04-08 08:48:07 - django.server - INFO - "GET /gameorder/finished/list/ HTTP/1.1" 200 53574
+2025-04-08 08:48:07 - django.server - INFO - "GET /media/root/2025/04/08/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-04-08 08:48:07 - django.server - INFO - "GET /media/root/2025/04/08/68673c244810eac27fb447a576835af.jpg HTTP/1.1" 304 0
+2025-04-08 08:48:07 - django.server - INFO - "GET /media/root/2025/04/03/68673c244810eac27fb447a576835af.jpg HTTP/1.1" 304 0
+2025-04-08 08:48:08 - django.server - INFO - "GET /gameorder/finished/list/?date_field=created_time&days_range=3&start_date=2025-04-08&end_date=2025-04-08 HTTP/1.1" 200 36750
+2025-04-08 08:50:04 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-04-08 08:50:05 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-08 08:50:06 - django.server - INFO - "GET /gameorder/finished/list/?date_field=created_time&days_range=3&start_date=2025-04-08&end_date=2025-04-08 HTTP/1.1" 200 36795
+2025-04-08 08:50:08 - django.server - INFO - "GET /gameorder/finished/list/ HTTP/1.1" 200 53619
+2025-04-08 08:50:10 - django.server - INFO - "GET /gameorder/finished/list/?date_field=created_time&days_range=3 HTTP/1.1" 200 36429
+2025-04-08 08:50:14 - django.server - INFO - "GET /gameorder/finished/list/?date_field=created_time&days_range=7 HTTP/1.1" 200 39407
+2025-04-08 08:50:32 - django.server - INFO - "GET /gameorder/finished/list/?date_field=created_time&days_range=3 HTTP/1.1" 200 36449
+2025-04-08 08:50:33 - django.server - INFO - "GET /gameorder/finished/list/?date_field=created_time&days_range=7 HTTP/1.1" 200 39427
+2025-04-08 08:50:38 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 13559
+2025-04-08 08:50:38 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 82
+2025-04-08 08:50:38 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 109
+2025-04-08 08:51:24 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 14045
+2025-04-08 08:51:24 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 82
+2025-04-08 08:51:24 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 109
+2025-04-08 08:51:27 - django.server - INFO - "GET /dashboard/?date_field=created_time&days_range=3 HTTP/1.1" 200 14059
+2025-04-08 08:51:27 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 109
+2025-04-08 08:51:27 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 82
+2025-04-08 08:51:29 - django.server - INFO - "GET /dashboard/?date_field=created_time&days_range=7 HTTP/1.1" 200 14059
+2025-04-08 08:51:29 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 82
+2025-04-08 08:51:29 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 109
+2025-04-08 08:54:17 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py changed, reloading.
+2025-04-08 08:54:17 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-08 08:54:18 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 14045
+2025-04-08 08:54:18 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 82
+2025-04-08 08:54:18 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 109
+2025-04-08 08:59:16 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py changed, reloading.
+2025-04-08 08:59:17 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-08 08:59:17 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 14045
+2025-04-08 08:59:17 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 82
+2025-04-08 08:59:17 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 109
+2025-04-08 09:01:24 - django.server - INFO - "GET /level/list/ HTTP/1.1" 200 6673
+2025-04-08 09:01:25 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 14045
+2025-04-08 09:01:25 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 82
+2025-04-08 09:01:25 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 109
+2025-04-08 09:01:55 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py changed, reloading.
+2025-04-08 09:01:55 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-08 09:01:56 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 14045
+2025-04-08 09:01:56 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 82
+2025-04-08 09:01:56 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 109
+2025-04-08 09:20:16 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 47139
+2025-04-08 09:20:20 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 14045
+2025-04-08 09:20:20 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 82
+2025-04-08 09:20:20 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 109
+2025-04-08 09:33:41 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py changed, reloading.
+2025-04-08 09:33:42 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-08 09:33:42 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 14045
+2025-04-08 09:33:43 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 82
+2025-04-08 09:33:43 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 109
+2025-04-08 09:34:51 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py changed, reloading.
+2025-04-08 09:34:52 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-08 09:36:57 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py changed, reloading.
+2025-04-08 09:36:57 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-08 09:37:29 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 302 0
+2025-04-08 09:37:29 - django.server - INFO - "GET /login/ HTTP/1.1" 200 1738
+2025-04-08 09:37:29 - django.server - INFO - "GET /favicon.ico HTTP/1.1" 302 0
+2025-04-08 09:37:29 - django.server - INFO - "GET /login/ HTTP/1.1" 200 1738
+2025-04-08 09:37:40 - django.server - INFO - "POST /login/ HTTP/1.1" 302 0
+2025-04-08 09:37:40 - django.server - INFO - "GET /home/ HTTP/1.1" 200 4076
+2025-04-08 09:37:40 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 304 0
+2025-04-08 09:37:40 - django.request - WARNING - Not Found: /favicon.ico
+2025-04-08 09:37:40 - django.server - WARNING - "GET /favicon.ico HTTP/1.1" 404 7803
+2025-04-08 09:37:45 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 14047
+2025-04-08 09:37:45 - django.server - INFO - "GET /static/js/echarts.js HTTP/1.1" 200 3277175
+2025-04-08 09:37:45 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 82
+2025-04-08 09:37:45 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 28
+2025-04-08 09:37:51 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 47141
+2025-04-08 09:37:51 - django.server - INFO - "GET /media/root/2025/04/06/68673c244810eac27fb447a576835af.jpg HTTP/1.1" 200 94998
+2025-04-08 09:37:51 - django.server - INFO - "GET /media/root/2025/04/06/18.png HTTP/1.1" 200 173200
+2025-04-08 09:37:51 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 200 173200
+2025-04-08 09:37:51 - django.server - INFO - "GET /media/root/2025/04/06/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-04-08 09:37:51 - django.server - INFO - "GET /media/root1/2025/03/29/6.png HTTP/1.1" 200 944652
+2025-04-08 09:37:51 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 200 931909
+2025-04-08 09:37:51 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 200 944652
+2025-04-08 09:38:01 - django.server - INFO - "GET /gameorder/out/42 HTTP/1.1" 302 0
+2025-04-08 09:38:01 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 43652
+2025-04-08 09:38:06 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 14045
+2025-04-08 09:38:06 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 82
+2025-04-08 09:38:06 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-08 09:38:28 - django.server - INFO - "GET /dashboard/?date_field=created_time&days_range=3 HTTP/1.1" 200 14059
+2025-04-08 09:38:28 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 82
+2025-04-08 09:38:28 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-08 09:38:29 - django.server - INFO - "GET /dashboard/?date_field=created_time&days_range=7 HTTP/1.1" 200 14059
+2025-04-08 09:38:29 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 82
+2025-04-08 09:38:29 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-08 09:38:30 - django.server - INFO - "GET /dashboard/?date_field=created_time&days_range=30 HTTP/1.1" 200 14059
+2025-04-08 09:38:30 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-08 09:38:30 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 82
+2025-04-08 09:38:31 - django.server - INFO - "GET /dashboard/?date_field=created_time&date_field=created_time&start_date=&end_date= HTTP/1.1" 200 14053
+2025-04-08 09:38:31 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 82
+2025-04-08 09:38:31 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-08 09:38:32 - django.server - INFO - "GET /dashboard/? HTTP/1.1" 200 14045
+2025-04-08 09:38:32 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 82
+2025-04-08 09:38:32 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-08 09:38:41 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 43650
+2025-04-08 09:38:42 - django.server - INFO - "GET /gameorder/add/ HTTP/1.1" 200 10402
+2025-04-08 09:38:45 - django.server - INFO - "GET /gameorder/load-options/?game=1&platform=ANDROID HTTP/1.1" 200 142
+2025-04-08 09:38:49 - django.server - INFO - "POST /gameorder/add/ HTTP/1.1" 302 0
+2025-04-08 09:38:49 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 47308
+2025-04-08 09:38:49 - django.server - INFO - "GET /media/root/2025/04/08/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-04-08 09:38:54 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 47117
+2025-04-08 09:38:54 - django.server - INFO - "GET /media/root/2025/04/08/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-04-08 09:39:08 - django.server - INFO - "GET /gameorder/out/47 HTTP/1.1" 302 0
+2025-04-08 09:39:08 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 43652
+2025-04-08 09:39:12 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 14045
+2025-04-08 09:39:12 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 82
+2025-04-08 09:39:12 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-08 09:39:50 - django.utils.autoreload - INFO - Watching for file changes with StatReloader

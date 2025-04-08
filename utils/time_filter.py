@@ -12,7 +12,7 @@ def get_date_fields(model):
 def filter_by_date_range(request, queryset):
     """
     通用日期范围筛选函数
-    返回: (queryset, start_date_str, end_date_str)
+    返回: (queryset, start_date_str, end_date_str, date_fields)
     """
     # 1. 获取可用的日期字段
     date_fields = get_date_fields(queryset.model)
@@ -23,27 +23,45 @@ def filter_by_date_range(request, queryset):
         date_field = 'created_time'
 
     # 3. 处理日期范围
-    start_date = request.GET.get('start_date')
-    end_date = request.GET.get('end_date')
+    start_date_str = request.GET.get('start_date')
+    end_date_str = request.GET.get('end_date')
+    days_range = request.GET.get('days_range')
 
-    # 4.应用日期过滤
-    if start_date:
+    start_date = None
+    end_date = None
+
+    # 4. 如果有days_range参数，优先使用它计算日期范围
+    if days_range:
         try:
-            start_date = timezone.datetime.strptime(start_date, '%Y-%m-%d').date()
-            queryset = queryset.filter(**{f'{date_field}__gte': start_date})
-        except ValueError:
+            days = int(days_range)
+            end_date = timezone.now().date()
+            start_date = end_date - timedelta(days=days-1)  # -1是为了包含当天
+        except (ValueError, TypeError):
             pass
+    else:
+        # 5. 处理手动输入的日期范围
+        if start_date_str:
+            try:
+                start_date = timezone.datetime.strptime(start_date_str, '%Y-%m-%d').date()
+            except ValueError:
+                pass
+
+        if end_date_str:
+            try:
+                end_date = timezone.datetime.strptime(end_date_str, '%Y-%m-%d').date()
+            except ValueError:
+                pass
+
+    # 6. 应用日期过滤
+    if start_date:
+        queryset = queryset.filter(**{f'{date_field}__gte': start_date})
 
     if end_date:
-        try:
-            end_date = timezone.datetime.strptime(end_date, '%Y-%m-%d').date()
-            end_date += timedelta(days=1)  # 包含结束当天
-            queryset = queryset.filter(**{f'{date_field}__lt': end_date})
-        except ValueError:
-            pass
+        end_date += timedelta(days=1)  # 包含结束当天
+        queryset = queryset.filter(**{f'{date_field}__lt': end_date})
 
-    # 5. 返回格式化日期字符串
+    # 7. 返回格式化日期字符串
     start_str = start_date.strftime('%Y-%m-%d') if start_date else ''
     end_str = (end_date - timedelta(days=1)).strftime('%Y-%m-%d') if end_date else ''
 
-    return queryset, start_str, end_str, date_field
+    return queryset, start_str, end_str, date_fields

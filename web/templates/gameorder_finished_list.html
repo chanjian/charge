@@ -30,13 +30,13 @@
             <div class="form-group">
                 <label class="control-label">开始日期</label>
                 <input type="date" class="form-control" name="start_date"
-                       value="{{ request.GET.start_date }}">
+                       value="{{ start_date }}">
             </div>
 
             <div class="form-group" style="margin-left: 10px;">
                 <label class="control-label">结束日期</label>
                 <input type="date" class="form-control" name="end_date"
-                       value="{{ request.GET.end_date }}">
+                       value="{{ end_date }}">
             </div>
 
             <!-- 操作按钮 -->
@@ -45,14 +45,18 @@
                 <a href="?" class="btn btn-default" style="margin-left: 5px;">重置</a>
             </div>
 
+
             <!-- 快捷筛选（保持为链接但携带所有参数） -->
             <div class="form-group" style="margin-left: 20px;">
                 <label class="control-label">快捷筛选</label>
-                <a href="?date_field={{ request.GET.date_field|default:'created_time' }}&days_range=3&start_date={% now 'Y-m-d' %}&end_date={% now 'Y-m-d' %}"
+                <!-- 近3天 - 不需要传递start_date和end_date，days_range会自动计算 -->
+                <a href="?date_field={{ request.GET.date_field|default:'created_time' }}&days_range=3"
                    class="btn btn-default {% if request.GET.days_range == '3' %}active{% endif %}">近3天</a>
-                <a href="?date_field={{ request.GET.date_field|default:'created_time' }}&days_range=7&start_date={% now 'Y-m-d' %}&end_date={% now 'Y-m-d' %}"
+                <!-- 近一周 -->
+                <a href="?date_field={{ request.GET.date_field|default:'created_time' }}&days_range=7"
                    class="btn btn-default {% if request.GET.days_range == '7' %}active{% endif %}">近一周</a>
-                <a href="?date_field={{ request.GET.date_field|default:'created_time' }}&days_range=30&start_date={% now 'Y-m-d' %}&end_date={% now 'Y-m-d' %}"
+                <!-- 近一月 -->
+                <a href="?date_field={{ request.GET.date_field|default:'created_time' }}&days_range=30"
                    class="btn btn-default {% if request.GET.days_range == '30' %}active{% endif %}">近一月</a>
             </div>
         </form>
