@@ -17,7 +17,13 @@ class ActiveBaseModel(models.Model):
     class Meta:
         abstract = True
 
-
+class PricePolicy(models.Model):
+    """ 价格策略（原价，后续可以根据用级别不同做不同折扣）
+    1  1000 80
+    2  2000 81
+    """
+    count = models.IntegerField(verbose_name="数量")
+    discount = models.DecimalField(verbose_name="折扣", default=0, max_digits=10, decimal_places=2)
 
 class Level(ActiveBaseModel):
     """ 用户等级表 """

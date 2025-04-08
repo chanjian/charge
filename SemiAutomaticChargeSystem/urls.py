@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from web.views import account,level,customer,gameorder,phoneorder,gamename,gamedenomination,dashboard,chart
+from web.views import account,level,customer,gameorder,phoneorder,gamename,gamedenomination,dashboard,chart,policy
 
 from django.conf import settings
 from django.urls import path, re_path
@@ -35,7 +35,12 @@ urlpatterns = [
     path('home/', account.home, name="home"),
     path('order/',account.order,name='order'),
 
-    path('dashboard/',dashboard.dashboard_list,name="dashboard_list"),
+    path('policy/list/', policy.policy_list, name="policy_list"),
+    path('policy/add/', policy.policy_add, name="policy_add"),
+    path('policy/edit/<int:pk>/', policy.policy_edit, name="policy_edit"),
+    path('policy/delete/', policy.policy_delete, name="policy_delete"),
+    path('policy/upload/',policy.policy_upload,name='policy_upload'),
+    path('policy/example/download/', policy.policy_example_download, name='policy_example_download'),
 
     path('level/list/', level.level_list, name="level_list"),
     path('level/add/', level.level_add, name="level_add"),
@@ -71,7 +76,8 @@ urlpatterns = [
     path('gamedenomination/edit/<int:pk>/',gamedenomination.gamedenomination_edit,name='gamedenomination_edit'),
     path('gamedenomination/delete/<int:pk>/',gamedenomination.gamedenomination_delete,name='gamedenomination_delete'),
 
-path('chart/list/', chart.chart_list, name='chart_list'),
+# path('chart/list/', chart.chart_list, name='chart_list'),
+    path('dashboard/',chart.dashboard_list,name="dashboard_list"),
     path('chart/bar/', chart.chart_bar,name='chart_bar'),
     path('chart/pie/cross/', chart.chart_pie_cross,name='chart_pie_cross'),
     # path('chart/pie/internal/', chart.chart_pie_internal,name='chart_pie_internal'),

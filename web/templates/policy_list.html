@@ -6,6 +6,13 @@
         {% add_permission request 'policy_add'  %}
     </div>
 
+<div>
+    <a href="{% url 'policy_example_download' %}" class="btn btn-primary">
+    <i class="fas fa-download"></i> 下载价格策略示范文件
+</a>
+<h4>注意：上传价格策略文件时，需要是xlsx格式的excel</h4>
+</div>
+
      <div class="panel panel-default">
         <!-- Default panel contents -->
         <div class="panel-heading">
@@ -29,7 +36,8 @@
         <tr>
             <th>ID</th>
             <th>数量</th>
-            <th>价格</th>
+            <th>折扣</th>
+<!--            <th>价格</th>-->
             {% if request|has_permission:'policy_edit,policy_delete' %}
             <th>操作</th>
             {% endif %}
@@ -40,7 +48,7 @@
             <tr row-id="{{ row.id }}">
                 <td>{{ row.id }}</td>
                 <td>{{ row.count }}</td>
-                <td>{{ row.price }}</td>
+                <td>{{ row.discount }}</td>
                 {% if request|has_permission:'policy_edit,policy_delete' %}
                 <td>
                     {% edit_permission request 'policy_edit' pk=row.id %}

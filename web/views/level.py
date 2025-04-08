@@ -185,3 +185,5 @@ def level_delete(request, pk):
     messages.add_message(request, 25 ,f"等级 {level.title} 已删除")  #25对应success
 
     return redirect(reverse('level_list'))
+
+

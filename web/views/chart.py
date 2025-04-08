@@ -1,42 +1,36 @@
-from django.db.models import Count, Sum, Q
+from django.db.models import Count, Sum, Q, F
 from django.db.models.functions import TruncDate, ExtractMonth
 from django.http import JsonResponse
-from django.shortcuts import render
-from datetime import datetime, timedelta
-
+from django.shortcuts import render, redirect
 from utils.time_filter import filter_by_date_range
 from web.models import TransactionRecord, UserInfo, GameOrder
 
 
-def chart_list(request):
+def dashboard_list(request):
     """数据看板主页面"""
-    return render(request, 'dashboard_list.html')
+    queryset = TransactionRecord.objects.all()
+
+    queryset, start_date, end_date, date_field = filter_by_date_range(request,queryset)
+
+    context = {
+        'start_date': start_date.strftime('%Y-%m-%d') if hasattr(start_date, 'strftime') else start_date,
+        'end_date': end_date.strftime('%Y-%m-%d') if hasattr(end_date, 'strftime') else end_date,
+        'date_field': request.GET.get('date_field', 'created_time'),
+    }
+    print('123',start_date,end_date)
+    return render(request, 'dashboard_list.html',context)
 
 
 from django.utils import timezone
 def chart_bar(request):
     """交易流水柱状图数据"""
+
     try:
         # 获取当前管理员
         current_admin = request.userinfo.get_root_admin()
         if not current_admin:
             return JsonResponse({"status": False, "error": "管理员不存在"})
 
-        # # 默认获取当天日期（时区敏感）
-        # today = timezone.now().date()
-        #
-        # # 从请求参数获取日期范围（若无则默认当天）
-        # start_date = request.GET.get('start_date')
-        # end_date = request.GET.get('end_date')
-        #
-        # if not start_date or not end_date:
-        #     # 默认显示当天数据
-        #     start_date = today
-        #     end_date = today
-        # else:
-        #     # 转换字符串为日期对象
-        #     start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
-        #     end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
 
         # 基础查询 - 交易记录
         transaction_queryset = TransactionRecord.objects.filter(
@@ -62,8 +56,17 @@ def chart_bar(request):
         transaction_data = transaction_queryset.annotate(
             date=TruncDate(date_field)
         ).values('date').annotate(
-            income=Sum('amount', filter=Q(to_user=current_admin)),
-            expense=Sum('amount', filter=Q(from_user=current_admin))
+            # 1. 系统费总和（本圈出库订单的系统费）
+            system_fee_total=Sum('system_fee', filter=Q(from_user=current_admin)),
+            # 2. 三方借调费总和（圈内被第三方借调的订单的借调费）
+            cross_fee_total=Sum('cross_fee', filter=Q(from_user=current_admin, is_cross_circle=True)),
+            # 3. 利润总和（本圈出库订单的利润 = 订单金额 - 系统费 - 借调费 - 供应商结算）
+            profit_total=Sum(
+                F('amount') - F('system_fee') - F('cross_fee') - F('supplier_payment'),
+                filter=Q(from_user=current_admin)
+            ),
+            # 4. 订单总数（包括圈内订单被第三方借调出库和出库圈内订单及出库圈外订单的总和）
+            order_count=Count('order', distinct=True)
         ).order_by('date')
 
         # 按天分组统计出库订单金额
@@ -83,16 +86,20 @@ def chart_bar(request):
         data_dict = {}
         for date in sorted_dates:
             data_dict[date] = {
-                'income': 0,
-                'expense': 0,
+                'system_fee': 0,
+                'cross_fee': 0,
+                'profit': 0,
+                'order_count': 0,
                 'order_amount': 0
             }
 
         # 填充交易数据
         for item in transaction_data:
             date = item['date']
-            data_dict[date]['income'] = float(item['income'] or 0)
-            data_dict[date]['expense'] = float(item['expense'] or 0)
+            data_dict[date]['system_fee'] = float(item['system_fee_total'] or 0)
+            data_dict[date]['cross_fee'] = float(item['cross_fee_total'] or 0)
+            data_dict[date]['profit'] = float(item['profit_total'] or 0)
+            data_dict[date]['order_count'] = int(item['order_count'] or 0)
 
         # 填充订单数据
         for item in order_data:
@@ -106,27 +113,39 @@ def chart_bar(request):
                 "x_axis": [date.strftime('%m-%d') for date in sorted_dates],
                 "series": [
                     {
-                        "name": "收入",
+                        "name": "每日订单数",
                         "type": "bar",
-                        "data": [data_dict[date]['income'] for date in sorted_dates],
+                        "data": [data_dict[date]['order_count'] for date in sorted_dates],
                         "itemStyle": {"color": "#67C23A"}
                     },
                     {
-                        "name": "支出",
+                        "name": "系统费",
                         "type": "bar",
-                        "data": [data_dict[date]['expense'] for date in sorted_dates],
+                        "data": [data_dict[date]['system_fee'] for date in sorted_dates],
                         "itemStyle": {"color": "#F56C6C"}
                     },
                     {
-                        "name": "出库订单金额",
+                        "name": "三方借调费",
                         "type": "bar",
-                        "data": [data_dict[date]['order_amount'] for date in sorted_dates],
+                        "data": [data_dict[date]['cross_fee'] for date in sorted_dates],
+                        "itemStyle": {"color": "#E6A23C"}
+                    },
+                    {
+                        "name": "利润",
+                        "type": "bar",
+                        "data": [data_dict[date]['profit'] for date in sorted_dates],
                         "itemStyle": {"color": "#409EFF"},
                         "symbol": "circle",
                         "symbolSize": 8,
                         "lineStyle": {
                             "width": 3
                         }
+                    },
+                    {
+                        "name": "出库订单金额",
+                        "type": "bar",
+                        "data": [data_dict[date]['order_amount'] for date in sorted_dates],
+                        "itemStyle": {"color": "#909399"}
                     }
                 ]
             }
@@ -135,7 +154,6 @@ def chart_bar(request):
 
     except Exception as e:
         return JsonResponse({"status": False, "error": str(e)})
-
 
 def chart_pie_cross(request):
     """跨圈借调饼图数据"""

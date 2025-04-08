@@ -22,40 +22,59 @@
 {% block content %}
 <div class="container-fluid">
     <!-- 日期筛选表单 -->
-    <div class="date-filter">
-        <form method="get" class="form-inline">
+     <!-- 日期筛选表单 -->
+    <div class="left">
+        <form method="get" class="form-inline" style="margin-bottom: 20px;">
+            <!-- 隐藏字段保持当前date_field -->
             <input type="hidden" name="date_field" value="{{ request.GET.date_field|default:'created_time' }}">
 
+            <!-- 时间字段选择 -->
             <div class="form-group">
-                <label>时间字段：</label>
-                <select name="date_field" class="form-control" style="width:120px;" onchange="this.form.submit()">
+                <label class="control-label">时间字段</label>
+                <select name="date_field" class="form-control" style="width: 120px; margin-left: 5px;"
+                        onchange="this.form.submit()">
                     <option value="created_time" {% if request.GET.date_field == 'created_time' %}selected{% endif %}>创建时间</option>
                     <option value="updated_time" {% if request.GET.date_field == 'updated_time' %}selected{% endif %}>更新时间</option>
                     <option value="finished_time" {% if request.GET.date_field == 'finished_time' %}selected{% endif %}>结束时间</option>
                 </select>
             </div>
 
-            <div class="form-group" style="margin-left:15px;">
-                <label>日期范围：</label>
-                <input type="date" id="startDate"  class="form-control" name="start_date" value="{{ request.GET.start_date }}">
-                <span>至</span>
-                <input type="date" id="endDate" class="form-control" name="end_date" value="{{ request.GET.end_date }}">
+            <!-- 日期范围 -->
+            <div class="form-group">
+                <label class="control-label">开始日期</label>
+                <input type="date" class="form-control" name="start_date"
+                       value="{{ start_date }}">
             </div>
 
-            <button type="submit" id="refreshChart" class="btn btn-primary" style="margin-left:15px;">筛选</button>
-            <a href="?" class="btn btn-default" style="margin-left:10px;">重置</a>
+            <div class="form-group" style="margin-left: 10px;">
+                <label class="control-label">结束日期</label>
+                <input type="date" class="form-control" name="end_date"
+                       value="{{ end_date }}">
+            </div>
 
-            <div class="pull-right">
-                <span>快捷筛选：</span>
-                <a href="?date_field={{ request.GET.date_field|default:'created_time' }}&start_date={% now 'Y-m-d' %}&end_date={% now 'Y-m-d' %}"
-                   class="btn btn-default btn-sm">今日</a>
-                <a href="?date_field={{ request.GET.date_field|default:'created_time' }}&start_date={% now 'Y-m-d' %}&end_date={% now 'Y-m-d' %}"
-                   class="btn btn-default btn-sm">近7天</a>
-                <a href="?date_field={{ request.GET.date_field|default:'created_time' }}&start_date={% now 'Y-m-d' %}&end_date={% now 'Y-m-d' %}"
-                   class="btn btn-default btn-sm">本月</a>
+            <!-- 操作按钮 -->
+            <div class="form-group" style="margin-left: 10px;">
+                <button type="submit" class="btn btn-primary">筛选</button>
+                <a href="?" class="btn btn-default" style="margin-left: 5px;">重置</a>
+            </div>
+
+
+            <!-- 快捷筛选（保持为链接但携带所有参数） -->
+            <div class="form-group" style="margin-left: 20px;">
+                <label class="control-label">快捷筛选</label>
+                <!-- 近3天 - 不需要传递start_date和end_date，days_range会自动计算 -->
+                <a href="?date_field={{ request.GET.date_field|default:'created_time' }}&days_range=3"
+                   class="btn btn-default {% if request.GET.days_range == '3' %}active{% endif %}">近3天</a>
+                <!-- 近一周 -->
+                <a href="?date_field={{ request.GET.date_field|default:'created_time' }}&days_range=7"
+                   class="btn btn-default {% if request.GET.days_range == '7' %}active{% endif %}">近一周</a>
+                <!-- 近一月 -->
+                <a href="?date_field={{ request.GET.date_field|default:'created_time' }}&days_range=30"
+                   class="btn btn-default {% if request.GET.days_range == '30' %}active{% endif %}">近一月</a>
             </div>
         </form>
     </div>
+
 
     <!-- 第一行：交易流水 -->
     <div class="row">
@@ -137,52 +156,7 @@ function getQueryParams() {
     };
 }
 
-// 柱状图/折线图
-// function initBarChart() {
-//     const chartDom = document.getElementById('chartBar');
-//     chartInstances.barChart = echarts.init(chartDom);
-//
-//     const params = getQueryParams();
-//     showLoading(chartInstances.barChart);
-//
-//     $.get('{% url "chart_bar" %}', params, function(response) {
-//         if (!response.status) {
-//             showError(chartInstances.barChart, response.error);
-//             return;
-//         }
-//
-//         const option = {
-//             tooltip: {
-//                 trigger: 'axis',
-//                 axisPointer: { type: 'shadow' }
-//             },
-//             legend: {
-//                 data: ['收入', '支出']
-//             },
-//             grid: {
-//                 left: '3%',
-//                 right: '4%',
-//                 bottom: '3%',
-//                 containLabel: true
-//             },
-//             xAxis: {
-//                 type: 'category',
-//                 data: response.data.x_axis
-//             },
-//             yAxis: {
-//                 type: 'value',
-//                 axisLabel: {
-//                     formatter: '{value} 元'
-//                 }
-//             },
-//             series: response.data.series
-//         };
-//
-//         chartInstances.barChart.setOption(option);
-//         hideLoading(chartInstances.barChart);
-//     }).fail(function() {
-//         showError(chartInstances.barChart, '数据加载失败');
-//     });
+
 
 
 function initBarChart() {
@@ -201,6 +175,11 @@ function initBarChart() {
         },
         legend: {
             data: [] // 初始为空，从后端获取
+        },
+        toolbox: {
+                    feature: {
+                        saveAsImage: {}
+                    }
         },
         grid: {
             left: '3%',
@@ -382,6 +361,7 @@ $(document).ready(function() {
         return false;
     });
 });
+
 
 
 </script>

@@ -210,6 +210,7 @@ NB_MENU = {
             'icon': "fa-bed",
             'children': [
                 {'text': "等级管理", 'url': "/level/list/", 'name': "level_list"},
+                {'text': "价格策略", 'url': "/policy/list/", 'name': "policy_list"},
                 {'text': "客户管理", 'url': "/customer/list/", 'name': "customer_list"},
                 {'text': "交易记录", 'url': "/policy/list/", 'name': "policy_list"},
             ]
@@ -276,6 +277,12 @@ PERMISSION = {
         'order_list':{'text':'订单展示','parent':'order'},
         'order_add':{'text':'创建订单','parent':'home'},
 
+        "policy_list":{"text":"价格策略列表","parent":None},
+        "policy_add": {"text": "创建价格策略", 'parent': 'policy_list'},
+        "policy_edit": {"text": "编辑价格策略", 'parent': 'policy_list'},
+        "policy_delete": {"text": "删除价格策略", 'parent': 'policy_list'},
+        "policy_upload": {"text": "批量上传价格策略", 'parent': 'policy_list'},
+
         "level_list": {"text": "级别列表", 'parent': None},
         "level_add": {"text": "新建级别", 'parent': 'level_list'},
         "level_edit": {"text": "编辑级别", 'parent': 'level_list'},
@@ -332,6 +339,14 @@ PERMISSION = {
         "level_add": {"text": "新建级别", 'parent': 'level_list'},
         "level_edit": {"text": "编辑级别", 'parent': 'level_list'},
         "level_delete": {"text": "删除级别", 'parent': 'level_list'},
+
+        "policy_list":{"text":"价格策略列表","parent":None},
+        "policy_add": {"text": "创建价格策略", 'parent': 'policy_list'},
+        "policy_edit": {"text": "编辑价格策略", 'parent': 'policy_list'},
+        "policy_delete": {"text": "删除价格策略", 'parent': 'policy_list'},
+        "policy_upload": {"text": "批量上传价格策略", 'parent': 'policy_list'},
+        "policy_example_download": {"text": "价格策略模板文件下载", 'parent': 'policy_list'},
+
 
         "customer_list": {"text": "客户列表", 'parent': None},
         "customer_add": {"text": "添加客户", 'parent': 'customer_list'},
