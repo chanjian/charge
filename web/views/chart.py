@@ -52,6 +52,9 @@ def chart_bar(request):
         order_queryset, _, _, _ = filter_by_date_range(request, order_queryset)
         print('date_field',date_field)
 
+        # 获取所有相关订单ID
+        order_ids = order_queryset.values_list('id', flat=True)
+
         # 按天分组统计交易记录
         transaction_data = transaction_queryset.annotate(
             date=TruncDate(date_field)

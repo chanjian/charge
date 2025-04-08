@@ -18,16 +18,47 @@ def policy_list(request):
 class PolicyModelForm(BootStrapForm, forms.ModelForm):
     class Meta:
         model = models.PricePolicy
-        fields = "__all__"
+        fields = ['count','discount']
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        super().__init__(*args, **kwargs)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        count = cleaned_data.get('count')
+        discount = cleaned_data.get('discount')
+
+
+        if not all([count,discount]):
+            return cleaned_data
+
+        # 如果是编辑现有实例，获取creator
+        creator = self.instance.creator if self.instance.pk else self.request.userdict.id
+
+        # 检查当前管理员是否已创建相同等级
+        queryset = models.PricePolicy.objects.filter(creator=creator,active=1,count=count)
+
+        if self.instance.pk:  # 编辑时排除自身
+            queryset = queryset.exclude(pk=self.instance.pk)
+
+        if queryset.exists():
+            if queryset.filter(count=count).exists():
+                raise forms.ValidationError(f"您已创建过数量为'{count}'的折扣策略")
+
+        return cleaned_data
+
+
 
 
 def policy_add(request):
     if request.method == "GET":
-        form = PolicyModelForm()
+        form = PolicyModelForm(request=request)
         return render(request, 'form4.html', {'form': form})
-    form = PolicyModelForm(data=request.POST)
+    form = PolicyModelForm(data=request.POST,request=request)
     if not form.is_valid():
         return render(request, 'form4.html', {'form': form})
+    form.instance.creator = request.userinfo
     form.save()
     return redirect('/policy/list/')
 

@@ -36,9 +36,11 @@ def level_list(request):
     # queryset_supplier = models.Level.objects.filter(active=1, level_type='SUPPLIER')
     queryset_customer = queryset.filter(active=1, level_type='CUSTOMER')
     queryset_supplier = queryset.filter(active=1, level_type='SUPPLIER')
+    queryset_support = queryset.filter(active=1, level_type='SUPPORT')
     context = {
         'queryset_customer':queryset_customer,
         'queryset_supplier':queryset_supplier,
+        'queryset_support':queryset_support,
     }
     return render(request,'level_list.html',context)
 

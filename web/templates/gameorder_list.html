@@ -359,7 +359,7 @@
         <td>
             {% edit_permission request 'gameorder_edit' pk=row.id %}
             {% delete_permission request 'gameorder_delete' pk=row.id %}
-<a href="{% url 'gameorder_out' row.id %}" class="btn btn-xs btn-warning"
+<a href="{% url 'gameorder_out' row.id %}?qb_discount={{ request.GET.qb_discount }}" class="btn btn-xs btn-warning"
            onclick="return confirm('确认出库吗？')">出库</a>
         </td>
         {% endif %}

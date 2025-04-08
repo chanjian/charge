@@ -17,13 +17,17 @@ class ActiveBaseModel(models.Model):
     class Meta:
         abstract = True
 
-class PricePolicy(models.Model):
+class PricePolicy(ActiveBaseModel):
     """ 价格策略（原价，后续可以根据用级别不同做不同折扣）
     1  1000 80
     2  2000 81
     """
     count = models.IntegerField(verbose_name="数量")
     discount = models.DecimalField(verbose_name="折扣", default=0, max_digits=10, decimal_places=2)
+    # 添加创建者字段
+    creator = models.ForeignKey(to='UserInfo', verbose_name="创建者", on_delete=models.CASCADE, null=True, blank=True,
+                                related_name='created_pricepolicy')
+
 
 class Level(ActiveBaseModel):
     """ 用户等级表 """
