@@ -3,14 +3,17 @@ from django.db.models.functions import TruncDate, ExtractMonth
 from django.http import JsonResponse
 from django.shortcuts import render
 from datetime import datetime, timedelta
-from web.models import TransactionRecord, UserInfo
+
+from utils.time_filter import filter_by_date_range
+from web.models import TransactionRecord, UserInfo, GameOrder
 
 
 def chart_list(request):
     """数据看板主页面"""
-    return render(request, 'chart_list.html')
+    return render(request, 'dashboard_list.html')
 
 
+from django.utils import timezone
 def chart_bar(request):
     """交易流水柱状图数据"""
     try:
@@ -19,57 +22,111 @@ def chart_bar(request):
         if not current_admin:
             return JsonResponse({"status": False, "error": "管理员不存在"})
 
-        # 获取筛选参数
-        date_field = request.GET.get('date_field', 'created_time')
-        start_date = request.GET.get('start_date')
-        end_date = request.GET.get('end_date')
+        # # 默认获取当天日期（时区敏感）
+        # today = timezone.now().date()
+        #
+        # # 从请求参数获取日期范围（若无则默认当天）
+        # start_date = request.GET.get('start_date')
+        # end_date = request.GET.get('end_date')
+        #
+        # if not start_date or not end_date:
+        #     # 默认显示当天数据
+        #     start_date = today
+        #     end_date = today
+        # else:
+        #     # 转换字符串为日期对象
+        #     start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
+        #     end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
 
-        # 验证日期字段
-        if date_field not in ['created_time', 'updated_time', 'finished_time']:
-            date_field = 'created_time'
-
-        # 设置默认日期范围（最近7天）
-        if not start_date or not end_date:
-            end_date = datetime.now().date()
-            start_date = end_date - timedelta(days=7)
-
-        # 基础查询
-        qs = TransactionRecord.objects.filter(
+        # 基础查询 - 交易记录
+        transaction_queryset = TransactionRecord.objects.filter(
             Q(from_user=current_admin) | Q(to_user=current_admin),
-            active=1
-        )
+            active=1,
+            # created_time__date__range=(start_date, end_date)  # 关键过滤条件
+        ).exclude(created_time__isnull=True)
 
-        # 应用日期过滤
-        date_filter = {
-            f"{date_field}__date__gte": start_date,
-            f"{date_field}__date__lte": end_date
-        }
-        qs = qs.filter(**date_filter)
+        # 基础查询 - 出库订单
+        order_queryset = GameOrder.objects.filter(
+            created_by=current_admin,
+            active=1,
+            order_status=2,  # 已支付的订单
+            # created_time__date__range=(start_date, end_date)  # 关键过滤条件
+        ).exclude(created_time__isnull=True)
 
-        # 按天分组统计
-        data = qs.annotate(
+        # 调用封装好的函数进行日期过滤
+        transaction_queryset, start_date, end_date, date_field = filter_by_date_range(request, transaction_queryset)
+        order_queryset, _, _, _ = filter_by_date_range(request, order_queryset)
+        print('date_field',date_field)
+
+        # 按天分组统计交易记录
+        transaction_data = transaction_queryset.annotate(
             date=TruncDate(date_field)
         ).values('date').annotate(
             income=Sum('amount', filter=Q(to_user=current_admin)),
             expense=Sum('amount', filter=Q(from_user=current_admin))
         ).order_by('date')
 
+        # 按天分组统计出库订单金额
+        order_data = order_queryset.annotate(
+            date=TruncDate('created_time')
+        ).values('date').annotate(
+            order_amount=Sum('recharge_option__amount')
+        ).order_by('date')
+
+        # 合并日期，确保所有日期都出现在x轴
+        all_dates = set()
+        all_dates.update(item['date'] for item in transaction_data)
+        all_dates.update(item['date'] for item in order_data)
+        sorted_dates = sorted(all_dates)
+
+        # 构建按日期索引的数据字典
+        data_dict = {}
+        for date in sorted_dates:
+            data_dict[date] = {
+                'income': 0,
+                'expense': 0,
+                'order_amount': 0
+            }
+
+        # 填充交易数据
+        for item in transaction_data:
+            date = item['date']
+            data_dict[date]['income'] = float(item['income'] or 0)
+            data_dict[date]['expense'] = float(item['expense'] or 0)
+
+        # 填充订单数据
+        for item in order_data:
+            date = item['date']
+            data_dict[date]['order_amount'] = float(item['order_amount'] or 0)
+
+        # 准备结果数据
         result = {
             "status": True,
             "data": {
-                "x_axis": [item['date'].strftime('%m-%d') for item in data],
+                "x_axis": [date.strftime('%m-%d') for date in sorted_dates],
                 "series": [
                     {
                         "name": "收入",
                         "type": "bar",
-                        "data": [float(item['income'] or 0) for item in data],
+                        "data": [data_dict[date]['income'] for date in sorted_dates],
                         "itemStyle": {"color": "#67C23A"}
                     },
                     {
                         "name": "支出",
                         "type": "bar",
-                        "data": [float(item['expense'] or 0) for item in data],
+                        "data": [data_dict[date]['expense'] for date in sorted_dates],
                         "itemStyle": {"color": "#F56C6C"}
+                    },
+                    {
+                        "name": "出库订单金额",
+                        "type": "bar",
+                        "data": [data_dict[date]['order_amount'] for date in sorted_dates],
+                        "itemStyle": {"color": "#409EFF"},
+                        "symbol": "circle",
+                        "symbolSize": 8,
+                        "lineStyle": {
+                            "width": 3
+                        }
                     }
                 ]
             }

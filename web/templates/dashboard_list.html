@@ -37,12 +37,12 @@
 
             <div class="form-group" style="margin-left:15px;">
                 <label>日期范围：</label>
-                <input type="date" class="form-control" name="start_date" value="{{ request.GET.start_date }}">
+                <input type="date" id="startDate"  class="form-control" name="start_date" value="{{ request.GET.start_date }}">
                 <span>至</span>
-                <input type="date" class="form-control" name="end_date" value="{{ request.GET.end_date }}">
+                <input type="date" id="endDate" class="form-control" name="end_date" value="{{ request.GET.end_date }}">
             </div>
 
-            <button type="submit" class="btn btn-primary" style="margin-left:15px;">筛选</button>
+            <button type="submit" id="refreshChart" class="btn btn-primary" style="margin-left:15px;">筛选</button>
             <a href="?" class="btn btn-default" style="margin-left:10px;">重置</a>
 
             <div class="pull-right">
@@ -138,51 +138,122 @@ function getQueryParams() {
 }
 
 // 柱状图/折线图
+// function initBarChart() {
+//     const chartDom = document.getElementById('chartBar');
+//     chartInstances.barChart = echarts.init(chartDom);
+//
+//     const params = getQueryParams();
+//     showLoading(chartInstances.barChart);
+//
+//     $.get('{% url "chart_bar" %}', params, function(response) {
+//         if (!response.status) {
+//             showError(chartInstances.barChart, response.error);
+//             return;
+//         }
+//
+//         const option = {
+//             tooltip: {
+//                 trigger: 'axis',
+//                 axisPointer: { type: 'shadow' }
+//             },
+//             legend: {
+//                 data: ['收入', '支出']
+//             },
+//             grid: {
+//                 left: '3%',
+//                 right: '4%',
+//                 bottom: '3%',
+//                 containLabel: true
+//             },
+//             xAxis: {
+//                 type: 'category',
+//                 data: response.data.x_axis
+//             },
+//             yAxis: {
+//                 type: 'value',
+//                 axisLabel: {
+//                     formatter: '{value} 元'
+//                 }
+//             },
+//             series: response.data.series
+//         };
+//
+//         chartInstances.barChart.setOption(option);
+//         hideLoading(chartInstances.barChart);
+//     }).fail(function() {
+//         showError(chartInstances.barChart, '数据加载失败');
+//     });
+
+
 function initBarChart() {
     const chartDom = document.getElementById('chartBar');
+    if (!chartDom) {
+        console.error('错误: 找不到图表容器 #chartBar');
+        return;
+    }
     chartInstances.barChart = echarts.init(chartDom);
 
-    const params = getQueryParams();
+    // 初始化默认配置
+    const option = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: { type: 'shadow' }
+        },
+        legend: {
+            data: [] // 初始为空，从后端获取
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'category',
+            data: [] // 初始为空，从后端获取
+        },
+        yAxis: {
+            type: 'value',
+            axisLabel: {
+                formatter: '{value} 元'
+            }
+        },
+        series: [] // 初始为空，从后端获取
+    };
+
+    // 显示加载动画
     showLoading(chartInstances.barChart);
 
-    $.get('{% url "chart_bar" %}', params, function(response) {
-        if (!response.status) {
-            showError(chartInstances.barChart, response.error);
-            return;
+    // 使用AJAX获取数据
+    $.ajax({
+        url: '{% url "chart_bar" %}',
+        type: 'GET',
+        dataType: 'JSON',
+        data: getQueryParams(),
+        success: function(response) {
+            if (!response.status) {
+                showError(chartInstances.barChart, response.error || '数据加载失败');
+                return;
+            }
+
+            // 更新图表配置
+            option.legend.data = response.data.series.map(item => item.name);
+            option.xAxis.data = response.data.x_axis;
+            option.series = response.data.series;
+
+            // 设置图表选项
+            chartInstances.barChart.setOption(option);
+            hideLoading(chartInstances.barChart);
+        },
+        error: function(xhr, status, error) {
+            showError(chartInstances.barChart, '数据加载失败: ' + error);
+        },
+        complete: function() {
+            // 无论成功失败都隐藏加载动画（如果之前没隐藏）
+            hideLoading(chartInstances.barChart);
         }
-
-        const option = {
-            tooltip: {
-                trigger: 'axis',
-                axisPointer: { type: 'shadow' }
-            },
-            legend: {
-                data: ['收入', '支出']
-            },
-            grid: {
-                left: '3%',
-                right: '4%',
-                bottom: '3%',
-                containLabel: true
-            },
-            xAxis: {
-                type: 'category',
-                data: response.data.x_axis
-            },
-            yAxis: {
-                type: 'value',
-                axisLabel: {
-                    formatter: '{value} 元'
-                }
-            },
-            series: response.data.series
-        };
-
-        chartInstances.barChart.setOption(option);
-        hideLoading(chartInstances.barChart);
-    }).fail(function() {
-        showError(chartInstances.barChart, '数据加载失败');
     });
+}
 
     // 切换图表类型
     $('#barChartType').change(function() {
@@ -193,7 +264,7 @@ function initBarChart() {
         });
         chartInstances.barChart.setOption(option);
     });
-}
+
 
 // 跨圈借调饼图
 function initPieCross() {
@@ -311,5 +382,7 @@ $(document).ready(function() {
         return false;
     });
 });
+
+
 </script>
 {% endblock %}

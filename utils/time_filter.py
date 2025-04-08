@@ -64,4 +64,5 @@ def filter_by_date_range(request, queryset):
     start_str = start_date.strftime('%Y-%m-%d') if start_date else ''
     end_str = (end_date - timedelta(days=1)).strftime('%Y-%m-%d') if end_date else ''
 
-    return queryset, start_str, end_str, date_fields
+    # return queryset, start_str, end_str, date_fields
+    return queryset, start_str, end_str, date_field
