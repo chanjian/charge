@@ -272,16 +272,18 @@ class TransactionRecord(ActiveBaseModel):
         ('recharge', '充值'),
         ('deduction', '扣款'),
 
-        # 订单交易类
-        ('system_fee', '系统费用'),
-        ('cross_circle_fee', '跨圈借调费'),
-        ('commission', '提成费用'),
-        ('advance_pay', '垫付款项'),
-        ('supplier_pay', '供应商结算'),
+        # # 订单交易类
+        # ('system_fee', '系统费用'),
+        # ('cross_circle_fee', '跨圈借调费'),
+        # ('commission', '提成费用'),
+        # ('advance_pay', '垫付款项'),
+        # ('supplier_pay', '供应商结算'),
 
         # 订单状态类
         ('order_create', '创建订单'),
         ('order_cancel', '取消订单'),
+        ('order_complete', '完成订单'),
+
     )
 
     charge_type = models.CharField(verbose_name="类型", choices=TRANSACTION_TYPE_CHOICES,max_length=32)

@@ -850,35 +850,27 @@ def calculate_fees(order, operator,qb_discount):
 
     if is_same_circle:
         # 圈内逻辑
-        # fees['system_fee'] == 1
-        if operator.usertype == 'SUPPORT':
-            # 圈内客服提成
-            fees['commission'] = price_info['original'] * operator_level.percent
-            fees['support_payment'] = price_info['original'] * qb_discount
-        elif operator.usertype == 'SUPPLIER':
-            # 圈内供应商结算
-            fees['supplier_payment'] = price_info['original'] * discount
-        else:
-            # 其他类型（如管理员）
-            pass
+        fees['system_fee'] == Decimal(settings.SYS_FEE)
+
     else:
         # 跨圈逻辑
-        # fees['system_fee'] == 1
+        fees['system_fee'] == Decimal(settings.SYS_FEE)
         # 统一收取借调费
-        # fees['cross_circle_fee'] = price_info['final'] * Decimal('0.1')
+        fees['cross_circle_fee'] = Decimal(settings.THIRD_FEE)
         fees['cross_admin'] = out_admin
 
-        # 跨圈时区分操作者类型
-        if operator.usertype == 'SUPPORT':
-            # 跨圈客服提成（可能费率不同）
-            fees['commission'] = price_info['original'] * operator_level.percent
-            fees['support_payment'] = price_info['original'] * qb_discount
-        elif operator.usertype == 'SUPPLIER':
-            # 跨圈供应商结算（可能比例不同）
-            fees['supplier_payment'] = price_info['original'] * discount
-        else:
-            # 其他类型（如管理员）
-            pass
+
+    if operator.usertype == 'SUPPORT':
+        # 跨圈客服提成（可能费率不同）
+        fees['commission'] = price_info['original'] * operator_level.percent
+        fees['support_payment'] = price_info['original'] * qb_discount
+    elif operator.usertype == 'SUPPLIER':
+        # 跨圈供应商结算（可能比例不同）
+        fees['supplier_payment'] = price_info['original'] * discount
+    else:
+        # 其他类型（如管理员）
+        pass
+
     return fees
 
 
@@ -895,102 +887,51 @@ def generate_trade_number():
 
 def create_transaction_records(order, operator, fees,qb_discount):
     """创建交易记录（适配Level模型）"""
+    # 获取当前出库人，即客服或者供应商的等级
     qb_discount = qb_discount
+    try:
+        operator_level = Level.objects.get(
+            creator=operator.get_root_admin(),
+            level_type=operator.usertype,
+            active=1
+        )
+    except:
+        pass
     base_data = {
         'order': order,
         'customer': order.consumer,
+        # 即此订单的出库人，即操作人
         'creator': operator,
-        'active': 1,
+        'charge_type':'order_complete',
+        # 通过判断跨圈管理员字段是否为空来判断是否跨圈
         'is_cross_circle': bool(fees.get('cross_admin')),
-        't_id': generate_trade_number()  # 使用生成器
+        # 交易ID
+        't_id': generate_trade_number(),  # 使用生成器
+        'from_user':order.consumer.get_root_admin(),
+        'to_user': operator.get_root_admin(),
     }
 
-    # 系统费用
-    if fees['system_fee'] > 0:
-        TransactionRecord.objects.create(
-            **base_data,
-            charge_type='system_fee',
-            # amount=fees['system_fee'],
-            system_fee=fees['system_fee'],
-            # 入库人所属圈子的管理员
-            from_user=order.consumer.get_root_admin(),
-            # 出库人所属圈子的管理员
-            to_user=operator if fees.get('cross_admin') else order.consumer.get_root_admin(),
+    # 费用明细
+    fee_fields = {
+        'system_fee': fees.get('system_fee', 0),
+        'cross_fee': fees.get('cross_circle_fee', 0),
+        'commission': fees.get('commission', 0),
+        'support_payment': fees.get('support_payment', 0),
+        'supplier_payment': fees.get('supplier_payment', 0),
+    }
 
-            memo=f"系统服务费（{'跨圈' if fees.get('cross_admin') else '圈内'}）"
-        )
-
-    # 跨圈借调费
-    if fees['cross_circle_fee'] > 0:
-        TransactionRecord.objects.create(
-            **base_data,
-            charge_type='cross_circle_fee',
-            # amount=fees['cross_circle_fee'],
-            cross_fee=fees['cross_circle_fee'],
-            from_user=order.consumer.get_root_admin(),
-            to_user=operator.get_root_admin(),
-            # memo=f"跨圈借调费（费率10%，管理员ID：{fees['cross_admin'].id})"
-        )
-
-    # 客服相关费用
+    # 根据操作者类型调整逻辑
     if operator.usertype == 'SUPPORT':
-        # 获取客服等级信息用于备注
-        level_info = Level.objects.get(
-            creator=operator.get_root_admin(),
-            level_type='SUPPORT',
-            active=1
-        )
-        if level_info:
-            level_memo = f"{level_info.title}({level_info.percent}%)"
-        else:
-            level_memo = "默认费率"
+        fee_fields['commission'] = order.price_info['original'] * operator_level.percent
+        fee_fields['support_payment'] = order.price_info['original'] * qb_discount
 
-        # 客服提成
-        # if fees['commission'] > 0:
-        TransactionRecord.objects.create(
-            **base_data,
-            charge_type='commission',
-            # amount=fees['commission'],
-            commission=fees['commission'],
-            from_user=order.consumer.get_root_admin(),
-            to_user=operator.get_root_admin(),
-            memo=f"客服提成（等级：{level_memo}，提成金额：{fees['commission']})"
-        )
+    elif operator.usertype == 'SUPPLIER':
+        fee_fields['supplier_payment'] = order.price_info['original'] * operator_level.percent
 
-        # 客服垫付
-        # if fees['support_payment'] > 0:
-        TransactionRecord.objects.create(
-            **base_data,
-            charge_type='advance_pay',
-            amount=fees['support_payment'],
-            support_payment=fees['support_payment'],
-            from_user=order.consumer.get_root_admin(),
-            to_user=operator.get_root_admin(),
-            memo=f"客服垫付款（等级：{level_memo}，垫付价：{fees['support_payment']}/原价：{order.price_info['original']})"
-        )
+    else:
+        pass
 
-    # 供应商结算
-    if operator.usertype == 'SUPPLIER': #and fees['supplier_payment'] > 0:
-        try:
-            level_info = Level.objects.get(
-                creator=operator.get_root_admin(),
-                level_type='SUPPLIER',
-                active=1
-            )
-            level_memo = f"{level_info.title}({level_info.percent}%)"
-        except Level.DoesNotExist:
-            level_memo = "默认费率"
-
-        # 应该结算供应商的钱
-        TransactionRecord.objects.create(
-            **base_data,
-            charge_type='supplier_pay',
-            amount=fees['supplier_payment'],
-            supplier_payment=fees['supplier_payment'],
-            from_user=order.consumer.get_root_admin(),
-            to_user=operator,
-            memo=f"供应商结算（等级：{level_memo}，结算价：{fees['supplier_payment']}/最终价：{order.price_info['final']})"
-        )
+    return TransactionRecord.objects.create(**{**base_data, **fee_fields})
 
 
 def update_account_balances(fees):
