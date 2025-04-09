@@ -22189,3 +22189,1426 @@ AttributeError: 'NoneType' object has no attribute 'id'
 2025-04-09 14:21:27 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15314
 2025-04-09 14:21:27 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 105
 2025-04-09 14:21:28 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1030
+2025-04-09 14:23:57 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 23546
+2025-04-09 14:27:00 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\SemiAutomaticChargeSystem\settings.py changed, reloading.
+2025-04-09 14:27:01 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-09 14:27:02 - django.server - INFO - "GET /customer/list/ HTTP/1.1" 200 14447
+2025-04-09 14:27:19 - django.server - INFO - "GET /customer/add/ HTTP/1.1" 200 9434
+2025-04-09 14:27:44 - django.server - INFO - "POST /customer/add/ HTTP/1.1" 200 9546
+2025-04-09 14:27:49 - django.server - INFO - "POST /customer/add/ HTTP/1.1" 302 0
+2025-04-09 14:27:49 - django.server - INFO - "GET /customer/list/ HTTP/1.1" 200 15549
+2025-04-09 14:27:56 - django.server - INFO - "GET /customer/edit/14/ HTTP/1.1" 200 6763
+2025-04-09 14:28:01 - django.server - INFO - "POST /customer/edit/14/ HTTP/1.1" 302 0
+2025-04-09 14:28:01 - django.server - INFO - "GET /customer/list/ HTTP/1.1" 200 15361
+2025-04-09 14:28:26 - django.server - INFO - "GET /customer/list/ HTTP/1.1" 302 0
+2025-04-09 14:28:26 - django.server - INFO - "GET /login/ HTTP/1.1" 200 1738
+2025-04-09 14:28:26 - django.server - INFO - "GET /favicon.ico HTTP/1.1" 302 0
+2025-04-09 14:28:26 - django.server - INFO - "GET /login/ HTTP/1.1" 200 1738
+2025-04-09 14:28:33 - django.server - INFO - "POST /login/ HTTP/1.1" 200 1789
+2025-04-09 14:28:33 - django.server - INFO - "GET /favicon.ico HTTP/1.1" 302 0
+2025-04-09 14:28:33 - django.server - INFO - "GET /login/ HTTP/1.1" 200 1738
+2025-04-09 14:28:44 - django.server - INFO - "POST /login/ HTTP/1.1" 302 0
+2025-04-09 14:28:44 - django.server - INFO - "GET /home/ HTTP/1.1" 200 3275
+2025-04-09 14:28:44 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 304 0
+2025-04-09 14:28:44 - django.request - WARNING - Not Found: /favicon.ico
+2025-04-09 14:28:44 - django.server - WARNING - "GET /favicon.ico HTTP/1.1" 404 8510
+2025-04-09 14:28:45 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 14422
+2025-04-09 14:28:45 - django.server - INFO - "GET /static/js/echarts.js HTTP/1.1" 200 3277175
+2025-04-09 14:28:46 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-09 14:28:46 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-09 14:29:48 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 22623
+2025-04-09 14:29:48 - django.server - INFO - "GET /static/js/delete_modal.js HTTP/1.1" 200 1220
+2025-04-09 14:30:52 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 22609
+2025-04-09 14:30:53 - django.server - INFO - "GET /gameorder/add/ HTTP/1.1" 200 9375
+2025-04-09 14:30:57 - django.server - INFO - "GET /gameorder/load-options/?game=1&platform=ANDROID HTTP/1.1" 200 142
+2025-04-09 14:31:02 - django.server - INFO - "POST /gameorder/add/ HTTP/1.1" 302 0
+2025-04-09 14:31:02 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 25918
+2025-04-09 14:31:02 - django.server - INFO - "GET /media/sharon/2025/04/09/68673c244810eac27fb447a576835af.jpg HTTP/1.1" 200 94998
+2025-04-09 14:31:05 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 26664
+2025-04-09 14:31:05 - django.server - INFO - "GET /media/sharon/2025/04/09/68673c244810eac27fb447a576835af.jpg HTTP/1.1" 200 94998
+2025-04-09 14:31:37 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=100&qb_discount=75&max_combine=4&tolerance=10 HTTP/1.1" 200 31506
+2025-04-09 14:31:37 - django.server - INFO - "GET /media/sharon/2025/04/09/68673c244810eac27fb447a576835af.jpg HTTP/1.1" 304 0
+2025-04-09 14:31:39 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=100&qb_discount=75&max_combine=4&tolerance=10&applied_orders=O20250409143102 HTTP/1.1" 200 31634
+2025-04-09 14:31:40 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=100&qb_discount=75&max_combine=4&tolerance=10&applied_orders=O20250409143102 HTTP/1.1" 200 31634
+2025-04-09 14:31:40 - django.server - INFO - "GET /media/sharon/2025/04/09/68673c244810eac27fb447a576835af.jpg HTTP/1.1" 304 0
+2025-04-09 14:31:49 - django.server - INFO - "GET /gameorder/out/65?qb_discount=75 HTTP/1.1" 302 0
+2025-04-09 14:31:49 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 23548
+2025-04-09 14:31:56 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-09 14:31:56 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-09 14:31:56 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-09 14:32:26 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-09 14:32:26 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-09 14:32:26 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-09 14:32:47 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 23546
+2025-04-09 14:32:48 - django.server - INFO - "GET /gameorder/add/ HTTP/1.1" 200 10538
+2025-04-09 14:32:51 - django.server - INFO - "GET /gameorder/load-options/?game=1&platform=ANDROID HTTP/1.1" 200 142
+2025-04-09 14:32:56 - django.server - INFO - "POST /gameorder/add/ HTTP/1.1" 302 0
+2025-04-09 14:32:56 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 27389
+2025-04-09 14:32:56 - django.server - INFO - "GET /media/root/2025/04/09/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-04-09 14:33:03 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 26273
+2025-04-09 14:33:03 - django.server - INFO - "GET /media/root/2025/04/09/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-04-09 14:33:09 - django.request - ERROR - Internal Server Error: /gameorder/out/66
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 837, in calculate_fees
+    operator_level = Level.objects.get(
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\query.py", line 439, in get
+    raise self.model.MultipleObjectsReturned(
+web.models.Level.MultipleObjectsReturned: get() returned more than one Level -- it returned 2!
+2025-04-09 14:33:09 - django.server - ERROR - "GET /gameorder/out/66?qb_discount= HTTP/1.1" 500 111579
+2025-04-09 14:33:11 - django.request - ERROR - Internal Server Error: /gameorder/out/66
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 837, in calculate_fees
+    operator_level = Level.objects.get(
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\query.py", line 439, in get
+    raise self.model.MultipleObjectsReturned(
+web.models.Level.MultipleObjectsReturned: get() returned more than one Level -- it returned 2!
+2025-04-09 14:33:11 - django.server - ERROR - "GET /gameorder/out/66?qb_discount= HTTP/1.1" 500 111742
+2025-04-09 14:33:25 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 26273
+2025-04-09 14:33:25 - django.server - INFO - "GET /media/root/2025/04/09/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-04-09 14:33:26 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 26273
+2025-04-09 14:33:28 - django.request - ERROR - Internal Server Error: /gameorder/out/66
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 837, in calculate_fees
+    operator_level = Level.objects.get(
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\query.py", line 439, in get
+    raise self.model.MultipleObjectsReturned(
+web.models.Level.MultipleObjectsReturned: get() returned more than one Level -- it returned 2!
+2025-04-09 14:33:28 - django.server - ERROR - "GET /gameorder/out/66?qb_discount= HTTP/1.1" 500 111579
+2025-04-09 14:33:29 - django.request - ERROR - Internal Server Error: /gameorder/out/66
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 837, in calculate_fees
+    operator_level = Level.objects.get(
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\query.py", line 439, in get
+    raise self.model.MultipleObjectsReturned(
+web.models.Level.MultipleObjectsReturned: get() returned more than one Level -- it returned 2!
+2025-04-09 14:33:29 - django.server - ERROR - "GET /gameorder/out/66?qb_discount= HTTP/1.1" 500 111742
+2025-04-09 14:33:47 - django.server - INFO - "GET /gameorder/add/ HTTP/1.1" 200 9375
+2025-04-09 14:33:51 - django.server - INFO - "GET /gameorder/load-options/?game=1&platform=ANDROID HTTP/1.1" 200 142
+2025-04-09 14:33:55 - django.server - INFO - "POST /gameorder/add/ HTTP/1.1" 302 0
+2025-04-09 14:33:55 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 29936
+2025-04-09 14:33:55 - django.server - INFO - "GET /media/sharon/2025/04/09/bceb03b8f380fcb72b73c91c3b032bf.jpg HTTP/1.1" 200 646394
+2025-04-09 14:33:55 - django.server - INFO - "GET /media/root/2025/04/09/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-04-09 14:33:58 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 29757
+2025-04-09 14:33:58 - django.server - INFO - "GET /media/root/2025/04/09/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-04-09 14:33:58 - django.server - INFO - "GET /media/sharon/2025/04/09/bceb03b8f380fcb72b73c91c3b032bf.jpg HTTP/1.1" 200 646394
+2025-04-09 14:33:59 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 837, in calculate_fees
+    operator_level = Level.objects.get(
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\query.py", line 439, in get
+    raise self.model.MultipleObjectsReturned(
+web.models.Level.MultipleObjectsReturned: get() returned more than one Level -- it returned 2!
+2025-04-09 14:33:59 - django.server - ERROR - "GET /gameorder/out/67?qb_discount= HTTP/1.1" 500 111579
+2025-04-09 14:34:00 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 837, in calculate_fees
+    operator_level = Level.objects.get(
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\query.py", line 439, in get
+    raise self.model.MultipleObjectsReturned(
+web.models.Level.MultipleObjectsReturned: get() returned more than one Level -- it returned 2!
+2025-04-09 14:34:00 - django.server - ERROR - "GET /gameorder/out/67?qb_discount= HTTP/1.1" 500 111742
+2025-04-09 14:34:53 - django.server - INFO - "GET /level/list/ HTTP/1.1" 200 8163
+2025-04-09 14:35:50 - django.server - INFO - "GET /customer/list/ HTTP/1.1" 200 15361
+2025-04-09 14:38:14 - django.server - INFO - "GET /customer/list/ HTTP/1.1" 200 15361
+2025-04-09 14:38:15 - django.server - INFO - "GET /customer/add/ HTTP/1.1" 200 9434
+2025-04-09 14:42:23 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-04-09 14:42:23 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-09 14:42:29 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 29757
+2025-04-09 14:42:29 - django.server - INFO - "GET /media/sharon/2025/04/09/bceb03b8f380fcb72b73c91c3b032bf.jpg HTTP/1.1" 304 0
+2025-04-09 14:42:29 - django.server - INFO - "GET /media/root/2025/04/09/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-04-09 14:42:31 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 837, in calculate_fees
+    operator_level = Level.objects.get(
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\query.py", line 439, in get
+    raise self.model.MultipleObjectsReturned(
+web.models.Level.MultipleObjectsReturned: get() returned more than one Level -- it returned 2!
+2025-04-09 14:42:31 - django.server - ERROR - "GET /gameorder/out/67?qb_discount= HTTP/1.1" 500 111581
+2025-04-09 14:42:32 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 837, in calculate_fees
+    operator_level = Level.objects.get(
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\query.py", line 439, in get
+    raise self.model.MultipleObjectsReturned(
+web.models.Level.MultipleObjectsReturned: get() returned more than one Level -- it returned 2!
+2025-04-09 14:42:32 - django.server - ERROR - "GET /gameorder/out/67?qb_discount= HTTP/1.1" 500 111744
+2025-04-09 14:54:11 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-04-09 14:54:11 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-09 14:54:13 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 29757
+2025-04-09 14:54:13 - django.server - INFO - "GET /media/sharon/2025/04/09/bceb03b8f380fcb72b73c91c3b032bf.jpg HTTP/1.1" 304 0
+2025-04-09 14:54:13 - django.server - INFO - "GET /media/root/2025/04/09/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-04-09 14:54:18 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 843, in calculate_fees
+    operator_level = UserInfo.objects.filter(username=operator.username).level
+AttributeError: 'QuerySet' object has no attribute 'level'
+2025-04-09 14:54:18 - django.server - ERROR - "GET /gameorder/out/67?qb_discount= HTTP/1.1" 500 102583
+2025-04-09 14:54:19 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 843, in calculate_fees
+    operator_level = UserInfo.objects.filter(username=operator.username).level
+AttributeError: 'QuerySet' object has no attribute 'level'
+2025-04-09 14:54:19 - django.server - ERROR - "GET /gameorder/out/67?qb_discount= HTTP/1.1" 500 102746
+2025-04-09 14:54:37 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-04-09 14:54:38 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-09 14:54:42 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 29757
+2025-04-09 14:54:44 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 869, in calculate_fees
+    fees['support_payment'] = price_info['original'] * qb_discount
+TypeError: can't multiply sequence by non-int of type 'decimal.Decimal'
+2025-04-09 14:54:44 - django.server - ERROR - "GET /gameorder/out/67?qb_discount= HTTP/1.1" 500 102624
+2025-04-09 14:54:44 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 869, in calculate_fees
+    fees['support_payment'] = price_info['original'] * qb_discount
+TypeError: can't multiply sequence by non-int of type 'decimal.Decimal'
+2025-04-09 14:54:44 - django.server - ERROR - "GET /gameorder/out/67?qb_discount= HTTP/1.1" 500 102787
+2025-04-09 14:54:55 - django.request - ERROR - Internal Server Error: /gameorder/out/66
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 869, in calculate_fees
+    fees['support_payment'] = price_info['original'] * qb_discount
+TypeError: can't multiply sequence by non-int of type 'decimal.Decimal'
+2025-04-09 14:54:55 - django.server - ERROR - "GET /gameorder/out/66?qb_discount= HTTP/1.1" 500 102624
+2025-04-09 14:54:55 - django.request - ERROR - Internal Server Error: /gameorder/out/66
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 869, in calculate_fees
+    fees['support_payment'] = price_info['original'] * qb_discount
+TypeError: can't multiply sequence by non-int of type 'decimal.Decimal'
+2025-04-09 14:54:55 - django.server - ERROR - "GET /gameorder/out/66?qb_discount= HTTP/1.1" 500 102787
+2025-04-09 15:05:08 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-04-09 15:05:09 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-09 15:05:10 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 29757
+2025-04-09 15:05:10 - django.server - INFO - "GET /media/sharon/2025/04/09/bceb03b8f380fcb72b73c91c3b032bf.jpg HTTP/1.1" 304 0
+2025-04-09 15:05:10 - django.server - INFO - "GET /media/root/2025/04/09/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-04-09 15:05:11 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 29757
+2025-04-09 15:05:13 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 869, in calculate_fees
+    fees['support_payment'] = price_info['original'] * Decimal(qb_discount)
+decimal.InvalidOperation: [<class 'decimal.ConversionSyntax'>]
+2025-04-09 15:05:13 - django.server - ERROR - "GET /gameorder/out/67?qb_discount= HTTP/1.1" 500 102580
+2025-04-09 15:05:14 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 869, in calculate_fees
+    fees['support_payment'] = price_info['original'] * Decimal(qb_discount)
+decimal.InvalidOperation: [<class 'decimal.ConversionSyntax'>]
+2025-04-09 15:05:14 - django.server - ERROR - "GET /gameorder/out/67?qb_discount= HTTP/1.1" 500 102743
+2025-04-09 15:05:54 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-04-09 15:05:54 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-09 15:05:56 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 29757
+2025-04-09 15:05:57 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 869, in calculate_fees
+    fees['support_payment'] = price_info['original'] * Decimal(float(qb_discount))
+ValueError: could not convert string to float: ''
+2025-04-09 15:05:57 - django.server - ERROR - "GET /gameorder/out/67?qb_discount= HTTP/1.1" 500 102550
+2025-04-09 15:05:58 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 869, in calculate_fees
+    fees['support_payment'] = price_info['original'] * Decimal(float(qb_discount))
+ValueError: could not convert string to float: ''
+2025-04-09 15:05:58 - django.server - ERROR - "GET /gameorder/out/67?qb_discount= HTTP/1.1" 500 102713
+2025-04-09 15:06:12 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-04-09 15:06:12 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-09 15:06:14 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 29757
+2025-04-09 15:06:15 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 869, in calculate_fees
+    fees['support_payment'] = price_info['original'] * Decimal(float(int(qb_discount)))
+ValueError: invalid literal for int() with base 10: ''
+2025-04-09 15:06:15 - django.server - ERROR - "GET /gameorder/out/67?qb_discount= HTTP/1.1" 500 102580
+2025-04-09 15:06:16 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 869, in calculate_fees
+    fees['support_payment'] = price_info['original'] * Decimal(float(int(qb_discount)))
+ValueError: invalid literal for int() with base 10: ''
+2025-04-09 15:06:16 - django.server - ERROR - "GET /gameorder/out/67?qb_discount= HTTP/1.1" 500 102743
+2025-04-09 15:35:45 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 29757
+2025-04-09 15:35:45 - django.server - INFO - "GET /media/sharon/2025/04/09/bceb03b8f380fcb72b73c91c3b032bf.jpg HTTP/1.1" 304 0
+2025-04-09 15:35:45 - django.server - INFO - "GET /media/root/2025/04/09/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-04-09 15:35:54 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 869, in calculate_fees
+    fees['support_payment'] = price_info['original'] * Decimal(float(int(qb_discount)))
+ValueError: invalid literal for int() with base 10: ''
+2025-04-09 15:35:54 - django.server - ERROR - "GET /gameorder/out/67?qb_discount= HTTP/1.1" 500 102580
+2025-04-09 15:35:55 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 869, in calculate_fees
+    fees['support_payment'] = price_info['original'] * Decimal(float(int(qb_discount)))
+ValueError: invalid literal for int() with base 10: ''
+2025-04-09 15:35:55 - django.server - ERROR - "GET /gameorder/out/67?qb_discount= HTTP/1.1" 500 102743
+2025-04-09 15:36:11 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 30680
+2025-04-09 15:36:11 - django.server - INFO - "GET /media/root/2025/04/09/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-04-09 15:36:11 - django.server - INFO - "GET /media/sharon/2025/04/09/bceb03b8f380fcb72b73c91c3b032bf.jpg HTTP/1.1" 200 646394
+2025-04-09 15:36:53 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 869, in calculate_fees
+    fees['support_payment'] = price_info['original'] * Decimal(float(int(qb_discount)))
+ValueError: invalid literal for int() with base 10: ''
+2025-04-09 15:36:53 - django.server - ERROR - "GET /gameorder/out/67?qb_discount= HTTP/1.1" 500 102580
+2025-04-09 15:36:54 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 869, in calculate_fees
+    fees['support_payment'] = price_info['original'] * Decimal(float(int(qb_discount)))
+ValueError: invalid literal for int() with base 10: ''
+2025-04-09 15:36:54 - django.server - ERROR - "GET /gameorder/out/67?qb_discount= HTTP/1.1" 500 102743
+2025-04-09 15:37:00 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=75&max_combine=4&tolerance=10 HTTP/1.1" 200 30313
+2025-04-09 15:37:03 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 800, in gameorder_out
+    create_transaction_records(order, operator, fee_details,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 929, in create_transaction_records
+    fee_fields['commission'] = order.price_info['original'] * operator_level.percent
+UnboundLocalError: local variable 'operator_level' referenced before assignment
+2025-04-09 15:37:03 - django.server - ERROR - "GET /gameorder/out/67?qb_discount=75 HTTP/1.1" 500 102839
+2025-04-09 15:37:04 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 800, in gameorder_out
+    create_transaction_records(order, operator, fee_details,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 929, in create_transaction_records
+    fee_fields['commission'] = order.price_info['original'] * operator_level.percent
+UnboundLocalError: local variable 'operator_level' referenced before assignment
+2025-04-09 15:37:04 - django.server - ERROR - "GET /gameorder/out/67?qb_discount=75 HTTP/1.1" 500 103126
+2025-04-09 15:37:15 - django.server - INFO - "GET /gameorder/list/? HTTP/1.1" 200 29757
+2025-04-09 15:37:16 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 869, in calculate_fees
+    fees['support_payment'] = price_info['original'] * Decimal(float(int(qb_discount)))
+ValueError: invalid literal for int() with base 10: ''
+2025-04-09 15:37:16 - django.server - ERROR - "GET /gameorder/out/67?qb_discount= HTTP/1.1" 500 102580
+2025-04-09 15:37:17 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 869, in calculate_fees
+    fees['support_payment'] = price_info['original'] * Decimal(float(int(qb_discount)))
+ValueError: invalid literal for int() with base 10: ''
+2025-04-09 15:37:17 - django.server - ERROR - "GET /gameorder/out/67?qb_discount= HTTP/1.1" 500 102744
+2025-04-09 15:37:23 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=75&max_combine=4&tolerance=10 HTTP/1.1" 200 30313
+2025-04-09 15:37:25 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 800, in gameorder_out
+    create_transaction_records(order, operator, fee_details,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 929, in create_transaction_records
+    fee_fields['commission'] = order.price_info['original'] * operator_level.percent
+UnboundLocalError: local variable 'operator_level' referenced before assignment
+2025-04-09 15:37:25 - django.server - ERROR - "GET /gameorder/out/67?qb_discount=75 HTTP/1.1" 500 102839
+2025-04-09 15:37:26 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 800, in gameorder_out
+    create_transaction_records(order, operator, fee_details,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 929, in create_transaction_records
+    fee_fields['commission'] = order.price_info['original'] * operator_level.percent
+UnboundLocalError: local variable 'operator_level' referenced before assignment
+2025-04-09 15:37:26 - django.server - ERROR - "GET /gameorder/out/67?qb_discount=75 HTTP/1.1" 500 103126
+2025-04-09 15:43:21 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-04-09 15:43:22 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-09 15:43:23 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=75&max_combine=4&tolerance=10 HTTP/1.1" 200 30313
+2025-04-09 15:43:23 - django.server - INFO - "GET /media/sharon/2025/04/09/bceb03b8f380fcb72b73c91c3b032bf.jpg HTTP/1.1" 304 0
+2025-04-09 15:43:23 - django.server - INFO - "GET /media/root/2025/04/09/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-04-09 15:43:25 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=75&max_combine=4&tolerance=10 HTTP/1.1" 200 30313
+2025-04-09 15:43:26 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 843, in calculate_fees
+    operator_level = UserInfo.objects.filter(username=operator.username).level
+AttributeError: 'QuerySet' object has no attribute 'level'
+2025-04-09 15:43:26 - django.server - ERROR - "GET /gameorder/out/67?qb_discount=75 HTTP/1.1" 500 102601
+2025-04-09 15:43:26 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 843, in calculate_fees
+    operator_level = UserInfo.objects.filter(username=operator.username).level
+AttributeError: 'QuerySet' object has no attribute 'level'
+2025-04-09 15:43:26 - django.server - ERROR - "GET /gameorder/out/67?qb_discount=75 HTTP/1.1" 500 102888
+2025-04-09 15:55:29 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-04-09 15:55:30 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-09 15:55:33 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=75&max_combine=4&tolerance=10 HTTP/1.1" 200 30313
+2025-04-09 15:55:33 - django.server - INFO - "GET /media/sharon/2025/04/09/bceb03b8f380fcb72b73c91c3b032bf.jpg HTTP/1.1" 304 0
+2025-04-09 15:55:33 - django.server - INFO - "GET /media/root/2025/04/09/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-04-09 15:55:35 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 800, in gameorder_out
+    create_transaction_records(order, operator, fee_details,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 929, in create_transaction_records
+    fee_fields['commission'] = order.price_info['original'] * operator_level.percent
+UnboundLocalError: local variable 'operator_level' referenced before assignment
+2025-04-09 15:55:35 - django.server - ERROR - "GET /gameorder/out/67?qb_discount=75 HTTP/1.1" 500 102839
+2025-04-09 15:55:35 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 800, in gameorder_out
+    create_transaction_records(order, operator, fee_details,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 929, in create_transaction_records
+    fee_fields['commission'] = order.price_info['original'] * operator_level.percent
+UnboundLocalError: local variable 'operator_level' referenced before assignment
+2025-04-09 15:55:35 - django.server - ERROR - "GET /gameorder/out/67?qb_discount=75 HTTP/1.1" 500 103126
+2025-04-09 15:55:55 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-04-09 15:55:55 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-09 15:55:56 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=75&max_combine=4&tolerance=10 HTTP/1.1" 200 30313
+2025-04-09 15:55:58 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 843, in calculate_fees
+    operator_level = UserInfo.objects.get(username=operator.username).first().level
+AttributeError: 'UserInfo' object has no attribute 'first'
+2025-04-09 15:55:58 - django.server - ERROR - "GET /gameorder/out/67?qb_discount=75 HTTP/1.1" 500 102611
+2025-04-09 15:56:00 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 843, in calculate_fees
+    operator_level = UserInfo.objects.get(username=operator.username).first().level
+AttributeError: 'UserInfo' object has no attribute 'first'
+2025-04-09 15:56:00 - django.server - ERROR - "GET /gameorder/out/67?qb_discount=75 HTTP/1.1" 500 102898
+2025-04-09 15:56:17 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-04-09 15:56:17 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-09 15:56:19 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=75&max_combine=4&tolerance=10 HTTP/1.1" 200 30313
+2025-04-09 15:56:20 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 800, in gameorder_out
+    create_transaction_records(order, operator, fee_details,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 929, in create_transaction_records
+    fee_fields['commission'] = order.price_info['original'] * operator_level.percent
+UnboundLocalError: local variable 'operator_level' referenced before assignment
+2025-04-09 15:56:20 - django.server - ERROR - "GET /gameorder/out/67?qb_discount=75 HTTP/1.1" 500 102839
+2025-04-09 15:56:21 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 800, in gameorder_out
+    create_transaction_records(order, operator, fee_details,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 929, in create_transaction_records
+    fee_fields['commission'] = order.price_info['original'] * operator_level.percent
+UnboundLocalError: local variable 'operator_level' referenced before assignment
+2025-04-09 15:56:21 - django.server - ERROR - "GET /gameorder/out/67?qb_discount=75 HTTP/1.1" 500 103126
+2025-04-09 16:02:24 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-04-09 16:02:25 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-09 16:02:25 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=75&max_combine=4&tolerance=10 HTTP/1.1" 200 30313
+2025-04-09 16:02:27 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 800, in gameorder_out
+    create_transaction_records(order, operator, fee_details,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 929, in create_transaction_records
+    fee_fields['commission'] = order.price_info['original'] * operator_level.percent
+UnboundLocalError: local variable 'operator_level' referenced before assignment
+2025-04-09 16:02:27 - django.server - ERROR - "GET /gameorder/out/67?qb_discount=75 HTTP/1.1" 500 102839
+2025-04-09 16:02:28 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 800, in gameorder_out
+    create_transaction_records(order, operator, fee_details,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 929, in create_transaction_records
+    fee_fields['commission'] = order.price_info['original'] * operator_level.percent
+UnboundLocalError: local variable 'operator_level' referenced before assignment
+2025-04-09 16:02:28 - django.server - ERROR - "GET /gameorder/out/67?qb_discount=75 HTTP/1.1" 500 103126
+2025-04-09 16:03:23 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-04-09 16:03:24 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-09 16:03:25 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=75&max_combine=4&tolerance=10 HTTP/1.1" 200 30313
+2025-04-09 16:03:25 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 800, in gameorder_out
+    create_transaction_records(order, operator, fee_details,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 941, in create_transaction_records
+    fee_fields['commission'] = order.price_info['original'] * operator_level.percent
+UnboundLocalError: local variable 'operator_level' referenced before assignment
+2025-04-09 16:03:25 - django.server - ERROR - "GET /gameorder/out/67?qb_discount=75 HTTP/1.1" 500 102839
+2025-04-09 16:03:26 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 800, in gameorder_out
+    create_transaction_records(order, operator, fee_details,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 941, in create_transaction_records
+    fee_fields['commission'] = order.price_info['original'] * operator_level.percent
+UnboundLocalError: local variable 'operator_level' referenced before assignment
+2025-04-09 16:03:26 - django.server - ERROR - "GET /gameorder/out/67?qb_discount=75 HTTP/1.1" 500 103126
+2025-04-09 16:04:52 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-04-09 16:04:52 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-09 16:04:53 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=75&max_combine=4&tolerance=10 HTTP/1.1" 200 30313
+2025-04-09 16:04:53 - django.server - INFO - "GET /media/sharon/2025/04/09/bceb03b8f380fcb72b73c91c3b032bf.jpg HTTP/1.1" 304 0
+2025-04-09 16:04:53 - django.server - INFO - "GET /media/root/2025/04/09/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-04-09 16:04:54 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 800, in gameorder_out
+    create_transaction_records(order, operator, fee_details,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 935, in create_transaction_records
+    fee_fields['commission'] = order.price_info['original'] * operator_level.percent
+UnboundLocalError: local variable 'operator_level' referenced before assignment
+2025-04-09 16:04:54 - django.server - ERROR - "GET /gameorder/out/67?qb_discount=75 HTTP/1.1" 500 102835
+2025-04-09 16:04:55 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 800, in gameorder_out
+    create_transaction_records(order, operator, fee_details,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 935, in create_transaction_records
+    fee_fields['commission'] = order.price_info['original'] * operator_level.percent
+UnboundLocalError: local variable 'operator_level' referenced before assignment
+2025-04-09 16:04:55 - django.server - ERROR - "GET /gameorder/out/67?qb_discount=75 HTTP/1.1" 500 103122
+2025-04-09 16:06:47 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-04-09 16:06:47 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-09 16:08:27 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-04-09 16:08:28 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-09 16:08:30 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=75&max_combine=4&tolerance=10 HTTP/1.1" 200 30313
+2025-04-09 16:08:31 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 800, in gameorder_out
+    create_transaction_records(order, operator, fee_details,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 949, in create_transaction_records
+    fee_fields['support_payment'] = order.price_info['original'] * qb_discount
+TypeError: can't multiply sequence by non-int of type 'decimal.Decimal'
+2025-04-09 16:08:31 - django.server - ERROR - "GET /gameorder/out/67?qb_discount=75 HTTP/1.1" 500 103171
+2025-04-09 16:08:32 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 800, in gameorder_out
+    create_transaction_records(order, operator, fee_details,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 949, in create_transaction_records
+    fee_fields['support_payment'] = order.price_info['original'] * qb_discount
+TypeError: can't multiply sequence by non-int of type 'decimal.Decimal'
+2025-04-09 16:08:32 - django.server - ERROR - "GET /gameorder/out/67?qb_discount=75 HTTP/1.1" 500 103458
+2025-04-09 16:09:19 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-04-09 16:09:19 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-09 16:09:20 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=75&max_combine=4&tolerance=10 HTTP/1.1" 200 30313
+2025-04-09 16:09:21 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 808, in gameorder_out
+    update_account_balances(fee_details)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 966, in update_account_balances
+    UserInfo.objects.filter(pk=fees['operator'].pk).update(
+KeyError: 'operator'
+2025-04-09 16:09:21 - django.server - ERROR - "GET /gameorder/out/67?qb_discount=75 HTTP/1.1" 500 100913
+2025-04-09 16:09:22 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 808, in gameorder_out
+    update_account_balances(fee_details)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 966, in update_account_balances
+    UserInfo.objects.filter(pk=fees['operator'].pk).update(
+KeyError: 'operator'
+2025-04-09 16:09:22 - django.server - ERROR - "GET /gameorder/out/67?qb_discount=75 HTTP/1.1" 500 101200
+2025-04-09 16:11:44 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-04-09 16:11:45 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-09 16:11:46 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=75&max_combine=4&tolerance=10 HTTP/1.1" 200 30313
+2025-04-09 16:11:47 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 808, in gameorder_out
+    update_account_balances(fee_details)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 966, in update_account_balances
+    UserInfo.objects.filter(pk=fees['operator'].id).update(
+KeyError: 'operator'
+2025-04-09 16:11:47 - django.server - ERROR - "GET /gameorder/out/67?qb_discount=75 HTTP/1.1" 500 100913
+2025-04-09 16:11:48 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 808, in gameorder_out
+    update_account_balances(fee_details)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 966, in update_account_balances
+    UserInfo.objects.filter(pk=fees['operator'].id).update(
+KeyError: 'operator'
+2025-04-09 16:11:48 - django.server - ERROR - "GET /gameorder/out/67?qb_discount=75 HTTP/1.1" 500 101200
+2025-04-09 16:16:11 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-04-09 16:16:12 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-09 16:16:14 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=75&max_combine=4&tolerance=10 HTTP/1.1" 200 30313
+2025-04-09 16:16:14 - django.server - INFO - "GET /media/sharon/2025/04/09/bceb03b8f380fcb72b73c91c3b032bf.jpg HTTP/1.1" 304 0
+2025-04-09 16:16:14 - django.server - INFO - "GET /media/root/2025/04/09/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-04-09 16:16:16 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 29757
+2025-04-09 16:16:17 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 822, in calculate_fees
+    qb_discount = Decimal(str(qb_discount))
+decimal.InvalidOperation: [<class 'decimal.ConversionSyntax'>]
+2025-04-09 16:16:17 - django.server - ERROR - "GET /gameorder/out/67?qb_discount= HTTP/1.1" 500 101587
+2025-04-09 16:16:18 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 822, in calculate_fees
+    qb_discount = Decimal(str(qb_discount))
+decimal.InvalidOperation: [<class 'decimal.ConversionSyntax'>]
+2025-04-09 16:16:18 - django.server - ERROR - "GET /gameorder/out/67?qb_discount= HTTP/1.1" 500 101750
+2025-04-09 16:16:58 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 822, in calculate_fees
+    qb_discount = Decimal(str(qb_discount))
+decimal.InvalidOperation: [<class 'decimal.ConversionSyntax'>]
+2025-04-09 16:16:58 - django.server - ERROR - "GET /gameorder/out/67?qb_discount= HTTP/1.1" 500 101740
+2025-04-09 16:46:30 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=78&max_combine=4&tolerance=10 HTTP/1.1" 200 30313
+2025-04-09 16:46:30 - django.server - INFO - "GET /media/root/2025/04/09/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-04-09 16:46:30 - django.server - INFO - "GET /media/sharon/2025/04/09/bceb03b8f380fcb72b73c91c3b032bf.jpg HTTP/1.1" 304 0
+2025-04-09 16:46:33 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 808, in gameorder_out
+    update_account_balances(fee_details)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 993, in update_account_balances
+    operator = payment_info['operator']
+KeyError: 'operator'
+2025-04-09 16:46:33 - django.server - ERROR - "GET /gameorder/out/67?qb_discount=78 HTTP/1.1" 500 100828
+2025-04-09 16:46:34 - django.request - ERROR - Internal Server Error: /gameorder/out/67
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 808, in gameorder_out
+    update_account_balances(fee_details)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 993, in update_account_balances
+    operator = payment_info['operator']
+KeyError: 'operator'
+2025-04-09 16:46:34 - django.server - ERROR - "GET /gameorder/out/67?qb_discount=78 HTTP/1.1" 500 101115
+2025-04-09 17:02:56 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-04-09 17:02:57 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-09 17:02:58 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 30680
+2025-04-09 17:02:58 - django.server - INFO - "GET /media/sharon/2025/04/09/bceb03b8f380fcb72b73c91c3b032bf.jpg HTTP/1.1" 304 0
+2025-04-09 17:02:58 - django.server - INFO - "GET /media/root/2025/04/09/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-04-09 17:03:00 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=78&max_combine=4&tolerance=10 HTTP/1.1" 200 31236
+2025-04-09 17:03:03 - django.server - INFO - "GET /gameorder/out/67?qb_discount=78 HTTP/1.1" 302 0
+2025-04-09 17:03:03 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 27196
+2025-04-09 17:03:09 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 27196
+2025-04-09 17:03:10 - django.server - INFO - "GET /gameorder/list/? HTTP/1.1" 200 27196
+2025-04-09 17:03:12 - django.server - INFO - "GET /level/list/ HTTP/1.1" 200 8163
+2025-04-09 17:03:13 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 27196
+2025-04-09 17:03:15 - django.request - ERROR - Internal Server Error: /gameorder/out/66
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 822, in calculate_fees
+    qb_discount = Decimal(str(qb_discount))
+decimal.InvalidOperation: [<class 'decimal.ConversionSyntax'>]
+2025-04-09 17:03:15 - django.server - ERROR - "GET /gameorder/out/66?qb_discount= HTTP/1.1" 500 101622
+2025-04-09 18:53:01 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=78&max_combine=4&tolerance=10 HTTP/1.1" 200 27616
+2025-04-09 18:53:01 - django.server - INFO - "GET /media/root/2025/04/09/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-04-09 18:53:05 - django.server - INFO - "GET /gameorder/out/66?qb_discount=78 HTTP/1.1" 302 0
+2025-04-09 18:53:05 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 23546
+2025-04-09 18:53:51 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 22623
+2025-04-09 18:54:01 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 22609
+2025-04-09 18:54:02 - django.server - INFO - "GET /gameorder/add/ HTTP/1.1" 200 9375
+2025-04-09 18:54:05 - django.server - INFO - "GET /gameorder/load-options/?game=1&platform=ANDROID HTTP/1.1" 200 142
+2025-04-09 18:54:10 - django.server - INFO - "POST /gameorder/add/ HTTP/1.1" 302 0
+2025-04-09 18:54:10 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 26454
+2025-04-09 18:54:10 - django.server - INFO - "GET /media/sharon/2025/04/09/bceb03b8f380fcb72b73c91c3b032bf.jpg HTTP/1.1" 200 646394
+2025-04-09 18:54:18 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 26275
+2025-04-09 18:54:18 - django.server - INFO - "GET /media/sharon/2025/04/09/bceb03b8f380fcb72b73c91c3b032bf.jpg HTTP/1.1" 200 646394
+2025-04-09 18:54:20 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=78&max_combine=4&tolerance=10 HTTP/1.1" 200 26695
+2025-04-09 18:54:20 - django.server - INFO - "GET /media/sharon/2025/04/09/bceb03b8f380fcb72b73c91c3b032bf.jpg HTTP/1.1" 304 0
+2025-04-09 18:54:24 - django.request - ERROR - Internal Server Error: /gameorder/out/68
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 808, in gameorder_out
+    update_account_balances(fee_details)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 966, in update_account_balances
+    UserInfo.objects.filter(pk=fees['operator'].pk).update(
+KeyError: 'operator'
+2025-04-09 18:54:24 - django.server - ERROR - "GET /gameorder/out/68?qb_discount=78 HTTP/1.1" 500 100913
+2025-04-09 18:54:28 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-09 18:54:29 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-09 18:54:29 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-09 18:54:56 - django.request - ERROR - Internal Server Error: /gameorder/out/68
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 808, in gameorder_out
+    update_account_balances(fee_details)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 966, in update_account_balances
+    UserInfo.objects.filter(pk=fees['operator'].pk).update(
+KeyError: 'operator'
+2025-04-09 18:54:56 - django.server - ERROR - "GET /gameorder/out/68?qb_discount=78 HTTP/1.1" 500 101069
+2025-04-09 18:55:14 - django.request - ERROR - Internal Server Error: /gameorder/out/68
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 808, in gameorder_out
+    update_account_balances(fee_details)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 966, in update_account_balances
+    UserInfo.objects.filter(pk=fees['operator'].pk).update(
+KeyError: 'operator'
+2025-04-09 18:55:14 - django.server - ERROR - "GET /gameorder/out/68?qb_discount=78 HTTP/1.1" 500 100913
+2025-04-09 18:56:13 - django.server - INFO - "GET /customer/list/ HTTP/1.1" 200 15361
+2025-04-09 18:56:18 - django.server - INFO - "GET /customer/charge/3/ HTTP/1.1" 200 18771
+2025-04-09 18:56:24 - django.server - INFO - "GET /customer/charge/3/?page=2 HTTP/1.1" 200 18984
+2025-04-09 18:56:27 - django.server - INFO - "GET /customer/charge/3/?page=2 HTTP/1.1" 200 18984
+2025-04-09 18:56:28 - django.server - INFO - "GET /customer/charge/3/?page=4 HTTP/1.1" 200 16995
+2025-04-09 18:56:30 - django.server - INFO - "GET /customer/charge/3/?page=1 HTTP/1.1" 200 18771
+2025-04-09 19:03:37 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-04-09 19:03:38 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-09 19:03:40 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=78&max_combine=4&tolerance=10 HTTP/1.1" 200 26695
+2025-04-09 19:03:40 - django.server - INFO - "GET /media/sharon/2025/04/09/bceb03b8f380fcb72b73c91c3b032bf.jpg HTTP/1.1" 304 0
+2025-04-09 19:03:41 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=78&max_combine=4&tolerance=10 HTTP/1.1" 200 26695
+2025-04-09 19:03:41 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=78&max_combine=4&tolerance=10 HTTP/1.1" 200 26695
+2025-04-09 19:03:41 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=78&max_combine=4&tolerance=10 HTTP/1.1" 200 26695
+2025-04-09 19:03:41 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=78&max_combine=4&tolerance=10 HTTP/1.1" 200 26695
+2025-04-09 19:03:42 - django.server - INFO - "GET /gameorder/out/68?qb_discount=78 HTTP/1.1" 302 0
+2025-04-09 19:03:42 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 22623
+2025-04-09 19:03:48 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-09 19:03:48 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-09 19:03:48 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-09 19:04:30 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-09 19:04:30 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-09 19:04:30 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-09 19:04:34 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-09 19:04:34 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-09 19:04:34 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-09 19:04:44 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 22609
+2025-04-09 19:04:44 - django.server - INFO - "GET /gameorder/add/ HTTP/1.1" 200 9375
+2025-04-09 19:04:47 - django.server - INFO - "GET /gameorder/load-options/?game=1&platform=ANDROID HTTP/1.1" 200 142
+2025-04-09 19:04:52 - django.server - INFO - "POST /gameorder/add/ HTTP/1.1" 302 0
+2025-04-09 19:04:52 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 26454
+2025-04-09 19:04:52 - django.server - INFO - "GET /media/sharon/2025/04/09/bceb03b8f380fcb72b73c91c3b032bf.jpg HTTP/1.1" 200 646394
+2025-04-09 19:04:56 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-09 19:04:56 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-09 19:04:56 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-09 19:05:19 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 26275
+2025-04-09 19:05:19 - django.server - INFO - "GET /media/sharon/2025/04/09/bceb03b8f380fcb72b73c91c3b032bf.jpg HTTP/1.1" 200 646394
+2025-04-09 19:05:21 - django.request - ERROR - Internal Server Error: /gameorder/out/69
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 822, in calculate_fees
+    qb_discount = Decimal(str(qb_discount))
+decimal.InvalidOperation: [<class 'decimal.ConversionSyntax'>]
+2025-04-09 19:05:21 - django.server - ERROR - "GET /gameorder/out/69?qb_discount= HTTP/1.1" 500 101608
+2025-04-09 19:05:23 - django.request - ERROR - Internal Server Error: /gameorder/out/69
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 822, in calculate_fees
+    qb_discount = Decimal(str(qb_discount))
+decimal.InvalidOperation: [<class 'decimal.ConversionSyntax'>]
+2025-04-09 19:05:23 - django.server - ERROR - "GET /gameorder/out/69?qb_discount= HTTP/1.1" 500 101771
+2025-04-09 19:05:32 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-09 19:05:32 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-09 19:05:32 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-09 19:05:41 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-09 19:05:41 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-09 19:05:41 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-09 19:05:49 - django.request - ERROR - Internal Server Error: /gameorder/out/69
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 822, in calculate_fees
+    qb_discount = Decimal(str(qb_discount))
+decimal.InvalidOperation: [<class 'decimal.ConversionSyntax'>]
+2025-04-09 19:05:49 - django.server - ERROR - "GET /gameorder/out/69?qb_discount= HTTP/1.1" 500 101608
+2025-04-09 19:05:50 - django.request - ERROR - Internal Server Error: /gameorder/out/69
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 797, in gameorder_out
+    fee_details = calculate_fees(order, operator,qb_discount)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py", line 822, in calculate_fees
+    qb_discount = Decimal(str(qb_discount))
+decimal.InvalidOperation: [<class 'decimal.ConversionSyntax'>]
+2025-04-09 19:05:50 - django.server - ERROR - "GET /gameorder/out/69?qb_discount= HTTP/1.1" 500 101771
+2025-04-09 19:05:52 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-09 19:05:52 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-09 19:05:53 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-09 19:06:04 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=75&max_combine=4&tolerance=10 HTTP/1.1" 200 26695
+2025-04-09 19:06:04 - django.server - INFO - "GET /media/sharon/2025/04/09/bceb03b8f380fcb72b73c91c3b032bf.jpg HTTP/1.1" 304 0
+2025-04-09 19:06:08 - django.server - INFO - "GET /gameorder/out/69?qb_discount=75 HTTP/1.1" 302 0
+2025-04-09 19:06:08 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 22623
+2025-04-09 19:06:14 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-09 19:06:14 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-09 19:06:14 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-09 19:09:38 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-04-09 19:09:39 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-09 19:10:01 - django.server - INFO - "GET /gameorder/add/ HTTP/1.1" 200 9375
+2025-04-09 19:10:04 - django.server - INFO - "GET /gameorder/load-options/?game=1&platform=ANDROID HTTP/1.1" 200 142
+2025-04-09 19:10:08 - django.server - INFO - "POST /gameorder/add/ HTTP/1.1" 302 0
+2025-04-09 19:10:08 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 25918
+2025-04-09 19:10:08 - django.server - INFO - "GET /media/sharon/2025/04/09/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 200 64586
+2025-04-09 19:10:14 - django.server - INFO - "GET /gameorder/list/?date_field=&start_date=&end_date=&keyword=&qb_target=&qb_discount=78&max_combine=4&tolerance=10 HTTP/1.1" 200 26159
+2025-04-09 19:10:14 - django.server - INFO - "GET /media/sharon/2025/04/09/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 200 64586
+2025-04-09 19:10:17 - django.server - INFO - "GET /gameorder/out/70?qb_discount=78 HTTP/1.1" 302 0
+2025-04-09 19:10:17 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 22623
+2025-04-09 19:25:49 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-04-09 19:25:50 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-09 19:25:50 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 22609
+2025-04-09 19:25:55 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 22609
+2025-04-09 19:25:56 - django.server - INFO - "GET /gameorder/add/ HTTP/1.1" 200 9375
+2025-04-09 19:25:58 - django.server - INFO - "GET /gameorder/load-options/?game=1&platform=ANDROID HTTP/1.1" 200 142
+2025-04-09 19:26:03 - django.server - INFO - "POST /gameorder/add/ HTTP/1.1" 302 0
+2025-04-09 19:26:03 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 25886
+2025-04-09 19:26:03 - django.server - INFO - "GET /media/sharon/2025/04/09/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-04-09 19:26:07 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-09 19:26:07 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-09 19:26:07 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-09 19:27:34 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 25707
+2025-04-09 19:27:34 - django.server - INFO - "GET /media/sharon/2025/04/09/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-04-09 19:27:36 - django.server - INFO - "GET /gameorder/out/71?qb_discount= HTTP/1.1" 302 0
+2025-04-09 19:27:36 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 22623
+2025-04-09 19:27:45 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-09 19:27:45 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-09 19:27:45 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-09 19:38:57 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py changed, reloading.
+2025-04-09 19:38:57 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-09 19:38:58 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-09 19:38:58 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-09 19:38:58 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-09 19:39:26 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 22609
+2025-04-09 19:39:27 - django.server - INFO - "GET /gameorder/add/ HTTP/1.1" 200 9375
+2025-04-09 19:39:29 - django.server - INFO - "GET /gameorder/load-options/?game=1&platform=ANDROID HTTP/1.1" 200 142
+2025-04-09 19:39:33 - django.server - INFO - "POST /gameorder/add/ HTTP/1.1" 302 0
+2025-04-09 19:39:33 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 25918
+2025-04-09 19:39:33 - django.server - INFO - "GET /media/sharon/2025/04/09/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 200 64586
+2025-04-09 19:39:37 - django.server - INFO - "GET /level/list/ HTTP/1.1" 200 8163
+2025-04-09 19:39:40 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 25739
+2025-04-09 19:39:40 - django.server - INFO - "GET /media/sharon/2025/04/09/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 200 64586
+2025-04-09 19:39:42 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 25739
+2025-04-09 19:39:42 - django.server - INFO - "GET /media/sharon/2025/04/09/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 304 0
+2025-04-09 19:39:44 - django.server - INFO - "GET /gameorder/out/72?qb_discount= HTTP/1.1" 302 0
+2025-04-09 19:39:44 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 22623
+2025-04-09 19:39:48 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-09 19:39:48 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-09 19:39:48 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-09 19:40:08 - django.server - INFO - "GET /gameorder/finished/list/ HTTP/1.1" 200 55460
+2025-04-09 19:40:08 - django.server - INFO - "GET /media/root/2025/04/09/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-04-09 19:40:08 - django.server - INFO - "GET /media/root/2025/04/09/68673c244810eac27fb447a576835af.jpg HTTP/1.1" 304 0
+2025-04-09 19:40:08 - django.server - INFO - "GET /media/root/2025/04/09/6.png HTTP/1.1" 304 0
+2025-04-09 19:44:38 - django.server - INFO - "GET /gameorder/finished/list/ HTTP/1.1" 200 56369
+2025-04-09 19:45:04 - django.server - INFO - "GET /gameorder/finished/list/?page=2 HTTP/1.1" 200 56605
+2025-04-09 19:45:04 - django.server - INFO - "GET /media/root/2025/04/08/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-04-09 19:45:04 - django.server - INFO - "GET /media/root/2025/04/08/68673c244810eac27fb447a576835af.jpg HTTP/1.1" 304 0
+2025-04-09 19:45:04 - django.server - INFO - "GET /media/root/2025/04/07/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-04-09 19:45:04 - django.server - INFO - "GET /media/root/2025/04/06/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-04-09 19:45:04 - django.server - INFO - "GET /media/root/2025/04/06/18.png HTTP/1.1" 304 0
+2025-04-09 19:45:04 - django.server - INFO - "GET /media/root/2025/04/06/68673c244810eac27fb447a576835af.jpg HTTP/1.1" 304 0
+2025-04-09 19:45:04 - django.server - INFO - "GET /media/root/2025/04/03/68673c244810eac27fb447a576835af.jpg HTTP/1.1" 304 0
+2025-04-09 19:45:07 - django.server - INFO - "GET /gameorder/finished/list/?page=3 HTTP/1.1" 200 53513
+2025-04-09 19:45:07 - django.server - INFO - "GET /media/root/2025/04/01/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-04-09 19:45:07 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-04-09 19:45:07 - django.server - INFO - "GET /media/sharon/2025/04/09/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-04-09 19:45:07 - django.server - INFO - "GET /media/sharon/2025/04/09/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 200 64586
+2025-04-09 19:45:07 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 200 173200
+2025-04-09 19:45:15 - django.server - INFO - "GET /gameorder/finished/list/?page=4 HTTP/1.1" 200 56113
+2025-04-09 19:45:15 - django.server - INFO - "GET /media/sharon/2025/04/09/68673c244810eac27fb447a576835af.jpg HTTP/1.1" 200 94998
+2025-04-09 19:45:15 - django.server - INFO - "GET /media/sharon/2025/04/09/bceb03b8f380fcb72b73c91c3b032bf.jpg HTTP/1.1" 200 646394
+2025-04-09 19:45:15 - django.server - INFO - "GET /media/root1/2025/04/09/68673c244810eac27fb447a576835af.jpg HTTP/1.1" 304 0
+2025-04-09 19:45:15 - django.server - INFO - "GET /media/root1/2025/04/09/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-04-09 19:45:15 - django.server - INFO - "GET /media/root1/2025/04/09/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-04-09 19:45:20 - django.server - INFO - "GET /gameorder/finished/list/?page=5 HTTP/1.1" 200 41603
+2025-04-09 19:45:20 - django.server - INFO - "GET /media/root1/2025/04/09/18.png HTTP/1.1" 304 0
+2025-04-09 19:45:20 - django.server - INFO - "GET /media/root1/2025/03/30/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 200 64586
+2025-04-09 19:45:20 - django.server - INFO - "GET /media/root1/2025/03/29/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 200 64586
+2025-04-09 19:45:20 - django.server - INFO - "GET /media/root1/2025/03/29/968f94e91d2f5f26d4a59e467cc2acd.jpg HTTP/1.1" 200 428773
+2025-04-09 19:45:20 - django.server - INFO - "GET /media/root1/2025/03/29/6.png HTTP/1.1" 200 944652
+2025-04-09 19:50:58 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\models.py changed, reloading.
+2025-04-09 19:50:59 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-09 19:51:18 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\models.py changed, reloading.
+2025-04-09 19:51:19 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-09 19:51:57 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\models.py changed, reloading.
+2025-04-09 19:51:58 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-09 19:54:44 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\models.py changed, reloading.
+2025-04-09 19:54:44 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-09 19:54:59 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\models.py changed, reloading.
+2025-04-09 19:55:00 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-09 19:58:10 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\models.py changed, reloading.
+2025-04-09 19:58:10 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-09 19:59:11 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\models.py changed, reloading.
+2025-04-09 19:59:11 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-09 20:06:15 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\migrations\0022_gameorder_outed_by.py changed, reloading.
+2025-04-09 20:06:15 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-09 20:08:57 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-04-09 20:08:57 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-09 20:08:59 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 22609
+2025-04-09 20:09:00 - django.server - INFO - "GET /gameorder/add/ HTTP/1.1" 200 9375
+2025-04-09 20:09:03 - django.server - INFO - "GET /gameorder/load-options/?game=1&platform=ANDROID HTTP/1.1" 200 142
+2025-04-09 20:09:09 - django.server - INFO - "POST /gameorder/add/ HTTP/1.1" 302 0
+2025-04-09 20:09:09 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 26454
+2025-04-09 20:09:09 - django.server - INFO - "GET /media/sharon/2025/04/09/bceb03b8f380fcb72b73c91c3b032bf.jpg HTTP/1.1" 200 646394
+2025-04-09 20:09:16 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 26275
+2025-04-09 20:09:16 - django.server - INFO - "GET /media/sharon/2025/04/09/bceb03b8f380fcb72b73c91c3b032bf.jpg HTTP/1.1" 200 646394
+2025-04-09 20:09:22 - django.server - INFO - "GET /gameorder/out/73?qb_discount= HTTP/1.1" 302 0
+2025-04-09 20:09:22 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 22623
+2025-04-09 20:09:29 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-09 20:09:29 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-09 20:09:29 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-09 20:09:57 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-09 20:09:57 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-09 20:09:57 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-09 20:10:17 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-09 20:10:17 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-09 20:10:17 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-09 20:10:29 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-04-09 20:10:29 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-09 20:10:34 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 22609
+2025-04-09 20:10:34 - django.server - INFO - "GET /gameorder/add/ HTTP/1.1" 200 9375
+2025-04-09 20:10:37 - django.server - INFO - "GET /gameorder/load-options/?game=1&platform=ANDROID HTTP/1.1" 200 142
+2025-04-09 20:10:43 - django.server - INFO - "POST /gameorder/add/ HTTP/1.1" 302 0
+2025-04-09 20:10:43 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 25886
+2025-04-09 20:10:43 - django.server - INFO - "GET /media/sharon/2025/04/09/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-04-09 20:10:48 - django.server - INFO - "GET /gameorder/finished/list/ HTTP/1.1" 200 55564
+2025-04-09 20:10:48 - django.server - INFO - "GET /media/sharon/2025/04/09/bceb03b8f380fcb72b73c91c3b032bf.jpg HTTP/1.1" 304 0
+2025-04-09 20:10:48 - django.server - INFO - "GET /media/sharon/2025/04/09/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 304 0
+2025-04-09 20:10:48 - django.server - INFO - "GET /media/sharon/2025/04/09/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-04-09 20:10:48 - django.server - INFO - "GET /media/root/2025/04/09/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-04-09 20:10:48 - django.server - INFO - "GET /media/sharon/2025/04/09/68673c244810eac27fb447a576835af.jpg HTTP/1.1" 200 94998
+2025-04-09 20:10:49 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 25707
+2025-04-09 20:10:49 - django.server - INFO - "GET /media/sharon/2025/04/09/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-04-09 20:10:50 - django.server - INFO - "GET /gameorder/finished/list/ HTTP/1.1" 200 55564
+2025-04-09 20:10:50 - django.server - INFO - "GET /media/sharon/2025/04/09/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-04-09 20:10:51 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 25707
+2025-04-09 20:10:51 - django.server - INFO - "GET /media/sharon/2025/04/09/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-04-09 20:10:53 - django.server - INFO - "GET /gameorder/out/74?qb_discount= HTTP/1.1" 302 0
+2025-04-09 20:10:53 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 22623
+2025-04-09 20:10:59 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-09 20:10:59 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-09 20:10:59 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-09 20:20:58 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py changed, reloading.
+2025-04-09 20:20:58 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-09 20:20:59 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-09 20:20:59 - django.request - ERROR - Internal Server Error: /chart/bar/
+2025-04-09 20:20:59 - django.server - ERROR - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 500 3122
+2025-04-09 20:20:59 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-09 20:21:08 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py changed, reloading.
+2025-04-09 20:21:09 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-09 20:21:10 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-09 20:21:10 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-09 20:21:10 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-10 05:59:42 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-10 06:00:09 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 23546
+2025-04-10 06:00:09 - django.request - WARNING - Not Found: /favicon.ico
+2025-04-10 06:00:09 - django.server - WARNING - "GET /favicon.ico HTTP/1.1" 404 8510
+2025-04-10 06:00:14 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-10 06:00:15 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-10 06:00:15 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-10 06:00:18 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-10 06:00:18 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-10 06:00:18 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-10 06:00:24 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-10 06:00:24 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-10 06:00:24 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-10 06:00:27 - django.server - INFO - "GET /customer/list/ HTTP/1.1" 200 15364
+2025-04-10 06:00:28 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-10 06:00:28 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-10 06:00:28 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-10 06:00:29 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-10 06:00:29 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-10 06:00:30 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-10 06:04:28 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
+2025-04-10 06:04:29 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-10 06:04:29 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-10 06:04:29 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-10 06:04:30 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-10 06:04:32 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-10 06:04:32 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-10 06:04:32 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-10 06:04:34 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-10 06:04:34 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-10 06:04:34 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-10 06:04:35 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-10 06:04:35 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-10 06:04:35 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-10 06:04:36 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-10 06:04:36 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-10 06:04:36 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-10 06:04:38 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-10 06:04:38 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-10 06:04:38 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-10 06:04:42 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-10 06:04:44 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-10 06:04:44 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-10 06:04:44 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-10 06:04:45 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-10 06:04:45 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-10 06:04:45 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-10 06:04:46 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-10 06:04:46 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-10 06:04:46 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-10 06:04:47 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-10 06:04:47 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-10 06:04:47 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-10 06:04:49 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-10 06:04:49 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-10 06:04:49 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-10 06:08:25 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 22609
+2025-04-10 06:08:25 - django.request - WARNING - Not Found: /favicon.ico
+2025-04-10 06:08:25 - django.server - WARNING - "GET /favicon.ico HTTP/1.1" 404 8510
+2025-04-10 06:08:25 - django.server - INFO - "GET /gameorder/add/ HTTP/1.1" 200 9375
+2025-04-10 06:08:27 - django.server - INFO - "GET /gameorder/load-options/?game=1&platform=ANDROID HTTP/1.1" 200 142
+2025-04-10 06:08:32 - django.server - INFO - "POST /gameorder/add/ HTTP/1.1" 302 0
+2025-04-10 06:08:32 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 26454
+2025-04-10 06:08:32 - django.server - INFO - "GET /media/sharon/2025/04/10/bceb03b8f380fcb72b73c91c3b032bf.jpg HTTP/1.1" 200 646394
+2025-04-10 06:08:38 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 26275
+2025-04-10 06:08:38 - django.server - INFO - "GET /media/sharon/2025/04/10/bceb03b8f380fcb72b73c91c3b032bf.jpg HTTP/1.1" 200 646394
+2025-04-10 06:08:38 - django.request - WARNING - Not Found: /favicon.ico
+2025-04-10 06:08:38 - django.server - WARNING - "GET /favicon.ico HTTP/1.1" 404 8510
+2025-04-10 06:08:41 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 14408
+2025-04-10 06:08:41 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-10 06:08:41 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1096
+2025-04-10 06:08:45 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 26275
+2025-04-10 06:08:45 - django.server - INFO - "GET /media/sharon/2025/04/10/bceb03b8f380fcb72b73c91c3b032bf.jpg HTTP/1.1" 304 0
+2025-04-10 06:08:49 - django.server - INFO - "GET /gameorder/out/75?qb_discount= HTTP/1.1" 302 0
+2025-04-10 06:08:49 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 22623
+2025-04-10 06:09:01 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 14408
+2025-04-10 06:09:01 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-10 06:09:02 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1159
+2025-04-10 06:10:00 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py changed, reloading.
+2025-04-10 06:10:00 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-10 06:10:01 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-10 06:10:01 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-10 06:10:01 - django.request - ERROR - Internal Server Error: /chart/bar/
+2025-04-10 06:10:01 - django.server - ERROR - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 500 3122
+2025-04-10 06:10:02 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-10 06:10:02 - django.request - ERROR - Internal Server Error: /chart/bar/
+2025-04-10 06:10:02 - django.server - ERROR - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 500 3122
+2025-04-10 06:10:02 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-10 06:10:03 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-10 06:10:03 - django.request - ERROR - Internal Server Error: /chart/bar/
+2025-04-10 06:10:03 - django.server - ERROR - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 500 3122
+2025-04-10 06:10:03 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-10 06:10:03 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-10 06:10:03 - django.request - ERROR - Internal Server Error: /chart/bar/
+2025-04-10 06:10:03 - django.server - ERROR - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 500 3122
+2025-04-10 06:10:03 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-10 06:10:03 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-10 06:10:04 - django.request - ERROR - Internal Server Error: /chart/bar/
+2025-04-10 06:10:04 - django.server - ERROR - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 500 3122
+2025-04-10 06:10:04 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-10 06:10:04 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-10 06:10:04 - django.request - ERROR - Internal Server Error: /chart/bar/
+2025-04-10 06:10:04 - django.server - ERROR - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 500 3122
+2025-04-10 06:10:04 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-10 06:10:25 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py changed, reloading.
+2025-04-10 06:10:25 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-10 06:27:48 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py changed, reloading.
+2025-04-10 06:27:49 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-10 06:28:49 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py changed, reloading.
+2025-04-10 06:28:50 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-10 06:28:58 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-10 06:32:09 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\SemiAutomaticChargeSystem\settings.py changed, reloading.
+2025-04-10 06:32:10 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-10 06:32:10 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-10 06:32:11 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-04-10 06:32:11 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-04-10 06:32:11 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-04-10 06:32:11 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-04-10 06:32:11 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-04-10 06:32:11 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-04-10 06:32:11 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-04-10 06:32:11 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-04-10 06:32:11 - django.server - INFO - "GET /static/js/echarts.js HTTP/1.1" 200 3277175
+2025-04-10 06:32:11 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-04-10 06:32:11 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-04-10 06:32:11 - django.server - INFO - "GET /static/js/echarts.js.map HTTP/1.1" 200 7240297
+2025-04-10 06:32:11 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-10 06:32:11 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1159
+2025-04-10 06:35:54 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-10 06:35:54 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-04-10 06:35:54 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-04-10 06:35:54 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-04-10 06:35:54 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-04-10 06:35:54 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-04-10 06:35:54 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-04-10 06:35:54 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-04-10 06:35:54 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-04-10 06:35:54 - django.server - INFO - "GET /static/js/echarts.js HTTP/1.1" 200 3277175
+2025-04-10 06:35:54 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-04-10 06:35:54 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-04-10 06:35:54 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-10 06:35:54 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1159
+2025-04-10 06:35:54 - django.server - INFO - "GET /static/js/echarts.js.map HTTP/1.1" 200 7240297
+2025-04-10 06:42:37 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py changed, reloading.
+2025-04-10 06:42:38 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-10 06:42:40 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-10 06:42:40 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-04-10 06:42:40 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-04-10 06:42:40 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-04-10 06:42:40 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-04-10 06:42:40 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-04-10 06:42:40 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-04-10 06:42:40 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-04-10 06:42:40 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-04-10 06:42:40 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-04-10 06:42:40 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-04-10 06:42:41 - django.server - INFO - "GET /static/js/echarts.js HTTP/1.1" 200 3277175
+2025-04-10 06:42:41 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-10 06:42:41 - django.server - INFO - "GET /static/js/echarts.js.map HTTP/1.1" 200 7240297
+2025-04-10 06:42:41 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1147
+2025-04-10 06:50:32 - django.server - INFO - "GET /level/list/ HTTP/1.1" 200 8163
+2025-04-10 06:50:32 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-04-10 06:50:32 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-04-10 06:50:32 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-04-10 06:50:32 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-04-10 06:50:32 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-04-10 06:50:32 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-04-10 06:50:32 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-04-10 06:50:32 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-04-10 06:50:32 - django.server - INFO - "GET /static/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+2025-04-10 06:50:32 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-04-10 06:50:32 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-04-10 06:50:57 - django.server - INFO - "GET /customer/list/ HTTP/1.1" 200 15364
+2025-04-10 06:50:57 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-04-10 06:50:57 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-04-10 06:50:57 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-04-10 06:50:57 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-04-10 06:50:57 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-04-10 06:50:57 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-04-10 06:50:57 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-04-10 06:50:57 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-04-10 06:50:57 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-04-10 06:50:57 - django.server - INFO - "GET /static/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+2025-04-10 06:50:57 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-04-10 06:50:59 - django.server - INFO - "GET /customer/edit/14/ HTTP/1.1" 200 6763
+2025-04-10 06:50:59 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-04-10 06:50:59 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-04-10 06:50:59 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-04-10 06:50:59 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-04-10 06:50:59 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-04-10 06:50:59 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-04-10 06:50:59 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-04-10 06:50:59 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-04-10 06:51:00 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-04-10 06:51:00 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-04-10 06:51:04 - django.server - INFO - "POST /customer/edit/14/ HTTP/1.1" 302 0
+2025-04-10 06:51:04 - django.server - INFO - "GET /customer/list/ HTTP/1.1" 200 15358
+2025-04-10 06:51:04 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-04-10 06:51:04 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-04-10 06:51:04 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-04-10 06:51:04 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-04-10 06:51:04 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-04-10 06:51:04 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-04-10 06:51:04 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-04-10 06:51:04 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-04-10 06:51:04 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-04-10 06:51:04 - django.server - INFO - "GET /static/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+2025-04-10 06:51:04 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-04-10 06:51:06 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-10 06:51:06 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-04-10 06:51:06 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-04-10 06:51:06 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-04-10 06:51:06 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-04-10 06:51:06 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-04-10 06:51:06 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-04-10 06:51:06 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-04-10 06:51:06 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-04-10 06:51:06 - django.server - INFO - "GET /static/js/echarts.js HTTP/1.1" 200 3277175
+2025-04-10 06:51:06 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-04-10 06:51:06 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-04-10 06:51:06 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-10 06:51:06 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1147
+2025-04-10 06:51:06 - django.server - INFO - "GET /static/js/echarts.js.map HTTP/1.1" 200 7240297
+2025-04-10 06:52:03 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py changed, reloading.
+2025-04-10 06:52:04 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-10 06:52:05 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 15312
+2025-04-10 06:52:05 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-04-10 06:52:05 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-04-10 06:52:05 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-04-10 06:52:05 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-04-10 06:52:05 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-04-10 06:52:05 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-04-10 06:52:05 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-04-10 06:52:05 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-04-10 06:52:05 - django.server - INFO - "GET /static/js/echarts.js HTTP/1.1" 200 3277175
+2025-04-10 06:52:05 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-04-10 06:52:05 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-04-10 06:52:05 - django.server - INFO - "GET /static/js/echarts.js.map HTTP/1.1" 200 7240297
+2025-04-10 06:52:05 - django.server - INFO - "GET /chart/pie/cross/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 111
+2025-04-10 06:52:05 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1201
+2025-04-10 07:08:45 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\models.py changed, reloading.
+2025-04-10 07:08:46 - django.utils.autoreload - INFO - Watching for file changes with StatReloader

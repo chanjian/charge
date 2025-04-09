@@ -1,11 +1,7 @@
 import datetime
 import random
-from django.utils import timezone
 from django.core.exceptions import ValidationError
-from django.core.validators import RegexValidator
 from django.db import models
-from django.db.models import Q  # 确保这行存在
-from django.db.models import F
 from decimal import Decimal
 
 class ActiveBaseModel(models.Model):
@@ -173,6 +169,7 @@ class GameOrder(ActiveBaseModel):
     qr_code = models.ImageField(upload_to='qrcodes/', verbose_name='充值二维码', blank=True, null=True)
     consumer = models.ForeignKey(to=UserInfo, on_delete=models.PROTECT, related_name='consumer_orders',verbose_name='订单消费者')
     created_by = models.ForeignKey(to=UserInfo, on_delete=models.PROTECT, related_name='created_orders',verbose_name='订单入库人')
+    outed_by = models.ForeignKey(to=UserInfo, on_delete=models.PROTECT, related_name='outed_orders',verbose_name='订单出库人',default=None,null=True,blank=True)
     order_number = models.CharField(max_length=20, unique=True, verbose_name='订单号')
     order_status_choice = (
         (1, '待支付'),
@@ -307,6 +304,8 @@ class TransactionRecord(ActiveBaseModel):
     system_fee = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="系统费用")
     cross_fee = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="跨圈费用")
     commission = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="客服提成金额")
+
+    admin_payment = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="管理员付款")
     support_payment = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="客服垫付款")
     supplier_payment = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="供应商结算")
 

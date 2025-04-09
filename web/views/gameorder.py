@@ -1,4 +1,4 @@
-from datetime import datetime
+
 from django.conf import settings
 from django import forms
 from django.db.models import Q
@@ -9,12 +9,11 @@ from utils.qr_code_to_link import qr_code_to_link
 from utils.response import BaseResponse
 from utils.time_filter import filter_by_date_range
 from web import models
-from django.contrib import messages
-from django.contrib.messages.api import get_messages
 from web.models import GameOrder, GameDenomination, TransactionRecord, UserInfo, Level, PricePolicy
 from decimal import Decimal, getcontext
 from django.db.models import Case, When, Value, IntegerField, F
 from itertools import combinations
+from decimal import Decimal, InvalidOperation
 import logging
 
 logger = logging.getLogger('web')
@@ -801,7 +800,8 @@ def gameorder_out(request, pk):
 
         # 更新订单状态
         order.order_status = 2  # 已完成
-        order.out_user = operator
+        # order.out_user = operator
+        order.outed_by = operator
         order.save()
 
         # 更新相关账户余额
@@ -819,11 +819,13 @@ def calculate_fees(order, operator,qb_discount):
     # 出库人所属圈子的管理员
     out_admin = operator.get_root_admin()
     is_same_circle = (in_admin == out_admin)
-    qb_discount = qb_discount
+
+
 
     fees = {
+        'operator': operator,  # 加入操作者对象
         'system_fee': Decimal(settings.SYS_FEE),  # 示例系统费
-        'cross_circle_fee': Decimal(settings.THIRD_FEE),
+        'cross_circle_fee': Decimal('0'),
 
         'commission': Decimal(0),
         'support_payment': Decimal(0),
@@ -832,31 +834,46 @@ def calculate_fees(order, operator,qb_discount):
     }
 
     # 获取操作者对应的等级配置
+    # try:
+    #     # 由于，只有客服，供应商，消费者有等级。另外，只有客服，供应商，管理员可以出库。因此，符合条件的只有客服和供应商，故而，此处考虑这两种角色
+    #     # operator_level = Level.objects.get(
+    #     #     # 当前用户对象的创建者，即管理员
+    #     #     creator=operator.get_root_admin(),
+    #     #     level_type=operator.usertype,  # 假设usertype与LEVEL_TYPE_CHOICES匹配
+    #     #     active=1
+    #     # )
+    #     operator_level = operator.level
+    #
+    #     # 对于供应商，此处获取的折扣，是为了计算订单完成时，应该结算给供应商多少钱
+    #     # 对于客服，此处获取的折扣，是为了计算订单完成时，应该结算给客服的提成是多少钱
+    #     discount = Decimal(operator_level.percent) / 100  # 将百分比转为小数（如90%→0.9）
+    # except Level.DoesNotExist:
+    #     # 而当找不到的时候，即try失败的时候，说明此时的用户是管理员身份
+    #     # 而对于管理员，并没有折扣的需求，暂定默认费率（根据业务需求设置）
+    #     discount = Decimal('0.9') if operator.usertype == 'ADMIN' else Decimal('0.8')
+    #     operator_level = None
+
     try:
-        # 由于，只有客服，供应商，消费者有等级。另外，只有客服，供应商，管理员可以出库。因此，符合条件的只有客服和供应商，故而，此处考虑这两种角色
-        operator_level = Level.objects.get(
-            # 当前用户对象的创建者，即管理员
-            creator=operator.get_root_admin(),
-            level_type=operator.usertype,  # 假设usertype与LEVEL_TYPE_CHOICES匹配
-            active=1
-        )
-        # 对于供应商，此处获取的折扣，是为了计算订单完成时，应该结算给供应商多少钱
-        # 对于客服，此处获取的折扣，是为了计算订单完成时，应该结算给客服的提成是多少钱
-        discount = Decimal(operator_level.percent) / 100  # 将百分比转为小数（如90%→0.9）
-    except Level.DoesNotExist:
-        # 而当找不到的时候，即try失败的时候，说明此时的用户是管理员身份
-        # 而对于管理员，并没有折扣的需求，暂定默认费率（根据业务需求设置）
-        discount = Decimal('0.9') if operator.usertype == 'ADMIN' else Decimal('0.8')
-        operator_level = None
+        qb_discount = Decimal(str(qb_discount))
+    except (InvalidOperation, ValueError):
+        qb_discount = Decimal('1.0')
 
-    if is_same_circle:
-        # 圈内逻辑
-        fees['system_fee'] == Decimal(settings.SYS_FEE)
+    discount = Decimal('0.8')  # 默认折扣
+    operator_level = None
+    if operator.usertype in ['SUPPORT', 'SUPPLIER']:
+        try:
+            operator_level = operator.level  # 直接通过外键获取
+            print('operator_level',operator_level)
+            if operator_level:  # 确保存在
+                discount = Decimal(str(operator_level.percent)) / 100
+            else:
+                discount = Decimal('0.8')  # 默认折扣
+        except Exception as e:
+            discount = Decimal('0.8')
+            operator_level = None
 
-    else:
-        # 跨圈逻辑
-        fees['system_fee'] == Decimal(settings.SYS_FEE)
-        # 统一收取借调费
+    # 5. 跨圈逻辑
+    if not is_same_circle:
         fees['cross_circle_fee'] = Decimal(settings.THIRD_FEE)
         fees['cross_admin'] = out_admin
 
@@ -870,7 +887,7 @@ def calculate_fees(order, operator,qb_discount):
         fees['supplier_payment'] = price_info['original'] * discount
     else:
         # 其他类型（如管理员）
-        pass
+        fees['admin_payment'] = price_info['original'] * qb_discount
 
     return fees
 
@@ -889,11 +906,30 @@ def generate_trade_number():
 def create_transaction_records(order, operator, fees,qb_discount):
     """创建交易记录（适配Level模型）"""
     # 获取当前出库人，即客服或者供应商的等级
-    qb_discount = qb_discount
+
+    # try:
+    #     operator_level = Level.objects.get(creator=operator.get_root_admin(),level_type=operator.usertype,active=1)
+    # except:
+    #     pass
+
     try:
-        operator_level = Level.objects.get(creator=operator.get_root_admin(),level_type=operator.usertype,active=1)
-    except:
-        pass
+        qb_discount = Decimal(str(qb_discount))
+    except (InvalidOperation, ValueError):
+        qb_discount = Decimal('1.0')
+
+    discount = Decimal('0.8')  # 默认折扣
+    operator_level = None
+    if operator.usertype in ['SUPPORT', 'SUPPLIER']:
+        try:
+            operator_level = operator.level  # 直接通过外键获取
+            print('operator_level', operator_level)
+            if operator_level:  # 确保存在
+                discount = Decimal(str(operator_level.percent)) / 100
+            else:
+                discount = Decimal('0.8')  # 默认折扣
+        except Exception as e:
+            discount = Decimal('0.8')
+            operator_level = None
 
     base_data = {
         'order': order,
@@ -918,20 +954,33 @@ def create_transaction_records(order, operator, fees,qb_discount):
         'supplier_payment': fees.get('supplier_payment', 0),
     }
 
+    # 4. 获取操作者等级（安全方式）
+    operator_level = None
+    if operator.usertype in ['SUPPORT', 'SUPPLIER']:
+        try:
+            operator_level = operator.level  # 直接通过外键获取
+            if operator_level:  # 确保存在
+                discount = Decimal(str(operator_level.percent)) / 100
+            else:
+                discount = Decimal('0.8')  # 默认折扣
+        except Exception as e:
+            discount = Decimal('0.8')
+            operator_level = None
+
     # 跨圈订单特殊处理
     if base_data['is_cross_circle']:
         fee_fields['cross_fee'] = Decimal(settings.THIRD_FEE)  # 只有跨圈订单收取
 
     # 根据操作者类型调整逻辑
     if operator.usertype == 'SUPPORT':
-        fee_fields['commission'] = order.price_info['original'] * operator_level.percent
+        fee_fields['commission'] = order.price_info['original'] * discount
         fee_fields['support_payment'] = order.price_info['original'] * qb_discount
 
     elif operator.usertype == 'SUPPLIER':
-        fee_fields['supplier_payment'] = order.price_info['original'] * operator_level.percent
+        fee_fields['supplier_payment'] = order.price_info['original'] * discount
 
     else:
-        pass
+        fee_fields['admin_payment'] = order.price_info['original'] * qb_discount
 
     return TransactionRecord.objects.create(**{**base_data, **fee_fields})
 

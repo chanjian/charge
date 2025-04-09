@@ -274,9 +274,11 @@
         <th>充值二维码</th>
         <th>订单消费者</th>
         <th>订单入库人</th>
+        <th>订单出库人</th>
         <th>订单号</th>
         <th>订单创建时间</th>
         <th>订单更新时间</th>
+        <th>订单结束时间</th>
         <th>订单状态</th>
         <th>订单编辑记录</th>
         {% if request|has_permission:"customer_edit,customer_delete" %}
@@ -315,11 +317,11 @@
         </td>
         <td class="copyable" data-value="{{ row.consumer.username }}">{{ row.consumer.username }}</td>
         <td class="copyable" data-value="{{ row.created_by.username }}">{{ row.created_by.username }}</td>
+        <td class="copyable" data-value="{{ row.transactions.to_user.username }}">{{ row.created_by.username }}</td>
         <td class="copyable" data-value="{{ row.order_number }}">{{ row.order_number }}</td>
-        <td class="copyable" data-value="{{ row.created_time|date:'Y-m-d H:i:s' }}">{{ row.created_time|date:"Y-m-d H:i:s" }}
-        </td>
-        <td class="copyable" data-value="{{ row.updated_time|date:'Y-m-d H:i:s' }}">{{ row.updated_time|date:"Y-m-d H:i:s" }}
-        </td>
+        <td class="copyable" data-value="{{ row.created_time|date:'Y-m-d H:i:s' }}">{{ row.created_time|date:"Y-m-d H:i:s" }}</td>
+        <td class="copyable" data-value="{{ row.updated_time|date:'Y-m-d H:i:s' }}">{{ row.updated_time|date:"Y-m-d H:i:s" }}</td>
+        <td class="copyable" data-value="{{ row.finished_time|date:'Y-m-d H:i:s' }}">{{ row.finished_time|date:"Y-m-d H:i:s" }}</td>
         <td class="copyable" data-value="{{ row.get_order_status_display }}">{{ row.get_order_status_display }}</td>
         <td>
     <!-- 原有操作按钮... -->

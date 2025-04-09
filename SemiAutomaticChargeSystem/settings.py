@@ -80,6 +80,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+
     }
 }
 
@@ -236,7 +237,6 @@ NB_MENU = {
                 # {'text': "价格策略", 'url': "/policy/list/", 'name': "policy_list"},
             ]
         },
-
     ],
     'CUSTOMER': [
         {
@@ -266,6 +266,37 @@ NB_MENU = {
             ]
         },
     ],
+
+    'SUPPORT': [
+        {
+            'text': "数据看板",
+            'icon': "fa-bed",
+            'children': [
+                {'text': "数据详情", 'url': "/dashboard/", 'name': "dashboard_list"},
+                {'text': "交易记录", 'url': "/policy/list/", 'name': "policy_list"},
+            ]
+        },
+
+
+        {
+            'text': "游戏订单管理",
+            'icon': "fa-bed",
+            'children': [
+                {'text': "待支付游戏订单", 'url': "/gameorder/list/", 'name': "gameorder_list"},
+                {'text': "已处理游戏订单", 'url': "/gameorder/finished/list/", 'name': "gameorder_finished_list"},
+            ]
+        },
+
+        {
+            'text': "话费订单管理",
+            'icon': "fa-bed",
+            'children': [
+                {'text': "待支付话费订单", 'url': "/logging_module/pratice/", 'name': "logging_module_practice"},
+                {'text': "已处理话费订单", 'url': "/logging_module/pratice/settings/", 'name': "logging_module_practice_settings"},
+            ]
+        },
+    ],
+
 }
 
 PERMISSION_PUBLIC = {
@@ -396,7 +427,30 @@ PERMISSION = {
         "gamename_list": {"text": "游戏名称列表", 'parent': None},
         "gamedenomination_list": {"text": "游戏面额表", 'parent': None},
 
-    }
+    },
+
+    "SUPPORT": {
+        "home": {"text": "主页", 'parent': None},
+        'order_list':{'text':'订单展示','parent':'order'},
+        'order_add':{'text':'创建订单','parent':'home'},
+
+        'dashboard_list':{'text':'数据看板','parent':None},
+
+        "gameorder_list": {"text": "游戏订单", 'parent': None},
+        "gameorder_add": {"text": "创建游戏订单", 'parent': 'gameorder_list'},
+        "gameorder_edit": {"text": "编辑游戏订单", 'parent': 'gameorder_list'},
+        "gameorder_delete": {"text": "删除游戏订单", 'parent': 'gameorder_list'},
+        "gameorder_load_charge_options": {"text": "批量上传价格策略", 'parent': 'gameorder_list'},
+        "gameorder_out": {"text": "出库游戏订单", 'parent': 'gameorder_list'},
+
+        "gameorder_finished_list": {"text": "客户列表", 'parent': None},
+
+        "gamename_list": {"text": "游戏名称列表", 'parent': None},
+        "gamedenomination_list": {"text": "游戏面额表", 'parent': None},
+
+    },
+
+
 }
 
 QUEUE_TASK_NAME = "YANG_TASK_QUEUE"
