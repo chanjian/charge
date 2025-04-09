@@ -224,8 +224,6 @@ NB_MENU = {
                 {'text': "已处理游戏订单", 'url': "/gameorder/finished/list/", 'name': "gameorder_finished_list"},
                 {'text': "游戏名称", 'url': "/gamename/list/", 'name': "gamename_list"},
                 {'text': "游戏面额", 'url': "/gamedenomination/list/", 'name': "gamedenomination_list"},
-                # {'text': "城市列表", 'url': "/city/list/", 'name': "city_list"},
-                # {'text': "城市列表2", 'url': "/city/list2/", 'name': "city_list"},
             ]
         },
 
@@ -242,11 +240,29 @@ NB_MENU = {
     ],
     'CUSTOMER': [
         {
-            'text': "订单中心",
+            'text': "数据看板",
             'icon': "fa-bed",
             'children': [
-                {'text': "订单管理", 'url': "/my/order/list/", 'name': "my_order_list"},
-                {'text': "我的交易记录", 'url': "/my/transaction/list/", 'name': "my_transaction_list"},
+                {'text': "数据详情", 'url': "/dashboard/", 'name': "dashboard_list"},
+                {'text': "交易记录", 'url': "/policy/list/", 'name': "policy_list"},
+            ]
+        },
+
+        {
+            'text': "游戏订单管理",
+            'icon': "fa-bed",
+            'children': [
+                {'text': "待支付游戏订单", 'url': "/gameorder/list/", 'name': "gameorder_list"},
+                {'text': "已处理游戏订单", 'url': "/gameorder/finished/list/", 'name': "gameorder_finished_list"},
+            ]
+        },
+
+        {
+            'text': "话费订单管理",
+            'icon': "fa-bed",
+            'children': [
+                {'text': "待支付话费订单", 'url': "/logging_module/pratice/", 'name': "logging_module_practice"},
+                {'text': "已处理话费订单", 'url': "/logging_module/pratice/settings/",'name': "logging_module_practice_settings"},
             ]
         },
     ],
@@ -272,7 +288,7 @@ PERMISSION_PUBLIC = {
 }
 PERMISSION = {
     "SUPERADMIN": {
-"media": {"text": "用户上传的媒体文件", 'parent': None},
+        "media": {"text": "用户上传的媒体文件", 'parent': None},
         "home": {"text": "主页", 'parent': None},
         'order_list':{'text':'订单展示','parent':'order'},
         'order_add':{'text':'创建订单','parent':'home'},
@@ -316,16 +332,6 @@ PERMISSION = {
         "gamedenomination_edit": {"text": "编辑游戏面额", 'parent': 'gamedenomination_list'},
         "gamedenomination_delete": {"text": "删除游戏面额", 'parent': 'gamedenomination_list'},
 
-        "upload_list": {"text": "上传文件", 'parent': None},
-        "upload_list1": {"text": "上传文件1", 'parent': 'upload_list'},
-        "upload_list2": {"text": "上传文件2", 'parent': 'upload_list'},
-        "upload_list3": {"text": "上传文件3", 'parent': 'upload_list'},
-        "upload_list4": {"text": "上传文件4", 'parent': 'upload_list'},
-        "city_list": {"text": "城市列表", 'parent': 'upload_list'},
-        "city_list2": {"text": "城市列表2", 'parent': 'upload_list'},
-
-        "logging_module_practice":{"text":"日志模块练习","parent":None},
-        "logging_module_practice_settings":{"text":"日志模块练习-配合settings","parent":'logging_module_practice'},
     },
 
     "ADMIN": {
@@ -370,22 +376,25 @@ PERMISSION = {
         "gamename_list": {"text": "游戏名称列表", 'parent': None},
         "gamedenomination_list": {"text": "游戏面额表", 'parent': None},
 
-        "upload_list": {"text": "上传文件", 'parent': None},
-        "upload_list1": {"text": "上传文件1", 'parent': 'upload_list'},
-        "upload_list2": {"text": "上传文件2", 'parent': 'upload_list'},
-        "upload_list3": {"text": "上传文件3", 'parent': 'upload_list'},
-        "upload_list4": {"text": "上传文件4", 'parent': 'upload_list'},
-        "city_list": {"text": "城市列表", 'parent': 'upload_list'},
-        "city_list2": {"text": "城市列表2", 'parent': 'upload_list'},
-
-        "logging_module_practice":{"text":"日志模块练习","parent":None},
-        "logging_module_practice_settings":{"text":"日志模块练习-配合settings","parent":'logging_module_practice'},
     },
     "CUSTOMER": {
-        "my_order_list": {"text": "订单列表", 'parent': None},
-        "my_order_add": {"text": "订单列表", 'parent': 'my_order_list'},
-        "my_order_cancel": {"text": "订单列表", 'parent': 'my_order_list'},
-        "my_transaction_list": {"text": "订单列表", 'parent': None},
+        "home": {"text": "主页", 'parent': None},
+        'order_list':{'text':'订单展示','parent':'order'},
+        'order_add':{'text':'创建订单','parent':'home'},
+        'dashboard_list':{'text':'数据看板','parent':None},
+
+
+        "gameorder_list": {"text": "游戏订单", 'parent': None},
+        "gameorder_add": {"text": "创建游戏订单", 'parent': 'gameorder_list'},
+        "gameorder_edit": {"text": "编辑游戏订单", 'parent': 'gameorder_list'},
+        "gameorder_delete": {"text": "删除游戏订单", 'parent': 'gameorder_list'},
+        "gameorder_load_charge_options": {"text": "批量上传价格策略", 'parent': 'gameorder_list'},
+        "gameorder_out": {"text": "出库游戏订单", 'parent': 'gameorder_list'},
+
+        "gameorder_finished_list": {"text": "客户列表", 'parent': None},
+
+        "gamename_list": {"text": "游戏名称列表", 'parent': None},
+        "gamedenomination_list": {"text": "游戏面额表", 'parent': None},
 
     }
 }

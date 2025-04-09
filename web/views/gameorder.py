@@ -476,7 +476,8 @@ class GameOrderAddModelForm(BootStrapForm, forms.ModelForm):
             self.fields['consumer'].queryset = UserInfo.objects.filter(
                 parent__username=self.request.userinfo.username).filter(active=1).all()
         else:
-            self.fields['consumer'].queryset = UserInfo.objects.filter()
+            self.fields['consumer'].queryset = UserInfo.objects.filter(username=self.request.userinfo.username)
+
         # 如果有初始数据，设置对应的选项
         if 'game' in self.data and 'platform' in self.data:
             try:
@@ -890,13 +891,10 @@ def create_transaction_records(order, operator, fees,qb_discount):
     # 获取当前出库人，即客服或者供应商的等级
     qb_discount = qb_discount
     try:
-        operator_level = Level.objects.get(
-            creator=operator.get_root_admin(),
-            level_type=operator.usertype,
-            active=1
-        )
+        operator_level = Level.objects.get(creator=operator.get_root_admin(),level_type=operator.usertype,active=1)
     except:
         pass
+
     base_data = {
         'order': order,
         'customer': order.consumer,
@@ -914,11 +912,15 @@ def create_transaction_records(order, operator, fees,qb_discount):
     # 费用明细
     fee_fields = {
         'system_fee': fees.get('system_fee', 0),
-        'cross_fee': fees.get('cross_circle_fee', 0),
+        'cross_fee': Decimal('0'),
         'commission': fees.get('commission', 0),
         'support_payment': fees.get('support_payment', 0),
         'supplier_payment': fees.get('supplier_payment', 0),
     }
+
+    # 跨圈订单特殊处理
+    if base_data['is_cross_circle']:
+        fee_fields['cross_fee'] = Decimal(settings.THIRD_FEE)  # 只有跨圈订单收取
 
     # 根据操作者类型调整逻辑
     if operator.usertype == 'SUPPORT':

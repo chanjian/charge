@@ -171,7 +171,7 @@ def chart_bar(request):
                     {"name": "总流水", "type": "bar", "data": [item['total_amount'] for item in results]},
                     {"name": "系统费", "type": "bar", "data": [item['system_fee'] for item in results]},
                     {"name": "三方借调费", "type": "bar", "data": [item['cross_fee'] for item in results]},
-                    {"name": "客服佣金", "type": "bar", "data": [item['commission'] for item in results]},
+                    {"name": "客服垫付资金", "type": "bar", "data": [item['commission'] for item in results]},
 
                     {"name": "总利润", "type": "bar", "data": [item['total_profit'] for item in results]},
                     {"name": "管理员利润", "type": "bar", "data": [item['admin_profit'] for item in results]},
