@@ -1,6 +1,6 @@
 import datetime
 import random
-
+from django.utils import timezone
 from django.core.exceptions import ValidationError
 from django.core.validators import RegexValidator
 from django.db import models

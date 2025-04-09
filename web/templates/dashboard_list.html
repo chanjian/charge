@@ -212,6 +212,7 @@ function initBarChart() {
         success: function(response) {
             if (!response.status) {
                 showError(chartInstances.barChart, response.error || '数据加载失败');
+
                 return;
             }
 
@@ -226,6 +227,8 @@ function initBarChart() {
         },
         error: function(xhr, status, error) {
             showError(chartInstances.barChart, '数据加载失败: ' + error);
+            console.log("完整错误响应:", xhr.responseText);
+        // 然后你可以复制完整的错误信息
         },
         complete: function() {
             // 无论成功失败都隐藏加载动画（如果之前没隐藏）

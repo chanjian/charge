@@ -1,10 +1,16 @@
-from django.db.models import Count, Sum, Q, F
-from django.db.models.functions import TruncDate, ExtractMonth
-from django.http import JsonResponse
+from django.db.models.functions import TruncDate, ExtractMonth, Coalesce
 from django.shortcuts import render, redirect
+from django.db.models import (
+    Count, Sum, Q, F, Case, When, Value,
+    IntegerField, DecimalField
+)
+from django.db.models.functions import TruncDate
+from django.http import JsonResponse
 from utils.time_filter import filter_by_date_range
-from web.models import TransactionRecord, UserInfo, GameOrder
-
+from web.models import TransactionRecord, GameOrder
+from django.db.models import ExpressionWrapper
+import logging
+logger = logging.getLogger('web')
 
 def dashboard_list(request):
     """数据看板主页面"""
@@ -21,142 +27,168 @@ def dashboard_list(request):
     return render(request, 'dashboard_list.html',context)
 
 
-from django.utils import timezone
 def chart_bar(request):
-    """交易流水柱状图数据"""
-
+    """交易流水柱状图数据（类型安全修正版）"""
     try:
-        # 获取当前管理员
+        # 1. 获取当前管理员
         current_admin = request.userinfo.get_root_admin()
         if not current_admin:
-            return JsonResponse({"status": False, "error": "管理员不存在"})
+            return JsonResponse({"status": False, "error": "管理员不存在"}, status=400)
 
 
-        # 基础查询 - 交易记录
-        transaction_queryset = TransactionRecord.objects.filter(
+
+        # 2. 构建基础查询集（确保所有数值表达式有明确类型）
+        queryset = TransactionRecord.objects.filter(
             Q(from_user=current_admin) | Q(to_user=current_admin),
             active=1,
-            # created_time__date__range=(start_date, end_date)  # 关键过滤条件
-        ).exclude(created_time__isnull=True)
-
-        # 基础查询 - 出库订单
-        order_queryset = GameOrder.objects.filter(
-            created_by=current_admin,
-            active=1,
-            order_status=2,  # 已支付的订单
-            # created_time__date__range=(start_date, end_date)  # 关键过滤条件
-        ).exclude(created_time__isnull=True)
-
-        # 调用封装好的函数进行日期过滤
-        transaction_queryset, start_date, end_date, date_field = filter_by_date_range(request, transaction_queryset)
-        order_queryset, _, _, _ = filter_by_date_range(request, order_queryset)
-        print('date_field',date_field)
-
-        # 获取所有相关订单ID
-        order_ids = order_queryset.values_list('id', flat=True)
-
-        # 按天分组统计交易记录
-        transaction_data = transaction_queryset.annotate(
-            date=TruncDate(date_field)
-        ).values('date').annotate(
-            # 1. 系统费总和（本圈出库订单的系统费）
-            system_fee_total=Sum('system_fee', filter=Q(from_user=current_admin)),
-            # 2. 三方借调费总和（圈内被第三方借调的订单的借调费）
-            cross_fee_total=Sum('cross_fee', filter=Q(from_user=current_admin, is_cross_circle=True)),
-            # 3. 利润总和（本圈出库订单的利润 = 订单金额 - 系统费 - 借调费 - 供应商结算）
-            profit_total=Sum(
-                F('amount') - F('system_fee') - F('cross_fee') - F('supplier_payment'),
-                filter=Q(from_user=current_admin)
-            ),
-            # 4. 订单总数（包括圈内订单被第三方借调出库和出库圈内订单及出库圈外订单的总和）
-            order_count=Count('order', distinct=True)
-        ).order_by('date')
-
-        # 按天分组统计出库订单金额
-        order_data = order_queryset.annotate(
+            order__isnull=False,
+            order__order_status=2
+        ).select_related(
+            'order',
+            'order__recharge_option',
+            'order__consumer',
+            'order__created_by'
+        ).annotate(
             date=TruncDate('created_time')
-        ).values('date').annotate(
-            order_amount=Sum('recharge_option__amount')
+        )
+
+        # 3. 应用日期过滤
+        queryset, start_date, end_date, _ = filter_by_date_range(request, queryset)
+
+        # 4. 定义类型安全的计算表达式
+        def calculate_amount(qs):
+            return qs.annotate(
+                calc_amount=ExpressionWrapper(
+                    F('order__recharge_option__amount') *
+                    F('order__consumer__level__percent') / Value(100.0),
+                    output_field=DecimalField(max_digits=10, decimal_places=2)
+                )
+            ).aggregate(
+                total=Coalesce(Sum('calc_amount'), Value(0, output_field=DecimalField()))
+            )['total']
+
+        def calculate_profit(qs, user_type):
+            base_expr = ExpressionWrapper(
+                F('order__recharge_option__amount') *
+                F('order__consumer__level__percent') / Value(100.0) -
+                F('order__recharge_option__amount') *
+                F('order__created_by__level__percent') / Value(100.0) -
+                F('system_fee') -
+                F('cross_fee'),
+                output_field=DecimalField(max_digits=10, decimal_places=2)
+            )
+
+            if user_type == 'SUPPORT':
+                base_expr = ExpressionWrapper(
+                    base_expr - F('commission'),
+                    output_field=DecimalField(max_digits=10, decimal_places=2)
+                )
+
+            return qs.filter(
+                order__created_by__usertype=user_type
+            ).annotate(
+                calc_profit=base_expr
+            ).aggregate(
+                total=Coalesce(Sum('calc_profit'), Value(0, output_field=DecimalField()))
+            )['total']
+
+        # 5. 基础统计（全部使用明确类型）
+        date_groups = queryset.values('date').annotate(
+            total_orders=Count('order', distinct=True),
+            admin_orders=Count('order',
+                               filter=Q(order__created_by__usertype__in=['ADMIN', 'SUPERADMIN']),
+                               distinct=True),
+            support_orders=Count('order',
+                                 filter=Q(order__created_by__usertype='SUPPORT'),
+                                 distinct=True),
+            supplier_orders=Count('order',
+                                  filter=Q(order__created_by__usertype='SUPPLIER'),
+                                  distinct=True),
+
+            system_fee=Coalesce(Sum(
+                'system_fee',
+                output_field=DecimalField(max_digits=10, decimal_places=2)
+            ), Value(0, output_field=DecimalField())),
+
+            cross_fee=Coalesce(Sum(
+                'cross_fee',
+                output_field=DecimalField(max_digits=10, decimal_places=2)
+            ), Value(0, output_field=DecimalField())),
+
+            commission=Coalesce(Sum(
+                'commission',
+                output_field=DecimalField(max_digits=10, decimal_places=2)
+            ), Value(0, output_field=DecimalField()))
         ).order_by('date')
 
-        # 合并日期，确保所有日期都出现在x轴
-        all_dates = set()
-        all_dates.update(item['date'] for item in transaction_data)
-        all_dates.update(item['date'] for item in order_data)
-        sorted_dates = sorted(all_dates)
+        # 6. 合并数据（全部使用Decimal处理）
+        results = []
+        for group in date_groups:
+            date = group['date']
 
-        # 构建按日期索引的数据字典
-        data_dict = {}
-        for date in sorted_dates:
-            data_dict[date] = {
-                'system_fee': 0,
-                'cross_fee': 0,
-                'profit': 0,
-                'order_count': 0,
-                'order_amount': 0
-            }
+            # 计算各类型金额
+            admin_amount = calculate_amount(
+                queryset.filter(
+                    date=date,
+                    order__created_by__usertype__in=['ADMIN', 'SUPERADMIN']
+                )
+            )
 
-        # 填充交易数据
-        for item in transaction_data:
-            date = item['date']
-            data_dict[date]['system_fee'] = float(item['system_fee_total'] or 0)
-            data_dict[date]['cross_fee'] = float(item['cross_fee_total'] or 0)
-            data_dict[date]['profit'] = float(item['profit_total'] or 0)
-            data_dict[date]['order_count'] = int(item['order_count'] or 0)
+            results.append({
+                'date': date.strftime('%m-%d'),
+                'total_orders': group['total_orders'],
+                'admin_orders': group['admin_orders'],
+                'support_orders': group['support_orders'],
+                'supplier_orders': group['supplier_orders'],
 
-        # 填充订单数据
-        for item in order_data:
-            date = item['date']
-            data_dict[date]['order_amount'] = float(item['order_amount'] or 0)
+                'total_amount': float(calculate_amount(queryset.filter(date=date))),
+                'admin_amount': float(admin_amount),
+                'system_fee': float(group['system_fee']),
+                'cross_fee': float(group['cross_fee']),
+                'commission': float(group['commission']),
 
-        # 准备结果数据
-        result = {
+                'total_profit': float(
+                    calculate_profit(queryset.filter(date=date), 'ADMIN') +
+                    calculate_profit(queryset.filter(date=date), 'SUPPORT') +
+                    calculate_profit(queryset.filter(date=date), 'SUPPLIER')
+                ),
+                'admin_profit': float(calculate_profit(queryset.filter(date=date), 'ADMIN')),
+                'support_profit': float(calculate_profit(queryset.filter(date=date), 'SUPPORT')),
+                'supplier_profit': float(calculate_profit(queryset.filter(date=date), 'SUPPLIER'))
+            })
+
+        # 7. 构建响应
+        return JsonResponse({
             "status": True,
             "data": {
-                "x_axis": [date.strftime('%m-%d') for date in sorted_dates],
+                "x_axis": [item['date'] for item in results],
                 "series": [
-                    {
-                        "name": "每日订单数",
-                        "type": "bar",
-                        "data": [data_dict[date]['order_count'] for date in sorted_dates],
-                        "itemStyle": {"color": "#67C23A"}
-                    },
-                    {
-                        "name": "系统费",
-                        "type": "bar",
-                        "data": [data_dict[date]['system_fee'] for date in sorted_dates],
-                        "itemStyle": {"color": "#F56C6C"}
-                    },
-                    {
-                        "name": "三方借调费",
-                        "type": "bar",
-                        "data": [data_dict[date]['cross_fee'] for date in sorted_dates],
-                        "itemStyle": {"color": "#E6A23C"}
-                    },
-                    {
-                        "name": "利润",
-                        "type": "bar",
-                        "data": [data_dict[date]['profit'] for date in sorted_dates],
-                        "itemStyle": {"color": "#409EFF"},
-                        "symbol": "circle",
-                        "symbolSize": 8,
-                        "lineStyle": {
-                            "width": 3
-                        }
-                    },
-                    {
-                        "name": "出库订单金额",
-                        "type": "bar",
-                        "data": [data_dict[date]['order_amount'] for date in sorted_dates],
-                        "itemStyle": {"color": "#909399"}
-                    }
+                    {"name": "总订单数", "type": "bar", "data": [item['total_orders'] for item in results]},
+                    {"name": "管理员订单", "type": "bar", "data": [item['admin_orders'] for item in results]},
+                    {"name": "客服订单", "type": "bar", "data": [item['support_orders'] for item in results]},
+                    {"name": "供应商订单", "type": "bar", "data": [item['supplier_orders'] for item in results]},
+
+                    {"name": "总流水", "type": "bar", "data": [item['total_amount'] for item in results]},
+                    {"name": "系统费", "type": "bar", "data": [item['system_fee'] for item in results]},
+                    {"name": "三方借调费", "type": "bar", "data": [item['cross_fee'] for item in results]},
+                    {"name": "客服佣金", "type": "bar", "data": [item['commission'] for item in results]},
+
+                    {"name": "总利润", "type": "bar", "data": [item['total_profit'] for item in results]},
+                    {"name": "管理员利润", "type": "bar", "data": [item['admin_profit'] for item in results]},
+                    {"name": "客服利润", "type": "bar", "data": [item['support_profit'] for item in results]},
+                    {"name": "供应商利润", "type": "bar", "data": [item['supplier_profit'] for item in results]}
                 ]
             }
-        }
-        return JsonResponse(result)
+        })
 
     except Exception as e:
-        return JsonResponse({"status": False, "error": str(e)})
+        import traceback
+        return JsonResponse({
+            "status": False,
+            "error": "数据加载失败",
+            "detail": str(e),
+            "traceback": traceback.format_exc()
+        }, status=500)
 
 def chart_pie_cross(request):
     """跨圈借调饼图数据"""
