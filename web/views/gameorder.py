@@ -823,6 +823,7 @@ def calculate_fees(order, operator,qb_discount):
     fees = {
         'system_fee': Decimal(settings.SYS_FEE),  # 示例系统费
         'cross_circle_fee': Decimal(settings.THIRD_FEE),
+
         'commission': Decimal(0),
         'support_payment': Decimal(0),
         'supplier_payment': Decimal(0),
@@ -839,7 +840,7 @@ def calculate_fees(order, operator,qb_discount):
             active=1
         )
         # 对于供应商，此处获取的折扣，是为了计算订单完成时，应该结算给供应商多少钱
-        # 对于客服，此处获取的折扣，是为了计算订单完成时，应该结算给客服的钱，因为钱是客服垫付的。此处的折扣，是提前给客服设置的出价策略
+        # 对于客服，此处获取的折扣，是为了计算订单完成时，应该结算给客服的提成是多少钱
         discount = Decimal(operator_level.percent) / 100  # 将百分比转为小数（如90%→0.9）
     except Level.DoesNotExist:
         # 而当找不到的时候，即try失败的时候，说明此时的用户是管理员身份
@@ -928,7 +929,7 @@ def create_transaction_records(order, operator, fees,qb_discount):
             cross_fee=fees['cross_circle_fee'],
             from_user=order.consumer.get_root_admin(),
             to_user=operator.get_root_admin(),
-            memo=f"跨圈借调费（费率10%，管理员ID：{fees['cross_admin'].id})"
+            # memo=f"跨圈借调费（费率10%，管理员ID：{fees['cross_admin'].id})"
         )
 
     # 客服相关费用
