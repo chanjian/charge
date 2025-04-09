@@ -56,15 +56,11 @@ def chart_bar(request):
         queryset, start_date, end_date, _ = filter_by_date_range(request, queryset)
 
         # 4. 定义类型安全的计算表达式
-        def calculate_amount(qs):
-            return qs.annotate(
-                calc_amount=ExpressionWrapper(
-                    F('order__recharge_option__amount') *
-                    F('order__consumer__level__percent') / Value(100.0),
-                    output_field=DecimalField(max_digits=10, decimal_places=2)
-                )
-            ).aggregate(
-                total=Coalesce(Sum('calc_amount'), Value(0, output_field=DecimalField()))
+        def calculate_raw_amount(qs):
+            """计算原始面额总和（不涉及折扣）"""
+            return qs.aggregate(
+                total=Coalesce(Sum('order__recharge_option__amount'),
+                               Value(0, output_field=DecimalField()))
             )['total']
 
         def calculate_profit(qs, user_type):
@@ -94,6 +90,10 @@ def chart_bar(request):
 
         # 5. 基础统计（全部使用明确类型）
         date_groups = queryset.values('date').annotate(
+            total_raw_amount=Coalesce(
+                Sum('order__recharge_option__amount'),
+                Value(0, output_field=DecimalField())
+            ),
             total_orders=Count('order', distinct=True),
             admin_orders=Count('order',
                                filter=Q(order__created_by__usertype__in=['ADMIN', 'SUPERADMIN']),
@@ -127,7 +127,7 @@ def chart_bar(request):
             date = group['date']
 
             # 计算各类型金额
-            admin_amount = calculate_amount(
+            admin_amount = calculate_raw_amount(
                 queryset.filter(
                     date=date,
                     order__created_by__usertype__in=['ADMIN', 'SUPERADMIN']
@@ -141,7 +141,7 @@ def chart_bar(request):
                 'support_orders': group['support_orders'],
                 'supplier_orders': group['supplier_orders'],
 
-                'total_amount': float(calculate_amount(queryset.filter(date=date))),
+                'total_amount': float(group['total_raw_amount']),
                 'admin_amount': float(admin_amount),
                 'system_fee': float(group['system_fee']),
                 'cross_fee': float(group['cross_fee']),
