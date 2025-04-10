@@ -474,11 +474,23 @@ function showOrderDetails(params) {
 // 初始化供应商图表
 function initSupplierChart() {
     const chartDom = document.getElementById('chartSupplier');
-    if (!chartDom) return;
+    if (!chartDom) {
+        console.error('错误: 找不到图表容器 #chartSupplier');
+        return;
+    }
 
     const chart = echarts.init(chartDom);
     chartInstances.supplierChart = chart;
-    showLoading(chart);
+
+    // 加载动画（与消费者图表一致）
+    chart.showLoading({
+        text: '数据加载中...',
+        color: '#1890ff',
+        textColor: '#666',
+        maskColor: 'rgba(255, 255, 255, 0.3)',
+        zlevel: 0,
+        fontSize: 14
+    });
 
     $.ajax({
         url: '{% url "chart_supplier" %}',
@@ -487,19 +499,33 @@ function initSupplierChart() {
         data: getQueryParams(),
         success: function(response) {
             if (!response.status) {
-                showError(chart, response.error || '数据加载失败');
+                showChartError(chart, response.error || '数据加载失败');
+                console.error("供应商数据错误:", response.detail || '无详细错误信息');
                 return;
             }
+
+            console.log("收到供应商数据:", {
+                dates: response.data.x_axis,
+                suppliers: response.data.series.map(s => s.name),
+                details: response.data.order_details
+            });
 
             const option = {
                 tooltip: {
                     trigger: 'axis',
-                    axisPointer: {type: 'shadow'}
+                    axisPointer: { type: 'shadow' },
+                    formatter: function(params) {
+                        const data = params[0];
+                        return `
+                            <b>${data.name}</b><br/>
+                            <span style="color:${data.color}">${data.seriesName}</span><br/>
+                            结算金额: ${data.value}元
+                        `;
+                    }
                 },
                 legend: {
                     data: response.data.series.map(item => item.name),
                     type: 'scroll',
-                    orient: 'horizontal',
                     bottom: 0
                 },
                 grid: {
@@ -510,49 +536,103 @@ function initSupplierChart() {
                 },
                 xAxis: {
                     type: 'category',
-                    data: response.data.x_axis
+                    data: response.data.x_axis,
+                    axisLabel: { rotate: 30 }
                 },
                 yAxis: {
                     type: 'value',
-                    name: '金额(元)'
+                    name: '结算金额(元)'
                 },
-                series: response.data.series
+                series: response.data.series.map(series => ({
+                    ...series,
+                    type: 'bar',
+                    itemStyle: {
+                        color: getRandomColor()
+                    },
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }))
             };
 
             chart.setOption(option);
+            chart.hideLoading();
+
+            // 存储详情数据
             chart._orderDetails = response.data.order_details;
 
+            // 点击事件
             chart.on('click', function(params) {
-                const details = chart._orderDetails[params.name];
-                const $tbody = $('#supplierDetailsBody');
-                $tbody.empty();
-
-                details.filter(d => d.supplier === params.seriesName).forEach(order => {
-                    $tbody.append(`
-                        <tr>
-                            <td>${order.supplier}</td>
-                            <td>${order.order_number}</td>
-                            <td>${order.created_time}</td>
-                            <td>${order.finished_time}</td>
-                            <td>${order.supplier_payment.toFixed(2)}</td>
-                            <td>${order.amount.toFixed(2)}</td>
-                        </tr>
-                    `);
-                });
-                $('#supplierDetails').show();
+                showSupplierDetails(params);
             });
+        },
+        error: function(xhr) {
+            chart.hideLoading();
+            showChartError(chart, `请求失败: ${xhr.statusText}`);
+            console.error("供应商请求失败:", xhr.responseText);
         }
+    });
+}
+
+// 显示供应商详情
+function showSupplierDetails(params) {
+    if (!params || !params.seriesName || !params.name) return;
+
+    const details = chartInstances.supplierChart._orderDetails[params.name];
+    if (!details) return;
+
+    const $tbody = $('#supplierDetailsBody');
+    $tbody.empty();
+
+    const supplierOrders = details.filter(
+        order => order.supplier === params.seriesName
+    );
+
+    if (supplierOrders.length === 0) {
+        $tbody.append('<tr><td colspan="5" class="text-center">当日无订单记录</td></tr>');
+    } else {
+        supplierOrders.forEach(order => {
+            $tbody.append(`
+                <tr>
+                    <td>${order.supplier}</td>
+                    <td>${order.order_number}</td>
+                    <td>${order.amount.toFixed(2)}元</td>
+                    <td>${order.commission_rate}%</td>
+                    <td class="text-success">${order.final_settlement.toFixed(2)}元</td>
+                </tr>
+            `);
+        });
+    }
+
+    $('#supplierDetails').show().get(0).scrollIntoView({
+        behavior: 'smooth'
     });
 }
 
 // 初始化客服图表
 function initSupportChart() {
     const chartDom = document.getElementById('chartSupport');
-    if (!chartDom) return;
+    if (!chartDom) {
+        console.error('错误: 找不到图表容器 #chartSupport');
+        return;
+    }
 
     const chart = echarts.init(chartDom);
     chartInstances.supportChart = chart;
-    showLoading(chart);
+
+    // 相同风格的加载动画
+    chart.showLoading({
+        text: '数据加载中...',
+        color: '#1890ff',
+        textColor: '#666',
+        maskColor: 'rgba(255, 255, 255, 0.3)',
+        zlevel: 0,
+        fontSize: 14
+    });
 
     $.ajax({
         url: '{% url "chart_support" %}',
@@ -561,19 +641,33 @@ function initSupportChart() {
         data: getQueryParams(),
         success: function(response) {
             if (!response.status) {
-                showError(chart, response.error || '数据加载失败');
+                showChartError(chart, response.error || '数据加载失败');
+                console.error("客服数据错误:", response.detail || '无详细错误信息');
                 return;
             }
+
+            console.log("收到客服数据:", {
+                dates: response.data.x_axis,
+                supports: response.data.series.map(s => s.name),
+                details: response.data.order_details
+            });
 
             const option = {
                 tooltip: {
                     trigger: 'axis',
-                    axisPointer: {type: 'shadow'}
+                    axisPointer: { type: 'shadow' },
+                    formatter: function(params) {
+                        const data = params[0];
+                        return `
+                            <b>${data.name}</b><br/>
+                            <span style="color:${data.color}">${data.seriesName}</span><br/>
+                            处理金额: ${data.value}元
+                        `;
+                    }
                 },
                 legend: {
                     data: response.data.series.map(item => item.name),
                     type: 'scroll',
-                    orient: 'horizontal',
                     bottom: 0
                 },
                 grid: {
@@ -584,41 +678,114 @@ function initSupportChart() {
                 },
                 xAxis: {
                     type: 'category',
-                    data: response.data.x_axis
+                    data: response.data.x_axis,
+                    axisLabel: { rotate: 30 }
                 },
                 yAxis: {
                     type: 'value',
-                    name: '金额(元)'
+                    name: '处理金额(元)'
                 },
-                series: response.data.series
+                series: response.data.series.map(series => ({
+                    ...series,
+                    type: 'bar',
+                    itemStyle: {
+                        color: getRandomColor()
+                    },
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }))
             };
 
             chart.setOption(option);
+            chart.hideLoading();
+
+            // 存储详情数据
             chart._orderDetails = response.data.order_details;
 
+            // 点击事件
             chart.on('click', function(params) {
-                const details = chart._orderDetails[params.name];
-                const $tbody = $('#supportDetailsBody');
-                $tbody.empty();
-
-                details.filter(d => d.support === params.seriesName).forEach(order => {
-                    $tbody.append(`
-                        <tr>
-                            <td>${order.support}</td>
-                            <td>${order.order_number}</td>
-                            <td>${order.created_time}</td>
-                            <td>${order.support_payment.toFixed(2)}</td>
-                            <td>${order.commission.toFixed(2)}</td>
-                            <td>${order.amount.toFixed(2)}</td>
-                        </tr>
-                    `);
-                });
-                $('#supportDetails').show();
+                showSupportDetails(params);
             });
+        },
+        error: function(xhr) {
+            chart.hideLoading();
+            showChartError(chart, `请求失败: ${xhr.statusText}`);
+            console.error("客服请求失败:", xhr.responseText);
         }
     });
 }
 
+// 显示客服详情
+function showSupportDetails(params) {
+    if (!params || !params.seriesName || !params.name) return;
+
+    const details = chartInstances.supportChart._orderDetails[params.name];
+    if (!details) return;
+
+    const $tbody = $('#supportDetailsBody');
+    $tbody.empty();
+
+    const supportOrders = details.filter(
+        order => order.support === params.seriesName
+    );
+
+    if (supportOrders.length === 0) {
+        $tbody.append('<tr><td colspan="5" class="text-center">当日无订单记录</td></tr>');
+    } else {
+        supportOrders.forEach(order => {
+            $tbody.append(`
+                <tr>
+                    <td>${order.support}</td>
+                    <td>${order.order_number}</td>
+                    <td>${order.amount.toFixed(2)}元</td>
+                    <td>${order.commission.toFixed(2)}元</td>
+                    <td class="text-success">${order.final_payment.toFixed(2)}元</td>
+                </tr>
+            `);
+        });
+    }
+
+    $('#supportDetails').show().get(0).scrollIntoView({
+        behavior: 'smooth'
+    });
+}
+
+
+// 随机颜色生成（与消费者图表一致）
+function getRandomColor() {
+    const colors = [
+        '#1890ff', '#52c41a', '#faad14', '#f5222d', '#722ed1',
+        '#13c2c2', '#eb2f96', '#fa8c16', '#a0d911', '#2f54eb'
+    ];
+    return colors[Math.floor(Math.random() * colors.length)];
+}
+
+// 统一错误显示（与消费者图表一致）
+function showChartError(chart, message) {
+    chart.setOption({
+        graphic: {
+            elements: [{
+                type: 'text',
+                left: 'center',
+                top: 'middle',
+                style: {
+                    text: message,
+                    fontSize: 14,
+                    fontWeight: 'normal',
+                    fill: '#f5222d',
+                    backgroundColor: '#fff2f0',
+                    padding: [10, 15],
+                    borderRadius: 4
+                }
+            }]
+        }
+    });
+}
 
 </script>
 {% endblock %}

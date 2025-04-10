@@ -25087,3 +25087,24 @@ django.urls.exceptions.NoReverseMatch: Reverse for 'chart_consumer_detail' not f
 2025-04-10 14:32:49 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 23500
 2025-04-10 14:32:56 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 23500
 2025-04-10 14:33:01 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-10 14:33:03 - django.server - INFO - "GET /level/list/ HTTP/1.1" 200 8163
+2025-04-10 14:33:04 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 23500
+2025-04-10 14:33:20 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 23502
+2025-04-10 14:33:20 - django.server - INFO - "GET /chart/supplier/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 577
+2025-04-10 14:33:20 - django.server - INFO - "GET /chart/support/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1037
+2025-04-10 14:33:20 - django.server - INFO - "GET /chart/consumer/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 8371
+2025-04-10 14:33:20 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1677
+2025-04-10 14:33:29 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 23529
+2025-04-10 14:34:07 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 23502
+2025-04-10 14:34:07 - django.server - INFO - "GET /chart/supplier/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 577
+2025-04-10 14:34:07 - django.server - INFO - "GET /chart/support/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1037
+2025-04-10 14:34:07 - django.server - INFO - "GET /chart/consumer/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 8371
+2025-04-10 14:34:07 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1677
+2025-04-10 14:50:47 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 24320
+2025-04-10 14:50:47 - django.server - INFO - "GET /chart/consumer/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 8371
+2025-04-10 14:50:47 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1677
+2025-04-10 14:51:31 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 23502
+2025-04-10 14:51:31 - django.server - INFO - "GET /chart/supplier/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 577
+2025-04-10 14:51:31 - django.server - INFO - "GET /chart/support/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1037
+2025-04-10 14:51:32 - django.server - INFO - "GET /chart/consumer/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 8371
+2025-04-10 14:51:32 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1677
