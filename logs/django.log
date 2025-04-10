@@ -24396,3 +24396,36 @@ KeyError: 'supplier'
 2025-04-10 08:14:51 - django.server - INFO - "GET /gameorder/finished/list/ HTTP/1.1" 200 26096
 2025-04-10 08:15:48 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\gameorder.py changed, reloading.
 2025-04-10 08:15:49 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-10 08:15:50 - django.server - INFO - "GET /gameorder/finished/list/ HTTP/1.1" 200 52358
+2025-04-10 08:15:50 - django.server - INFO - "GET /media/root/2025/03/29/18.png HTTP/1.1" 200 173200
+2025-04-10 08:15:50 - django.server - INFO - "GET /media/root/2025/04/08/68673c244810eac27fb447a576835af.jpg HTTP/1.1" 200 94998
+2025-04-10 08:15:50 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 200 944652
+2025-04-10 08:15:50 - django.server - INFO - "GET /media/root/2025/04/03/68673c244810eac27fb447a576835af.jpg HTTP/1.1" 200 94998
+2025-04-10 08:15:50 - django.server - INFO - "GET /media/root/2025/03/29/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-04-10 08:15:50 - django.server - INFO - "GET /media/root/2025/04/01/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-04-10 08:15:50 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 200 931909
+2025-04-10 08:15:57 - django.server - INFO - "GET /gameorder/finished/list/?page=4 HTTP/1.1" 200 39442
+2025-04-10 08:15:57 - django.server - INFO - "GET /media/sharon/2025/04/10/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 304 0
+2025-04-10 08:15:57 - django.server - INFO - "GET /media/sharon/2025/04/10/bceb03b8f380fcb72b73c91c3b032bf.jpg HTTP/1.1" 304 0
+2025-04-10 08:15:59 - django.server - INFO - "GET /gameorder/finished/list/?page=2 HTTP/1.1" 200 55122
+2025-04-10 08:15:59 - django.server - INFO - "GET /media/root/2025/04/08/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 200 650477
+2025-04-10 08:15:59 - django.server - INFO - "GET /media/root/2025/04/09/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-04-10 08:15:59 - django.server - INFO - "GET /media/root/2025/04/09/68673c244810eac27fb447a576835af.jpg HTTP/1.1" 304 0
+2025-04-10 08:15:59 - django.server - INFO - "GET /media/root/2025/04/09/6.png HTTP/1.1" 200 944652
+2025-04-10 08:15:59 - django.server - INFO - "GET /media/sharon/2025/04/09/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 304 0
+2025-04-10 08:16:55 - django.server - INFO - "GET /gameorder/finished/list/ HTTP/1.1" 200 26106
+2025-04-10 08:16:55 - django.server - INFO - "GET /media/sharon/2025/04/10/bceb03b8f380fcb72b73c91c3b032bf.jpg HTTP/1.1" 304 0
+2025-04-10 08:17:03 - django.server - INFO - "GET /gameorder/finished/list/ HTTP/1.1" 200 53519
+2025-04-10 08:17:03 - django.server - INFO - "GET /media/root/2025/03/29/6.png HTTP/1.1" 304 0
+2025-04-10 08:17:03 - django.server - INFO - "GET /media/root/2025/03/29/1.png HTTP/1.1" 304 0
+2025-04-10 08:17:14 - django.server - INFO - "GET /gameorder/finished/list/?page=6 HTTP/1.1" 200 39941
+2025-04-10 08:17:14 - django.server - INFO - "GET /media/root1/2025/04/10/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-04-10 08:17:14 - django.server - INFO - "GET /media/sharon/2025/04/10/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-04-10 08:17:14 - django.server - INFO - "GET /media/root1/2025/04/10/68673c244810eac27fb447a576835af.jpg HTTP/1.1" 200 94998
+2025-04-10 08:17:14 - django.server - INFO - "GET /media/sharon/2025/04/10/bceb03b8f380fcb72b73c91c3b032bf.jpg HTTP/1.1" 200 646394
+2025-04-10 08:17:16 - django.server - INFO - "GET /gameorder/finished/list/?page=1 HTTP/1.1" 200 53689
+2025-04-10 08:17:23 - django.server - INFO - "GET /gameorder/finished/list/?page=5 HTTP/1.1" 200 56689
+2025-04-10 08:17:23 - django.server - INFO - "GET /media/sharon/2025/04/09/b848d0436b27b899bb25a513c319a59.jpg HTTP/1.1" 304 0
+2025-04-10 08:17:23 - django.server - INFO - "GET /media/sharon/2025/04/09/d4e38a29f8625d6f98a1c307b65b8d6.jpg HTTP/1.1" 200 78366
+2025-04-10 08:17:23 - django.server - INFO - "GET /media/sharon/2025/04/09/bceb03b8f380fcb72b73c91c3b032bf.jpg HTTP/1.1" 200 646394
+2025-04-10 08:17:25 - django.server - INFO - "GET /gameorder/finished/list/?page=6 HTTP/1.1" 200 39941
