@@ -210,12 +210,22 @@ class CustomerChargeModelForm(BootStrapForm,forms.ModelForm):
 from utils.time_filter import filter_by_date_range
 def customer_charge(request,pk):
     # 获取查询参数
+    keyword = request.GET.get('keyword', '').strip()
+
     start_date = request.GET.get('start_date')
     end_date = request.GET.get('end_date')
     days_range = request.GET.get('days_range')
     print('request.GET',request.GET)
 
     queryset = models.TransactionRecord.objects.filter(customer_id=pk,customer__active=1,active=1).all().order_by('-id')
+
+    # 关键字查询
+    con = Q()
+    if keyword:
+        con.connector = 'OR'
+        con.children.append(('t_id__contains', keyword))
+        con.children.append(('order__order_number__contains', keyword))
+        queryset = queryset.filter(con)
 
     # 日期过滤
     queryset, start_date, end_date, pager = filter_by_date_range(request, queryset)

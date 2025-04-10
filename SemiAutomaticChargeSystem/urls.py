@@ -76,12 +76,14 @@ urlpatterns = [
     path('gamedenomination/edit/<int:pk>/',gamedenomination.gamedenomination_edit,name='gamedenomination_edit'),
     path('gamedenomination/delete/<int:pk>/',gamedenomination.gamedenomination_delete,name='gamedenomination_delete'),
 
-# path('chart/list/', chart.chart_list, name='chart_list'),
+    # path('chart/list/', chart.chart_list, name='chart_list'),
     path('dashboard/',chart.dashboard_list,name="dashboard_list"),
     path('chart/bar/', chart.chart_bar,name='chart_bar'),
     path('chart/consumer/', chart.chart_consumer, name='chart_consumer'),
     path('chart/supplier/', chart.chart_supplier, name='chart_supplier'),
     path('chart/support/', chart.chart_support, name='chart_support'),
+    path('chart/self/out/other',chart.chart_self_out_other,name='chart_self_out_other'),
+    path('chart/other/out/self',chart.chart_other_out_self,name='chart_other_out_self'),
 
 
 ]

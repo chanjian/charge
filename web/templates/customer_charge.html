@@ -68,6 +68,19 @@
         </form>
     </div>
 
+<div class="right">
+        <form class="form-inline" method="get">
+            <div class="form-group">
+                <input name="keyword" type="text" class="form-control" placeholder="请输订单号或交易号" value="{{ keyword }}">
+            </div>
+            <button type="submit" class="btn btn-default">
+                <span class="glyphicon glyphicon-search"></span>
+            </button>
+        </form>
+    </div>
+
+
+
     <table class="table table-bordered">
         <thead>
         <tr>
@@ -99,8 +112,8 @@
                     <td>-{{ row.amount }}</td>
             {% endif %}
                 <td>
-                    {% if row.order_oid %}
-                        {{ row.order_oid }}
+                    {% if row.order.order_number %}
+                        {{ row.order.order_number }}
                     {% else %}
                         -
                     {% endif %}
@@ -111,7 +124,7 @@
                  <td>{{ row.system_fee }}</td>
                  <td>{{ row.cross_fee }}</td>
                  <td>{{ row.commission }}</td>
-                  <td>{{ row.support_payment }} {{ row.supplier_payment }}</td>
+                  <td>{{ row.support_payment }} OR {{ row.supplier_payment }}</td>
                 <td>
                     {% if row.memo %}
                         {{ row.memo }}

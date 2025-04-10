@@ -339,11 +339,13 @@ PERMISSION_PUBLIC = {
     "qbsearch": {"text": "info", 'parent': None},
     "gameorder_edit_log": {"text": "游戏订单编辑日志", 'parent': None},
 
-    "chart_list":{"text":"123","parent":None},
-    "chart_bar":{"text":"123","parent":None},
-    "chart_consumer":{"text":"123","parent":None},
-    "chart_support":{"text":"123","parent":None},
-    "chart_supplier":{"text":"123","parent":None},
+    "chart_list":{"仪表盘列表":"123","parent":None},
+    "chart_bar":{"仪表数据总览":"123","parent":None},
+    "chart_consumer":{"消费者仪表盘":"123","parent":None},
+    "chart_support":{"客服仪表盘":"123","parent":None},
+    "chart_supplier":{"供应商仪表盘":"123","parent":None},
+    "chart_self_out_other":{"本圈出库他圈仪表盘":"123","parent":None},
+    "chart_other_out_self":{"他圈出库本圈仪表盘":"123","parent":None},
 
 
 }

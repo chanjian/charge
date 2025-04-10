@@ -176,6 +176,37 @@
 </div>
 
 
+    <!-- 在dashboard_list.html的适当位置添加 -->
+<div class="row">
+    <!-- 其他圈子出库到本圈 -->
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">外部入圈订单统计</div>
+            <div class="panel-body">
+                <!-- 确认这个div的id正确 -->
+                <div id="chartOtherOutSelf" class="chart-container" style="height:400px;"></div>
+                <div id="otherOutSelfDetails" style="display:none;margin-top:20px">
+                    <!-- 详情表格... -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 本圈出库到其他圈子 -->
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">出圈订单统计</div>
+            <div class="panel-body">
+                <!-- 确认这个div的id正确 -->
+                <div id="chartSelfOutOther" class="chart-container" style="height:400px;"></div>
+                <div id="selfOutOtherDetails" style="display:none;margin-top:20px">
+                    <!-- 详情表格... -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 </div>
 {% endblock %}
 
@@ -191,6 +222,8 @@ function initCharts() {
     initConsumerChart();  // 新增
     initSupplierChart();  // 新增
     initSupportChart();   // 新增
+    initOtherOutSelfChart();
+    initSelfOutOtherChart();
 
     // 监听窗口变化自动调整图表大小
     $(window).on('resize', function() {
@@ -242,6 +275,21 @@ function showError(chart, message) {
             }]
         }
     });
+
+    chart.hideLoading();
+
+    // 清除现有内容
+    chart.clear();
+
+    // 添加错误提示
+    chart.getDom().innerHTML += `
+        <div class="echarts-error-message">
+            <div style="font-size:16px;margin-bottom:10px">😢 图表加载失败</div>
+            <div style="color:#666;font-size:14px">${message}</div>
+        </div>
+    `;
+
+    console.error(`图表错误: ${message}`);
 }
 
 // 初始化页面
@@ -462,6 +510,7 @@ function showOrderDetails(params) {
 }
 
 
+// 初始化客服图表（精确版）
 function initSupportChart() {
     const chartDom = document.getElementById('chartSupport');
     if (!chartDom) return;
@@ -482,7 +531,6 @@ function initSupportChart() {
                 return;
             }
 
-            // ✅ 精准悬停配置
             const option = {
                 tooltip: {
                     trigger: 'axis',
@@ -496,12 +544,11 @@ function initSupportChart() {
 
                         let html = `<div style="font-weight:bold;margin-bottom:8px">${date}</div>`;
 
-                        // ✅ 精确匹配当前悬停的系列
                         params.forEach(param => {
                             const supportName = param.seriesName;
                             const data = hoverData[supportName];
 
-                            if (!data) return '';  // 无数据不显示
+                            if (!data) return '';
 
                             html += `
                                 <div style="margin:8px 0;padding-bottom:8px;border-bottom:1px dashed #eee">
@@ -516,10 +563,9 @@ function initSupportChart() {
                                         <strong>${supportName}</strong>
                                     </div>
                                     <div style="margin-left:20px;margin-top:4px;color:#666">
-                                        <div>总金额: <b>${data.total.toFixed(2)}元</b></div>
-                                        <div style="color:#ff4d4f">垫付: ${data.payment.toFixed(2)}元</div>
-                                        <div style="color:#52c41a">提成: ${data.commission.toFixed(2)}元</div>
-                                        <div>订单数: ${data.order_count}笔</div>
+                                        <div style="color:#ff4d4f">垫付金额: ${data.support_payment.toFixed(2)}元</div>
+                                        <div style="color:#52c41a">提成金额: ${data.commission.toFixed(2)}元</div>
+                                        <div>处理订单数: ${data.order_count}笔</div>
                                     </div>
                                 </div>
                             `;
@@ -550,7 +596,7 @@ function initSupportChart() {
                 },
                 yAxis: {
                     type: 'value',
-                    name: '金额(元)',
+                    name: '垫付金额(元)',
                     axisLine: { show: true }
                 },
                 series: response.data.series.map(series => ({
@@ -568,10 +614,10 @@ function initSupportChart() {
             chart.setOption(option);
             hideLoading(chart);
 
-            // ✅ 存储点击事件所需数据
+            // 存储详情数据
             chart._details = response.data.details;
 
-            // ✅ 点击事件（新版）
+            // 点击事件
             chart.on('click', function(params) {
                 if (params.value === null) return;
 
@@ -583,7 +629,7 @@ function initSupportChart() {
                 $tbody.empty();
 
                 if (details.length === 0) {
-                    $tbody.append('<tr><td colspan="5" class="text-center">无订单详情</td></tr>');
+                    $tbody.append('<tr><td colspan="6" class="text-center">无订单详情</td></tr>');
                 } else {
                     details.forEach(item => {
                         $tbody.append(`
@@ -592,7 +638,7 @@ function initSupportChart() {
                                 <td>${item.order_number}</td>
 
                                 <td>${item.amount.toFixed(2)}元</td>
-                                <td style="color:#ff4d4f">${item.payment.toFixed(2)}元</td>
+                                <td style="color:rgba(255,77,79,0.93)">${item.support_payment.toFixed(2)}元</td>
                                 <td style="color:#52c41a">${item.commission.toFixed(2)}元</td>
                             </tr>
                         `);
@@ -787,6 +833,308 @@ function showDetails(type, params) {
 
     $(`#${type}Details`).show();
 }
+
+
+
+// 初始化其他圈子出库到本圈图表
+// 增强版初始化函数（添加错误处理和调试输出）
+function initOtherOutSelfChart() {
+    const chartDom = document.getElementById('chartOtherOutSelf');
+    if (!chartDom) {
+        console.error('错误: 找不到图表容器 chartOtherOutSelf');
+        return;
+    }
+
+    const chart = echarts.init(chartDom);
+    chartInstances.otherOutSelfChart = chart;
+
+    // 增强加载动画
+    chart.showLoading({
+        text: '正在加载外部入圈数据...',
+        color: '#1890ff',
+        textColor: '#333',
+        maskColor: 'rgba(255, 255, 255, 0.8)'
+    });
+
+    $.ajax({
+        url: '{% url "chart_other_out_self" %}',
+        type: 'GET',
+        dataType: 'json',
+        data: getQueryParams(),
+        success: function(response) {
+            console.log('其他圈子出库响应:', response); // 调试输出
+
+            if (!response.status) {
+                const errorMsg = response.error || '加载外部入圈数据失败';
+                console.error(errorMsg);
+                showError(chart, errorMsg);
+                return;
+            }
+
+            if (!response.data || !response.data.series || !response.data.dates) {
+                const errorMsg = '数据格式错误: 缺少必要字段';
+                console.error(errorMsg, response);
+                showError(chart, errorMsg);
+                return;
+            }
+
+            // 调试输出数据
+            console.log('日期数据:', response.data.dates);
+            console.log('系列数据:', response.data.series);
+
+            const option = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow',
+                        shadowStyle: {
+                            color: 'rgba(150, 150, 150, 0.1)'
+                        }
+                    },
+                    formatter: function(params) {
+                        // ...保持原来的tooltip内容...
+                    }
+                },
+                legend: {
+                    data: response.data.series.map(item => item.name),
+                    type: 'scroll',
+                    bottom: 0,
+                    textStyle: {
+                        fontSize: 12
+                    }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '15%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    data: response.data.dates,
+                    axisLabel: {
+                        rotate: 30,
+                        fontSize: 12,
+                        interval: 0,
+                        formatter: function(value) {
+                            return value; // 确保日期显示完整
+                        }
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: '#DDD'
+                        }
+                    },
+                    axisTick: {
+                        alignWithLabel: true
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    name: '应付款金额(元)',
+                    nameTextStyle: {
+                        padding: [0, 0, 0, 35]
+                    },
+                    axisLine: {
+                        show: true,
+                        lineStyle: {
+                            color: '#DDD'
+                        }
+                    },
+                    axisTick: {
+                        show: true
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            type: 'dashed'
+                        }
+                    }
+                },
+                series: response.data.series.map(item => ({
+                    name: item.name,
+                    type: 'bar',
+                    barWidth: '60%',
+                    data: item.data.map(val => val === null ? 0 : val), // 确保null转为0显示
+                    itemStyle: {
+                        color: response.data.colors[item.name] || '#1890ff',
+                        borderRadius: [4, 4, 0, 0]
+                    },
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    },
+                    label: {
+                        show: true,
+                        position: 'top',
+                        formatter: '{c}元',
+                        color: '#666'
+                    }
+                })),
+                dataZoom: [{
+                    type: 'inside',
+                    start: 0,
+                    end: 100
+                }]
+            };
+
+            console.log('图表配置:', option); // 调试输出配置
+            chart.setOption(option);
+
+            // 强制重绘
+            setTimeout(() => {
+                chart.resize();
+            }, 200);
+
+            chart.hideLoading();
+
+            // 存储详情数据
+            chart._details = response.data.details || {};
+
+            // 点击事件
+            chart.on('click', function(params) {
+                console.log('图表点击事件:', params);
+                // ...保持原来的点击处理代码...
+            });
+
+        },
+        error: function(xhr, status, error) {
+            const errorMsg = `请求失败: ${xhr.statusText}`;
+            console.error(errorMsg, xhr.responseText);
+            showError(chart, errorMsg);
+            chart.hideLoading();
+        }
+    });
+}
+
+// 初始化本圈出库到其他圈子图表
+function initSelfOutOtherChart() {
+    const chartDom = document.getElementById('chartSelfOutOther');
+    if (!chartDom) return;
+
+    const chart = echarts.init(chartDom);
+    chartInstances.selfOutOtherChart = chart;
+
+    showLoading(chart, '正在加载出圈数据...');
+
+    $.ajax({
+        url: '{% url "chart_self_out_other" %}',
+        type: 'GET',
+        dataType: 'json',
+        data: getQueryParams(),
+        success: function(response) {
+            if (!response.status) {
+                showError(chart, response.error || '加载出圈数据失败');
+                return;
+            }
+
+            const option = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    },
+                    formatter: function(params) {
+                        const date = params[0].axisValue;
+                        const hoverData = response.data.tooltip_data[date] || {};
+
+                        let html = `
+                            <div style="font-weight:bold;margin-bottom:10px;border-bottom:1px solid #eee;padding-bottom:5px">
+                                ${date} 出圈订单
+                            </div>
+                        `;
+
+                        params.forEach(param => {
+                            const admin = param.seriesName;
+                            const data = hoverData[admin];
+
+                            if (!data) return '';
+
+                            html += `
+                                <div style="margin:8px 0;padding-bottom:8px;border-bottom:1px dashed #eee">
+                                    <div style="display:flex;align-items:center">
+                                        <span style="
+                                            display:inline-block;
+                                            width:12px;
+                                            height:12px;
+                                            background:${param.color};
+                                            margin-right:8px;
+                                            border-radius:2px">
+                                        </span>
+                                        <strong>${admin}</strong>
+                                    </div>
+                                    <div style="margin-left:20px;margin-top:5px;color:#555">
+                                        <div>订单数: ${data.order_count}笔</div>
+                                        <div>原价总计: ${data.original_amount.toFixed(2)}元</div>
+                                        <div style="color:#52c41a">应收款: ${data.receivable.toFixed(2)}元</div>
+                                        <div style="color:#ff4d4f">跨圈费: ${data.cross_fee.toFixed(2)}元</div>
+                                    </div>
+                                </div>
+                            `;
+                        });
+
+                        return html;
+                    }
+                },
+                // ...其他配置与initOtherOutSelfChart类似...
+                yAxis: {
+                    type: 'value',
+                    name: '应收款金额(元)',  // 主要区别点
+                    // ...其他配置
+                },
+                series: response.data.series.map(item => ({
+                    // ...与initOtherOutSelfChart相同...
+                }))
+            };
+
+            chart.setOption(option);
+            hideLoading(chart);
+
+            // 存储详情数据
+            chart._details = response.data.details;
+
+            // 点击事件
+            chart.on('click', function(params) {
+                if (params.value === null || params.value === undefined) return;
+
+                const date = params.name;
+                const admin = params.seriesName;
+                const details = chart._details[date]?.[admin] || [];
+
+                const $tbody = $('#selfOutOtherDetailsBody');
+                $tbody.empty();
+
+                if (details.length === 0) {
+                    $tbody.append('<tr><td colspan="7" class="text-center">无订单详情</td></tr>');
+                } else {
+                    details.forEach(item => {
+                        $tbody.append(`
+                            <tr>
+                                <td>${item.in_admin}</td>
+                                <td>${item.order_number}</td>
+                                <td>${item.original_amount.toFixed(2)}元</td>
+                                <td>${item.receivable.toFixed(2)}元</td>
+                                <td>${item.cross_fee.toFixed(2)}元</td>
+                                <td>${item.consumer}</td>
+                                <td>${item.time}</td>
+                            </tr>
+                        `);
+                    });
+                }
+
+                $('#selfOutOtherDetails').show();
+            });
+        },
+        error: function(xhr) {
+            showError(chart, '请求失败: ' + xhr.statusText);
+            hideLoading(chart);
+        }
+    });
+}
+
+
 
 </script>
 {% endblock %}

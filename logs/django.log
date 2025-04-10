@@ -25483,3 +25483,321 @@ django.urls.exceptions.NoReverseMatch: Reverse for 'chart_consumer_detail' not f
 2025-04-10 20:56:41 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1681
 2025-04-10 21:01:36 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py changed, reloading.
 2025-04-10 21:01:37 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-10 21:01:38 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 30690
+2025-04-10 21:01:38 - django.server - INFO - "GET /chart/supplier/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1037
+2025-04-10 21:01:38 - django.server - INFO - "GET /chart/support/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1879
+2025-04-10 21:01:38 - django.server - INFO - "GET /chart/consumer/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 8980
+2025-04-10 21:01:38 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1681
+2025-04-10 21:11:07 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 30652
+2025-04-10 21:11:08 - django.server - INFO - "GET /chart/supplier/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1037
+2025-04-10 21:11:08 - django.server - INFO - "GET /chart/support/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1879
+2025-04-10 21:11:08 - django.server - INFO - "GET /chart/consumer/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 8980
+2025-04-10 21:11:08 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1681
+2025-04-10 21:12:20 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 30647
+2025-04-10 21:12:20 - django.server - INFO - "GET /chart/supplier/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1037
+2025-04-10 21:12:20 - django.server - INFO - "GET /chart/support/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1879
+2025-04-10 21:12:20 - django.server - INFO - "GET /chart/consumer/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 8980
+2025-04-10 21:12:20 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1681
+2025-04-10 21:12:42 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 30653
+2025-04-10 21:12:42 - django.server - INFO - "GET /chart/support/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1879
+2025-04-10 21:12:42 - django.server - INFO - "GET /chart/supplier/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1037
+2025-04-10 21:12:42 - django.server - INFO - "GET /chart/consumer/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 8980
+2025-04-10 21:12:42 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1681
+2025-04-10 21:27:11 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py changed, reloading.
+2025-04-10 21:27:11 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-10 21:27:12 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 30653
+2025-04-10 21:27:12 - django.server - INFO - "GET /chart/supplier/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1037
+2025-04-10 21:27:12 - django.server - INFO - "GET /chart/support/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1963
+2025-04-10 21:27:12 - django.server - INFO - "GET /chart/consumer/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 8980
+2025-04-10 21:27:12 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1681
+2025-04-10 21:27:59 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 30548
+2025-04-10 21:27:59 - django.server - INFO - "GET /chart/supplier/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1037
+2025-04-10 21:27:59 - django.server - INFO - "GET /chart/support/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1963
+2025-04-10 21:27:59 - django.server - INFO - "GET /chart/consumer/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 8980
+2025-04-10 21:27:59 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1681
+2025-04-10 21:28:42 - django.server - INFO - "GET /gameorder/finished/list/ HTTP/1.1" 200 51565
+2025-04-10 21:28:50 - django.server - INFO - "GET /gameorder/finished/list/?keyword=O20250409200909 HTTP/1.1" 200 24648
+2025-04-10 21:28:50 - django.server - INFO - "GET /media/sharon/2025/04/09/bceb03b8f380fcb72b73c91c3b032bf.jpg HTTP/1.1" 304 0
+2025-04-10 21:29:34 - django.server - INFO - "GET /policy/list/ HTTP/1.1" 200 10087
+2025-04-10 21:29:39 - django.server - INFO - "GET /customer/list/ HTTP/1.1" 200 17406
+2025-04-10 21:29:46 - django.server - INFO - "GET /customer/list/ HTTP/1.1" 200 17406
+2025-04-10 21:29:50 - django.server - INFO - "GET /customer/list/ HTTP/1.1" 200 17406
+2025-04-10 21:29:51 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 30548
+2025-04-10 21:29:51 - django.server - INFO - "GET /chart/supplier/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1037
+2025-04-10 21:29:51 - django.server - INFO - "GET /chart/support/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1963
+2025-04-10 21:29:51 - django.server - INFO - "GET /chart/consumer/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 8980
+2025-04-10 21:29:51 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1681
+2025-04-10 21:30:04 - django.server - INFO - "GET /gameorder/finished/list/ HTTP/1.1" 200 51565
+2025-04-10 21:30:08 - django.server - INFO - "GET /gameorder/finished/list/?keyword=O20250409200909 HTTP/1.1" 200 24648
+2025-04-10 21:30:13 - django.server - INFO - "GET /customer/list/ HTTP/1.1" 200 17406
+2025-04-10 21:30:16 - django.server - INFO - "GET /customer/charge/3/ HTTP/1.1" 200 18796
+2025-04-10 21:31:59 - django.server - INFO - "GET /customer/charge/3/ HTTP/1.1" 200 18796
+2025-04-10 21:32:01 - django.server - INFO - "GET /customer/charge/3/ HTTP/1.1" 200 18796
+2025-04-10 21:32:03 - django.server - INFO - "GET /customer/charge/3/ HTTP/1.1" 200 18796
+2025-04-10 21:32:04 - django.server - INFO - "GET /customer/charge/3/ HTTP/1.1" 200 18796
+2025-04-10 21:32:33 - django.server - INFO - "GET /customer/charge/3/ HTTP/1.1" 200 18936
+2025-04-10 21:33:32 - django.server - INFO - "GET /customer/charge/3/ HTTP/1.1" 200 18966
+2025-04-10 21:34:31 - django.server - INFO - "GET /customer/charge/3/ HTTP/1.1" 200 19398
+2025-04-10 21:34:33 - django.server - INFO - "GET /customer/charge/3/ HTTP/1.1" 200 19398
+2025-04-10 21:34:34 - django.server - INFO - "GET /customer/charge/3/ HTTP/1.1" 200 19398
+2025-04-10 21:35:36 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\customer.py changed, reloading.
+2025-04-10 21:35:37 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-10 21:35:49 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 23546
+2025-04-10 21:35:58 - django.server - INFO - "GET /gameorder/finished/list/ HTTP/1.1" 200 51565
+2025-04-10 21:36:00 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 23546
+2025-04-10 21:37:05 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\customer.py changed, reloading.
+2025-04-10 21:37:05 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-10 21:37:07 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 30548
+2025-04-10 21:37:07 - django.server - INFO - "GET /chart/supplier/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1037
+2025-04-10 21:37:07 - django.server - INFO - "GET /chart/support/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1963
+2025-04-10 21:37:07 - django.server - INFO - "GET /chart/consumer/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 8980
+2025-04-10 21:37:07 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1681
+2025-04-10 21:37:19 - django.request - ERROR - Internal Server Error: /customer/charge/3/
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\customer.py", line 228, in customer_charge
+    queryset = queryset.filter(con)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\query.py", line 941, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\query.py", line 961, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\query.py", line 968, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\sql\query.py", line 1396, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\sql\query.py", line 1415, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\sql\query.py", line 1268, in build_filter
+    return self._add_q(
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\sql\query.py", line 1415, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\sql\query.py", line 1289, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\sql\query.py", line 1115, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\sql\query.py", line 1542, in names_to_path
+    raise FieldError("Cannot resolve keyword '%s' into field. "
+django.core.exceptions.FieldError: Cannot resolve keyword 'consumer' into field. Choices are: active, admin_payment, amount, charge_type, commission, created_time, creator, creator_id, cross_fee, customer, customer_id, finished_time, from_user, from_user_id, id, is_cross_circle, memo, order, order_id, supplier_payment, support_payment, system_fee, t_id, to_user, to_user_id, updated_time
+2025-04-10 21:37:19 - django.server - ERROR - "GET /customer/charge/3/?keyword=O20250409200909 HTTP/1.1" 500 160521
+2025-04-10 21:38:38 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\customer.py changed, reloading.
+2025-04-10 21:38:39 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-10 21:38:39 - django.request - ERROR - Internal Server Error: /customer/charge/3/
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\exception.py", line 47, in inner
+    response = get_response(request)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\core\handlers\base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\customer.py", line 228, in customer_charge
+    queryset = queryset.filter(con)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\query.py", line 941, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\query.py", line 961, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\query.py", line 968, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\sql\query.py", line 1396, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\sql\query.py", line 1415, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\sql\query.py", line 1268, in build_filter
+    return self._add_q(
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\sql\query.py", line 1415, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\sql\query.py", line 1289, in build_filter
+    lookups, parts, reffed_expression = self.solve_lookup_type(arg)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\sql\query.py", line 1115, in solve_lookup_type
+    _, field, _, lookup_parts = self.names_to_path(lookup_splitted, self.get_meta())
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\sql\query.py", line 1542, in names_to_path
+    raise FieldError("Cannot resolve keyword '%s' into field. "
+django.core.exceptions.FieldError: Cannot resolve keyword 'consumer' into field. Choices are: active, admin_payment, amount, charge_type, commission, created_time, creator, creator_id, cross_fee, customer, customer_id, finished_time, from_user, from_user_id, id, is_cross_circle, memo, order, order_id, supplier_payment, support_payment, system_fee, t_id, to_user, to_user_id, updated_time
+2025-04-10 21:38:39 - django.server - ERROR - "GET /customer/charge/3/?keyword=O20250409200909 HTTP/1.1" 500 160591
+2025-04-10 21:39:06 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\customer.py changed, reloading.
+2025-04-10 21:39:06 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-10 21:39:07 - django.server - INFO - "GET /customer/charge/3/ HTTP/1.1" 200 19398
+2025-04-10 21:39:15 - django.server - INFO - "GET /customer/charge/3/?keyword=O20250409200909 HTTP/1.1" 200 12686
+2025-04-10 21:39:34 - django.server - INFO - "GET /customer/charge/3/?keyword=T2025-04-09 HTTP/1.1" 200 19438
+2025-04-10 21:39:57 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 30548
+2025-04-10 21:39:57 - django.server - INFO - "GET /chart/supplier/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1037
+2025-04-10 21:39:57 - django.server - INFO - "GET /chart/support/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1963
+2025-04-10 21:39:57 - django.server - INFO - "GET /chart/consumer/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 8980
+2025-04-10 21:39:57 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1681
+2025-04-10 21:40:53 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 30561
+2025-04-10 21:40:53 - django.server - INFO - "GET /chart/supplier/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1037
+2025-04-10 21:40:53 - django.server - INFO - "GET /chart/support/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1963
+2025-04-10 21:40:53 - django.server - INFO - "GET /chart/consumer/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 8980
+2025-04-10 21:40:53 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1681
+2025-04-10 21:54:08 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 23546
+2025-04-10 21:54:09 - django.server - INFO - "GET /gameorder/finished/list/ HTTP/1.1" 200 51565
+2025-04-10 21:54:10 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 23546
+2025-04-10 21:54:13 - django.server - INFO - "GET /gameorder/finished/list/ HTTP/1.1" 200 51565
+2025-04-10 21:54:36 - django.server - INFO - "GET /level/list/ HTTP/1.1" 200 8163
+2025-04-10 21:54:44 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 30561
+2025-04-10 21:54:44 - django.server - INFO - "GET /chart/supplier/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1037
+2025-04-10 21:54:44 - django.server - INFO - "GET /chart/support/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1963
+2025-04-10 21:54:44 - django.server - INFO - "GET /chart/consumer/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 8980
+2025-04-10 21:54:44 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1681
+2025-04-10 21:55:21 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 30521
+2025-04-10 21:55:21 - django.server - INFO - "GET /chart/supplier/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1037
+2025-04-10 21:55:21 - django.server - INFO - "GET /chart/support/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1963
+2025-04-10 21:55:21 - django.server - INFO - "GET /chart/consumer/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 8980
+2025-04-10 21:55:21 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1681
+2025-04-10 21:59:13 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 32736
+2025-04-10 21:59:13 - django.server - INFO - "GET /chart/supplier/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1037
+2025-04-10 21:59:13 - django.server - INFO - "GET /chart/support/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1963
+2025-04-10 21:59:13 - django.server - INFO - "GET /chart/consumer/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 8980
+2025-04-10 21:59:13 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1681
+2025-04-10 22:10:15 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\SemiAutomaticChargeSystem\urls.py changed, reloading.
+2025-04-10 22:10:16 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-10 22:52:07 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py changed, reloading.
+2025-04-10 22:52:07 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-10 22:52:08 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 44552
+2025-04-10 22:52:08 - django.server - INFO - "GET /chart/supplier/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1037
+2025-04-10 22:52:08 - django.server - INFO - "GET /chart/support/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1963
+2025-04-10 22:52:08 - django.server - INFO - "GET /chart/consumer/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 8980
+2025-04-10 22:52:08 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1681
+2025-04-10 22:52:44 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-10 22:52:49 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 44552
+2025-04-10 22:52:49 - django.server - INFO - "GET /chart/supplier/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1037
+2025-04-10 22:52:49 - django.server - INFO - "GET /chart/support/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1963
+2025-04-10 22:52:49 - django.server - INFO - "GET /chart/consumer/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 8980
+2025-04-10 22:52:49 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1681
+2025-04-10 22:55:32 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 44552
+2025-04-10 22:55:32 - django.server - INFO - "GET /chart/supplier/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1037
+2025-04-10 22:55:32 - django.server - INFO - "GET /chart/support/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1963
+2025-04-10 22:55:32 - django.server - INFO - "GET /chart/consumer/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 8980
+2025-04-10 22:55:32 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1681
+2025-04-10 23:00:23 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-04-10 23:00:23 - django.server - INFO - "GET /static/js/echarts.js.map HTTP/1.1" 200 7240297
+2025-04-10 23:00:25 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 44552
+2025-04-10 23:00:25 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-04-10 23:00:25 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-04-10 23:00:25 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-04-10 23:00:25 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-04-10 23:00:25 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-04-10 23:00:26 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-04-10 23:00:26 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-04-10 23:00:26 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-04-10 23:00:26 - django.server - INFO - "GET /static/js/echarts.js HTTP/1.1" 200 3277175
+2025-04-10 23:00:26 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-04-10 23:00:26 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-04-10 23:00:26 - django.server - INFO - "GET /chart/supplier/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1037
+2025-04-10 23:00:26 - django.server - INFO - "GET /chart/support/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1963
+2025-04-10 23:00:26 - django.server - INFO - "GET /chart/consumer/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 8980
+2025-04-10 23:00:26 - django.server - INFO - "GET /static/js/echarts.js.map HTTP/1.1" 200 7240297
+2025-04-10 23:00:26 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1681
+2025-04-10 23:01:31 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 23546
+2025-04-10 23:01:31 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-04-10 23:01:31 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-04-10 23:01:31 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-04-10 23:01:31 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-04-10 23:01:31 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-04-10 23:01:31 - django.server - INFO - "GET /static/js/delete_modal.js HTTP/1.1" 200 1220
+2025-04-10 23:01:31 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-04-10 23:01:31 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-04-10 23:01:31 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-04-10 23:01:31 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-04-10 23:01:31 - django.server - INFO - "GET /static/plugins/bootstrap/fonts/glyphicons-halflings-regular.woff2 HTTP/1.1" 200 18028
+2025-04-10 23:01:31 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-04-10 23:01:34 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 44552
+2025-04-10 23:01:34 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-04-10 23:01:34 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-04-10 23:01:34 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-04-10 23:01:34 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-04-10 23:01:34 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-04-10 23:01:34 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-04-10 23:01:34 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-04-10 23:01:34 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-04-10 23:01:34 - django.server - INFO - "GET /static/js/echarts.js HTTP/1.1" 200 3277175
+2025-04-10 23:01:34 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-04-10 23:01:34 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-04-10 23:01:34 - django.server - INFO - "GET /chart/supplier/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1037
+2025-04-10 23:01:34 - django.server - INFO - "GET /chart/support/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1963
+2025-04-10 23:01:34 - django.server - INFO - "GET /chart/consumer/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 8980
+2025-04-10 23:01:34 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1681
+2025-04-10 23:01:34 - django.server - INFO - "GET /static/js/echarts.js.map HTTP/1.1" 200 7240297
+2025-04-10 23:03:13 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 44552
+2025-04-10 23:03:13 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-04-10 23:03:13 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-04-10 23:03:13 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-04-10 23:03:13 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-04-10 23:03:13 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-04-10 23:03:13 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-04-10 23:03:13 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-04-10 23:03:13 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-04-10 23:03:13 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-04-10 23:03:13 - django.server - INFO - "GET /static/js/echarts.js HTTP/1.1" 200 3277175
+2025-04-10 23:03:13 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-04-10 23:03:13 - django.server - INFO - "GET /chart/supplier/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1037
+2025-04-10 23:03:13 - django.server - INFO - "GET /chart/support/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1963
+2025-04-10 23:03:14 - django.server - INFO - "GET /static/js/echarts.js.map HTTP/1.1" 200 7240297
+2025-04-10 23:03:14 - django.server - INFO - "GET /chart/consumer/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 8980
+2025-04-10 23:03:14 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1681
+2025-04-10 23:07:08 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 22609
+2025-04-10 23:08:19 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 22609
+2025-04-10 23:13:08 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 22609
+2025-04-10 23:13:10 - django.server - INFO - "GET /gameorder/finished/list/ HTTP/1.1" 200 50327
+2025-04-10 23:13:10 - django.server - INFO - "GET /media/root/2025/04/08/68673c244810eac27fb447a576835af.jpg HTTP/1.1" 304 0
+2025-04-10 23:13:11 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 22609
+2025-04-10 23:13:15 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 44552
+2025-04-10 23:13:15 - django.server - INFO - "GET /static/css/menu.css HTTP/1.1" 200 1103
+2025-04-10 23:13:15 - django.server - INFO - "GET /static/css/commons.css HTTP/1.1" 200 811
+2025-04-10 23:13:15 - django.server - INFO - "GET /static/css/nav.css HTTP/1.1" 200 2707
+2025-04-10 23:13:15 - django.server - INFO - "GET /static/plugins/font-awesome/css/font-awesome.min.css HTTP/1.1" 200 31000
+2025-04-10 23:13:15 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css HTTP/1.1" 200 121457
+2025-04-10 23:13:15 - django.server - INFO - "GET /static/images/default.png HTTP/1.1" 200 983
+2025-04-10 23:13:15 - django.server - INFO - "GET /static/plugins/bootstrap/js/bootstrap.min.js HTTP/1.1" 200 39680
+2025-04-10 23:13:15 - django.server - INFO - "GET /static/js/jquery-3.6.0.min.js HTTP/1.1" 200 89501
+2025-04-10 23:13:15 - django.server - INFO - "GET /static/js/echarts.js HTTP/1.1" 200 3277175
+2025-04-10 23:13:15 - django.server - INFO - "GET /static/plugins/font-awesome/fonts/fontawesome-webfont.woff2?v=4.7.0 HTTP/1.1" 200 77160
+2025-04-10 23:13:15 - django.server - INFO - "GET /static/plugins/bootstrap/css/bootstrap.min.css.map HTTP/1.1" 200 540434
+2025-04-10 23:13:15 - django.server - INFO - "GET /chart/supplier/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1037
+2025-04-10 23:13:15 - django.server - INFO - "GET /chart/support/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1963
+2025-04-10 23:13:15 - django.server - INFO - "GET /chart/consumer/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 8980
+2025-04-10 23:13:16 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1681
+2025-04-10 23:13:16 - django.server - INFO - "GET /static/js/echarts.js.map HTTP/1.1" 200 7240297
+2025-04-10 23:17:00 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 22609
+2025-04-10 23:17:02 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 22609
+2025-04-10 23:17:03 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 43648
+2025-04-10 23:17:03 - django.server - INFO - "GET /chart/consumer/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 75
+2025-04-10 23:17:03 - django.server - INFO - "GET /chart/supplier/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1037
+2025-04-10 23:17:03 - django.server - INFO - "GET /chart/support/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1963
+2025-04-10 23:17:03 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1681
+2025-04-10 23:17:05 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 43648
+2025-04-10 23:17:05 - django.server - INFO - "GET /chart/consumer/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 75
+2025-04-10 23:17:05 - django.server - INFO - "GET /chart/supplier/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1037
+2025-04-10 23:17:05 - django.server - INFO - "GET /chart/support/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1963
+2025-04-10 23:17:05 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1681
+2025-04-10 23:17:16 - django.server - INFO - "GET /policy/list/ HTTP/1.1" 200 3283
+2025-04-10 23:17:19 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 43648
+2025-04-10 23:17:19 - django.server - INFO - "GET /chart/consumer/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 75
+2025-04-10 23:17:19 - django.server - INFO - "GET /chart/supplier/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1037
+2025-04-10 23:17:19 - django.server - INFO - "GET /chart/support/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1963
+2025-04-10 23:17:19 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1681
+2025-04-10 23:17:20 - django.server - INFO - "GET /policy/list/ HTTP/1.1" 200 3283
+2025-04-10 23:17:22 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 43648
+2025-04-10 23:17:22 - django.server - INFO - "GET /chart/supplier/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1037
+2025-04-10 23:17:22 - django.server - INFO - "GET /chart/support/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1963
+2025-04-10 23:17:22 - django.server - INFO - "GET /chart/consumer/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 75
+2025-04-10 23:17:22 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1681
+2025-04-10 23:17:22 - django.server - INFO - "GET /policy/list/ HTTP/1.1" 200 3283
+2025-04-10 23:17:24 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 43648
+2025-04-10 23:17:24 - django.server - INFO - "GET /chart/consumer/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 75
+2025-04-10 23:17:24 - django.server - INFO - "GET /chart/support/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1963
+2025-04-10 23:17:24 - django.server - INFO - "GET /chart/supplier/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1037
+2025-04-10 23:17:24 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1681
+2025-04-10 23:17:24 - django.server - INFO - "GET /policy/list/ HTTP/1.1" 200 3283
+2025-04-10 23:34:30 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 43664
+2025-04-10 23:34:30 - django.server - INFO - "GET /chart/consumer/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 75
+2025-04-10 23:34:30 - django.server - INFO - "GET /chart/supplier/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1037
+2025-04-10 23:34:30 - django.server - INFO - "GET /chart/support/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1963
+2025-04-10 23:34:31 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1681
+2025-04-10 23:34:32 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 22625
+2025-04-10 23:34:33 - django.server - INFO - "GET /gameorder/finished/list/ HTTP/1.1" 200 23619
+2025-04-10 23:34:34 - django.server - INFO - "GET /media/root/2025/04/10/d4197c2c8aa8353f6311722729d8fa0.jpg HTTP/1.1" 304 0
+2025-04-10 23:34:34 - django.server - INFO - "GET /gameorder/list/ HTTP/1.1" 200 22625
+2025-04-10 23:34:36 - django.server - INFO - "GET /gameorder/finished/list/ HTTP/1.1" 200 23619
+2025-04-10 23:37:01 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\SemiAutomaticChargeSystem\urls.py changed, reloading.
+2025-04-10 23:37:02 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
