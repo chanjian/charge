@@ -96,6 +96,39 @@
         </div>
     </div>
 
+
+<!-- 消费者消费统计图表 -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    消费者消费统计
+                    <div class="pull-right">
+                        <select id="consumerChartType" class="form-control input-sm" style="width:100px;">
+                            <option value="bar">柱状图</option>
+                            <option value="line">折线图</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div id="chartConsumer" class="chart-container"></div>
+                    <table id="consumerTable" class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>消费者</th>
+                                <th>订单数</th>
+                                <th>消费金额</th>
+                                <th>实际支付</th>
+                            </tr>
+                        </thead>
+                        <tbody id="consumerTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <!-- 第二行：三个饼图 -->
     <div class="row">
         <div class="col-md-4">
@@ -106,22 +139,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">圈内订单构成</div>
-                <div class="panel-body">
-                    <div id="chartPieInternal" class="chart-container"></div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">圈外订单分布</div>
-                <div class="panel-body">
-                    <div id="chartPieExternal" class="chart-container"></div>
-                </div>
-            </div>
-        </div>
+
     </div>
 </div>
 {% endblock %}
@@ -135,9 +153,10 @@ var chartInstances = {};
 // 初始化所有图表
 function initCharts() {
     initBarChart();
-    initPieCross();
-    initPieInternal();
-    initPieExternal();
+    initConsumerChart();  // 新增
+
+
+
 
     // 监听窗口变化自动调整图表大小
     $(window).on('resize', function() {
@@ -156,6 +175,52 @@ function getQueryParams() {
     };
 }
 
+// 显示加载动画
+function showLoading(chart) {
+    chart.showLoading('default', {
+        text: '数据加载中...',
+        color: '#c23531',
+        textColor: '#333',
+        maskColor: 'rgba(255, 255, 255, 0.8)',
+        zlevel: 0
+    });
+}
+
+// 隐藏加载动画
+function hideLoading(chart) {
+    chart.hideLoading();
+}
+
+// 显示错误信息
+function showError(chart, message) {
+    chart.setOption({
+        graphic: {
+            elements: [{
+                type: 'text',
+                left: 'center',
+                top: 'middle',
+                style: {
+                    text: message,
+                    fontSize: 16,
+                    fontWeight: 'bold',
+                    fill: '#ff4d4f'
+                }
+            }]
+        }
+    });
+}
+
+// 初始化页面
+$(document).ready(function() {
+    initCharts();
+
+    // 表单提交时刷新图表
+    $('form').on('submit', function(e) {
+        e.preventDefault();
+        initCharts();
+        return false;
+    });
+});
 
 
 
@@ -248,122 +313,233 @@ function initBarChart() {
     });
 
 
-// 跨圈借调饼图
-function initPieCross() {
-    const chartDom = document.getElementById('chartPieCross');
-    chartInstances.pieCross = echarts.init(chartDom);
+// 初始化消费者详细图表
+function initConsumerChart() {
+    const chartDom = document.getElementById('chartConsumer');
+    if (!chartDom) return;
 
-    const params = getQueryParams();
-    showLoading(chartInstances.pieCross);
+    chartInstances.consumerDetailChart = echarts.init(chartDom);
 
-    $.get('{% url "chart_pie_cross" %}', params, function(response) {
-        if (!response.status) {
-            showError(chartInstances.pieCross, response.error);
-            return;
-        }
-
-        const option = {
-            tooltip: {
-                trigger: 'item',
-                formatter: function(params) {
-                    return `
-                        <strong>${params.name}</strong><br/>
-                        订单数: ${params.data.order_count}<br/>
-                        借调费: ${params.data.fee.toFixed(2)}元<br/>
-                        总金额: ${params.data.total.toFixed(2)}元<br/>
-                        结算金额: ${params.value.toFixed(2)}元
-                    `;
-                }
-            },
-            legend: {
-                orient: 'vertical',
-                right: 10,
-                top: 'center'
-            },
-            series: [{
-                name: '跨圈借调',
-                type: 'pie',
-                radius: ['40%', '70%'],
-                avoidLabelOverlap: false,
-                itemStyle: {
-                    borderRadius: 10,
-                    borderColor: '#fff',
-                    borderWidth: 2
-                },
-                label: {
-                    show: true,
-                    formatter: '{b}: {c}元 ({d}%)'
-                },
-                emphasis: {
-                    label: {
-                        show: true,
-                        fontSize: '18',
-                        fontWeight: 'bold'
+    const option = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: { type: 'shadow' },
+            formatter: function(params) {
+                let html = `<b>${params[0].axisValue}</b>`;
+                params.forEach(param => {
+                    html += `<br/>${param.marker} ${param.seriesName}: ${param.value}`;
+                    if (param.seriesName.includes('金额')) {
+                        html += ' 元';
                     }
+                });
+                html += '<br/><small>点击查看当日消费者详情</small>';
+                return html;
+            }
+        },
+        legend: {
+            data: []
+        },
+        toolbox: {
+            feature: {
+                saveAsImage: {},
+                magicType: {
+                    type: ['line', 'bar']
                 },
-                data: response.data.map(item => ({
-                    value: item.value,
-                    name: item.name,
-                    order_count: item.order_count,
-                    fee: item.fee,
-                    total: item.total
-                }))
-            }]
-        };
+                dataView: { readOnly: true }
+            }
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'category',
+            data: []
+        },
+        yAxis: [
+            {
+                type: 'value',
+                name: '订单数',
+                axisLabel: { formatter: '{value}' }
+            },
+            {
+                type: 'value',
+                name: '金额(元)',
+                axisLabel: { formatter: '{value} 元' }
+            }
+        ],
+        series: []
+    };
 
-        chartInstances.pieCross.setOption(option);
-        hideLoading(chartInstances.pieCross);
-    }).fail(function() {
-        showError(chartInstances.pieCross, '数据加载失败');
-    });
-}
+    showLoading(chartInstances.consumerDetailChart);
 
-// 显示加载动画
-function showLoading(chart) {
-    chart.showLoading('default', {
-        text: '数据加载中...',
-        color: '#c23531',
-        textColor: '#333',
-        maskColor: 'rgba(255, 255, 255, 0.8)',
-        zlevel: 0
-    });
-}
-
-// 隐藏加载动画
-function hideLoading(chart) {
-    chart.hideLoading();
-}
-
-// 显示错误信息
-function showError(chart, message) {
-    chart.setOption({
-        graphic: {
-            elements: [{
-                type: 'text',
-                left: 'center',
-                top: 'middle',
-                style: {
-                    text: message,
-                    fontSize: 16,
-                    fontWeight: 'bold',
-                    fill: '#ff4d4f'
+    $.ajax({
+        url: '{% url "chart_consumer" %}',
+        type: 'GET',
+        dataType: 'JSON',
+        data: getQueryParams(),
+        success: function(response) {
+            if (!response.status) {
+                let errorDetail = response.error || '未知错误';
+                if (response.detail) errorDetail += ` | ${response.detail}`;
+                if (response.traceback) {
+                    console.error("后端Traceback:", response.traceback);
+                    errorDetail += ` (查看控制台获取详细堆栈)`;
                 }
-            }]
+
+                showError(chartInstances.consumerDetailChart, '数据加载失败', errorDetail);
+                return;
+            }
+
+            // 更新图表配置
+            option.legend.data = response.data.series.map(item => item.name);
+            option.xAxis.data = response.data.x_axis;
+
+            // 配置双Y轴
+            option.series = response.data.series.map((item, index) => {
+                return {
+                    ...item,
+                    yAxisIndex: index === 0 ? 0 : 1  // 第一个系列用左Y轴，其他用右Y轴
+                };
+            });
+
+            chartInstances.consumerDetailChart.setOption(option);
+            hideLoading(chartInstances.consumerDetailChart);
+
+            // 存储详细数据用于表格展示
+            chartInstances.consumerDetailChart._detailData = response.data.details;
+
+            // 添加点击事件
+            chartInstances.consumerDetailChart.on('click', function(params) {
+                showConsumerDetailTable(params.name);
+            });
+        },
+        error: function(xhr, status, error) {
+            let errorDetail = `HTTP状态: ${xhr.status}`;
+            try {
+                const errResponse = JSON.parse(xhr.responseText);
+                if (errResponse.detail) errorDetail += ` | ${errResponse.detail}`;
+                if (errResponse.traceback) {
+                    console.error("后端Traceback:", errResponse.traceback);
+                    errorDetail += ` (查看控制台获取详细堆栈)`;
+                }
+            } catch (e) {
+                errorDetail += ` | ${xhr.responseText || '无详细错误信息'}`;
+            }
+
+            showError(chartInstances.consumerDetailChart, '请求失败: ' + error, errorDetail);
+            console.error("完整错误响应:", xhr.responseText);
+        },
+        complete: function() {
+            hideLoading(chartInstances.consumerDetailChart);
         }
     });
 }
 
-// 初始化页面
-$(document).ready(function() {
-    initCharts();
+// 初始化消费者图表
+function initConsumerChart() {
+    var chartDom = document.getElementById('chartConsumer');
+    if (!chartDom) {
+        console.error('错误: 找不到图表容器 #chartConsumer');
+        return;
+    }
 
-    // 表单提交时刷新图表
-    $('form').on('submit', function(e) {
-        e.preventDefault();
-        initCharts();
-        return false;
+    var chart = echarts.init(chartDom);
+    chartInstances.consumerChart = chart;
+
+    var option = {
+        tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
+        legend: { data: [] },
+        toolbox: { feature: { saveAsImage: {} } },
+        grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+        xAxis: { type: 'category', data: [] },
+        yAxis: [
+            { type: 'value', name: '订单数' },
+            { type: 'value', name: '金额(元)' }
+        ],
+        series: []
+    };
+
+    showLoading(chart);
+
+    $.ajax({
+        url: '{% url "chart_consumer" %}',
+        type: 'GET',
+        dataType: 'JSON',
+        data: getQueryParams(),
+        success: function(response) {
+            if (!response.status) {
+                showError(chart, response.error || '数据加载失败');
+                console.error("错误响应:", response);
+                return;
+            }
+
+            option.legend.data = response.data.series.map(function(item) {
+                return item.name;
+            });
+            option.xAxis.data = response.data.x_axis;
+            option.series = response.data.series.map(function(item, index) {
+                return {
+                    ...item,
+                    yAxisIndex: index === 0 ? 0 : 1
+                };
+            });
+
+            chart.setOption(option);
+            hideLoading(chart);
+
+            // 存储消费者数据用于表格展示
+            chart._consumerData = response.data.consumers;
+
+            // 添加点击事件
+            chart.on('click', function(params) {
+                showConsumerTable(params.dataIndex);
+            });
+        },
+        error: function(xhr) {
+            showError(chart, '请求失败');
+            console.error("请求错误:", xhr.responseText);
+            hideLoading(chart);
+        }
     });
-});
+
+    // 切换图表类型
+    $('#consumerChartType').change(function() {
+        var type = $(this).val();
+        var option = chart.getOption();
+        option.series.forEach(function(series) {
+            series.type = type;
+        });
+        chart.setOption(option);
+    });
+}
+
+// 显示消费者表格
+function showConsumerTable(index) {
+    var data = chartInstances.consumerChart._consumerData;
+    if (!data || !data[index]) return;
+
+    var $tableBody = $('#consumerTableBody');
+    $tableBody.empty();
+
+    data[index].forEach(function(consumer) {
+        $tableBody.append(
+            '<tr>' +
+            '<td>' + consumer.username + '</td>' +
+            '<td>' + consumer.order_count + '</td>' +
+            '<td>' + consumer.total_amount.toFixed(2) + '</td>' +
+            '<td>' + consumer.final_amount.toFixed(2) + '</td>' +
+            '</tr>'
+        );
+    });
+
+    $('#consumerTable').show();
+}
+
+
+
 
 
 

@@ -100,9 +100,9 @@
         <th>订单结束时间</th>
         <th>订单状态</th>
         <th>订单编辑记录</th>
-        {% if request|has_permission:"customer_edit,customer_delete" %}
-        <th>操作</th>
-        {% endif %}
+<!--        {% if request|has_permission:"customer_edit,customer_delete" %}-->
+<!--&lt;!&ndash;        <th>操作</th>&ndash;&gt;-->
+<!--        {% endif %}-->
     </tr>
     </thead>
     <tbody>
@@ -150,14 +150,14 @@
         <i class="glyphicon glyphicon-time"></i> 修改记录
     </a>
 </td>
-        {% if request|has_permission:"gameorder_edit,gameorder_delete" %}
-        <td>
-            {% edit_permission request 'gameorder_edit' pk=row.id %}
-            {% delete_permission request 'gameorder_delete' pk=row.id %}
-<a href="{% url 'gameorder_out' row.id %}" class="btn btn-xs btn-warning"
-           onclick="return confirm('确认出库吗？')">出库</a>
-        </td>
-        {% endif %}
+<!--        {% if request|has_permission:"gameorder_edit,gameorder_delete" %}-->
+<!--        <td>-->
+<!--            {% edit_permission request 'gameorder_edit' pk=row.id %}-->
+<!--            {% delete_permission request 'gameorder_delete' pk=row.id %}-->
+<!--<a href="{% url 'gameorder_out' row.id %}" class="btn btn-xs btn-warning"-->
+<!--           onclick="return confirm('确认出库吗？')">出库</a>-->
+<!--        </td>-->
+<!--        {% endif %}-->
     </tr>
     {% endfor %}
     </tbody>

@@ -745,3 +745,7 @@ Traceback (most recent call last):
     raise FieldError("Cannot compute %s('%s'): '%s' is an aggregate" % (c.name, name, name))
 django.core.exceptions.FieldError: Cannot compute Sum('<Case: CASE WHEN <Q: (AND: ('order__created_by__usertype', 'ADMIN'))> THEN <CombinedExpression: F(order__recharge_option__amount) * F(order__consumer__level__percent) / Value(100) - F(order__recharge_option__amount) * F(order__created_by__level__percent) / Value(100) - F(system_fee) - F(cross_fee)>, ELSE Value(0)>'): '<Case: CASE WHEN <Q: (AND: ('order__created_by__usertype', 'ADMIN'))> THEN <CombinedExpression: F(order__recharge_option__amount) * F(order__consumer__level__percent) / Value(100) - F(order__recharge_option__amount) * F(order__created_by__level__percent) / Value(100) - F(system_fee) - F(cross_fee)>, ELSE Value(0)>' is an aggregate
 
+2025-04-10 09:37:52 - web - ERROR - 消费者统计错误: Cannot resolve keyword 'date' into field. Choices are: QV, active, consumer, consumer_id, created_by, created_by_id, created_time, edit_logs, finished_time, game, game_id, id, order_number, order_status, outed_by, outed_by_id, platform, qr_code, recharge_link, recharge_option, recharge_option_id, transactions, updated_time
+2025-04-10 09:41:29 - web - ERROR - 消费者统计错误: 'NoneType' object has no attribute 'strftime'
+2025-04-10 09:41:40 - web - ERROR - 消费者统计错误: 'NoneType' object has no attribute 'strftime'
+2025-04-10 09:43:26 - web - ERROR - 消费者统计错误: 'NoneType' object has no attribute 'strftime'

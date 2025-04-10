@@ -341,7 +341,7 @@ PERMISSION_PUBLIC = {
 
     "chart_list":{"text":"123","parent":None},
     "chart_bar":{"text":"123","parent":None},
-    "chart_pie_cross":{"text":"123","parent":None},
+    "chart_consumer":{"text":"123","parent":None},
     "chart_pie_internel":{"text":"123","parent":None},
     "chart_pie_external":{"text":"123","parent":None},
 

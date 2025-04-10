@@ -79,7 +79,7 @@ urlpatterns = [
 # path('chart/list/', chart.chart_list, name='chart_list'),
     path('dashboard/',chart.dashboard_list,name="dashboard_list"),
     path('chart/bar/', chart.chart_bar,name='chart_bar'),
-    path('chart/pie/cross/', chart.chart_pie_cross,name='chart_pie_cross'),
+    path('chart/consumer/', chart.chart_consumer, name='chart_consumer'),
     # path('chart/pie/internal/', chart.chart_pie_internal,name='chart_pie_internal'),
     # path('chart/pie/external/', chart.chart_pie_external,name='chart_pie_external'),
 

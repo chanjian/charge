@@ -241,55 +241,90 @@ def chart_bar(request):
             "traceback": traceback.format_exc()
         }, status=500)
 
-def chart_pie_cross(request):
-    """跨圈借调饼图数据"""
+
+def chart_consumer(request):
+    """消费者消费统计"""
     try:
         current_admin = request.userinfo.get_root_admin()
         if not current_admin:
-            return JsonResponse({"status": False, "error": "管理员不存在"})
+            return JsonResponse({"status": False, "error": "管理员不存在"}, status=400)
 
-        # 获取筛选参数
-        date_field = request.GET.get('date_field', 'created_time')
-        start_date = request.GET.get('start_date')
-        end_date = request.GET.get('end_date')
+        queryset = GameOrder.objects.filter(
+            order_status=2,
+            consumer__usertype='CUSTOMER',
+            active=1,
+            created_by=current_admin
+        ).select_related('consumer', 'recharge_option')
 
-        # 查询跨圈借调数据
-        qs = TransactionRecord.objects.filter(
-            charge_type='cross_circle_fee',
-            is_cross_circle=True,
-            from_user=current_admin,
-            active=1
-        )
+        queryset, _, _, _ = filter_by_date_range(request, queryset)
 
-        # 应用日期过滤
-        if start_date and end_date:
-            date_filter = {
-                f"{date_field}__date__gte": start_date,
-                f"{date_field}__date__lte": end_date
-            }
-            qs = qs.filter(**date_filter)
+        # 按日期分组
+        date_groups = queryset.annotate(
+            date=TruncDate('created_time')  # 按创建日期分组
+        ).values('date').annotate(
+            consumer_count=Count('consumer', distinct=True),
+            order_count=Count('id'),
+            total_amount=Coalesce(
+                Sum('recharge_option__amount'),
+                Value(0, output_field=DecimalField())
+            ),
+            final_amount=Coalesce(
+                Sum(
+                    F('recharge_option__amount') * F('consumer__level__percent') / 100,
+                    output_field=DecimalField()
+                ),
+                Value(0, output_field=DecimalField())
+            )
+        ).order_by('date')
 
-        data = qs.values('to_user__username').annotate(
-            order_count=Count('order'),
-            total_fee=Sum('cross_fee'),
-            total_amount=Sum('amount'),
-            final_amount=Sum('amount') - Sum('cross_fee')
-        )
+        results = []
+        consumers_data = []
 
-        series_data = [{
-            'value': float(item['final_amount']),
-            'name': item['to_user__username'],
-            'order_count': item['order_count'],
-            'fee': float(item['total_fee']),
-            'total': float(item['total_amount'])
-        } for item in data]
+        for group in date_groups:
+            # 处理可能的空日期
+            date_str = group['date'].strftime('%m-%d') if group['date'] else '未知日期'
+
+            results.append({
+                'date': date_str,
+                'consumer_count': group['consumer_count'],
+                'order_count': group['order_count'],
+                'total_amount': float(group['total_amount']),
+                'final_amount': float(group['final_amount'])
+            })
 
         return JsonResponse({
             "status": True,
-            "data": series_data
+            "data": {
+                "x_axis": [item['date'] for item in results],
+                "series": [
+                    {
+                        "name": "总订单数",
+                        "type": "bar",
+                        "data": [item['order_count'] for item in results]  # 修正字段名
+                    },
+                    {
+                        "name": "总消费金额",
+                        "type": "bar",
+                        "data": [item['total_amount'] for item in results],
+                        "symbol": "roundRect",
+                        "color": "#FFA500"
+                    },
+                    {
+                        "name": "实际支付金额",
+                        "type": "bar",
+                        "data": [item['final_amount'] for item in results],
+                        "symbol": "diamond",
+                        "color": "#32CD32"
+                    }
+                ],
+                "consumers": consumers_data
+            }
         })
 
     except Exception as e:
-        return JsonResponse({"status": False, "error": str(e)})
-
-# 其他视图函数保持不变...
+        logger.error(f"消费者统计错误: {str(e)}", exc_info=True)
+        return JsonResponse({
+            "status": False,
+            "error": "数据加载失败",
+            "detail": str(e)  # 添加详细错误信息
+        }, status=500)

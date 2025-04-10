@@ -14,6 +14,7 @@ from itertools import combinations
 from decimal import Decimal, InvalidOperation
 from django.http import JsonResponse
 from web.models import GameDenomination
+from django.utils import timezone
 import logging
 logger = logging.getLogger('web')
 
@@ -802,8 +803,8 @@ def gameorder_out(request, pk):
 
         # 更新订单状态
         order.order_status = 2  # 已完成
-        # order.out_user = operator
         order.outed_by = operator
+        order.finished_time = timezone.now()
         order.save()
 
         # 更新相关账户余额
@@ -954,6 +955,7 @@ def create_transaction_records(order, operator, fees,qb_discount):
         'commission': fees.get('commission', 0),
         'support_payment': fees.get('support_payment', 0),
         'supplier_payment': fees.get('supplier_payment', 0),
+        'finished_time': datetime.now(),
     }
 
     # 4. 获取操作者等级（安全方式）
@@ -994,7 +996,7 @@ def update_account_balances(fees):
     # 使用F()表达式保证原子操作
     if fees['support_payment'] > 0:
         UserInfo.objects.filter(pk=fees['operator'].pk).update(
-            account=F('account') - fees['support_payment']
+            account=F('account') + fees['support_payment']
         )
     if fees['supplier_payment'] > 0:
         UserInfo.objects.filter(pk=fees['operator'].pk).update(
