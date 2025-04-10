@@ -1,8 +1,6 @@
-
 from django.conf import settings
 from django import forms
 from django.db.models import Q
-from django.shortcuts import render, redirect, HttpResponse
 from utils.media_path import get_upload_path
 from utils.pager import Pagination
 from utils.qr_code_to_link import qr_code_to_link
@@ -14,8 +12,9 @@ from decimal import Decimal, getcontext
 from django.db.models import Case, When, Value, IntegerField, F
 from itertools import combinations
 from decimal import Decimal, InvalidOperation
+from django.http import JsonResponse
+from web.models import GameDenomination
 import logging
-
 logger = logging.getLogger('web')
 
 
@@ -155,16 +154,20 @@ def gameorder_finished_list(request):
     # 基础查询集
     if usertype == 'CUSTOMER':
         queryset = models.GameOrder.objects.filter(consumer=request.userinfo).exclude(order_status=1).all()
+    # else:
+    #     queryset = models.GameOrder.objects.filter(active=1).exclude(order_status=1).select_related(
+    #         'consumer__level').annotate(
+    #         user_discount_percent=F('consumer__level__percent'),
+    #         is_creator=Case(
+    #             When(created_by=request.userinfo, then=Value(1)),
+    #             default=Value(0),
+    #             output_field=IntegerField()
+    #         )
+    #     ).order_by('-is_creator', 'user_discount_percent', '-id')
+    elif usertype in ['SUPPORT','SUPPLIER']:
+        queryset = models.GameOrder.objects.filter(outed_by__username=request.userinfo.username).exclude(order_status=1).all()
     else:
-        queryset = models.GameOrder.objects.filter(active=1).exclude(order_status=1).select_related(
-            'consumer__level').annotate(
-            user_discount_percent=F('consumer__level__percent'),
-            is_creator=Case(
-                When(created_by=request.userinfo, then=Value(1)),
-                default=Value(0),
-                output_field=IntegerField()
-            )
-        ).order_by('-is_creator', 'user_discount_percent', '-id')
+        queryset = models.GameOrder.objects.exclude(order_status=1).all()
 
     # 关键字查询
     con = Q()
@@ -556,8 +559,7 @@ def gameorder_add(request):
     return redirect('gameorder_list')
 
 
-from django.http import JsonResponse
-from web.models import GameDenomination
+
 
 
 def gameorder_load_charge_options(request):
@@ -856,9 +858,9 @@ def calculate_fees(order, operator,qb_discount):
     try:
         qb_discount = Decimal(str(qb_discount))
     except (InvalidOperation, ValueError):
-        qb_discount = Decimal('1.0')
+        qb_discount = Decimal(settings.DEFAULT_QB_DISCOUNT)
 
-    discount = Decimal('0.8')  # 默认折扣
+    discount = Decimal(settings.DEFAULT_DISCOUNT)  # 默认折扣
     operator_level = None
     if operator.usertype in ['SUPPORT', 'SUPPLIER']:
         try:
@@ -915,9 +917,9 @@ def create_transaction_records(order, operator, fees,qb_discount):
     try:
         qb_discount = Decimal(str(qb_discount))
     except (InvalidOperation, ValueError):
-        qb_discount = Decimal('1.0')
+        qb_discount = Decimal(settings.DEFAULT_QB_DISCOUNT)
 
-    discount = Decimal('0.8')  # 默认折扣
+    discount = Decimal(settings.DEFAULT_DISCOUNT)  # 默认折扣
     operator_level = None
     if operator.usertype in ['SUPPORT', 'SUPPLIER']:
         try:
@@ -995,6 +997,6 @@ def update_account_balances(fees):
             account=F('account') - fees['support_payment']
         )
     if fees['supplier_payment'] > 0:
-        UserInfo.objects.filter(pk=fees['supplier'].pk).update(
+        UserInfo.objects.filter(pk=fees['operator'].pk).update(
             account=F('account') + fees['supplier_payment']
         )

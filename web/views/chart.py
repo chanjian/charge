@@ -47,7 +47,9 @@ def chart_bar(request):
             'order',
             'order__recharge_option',
             'order__consumer',
-            'order__created_by'
+            'order__created_by',
+            'order__outed_by',
+            'order__consumer__level'  # ✅ 确保关联level表
         ).annotate(
             date=TruncDate('created_time')
         )
@@ -64,11 +66,13 @@ def chart_bar(request):
             )['total']
 
         def calculate_profit(qs, user_type):
+            """
+            新版利润计算公式：
+            利润 = 客户支付金额(final) - 系统费 - 借调费 - 角色特定支出
+            """
             base_expr = ExpressionWrapper(
-                F('order__recharge_option__amount') *
-                F('order__consumer__level__percent') / Value(100.0) -
-                F('order__recharge_option__amount') *
-                F('order__created_by__level__percent') / Value(100.0) -
+                (F('order__recharge_option__amount') *
+                 F('order__consumer__level__percent') / 100) -  # 客户支付金额
                 F('system_fee') -
                 F('cross_fee'),
                 output_field=DecimalField(max_digits=10, decimal_places=2)
@@ -76,12 +80,22 @@ def chart_bar(request):
 
             if user_type == 'SUPPORT':
                 base_expr = ExpressionWrapper(
-                    base_expr - F('commission'),
-                    output_field=DecimalField(max_digits=10, decimal_places=2)
+                    base_expr - F('support_payment') - F('commission'),  # ✅ 客服需扣除垫付资金和佣金
+                    output_field=DecimalField()
+                )
+            elif user_type == 'SUPPLIER':
+                base_expr = ExpressionWrapper(
+                    base_expr - F('supplier_payment'),  # ✅ 供应商需扣除结算款
+                    output_field=DecimalField()
+                )
+            elif user_type == 'ADMIN':
+                base_expr = ExpressionWrapper(
+                    base_expr - F('admin_payment'),  # ✅ 管理员可能有垫付
+                    output_field=DecimalField()
                 )
 
             return qs.filter(
-                order__created_by__usertype=user_type
+                order__outed_by__usertype=user_type  # ✅ 改为按出库人类型过滤
             ).annotate(
                 calc_profit=base_expr
             ).aggregate(
@@ -96,13 +110,13 @@ def chart_bar(request):
             ),
             total_orders=Count('order', distinct=True),
             admin_orders=Count('order',
-                               filter=Q(order__created_by__usertype__in=['ADMIN', 'SUPERADMIN']),
+                               filter=Q(order__outed_by__usertype__in=['ADMIN', 'SUPERADMIN']),
                                distinct=True),
             support_orders=Count('order',
                                  filter=Q(order__outed_by__usertype='SUPPORT'),
                                  distinct=True),
             supplier_orders=Count('order',
-                                  filter=Q(order__created_by__usertype='SUPPLIER'),
+                                  filter=Q(order__outed_by__usertype='SUPPLIER'),
                                   distinct=True),
 
             system_fee=Coalesce(Sum(
@@ -118,7 +132,26 @@ def chart_bar(request):
             commission=Coalesce(Sum(
                 'commission',
                 output_field=DecimalField(max_digits=10, decimal_places=2)
-            ), Value(0, output_field=DecimalField()))
+            ), Value(0, output_field=DecimalField())),
+
+            # ✅ 新增三个垫付资金统计
+            support_payment=Coalesce(Sum(
+                'support_payment',
+                filter=Q(order__outed_by__usertype='SUPPORT'),
+                output_field=DecimalField()
+            ), Value(0, output_field=DecimalField())),
+
+            supplier_payment=Coalesce(Sum(
+                'supplier_payment',
+                filter=Q(order__outed_by__usertype='SUPPLIER'),
+                output_field=DecimalField()
+            ), Value(0, output_field=DecimalField())),
+
+            admin_payment=Coalesce(Sum(
+                'admin_payment',
+                filter=Q(order__outed_by__usertype__in=['ADMIN', 'SUPERADMIN']),
+                output_field=DecimalField()
+            ), Value(0, output_field=DecimalField())),
         ).order_by('date')
 
         # 6. 合并数据（全部使用Decimal处理）
@@ -147,6 +180,10 @@ def chart_bar(request):
                 'cross_fee': float(group['cross_fee']),
                 'commission': float(group['commission']),
 
+                'support_payment': float(group['support_payment']),  # ✅ 新增
+                'supplier_payment': float(group['supplier_payment']),  # ✅ 新增
+                'admin_payment': float(group['admin_payment']),  # ✅ 新增
+
                 'total_profit': float(
                     calculate_profit(queryset.filter(date=date), 'ADMIN') +
                     calculate_profit(queryset.filter(date=date), 'SUPPORT') +
@@ -163,15 +200,29 @@ def chart_bar(request):
             "data": {
                 "x_axis": [item['date'] for item in results],
                 "series": [
-                    {"name": "总订单数", "type": "bar", "data": [item['total_orders'] for item in results]},
-                    {"name": "管理员订单", "type": "bar", "data": [item['admin_orders'] for item in results]},
-                    {"name": "客服订单", "type": "bar", "data": [item['support_orders'] for item in results]},
-                    {"name": "供应商订单", "type": "bar", "data": [item['supplier_orders'] for item in results]},
+                    {"name": "总出库订单数", "type": "bar", "data": [item['total_orders'] for item in results]},
+                    {"name": "管理员出库订单", "type": "bar", "data": [item['admin_orders'] for item in results]},
+                    {"name": "客服出库订单", "type": "bar", "data": [item['support_orders'] for item in results]},
+                    {"name": "供应商出库订单", "type": "bar", "data": [item['supplier_orders'] for item in results]},
 
                     {"name": "总流水", "type": "bar", "data": [item['total_amount'] for item in results]},
                     {"name": "系统费", "type": "bar", "data": [item['system_fee'] for item in results]},
                     {"name": "三方借调费", "type": "bar", "data": [item['cross_fee'] for item in results]},
                     {"name": "客服佣金", "type": "bar", "data": [item['commission'] for item in results]},
+
+                    # ✅ 新增三个垫付资金折线图
+                    {"name": "客服垫付资金","type": "bar","data": [item['support_payment'] for item in results],
+                        "symbol": "roundRect",
+                        "color": "#FFA500"
+                    },
+                    {"name": "供应商结算","type": "bar","data": [item['supplier_payment'] for item in results],
+                        "symbol": "diamond",
+                        "color": "#32CD32"
+                    },
+                    {"name": "管理员垫付","type": "bar","data": [item['admin_payment'] for item in results],
+                        "symbol": "triangle",
+                        "color": "#9370DB"
+                    },
 
                     {"name": "总利润", "type": "bar", "data": [item['total_profit'] for item in results]},
                     {"name": "管理员创造的利润", "type": "bar", "data": [item['admin_profit'] for item in results]},
