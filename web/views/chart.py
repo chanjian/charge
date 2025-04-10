@@ -360,113 +360,100 @@ def chart_supplier(request):
     """供应商统计"""
     try:
         current_admin = request.userinfo.get_root_admin()
+        if not current_admin:
+            return JsonResponse({"status": False, "error": "管理员不存在"}, status=400)
+
         queryset = TransactionRecord.objects.filter(
             active=1,
             order__isnull=False,
             order__order_status=2,
             order__outed_by__usertype='SUPPLIER'
-        ).select_related('order', 'order__recharge_option')
+        ).select_related('order', 'order__outed_by')
 
-        queryset, _, _, _ = filter_by_date_range(request, queryset)
+        queryset, start_date, end_date, _ = filter_by_date_range(request, queryset)
 
-        # 按日期和供应商分组
-        groups = queryset.values(
-            date=TruncDate('created_time'),
-            supplier=F('order__outed_by__username')
-        ).annotate(
+        # 按日期和供应商分组统计
+        groups = queryset.annotate(
+            date=TruncDate('created_time')
+        ).values('date', 'order__outed_by__username').annotate(
             total_payment=Coalesce(Sum('supplier_payment'), Value(0, DecimalField())),
             order_count=Count('order', distinct=True)
         ).order_by('date')
 
         # 处理数据
         dates = sorted({g['date'] for g in groups})
-        suppliers = list({g['supplier'] for g in groups})
+        suppliers = list({g['order__outed_by__username'] for g in groups})
 
+        # 构建系列数据
         series = []
-        order_details = defaultdict(list)
-
         for supplier in suppliers:
-            data = []
+            supplier_data = {
+                'name': supplier,
+                'amounts': []
+            }
             for date in dates:
                 record = next(
-                    (g for g in groups if g['date'] == date and g['supplier'] == supplier),
+                    (g for g in groups if g['date'] == date and g['order__outed_by__username'] == supplier),
                     None
                 )
-                value = float(record['total_payment']) if record else 0
-                data.append(value)
+                supplier_data['amounts'].append(float(record['total_payment']) if record else 0)
+            series.append(supplier_data)
 
-            if any(data):
-                series.append({
-                    "name": supplier,
-                    "type": "bar",
-                    "data": data,
-                    "emphasis": {"focus": "series"}
-                })
-
-        # 收集订单详情
+        # 构建详情数据
+        details = defaultdict(dict)
         for date in dates:
-            orders = queryset.filter(
-                created_time__date=date
-            ).select_related('order', 'order__outed_by')
+            date_str = date.strftime('%m-%d')
+            date_orders = queryset.filter(created_time__date=date)
 
-            for record in orders:
-                order_details[date.strftime('%m-%d')].append({
-                    "supplier": record.order.outed_by.username,
-                    "order_number": record.order.order_number,
-                    "created_time": record.order.created_time.strftime('%Y-%m-%d %H:%M'),
-                    "finished_time": record.order.finished_time.strftime(
-                        '%Y-%m-%d %H:%M') if record.order.finished_time else 'N/A',
-                    "supplier_payment": float(record.supplier_payment),
-                    "amount": float(record.order.recharge_option.amount) if record.order.recharge_option else 0
+            for order in date_orders:
+                supplier_name = order.order.outed_by.username
+                if supplier_name not in details[date_str]:
+                    details[date_str][supplier_name] = []
+
+                details[date_str][supplier_name].append({
+                    "order_number": order.order.order_number,
+                    "amount": float(order.transactions.supplier_payment) if order.transactions.supplier_payment else 0,
+                    "commission": float(order.commission)
                 })
 
         return JsonResponse({
             "status": True,
-    "data": {
-        "dates": ["01-01", "01-02"],  # 日期列表
-        "suppliers": [  # 供应商列表
-            {
-                "name": "供应商A",
-                "amounts": [1000, 1500]  # 对应日期的金额
+            "data": {
+                "dates": [date.strftime('%m-%d') for date in dates],
+                "suppliers": series,
+                "details": details
             }
-        ],
-        "details": {  # 详情数据
-            "01-01": {  # 日期
-                "供应商A": [  # 供应商名称
-                    {
-                        "order_number": "ORD001",
-                        "amount": 500.00,
-                        "commission": 50.00
-                    }
-                ]
-            }
-        }
-    }
         })
 
     except Exception as e:
-        logger.error(f"供应商统计错误: {str(e)}")
-        return JsonResponse({"status": False, "error": str(e)}, status=500)
+        logger.error(f"供应商统计错误: {str(e)}", exc_info=True)
+        return JsonResponse({
+            "status": False,
+            "error": "数据加载失败",
+            "detail": str(e)
+        }, status=500)
 
 
 def chart_support(request):
     """客服统计"""
     try:
         current_admin = request.userinfo.get_root_admin()
+        if not current_admin:
+            return JsonResponse({"status": False, "error": "管理员不存在"}, status=400)
+
         queryset = TransactionRecord.objects.filter(
             active=1,
             order__isnull=False,
             order__order_status=2,
             order__outed_by__usertype='SUPPORT'
-        ).select_related('order', 'order__recharge_option')
+        ).select_related('order', 'order__outed_by')
 
-        queryset, _, _, _ = filter_by_date_range(request, queryset)
+        queryset, start_date, end_date, _ = filter_by_date_range(request, queryset)
 
-        # 按日期和客服分组
-        groups = queryset.values(
-            date=TruncDate('created_time'),
-            support=F('order__outed_by__username')
-        ).annotate(
+        # 按日期和客服分组统计
+        groups = queryset.annotate(
+            date=TruncDate('created_time')
+        ).values('date', 'order__outed_by__username').annotate(
             total_payment=Coalesce(Sum('support_payment'), Value(0, DecimalField())),
             total_commission=Coalesce(Sum('commission'), Value(0, DecimalField())),
             order_count=Count('order', distinct=True)
@@ -474,80 +461,57 @@ def chart_support(request):
 
         # 处理数据
         dates = sorted({g['date'] for g in groups})
-        supports = list({g['support'] for g in groups})
+        supports = list({g['order__outed_by__username'] for g in groups})
 
+        # 构建系列数据
         series = []
-        order_details = defaultdict(list)
-
         for support in supports:
-            payment_data = []
-            commission_data = []
+            support_data = {
+                'name': support,
+                'amounts': []
+            }
             for date in dates:
                 record = next(
-                    (g for g in groups if g['date'] == date and g['support'] == support),
+                    (g for g in groups if g['date'] == date and g['order__outed_by__username'] == support),
                     None
                 )
-                payment = float(record['total_payment']) if record else 0
-                commission = float(record['total_commission']) if record else 0
-                payment_data.append(payment)
-                commission_data.append(commission)
+                if record:
+                    support_data['amounts'].append(float(record['total_payment'] + record['total_commission']))
+                else:
+                    support_data['amounts'].append(0)
+            series.append(support_data)
 
-            if any(payment_data):
-                series.extend([
-                    {
-                        "name": f"{support}-垫付",
-                        "type": "bar",
-                        "data": payment_data,
-                        "stack": support
-                    },
-                    {
-                        "name": f"{support}-提成",
-                        "type": "bar",
-                        "data": commission_data,
-                        "stack": support
-                    }
-                ])
-
-        # 收集订单详情
+        # 构建详情数据
+        details = defaultdict(dict)
         for date in dates:
-            orders = queryset.filter(
-                created_time__date=date
-            ).select_related('order', 'order__outed_by')
+            date_str = date.strftime('%m-%d')
+            date_orders = queryset.filter(created_time__date=date)
 
-            for record in orders:
-                order_details[date.strftime('%m-%d')].append({
-                    "support": record.order.outed_by.username,
-                    "order_number": record.order.order_number,
-                    "created_time": record.order.created_time.strftime('%Y-%m-%d %H:%M'),
-                    "support_payment": float(record.support_payment),
-                    "commission": float(record.commission),
-                    "amount": float(record.order.recharge_option.amount) if record.order.recharge_option else 0
+            for order in date_orders:
+                support_name = order.order.outed_by.username
+                if support_name not in details[date_str]:
+                    details[date_str][support_name] = []
+
+                details[date_str][support_name].append({
+                    "order_number": order.order.order_number,
+                    "amount": float(order.order.recharge_option.amount) if order.order.recharge_option else 0,
+                    "commission": float(order.commission),
+                    "support_payment": float(order.support_payment)
                 })
 
         return JsonResponse({
-             "status": True,
-    "data": {
-        "dates": ["01-01", "01-02"],  # 日期列表
-        "supports": [  # 客服列表
-            {
-                "name": "客服A",
-                "amounts": [800, 950]  # 对应日期的金额
+            "status": True,
+            "data": {
+                "dates": [date.strftime('%m-%d') for date in dates],
+                "supports": series,
+                "details": details
             }
-        ],
-        "details": {  # 详情数据
-            "01-01": {  # 日期
-                "客服A": [  # 客服名称
-                    {
-                        "order_number": "ORD001",
-                        "amount": 300.00,
-                        "commission": 30.00
-                    }
-                ]
-            }
-        }
-    }
         })
 
     except Exception as e:
-        logger.error(f"客服统计错误: {str(e)}")
-        return JsonResponse({"status": False, "error": str(e)}, status=500)
+        logger.error(f"客服统计错误: {str(e)}", exc_info=True)
+        return JsonResponse({
+            "status": False,
+            "error": "数据加载失败",
+            "detail": str(e)
+        }, status=500)
