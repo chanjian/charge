@@ -749,3 +749,67 @@ django.core.exceptions.FieldError: Cannot compute Sum('<Case: CASE WHEN <Q: (AND
 2025-04-10 09:41:29 - web - ERROR - 消费者统计错误: 'NoneType' object has no attribute 'strftime'
 2025-04-10 09:41:40 - web - ERROR - 消费者统计错误: 'NoneType' object has no attribute 'strftime'
 2025-04-10 09:43:26 - web - ERROR - 消费者统计错误: 'NoneType' object has no attribute 'strftime'
+2025-04-10 12:30:30 - web - ERROR - 消费者统计错误: Cannot resolve keyword 'date' into field. Choices are: QV, active, consumer, consumer_id, created_by, created_by_id, created_time, edit_logs, finished_time, game, game_id, id, order_number, order_status, outed_by, outed_by_id, platform, qr_code, recharge_link, recharge_option, recharge_option_id, transactions, updated_time
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\sql\query.py", line 1935, in add_fields
+    join_info = self.setup_joins(name.split(LOOKUP_SEP), opts, alias, allow_many=allow_m2m)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\sql\query.py", line 1628, in setup_joins
+    path, final_field, targets, rest = self.names_to_path(
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\sql\query.py", line 1542, in names_to_path
+    raise FieldError("Cannot resolve keyword '%s' into field. "
+django.core.exceptions.FieldError: Cannot resolve keyword 'date' into field. Choices are: QV, active, consumer, consumer_id, created_by, created_by_id, created_time, edit_logs, finished_time, game, game_id, id, order_number, order_status, outed_by, outed_by_id, platform, qr_code, recharge_link, recharge_option, recharge_option_id, transactions, updated_time
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py", line 280, in chart_consumer
+    consumer_groups = queryset.values(
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\query.py", line 840, in values
+    clone = self._values(*fields, **expressions)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\query.py", line 835, in _values
+    clone.query.set_values(fields)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\sql\query.py", line 2251, in set_values
+    self.add_fields(field_names, True)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\sql\query.py", line 1962, in add_fields
+    raise FieldError("Cannot resolve keyword %r into field. "
+django.core.exceptions.FieldError: Cannot resolve keyword 'date' into field. Choices are: QV, active, consumer, consumer_id, created_by, created_by_id, created_time, edit_logs, finished_time, game, game_id, id, order_number, order_status, outed_by, outed_by_id, platform, qr_code, recharge_link, recharge_option, recharge_option_id, transactions, updated_time
+2025-04-10 12:31:29 - web - ERROR - 消费者统计错误: Cannot resolve keyword 'date' into field. Choices are: QV, active, consumer, consumer_id, created_by, created_by_id, created_time, edit_logs, finished_time, game, game_id, id, order_number, order_status, outed_by, outed_by_id, platform, qr_code, recharge_link, recharge_option, recharge_option_id, transactions, updated_time
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\sql\query.py", line 1935, in add_fields
+    join_info = self.setup_joins(name.split(LOOKUP_SEP), opts, alias, allow_many=allow_m2m)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\sql\query.py", line 1628, in setup_joins
+    path, final_field, targets, rest = self.names_to_path(
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\sql\query.py", line 1542, in names_to_path
+    raise FieldError("Cannot resolve keyword '%s' into field. "
+django.core.exceptions.FieldError: Cannot resolve keyword 'date' into field. Choices are: QV, active, consumer, consumer_id, created_by, created_by_id, created_time, edit_logs, finished_time, game, game_id, id, order_number, order_status, outed_by, outed_by_id, platform, qr_code, recharge_link, recharge_option, recharge_option_id, transactions, updated_time
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py", line 280, in chart_consumer
+    consumer_groups = queryset.values(
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\query.py", line 840, in values
+    clone = self._values(*fields, **expressions)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\query.py", line 835, in _values
+    clone.query.set_values(fields)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\sql\query.py", line 2251, in set_values
+    self.add_fields(field_names, True)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\sql\query.py", line 1962, in add_fields
+    raise FieldError("Cannot resolve keyword %r into field. "
+django.core.exceptions.FieldError: Cannot resolve keyword 'date' into field. Choices are: QV, active, consumer, consumer_id, created_by, created_by_id, created_time, edit_logs, finished_time, game, game_id, id, order_number, order_status, outed_by, outed_by_id, platform, qr_code, recharge_link, recharge_option, recharge_option_id, transactions, updated_time
+2025-04-10 12:32:53 - web - ERROR - 消费者统计错误: Cannot resolve keyword 'date' into field. Choices are: QV, active, consumer, consumer_id, created_by, created_by_id, created_time, edit_logs, final_amount, finished_time, game, game_id, id, order_count, order_number, order_status, outed_by, outed_by_id, platform, qr_code, recharge_link, recharge_option, recharge_option_id, total_amount, transactions, updated_time
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py", line 296, in chart_consumer
+    ).order_by('date', 'consumer__username')
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\query.py", line 1149, in order_by
+    obj.query.add_ordering(*field_names)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\sql\query.py", line 1996, in add_ordering
+    self.names_to_path(item.split(LOOKUP_SEP), self.model._meta)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\sql\query.py", line 1542, in names_to_path
+    raise FieldError("Cannot resolve keyword '%s' into field. "
+django.core.exceptions.FieldError: Cannot resolve keyword 'date' into field. Choices are: QV, active, consumer, consumer_id, created_by, created_by_id, created_time, edit_logs, final_amount, finished_time, game, game_id, id, order_count, order_number, order_status, outed_by, outed_by_id, platform, qr_code, recharge_link, recharge_option, recharge_option_id, total_amount, transactions, updated_time
+2025-04-10 12:33:15 - web - ERROR - 消费者统计错误: 'date'
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py", line 313, in chart_consumer
+    date_str = group['date'].strftime('%m-%d') if group['date'] else '未知日期'
+KeyError: 'date'

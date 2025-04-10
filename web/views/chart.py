@@ -260,9 +260,8 @@ def chart_consumer(request):
 
         # 按日期分组
         date_groups = queryset.annotate(
-            date=TruncDate('created_time')  # 按创建日期分组
+            date=TruncDate('created_time')
         ).values('date').annotate(
-            consumer_count=Count('consumer', distinct=True),
             order_count=Count('id'),
             total_amount=Coalesce(
                 Sum('recharge_option__amount'),
@@ -277,16 +276,46 @@ def chart_consumer(request):
             )
         ).order_by('date')
 
+        # 按消费者分组（用于表格展示）
+        consumer_groups = queryset.values(
+            'created_time',
+            'consumer__username'
+        ).annotate(
+            order_count=Count('id'),
+            total_amount=Coalesce(
+                Sum('recharge_option__amount'),
+                Value(0, output_field=DecimalField())
+            ),
+            final_amount=Coalesce(
+                Sum(
+                    F('recharge_option__amount') * F('consumer__level__percent') / 100,
+                    output_field=DecimalField()
+                ),
+                Value(0, output_field=DecimalField())
+            )
+        ).order_by('created_time', 'consumer__username')
+
+        # 组织图表数据
         results = []
-        consumers_data = []
+        consumer_details = {}
 
         for group in date_groups:
-            # 处理可能的空日期
             date_str = group['date'].strftime('%m-%d') if group['date'] else '未知日期'
-
             results.append({
                 'date': date_str,
-                'consumer_count': group['consumer_count'],
+                'order_count': group['order_count'],
+                'total_amount': float(group['total_amount']),
+                'final_amount': float(group['final_amount'])
+            })
+
+        # 组织消费者详情数据
+        for group in consumer_groups:
+            date_str = group['created_time'].strftime('%m-%d') if group['created_time'] else '未知日期'
+            if date_str not in consumer_details:
+                consumer_details[date_str] = []
+
+            consumer_details[date_str].append({
+                'username': group['consumer__username'],
                 'order_count': group['order_count'],
                 'total_amount': float(group['total_amount']),
                 'final_amount': float(group['final_amount'])
@@ -298,26 +327,23 @@ def chart_consumer(request):
                 "x_axis": [item['date'] for item in results],
                 "series": [
                     {
-                        "name": "总订单数",
-                        "type": "bar",
-                        "data": [item['order_count'] for item in results]  # 修正字段名
-                    },
-                    {
-                        "name": "总消费金额",
-                        "type": "bar",
-                        "data": [item['total_amount'] for item in results],
-                        "symbol": "roundRect",
-                        "color": "#FFA500"
-                    },
-                    {
                         "name": "实际支付金额",
                         "type": "bar",
                         "data": [item['final_amount'] for item in results],
-                        "symbol": "diamond",
-                        "color": "#32CD32"
+                        "itemStyle": {"color": "#32CD32"},
+                        "tooltip": {
+                            "formatter": """function(params) {
+                                return `
+                                    <b>${params.name}</b><br/>
+                                    实际支付: ${params.value}元<br/>
+                                    订单数: ${results[params.dataIndex].order_count}<br/>
+                                    总消费: ${results[params.dataIndex].total_amount}元
+                                `;
+                            }"""
+                        }
                     }
                 ],
-                "consumers": consumers_data
+                "consumers": consumer_details
             }
         })
 
@@ -326,5 +352,5 @@ def chart_consumer(request):
         return JsonResponse({
             "status": False,
             "error": "数据加载失败",
-            "detail": str(e)  # 添加详细错误信息
+            "detail": str(e)
         }, status=500)
