@@ -137,10 +137,10 @@
                     <table class="table table-bordered table-hover">
                         <thead>
                             <tr>
-                                <th>供应商</th>
+                                <th>供应商名称</th>
                                 <th>订单号</th>
-                                <th>金额</th>
-                                <th>提成</th>
+                                <th>订单原价</th>
+                                <th>应付供应商账款金额</th>
                             </tr>
                         </thead>
                         <tbody id="supplierDetailsBody"></tbody>
@@ -462,92 +462,6 @@ function showOrderDetails(params) {
 }
 
 
-
-// 初始化供应商图表
-function initSupplierChart() {
-    const chartDom = document.getElementById('chartSupplier');
-    if (!chartDom) return;
-
-    const chart = echarts.init(chartDom);
-    chartInstances.supplierChart = chart;
-
-    // 显示加载动画
-    chart.showLoading({
-        text: '加载中...',
-        color: '#1890ff',
-        textColor: '#333',
-        maskColor: 'rgba(255, 255, 255, 0.3)'
-    });
-
-    $.ajax({
-        url: '{% url "chart_supplier" %}',  // 替换为您的实际URL
-        type: 'GET',
-        dataType: 'json',
-        success: function(response) {
-            if (!response.status) {
-                showError(chart, response.error || '数据加载失败');
-                return;
-            }
-
-            const option = {
-                tooltip: {
-                    trigger: 'axis',
-                    axisPointer: {
-                        type: 'shadow'
-                    },
-                    formatter: function(params) {
-                        return `
-                            <b>${params[0].name}</b><br/>
-                            供应商: ${params[0].seriesName}<br/>
-                            总金额: ${params[0].value}元
-                        `;
-                    }
-                },
-                legend: {
-                    data: response.data.suppliers
-                },
-                xAxis: {
-                    type: 'category',
-                    data: response.data.dates,
-                    axisLabel: {
-                        rotate: 30
-                    }
-                },
-                yAxis: {
-                    type: 'value',
-                    name: '金额(元)'
-                },
-                series: response.data.suppliers.map(supplier => {
-                    return {
-                        name: supplier.name,
-                        type: 'bar',
-                        data: supplier.amounts,
-                        itemStyle: {
-                            color: '#1890ff'  // 统一使用蓝色
-                        }
-                    };
-                })
-            };
-
-            chart.setOption(option);
-            chart.hideLoading();
-
-            // 存储详情数据
-            chart._details = response.data.details;
-
-            // 点击事件 - 显示详情
-            chart.on('click', function(params) {
-                showDetails('supplier', params);
-            });
-        },
-        error: function(xhr) {
-            chart.hideLoading();
-            showError(chart, '请求失败: ' + xhr.statusText);
-        }
-    });
-}
-
-// 初始化客服图表
 function initSupportChart() {
     const chartDom = document.getElementById('chartSupport');
     if (!chartDom) return;
@@ -568,50 +482,57 @@ function initSupportChart() {
                 return;
             }
 
-            // ✅ 优化后的配置
+            // ✅ 精准悬停配置
             const option = {
                 tooltip: {
                     trigger: 'axis',
-                    axisPointer: { type: 'shadow' },
+                    axisPointer: {
+                        type: 'shadow',
+                        shadowStyle: { color: 'rgba(0,0,0,0.05)' }
+                    },
                     formatter: function(params) {
-                        let html = `<div style="margin-bottom:5px;font-weight:bold">${params[0].name}</div>`;
+                        const date = params[0].axisValue;
+                        const hoverData = response.data.tooltip_data[date] || {};
+
+                        let html = `<div style="font-weight:bold;margin-bottom:8px">${date}</div>`;
+
+                        // ✅ 精确匹配当前悬停的系列
                         params.forEach(param => {
                             const supportName = param.seriesName;
-                            const details = chart._details[param.name]?.[supportName] || [];
+                            const data = hoverData[supportName];
 
-                            // 计算总额
-                            let totalPayment = 0;
-                            let totalCommission = 0;
-                            details.forEach(item => {
-                                totalPayment += item.payment || 0;
-                                totalCommission += item.commission || 0;
-                            });
+                            if (!data) return '';  // 无数据不显示
 
                             html += `
-                                <div style="margin:10px 0;border-bottom:1px dashed #eee;padding-bottom:5px">
-                                    <div>
-                                        <span style="display:inline-block;width:12px;height:12px;background:${param.color};margin-right:5px"></span>
+                                <div style="margin:8px 0;padding-bottom:8px;border-bottom:1px dashed #eee">
+                                    <div style="display:flex;align-items:center">
+                                        <span style="display:inline-block;
+                                            width:12px;
+                                            height:12px;
+                                            background:${param.color};
+                                            margin-right:8px;
+                                            border-radius:2px">
+                                        </span>
                                         <strong>${supportName}</strong>
                                     </div>
-                                    <div style="margin-left:17px;color:#666">
-                                        <div>总金额: <span style="color:#333">${param.value.toFixed(2)}元</span></div>
-                                        <div>垫付: <span style="color:#ff4d4f">${totalPayment.toFixed(2)}元</span></div>
-                                        <div>提成: <span style="color:#52c41a">${totalCommission.toFixed(2)}元</span></div>
-                                        <div>订单数: ${details.length}笔</div>
+                                    <div style="margin-left:20px;margin-top:4px;color:#666">
+                                        <div>总金额: <b>${data.total.toFixed(2)}元</b></div>
+                                        <div style="color:#ff4d4f">垫付: ${data.payment.toFixed(2)}元</div>
+                                        <div style="color:#52c41a">提成: ${data.commission.toFixed(2)}元</div>
+                                        <div>订单数: ${data.order_count}笔</div>
                                     </div>
                                 </div>
                             `;
                         });
+
                         return html;
                     }
                 },
                 legend: {
-                    data: response.data.series.map(item => item.name),
+                    data: response.data.series.map(s => s.name),
                     type: 'scroll',
                     bottom: 0,
-                    formatter: function(name) {
-                        return name.length > 6 ? name.substring(0, 6) + '...' : name;
-                    }
+                    textStyle: { fontSize: 12 }
                 },
                 grid: {
                     left: '3%',
@@ -623,25 +544,22 @@ function initSupportChart() {
                     type: 'category',
                     data: response.data.dates,
                     axisLabel: {
-                        rotate: 30
+                        rotate: 30,
+                        fontSize: 12
                     }
                 },
                 yAxis: {
                     type: 'value',
-                    name: '金额(元)'
+                    name: '金额(元)',
+                    axisLine: { show: true }
                 },
-                series: response.data.series.map((item, index) => ({
-                    name: item.name,
-                    type: 'bar',
-                    data: item.data,
-                    itemStyle: {
-                        color: response.data.colors[item.name] || '#5470c6' // ✅ 使用分配的颜色
-                    },
+                series: response.data.series.map(series => ({
+                    ...series,
                     emphasis: {
                         itemStyle: {
                             shadowBlur: 10,
                             shadowOffsetX: 0,
-                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            shadowColor: 'rgba(0, 0, 0, 0.3)'
                         }
                     }
                 }))
@@ -650,14 +568,16 @@ function initSupportChart() {
             chart.setOption(option);
             hideLoading(chart);
 
-            // 存储详情数据
+            // ✅ 存储点击事件所需数据
             chart._details = response.data.details;
 
-            // 添加点击事件（查看详情）
+            // ✅ 点击事件（新版）
             chart.on('click', function(params) {
+                if (params.value === null) return;
+
                 const date = params.name;
-                const supportName = params.seriesName;
-                const details = chart._details[date]?.[supportName] || [];
+                const support = params.seriesName;
+                const details = chart._details[date]?.[support] || [];
 
                 const $tbody = $('#supportDetailsBody');
                 $tbody.empty();
@@ -668,9 +588,10 @@ function initSupportChart() {
                     details.forEach(item => {
                         $tbody.append(`
                             <tr>
-                                <td>${supportName}</td>
+                                <td>${support}</td>
                                 <td>${item.order_number}</td>
-                                <td>${item.order_amount.toFixed(2)}元</td>
+
+                                <td>${item.amount.toFixed(2)}元</td>
                                 <td style="color:#ff4d4f">${item.payment.toFixed(2)}元</td>
                                 <td style="color:#52c41a">${item.commission.toFixed(2)}元</td>
                             </tr>
@@ -680,49 +601,191 @@ function initSupportChart() {
 
                 $('#supportDetails').show();
             });
-
         },
         error: function(xhr) {
-            showError(chart, '请求失败');
-            console.error("请求错误:", xhr.responseText);
+            showError(chart, '请求失败: ' + xhr.statusText);
             hideLoading(chart);
         }
     });
 }
 
-// 显示详情表格
-function showDetails(type, params) {
-    const chart = type === 'supplier'
-        ? chartInstances.supplierChart
-        : chartInstances.supportChart;
 
-    const details = chart._details;
+// 初始化供应商图表（与客服图表逻辑相同，仅字段不同）
+// 初始化供应商图表
+function initSupplierChart() {
+    const chartDom = document.getElementById('chartSupplier');
+    if (!chartDom) return;
+
+    const chart = echarts.init(chartDom);
+    chartInstances.supplierChart = chart;
+
+    showLoading(chart);
+
+    $.ajax({
+        url: '{% url "chart_supplier" %}',
+        type: 'GET',
+        dataType: 'JSON',
+        data: getQueryParams(),
+        success: function(response) {
+            if (!response.status) {
+                showError(chart, response.error || '数据加载失败');
+                return;
+            }
+
+            const option = {
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow',
+                        shadowStyle: { color: 'rgba(0,0,0,0.05)' }
+                    },
+                    formatter: function(params) {
+                        const date = params[0].axisValue;
+                        const hoverData = response.data.tooltip_data[date] || {};
+
+                        let html = `<div style="font-weight:bold;margin-bottom:8px">${date}</div>`;
+
+                        params.forEach(param => {
+                            const supplierName = param.seriesName;
+                            const data = hoverData[supplierName];
+
+                            if (!data) return '';
+
+                            html += `
+                                <div style="margin:8px 0;padding-bottom:8px;border-bottom:1px dashed #eee">
+                                    <div style="display:flex;align-items:center">
+                                        <span style="display:inline-block;
+                                            width:12px;
+                                            height:12px;
+                                            background:${param.color};
+                                            margin-right:8px;
+                                            border-radius:2px">
+                                        </span>
+                                        <strong>${supplierName}</strong>
+                                    </div>
+                                    <div style="margin-left:20px;margin-top:4px;color:#666">
+                                        <div>结算总额: <b>${data.total.toFixed(2)}元</b></div>
+                                        <div>订单数: ${data.order_count}笔</div>
+                                    </div>
+                                </div>
+                            `;
+                        });
+
+                        return html;
+                    }
+                },
+                legend: {
+                    data: response.data.series.map(s => s.name),
+                    type: 'scroll',
+                    bottom: 0,
+                    textStyle: { fontSize: 12 }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '15%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    data: response.data.dates,
+                    axisLabel: {
+                        rotate: 30,
+                        fontSize: 12
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    name: '结算金额(元)',
+                    axisLine: { show: true }
+                },
+                series: response.data.series.map(series => ({
+                    ...series,
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.3)'
+                        }
+                    }
+                }))
+            };
+
+            chart.setOption(option);
+            hideLoading(chart);
+
+            // 存储点击事件所需数据
+            chart._details = response.data.details;
+
+            // 点击事件
+            chart.on('click', function(params) {
+                if (params.value === null) return;
+
+                const date = params.name;
+                const supplier = params.seriesName;
+                const details = chart._details[date]?.[supplier] || [];
+
+                const $tbody = $('#supplierDetailsBody');
+                $tbody.empty();
+
+                if (details.length === 0) {
+                    $tbody.append('<tr><td colspan="5" class="text-center">无订单详情</td></tr>');
+                } else {
+                    details.forEach(item => {
+                        $tbody.append(`
+                            <tr>
+                                <td>${supplier}</td>
+                                <td>${item.order_number}</td>
+
+                                <td>${item.amount.toFixed(2)}元</td>
+                                <td>${item.payment.toFixed(2)}元</td>
+                            </tr>
+                        `);
+                    });
+                }
+
+                $('#supplierDetails').show();
+            });
+        },
+        error: function(xhr) {
+            showError(chart, '请求失败: ' + xhr.statusText);
+            hideLoading(chart);
+        }
+    });
+}
+
+
+// ✅ 通用详情展示函数（优化版）
+function showDetails(type, params) {
+    const chart = chartInstances[`${type}Chart`];
+    if (!chart || !chart._details) return;
+
     const date = params.name;
     const name = params.seriesName;
+    const details = chart._details[date]?.[name] || [];
+    const tbodyId = `${type}DetailsBody`;
+    const $tbody = $(`#${tbodyId}`);
 
-    const detailData = details[date]?.[name] || [];
-    const tbodyId = type + 'DetailsBody';
+    $tbody.empty();
 
-    // 构建表格内容
-    let html = '';
-    detailData.forEach(item => {
-        html += `
-            <tr>
-                <td>${name}</td>
-                <td>${item.order_number}</td>
-                <td>${item.amount.toFixed(2)}元</td>
-                <td>${item.commission.toFixed(2)}元</td>
-            </tr>
-        `;
-    });
-
-    if (html === '') {
-        html = '<tr><td colspan="4" class="text-center">无订单数据</td></tr>';
+    if (details.length === 0) {
+        $tbody.append(`<tr><td colspan="6" class="text-center">无订单数据</td></tr>`);
+    } else {
+        details.forEach(item => {
+            $tbody.append(`
+                <tr>
+                    <td>${name}</td>
+                    <td>${item.order_number}</td>
+                    <td>${item.created_time || 'N/A'}</td>
+                    <td>${item.amount.toFixed(2)}元</td>
+                    <td style="color:#ff4d4f">${item.payment.toFixed(2)}元</td>
+                    <td style="color:#52c41a">${item.commission.toFixed(2)}元</td>
+                </tr>
+            `);
+        });
     }
 
-    // 更新DOM
-    document.getElementById(tbodyId).innerHTML = html;
-    document.getElementById(type + 'Details').style.display = 'block';
+    $(`#${type}Details`).show();
 }
 
 </script>

@@ -1,4 +1,5 @@
 from collections import defaultdict
+from datetime import datetime
 
 from django.db.models.functions import TruncDate, ExtractMonth, Coalesce
 from django.shortcuts import render, redirect
@@ -357,7 +358,7 @@ def chart_consumer(request):
 
 
 def chart_supplier(request):
-    """供应商统计"""
+    """供应商统计（与客服风格一致）"""
     try:
         current_admin = request.userinfo.get_root_admin()
         if not current_admin:
@@ -368,60 +369,82 @@ def chart_supplier(request):
             order__isnull=False,
             order__order_status=2,
             order__outed_by__usertype='SUPPLIER'
-        ).select_related('order', 'order__outed_by')
+        ).select_related('order', 'order__outed_by', 'order__recharge_option')
 
         queryset, start_date, end_date, _ = filter_by_date_range(request, queryset)
 
-        # 按日期和供应商分组统计
-        groups = queryset.annotate(
-            date=TruncDate('created_time')
-        ).values('date', 'order__outed_by__username').annotate(
-            total_payment=Coalesce(Sum('supplier_payment'), Value(0, DecimalField())),
-            order_count=Count('order', distinct=True)
-        ).order_by('date')
+        # 构建核心数据
+        date_supplier_data = defaultdict(dict)
+        for record in queryset.annotate(date=TruncDate('created_time')):
+            date_str = record.date.strftime('%m-%d')
+            supplier_name = record.order.outed_by.username
+
+            if supplier_name not in date_supplier_data[date_str]:
+                date_supplier_data[date_str][supplier_name] = {
+                    'total': 0,
+                    'payment': 0,
+                    'orders': []  # 保留点击事件所需订单详情
+                }
+
+            date_supplier_data[date_str][supplier_name]['total'] += float(record.supplier_payment)
+            date_supplier_data[date_str][supplier_name]['payment'] += float(record.supplier_payment)
+            date_supplier_data[date_str][supplier_name]['orders'].append({
+                'order_number': record.order.order_number,
+                'amount': float(record.order.recharge_option.amount) if record.order.recharge_option else 0,
+                'payment': float(record.supplier_payment),
+                'created_time': record.created_time.strftime('%Y-%m-%d %H:%M') if record.created_time else None
+            })
 
         # 处理数据
-        dates = sorted({g['date'] for g in groups})
-        suppliers = list({g['order__outed_by__username'] for g in groups})
+        all_dates = sorted(date_supplier_data.keys())
+        all_suppliers = sorted({supplier for date_data in date_supplier_data.values() for supplier in date_data.keys()})
+
+        supplier_colors = {
+            supplier: f'hsl({i * 360 / len(all_suppliers)}, 70%, 50%)'
+            for i, supplier in enumerate(all_suppliers)
+        }
 
         # 构建系列数据
         series = []
-        for supplier in suppliers:
-            supplier_data = {
+        for supplier in all_suppliers:
+            series_data = []
+            for date in all_dates:
+                if supplier in date_supplier_data[date]:
+                    series_data.append(date_supplier_data[date][supplier]['total'])
+                else:
+                    series_data.append(None)
+
+            series.append({
                 'name': supplier,
-                'amounts': []
-            }
-            for date in dates:
-                record = next(
-                    (g for g in groups if g['date'] == date and g['order__outed_by__username'] == supplier),
-                    None
-                )
-                supplier_data['amounts'].append(float(record['total_payment']) if record else 0)
-            series.append(supplier_data)
-
-        # 构建详情数据
-        details = defaultdict(dict)
-        for date in dates:
-            date_str = date.strftime('%m-%d')
-            date_orders = queryset.filter(created_time__date=date)
-
-            for order in date_orders:
-                supplier_name = order.order.outed_by.username
-                if supplier_name not in details[date_str]:
-                    details[date_str][supplier_name] = []
-
-                details[date_str][supplier_name].append({
-                    "order_number": order.order.order_number,
-                    "amount": float(order.supplier_payment),
-                    "commission": float(order.commission)
-                })
+                'type': 'bar',
+                'data': series_data,
+                'itemStyle': {'color': supplier_colors[supplier]}
+            })
 
         return JsonResponse({
             "status": True,
             "data": {
-                "dates": [date.strftime('%m-%d') for date in dates],
-                "suppliers": series,
-                "details": details
+                "dates": all_dates,
+                "series": series,
+                "tooltip_data": {  # 悬停数据
+                    date: {
+                        supplier: {
+                            'total': data['total'],
+                            'payment': data['payment'],
+                            'order_count': len(data['orders'])  # ✅ 修正订单数计算
+                        }
+                        for supplier, data in date_data.items()
+                    }
+                    for date, date_data in date_supplier_data.items()
+                },
+                "details": {  # 点击事件数据
+                    date: {
+                        supplier: data['orders']
+                        for supplier, data in date_data.items()
+                    }
+                    for date, date_data in date_supplier_data.items()
+                },
+                "colors": supplier_colors
             }
         })
 
@@ -435,7 +458,7 @@ def chart_supplier(request):
 
 
 def chart_support(request):
-    """客服统计（合并显示垫付和提成）"""
+    """客服统计（含点击事件所需数据）"""
     try:
         current_admin = request.userinfo.get_root_admin()
         if not current_admin:
@@ -446,74 +469,83 @@ def chart_support(request):
             order__isnull=False,
             order__order_status=2,
             order__outed_by__usertype='SUPPORT'
-        ).select_related('order', 'order__outed_by')
+        ).select_related('order', 'order__outed_by', 'order__recharge_option')
 
         queryset, start_date, end_date, _ = filter_by_date_range(request, queryset)
 
-        # ✅ 按日期和客服分组统计（合并计算总金额）
-        groups = queryset.annotate(
-            date=TruncDate('created_time')
-        ).values('date', 'order__outed_by__username').annotate(
-            total_amount=Coalesce(
-                Sum(F('support_payment') + F('commission')),  # ✅ 合并计算
-                Value(0, DecimalField())
-            ),
-            total_payment=Coalesce(Sum('support_payment'), Value(0, DecimalField())),
-            total_commission=Coalesce(Sum('commission'), Value(0, DecimalField())),
-            order_count=Count('order', distinct=True)
-        ).order_by('date')
+        # 构建核心数据
+        date_support_data = defaultdict(dict)
+        for record in queryset.annotate(date=TruncDate('created_time')):
+            date_str = record.date.strftime('%m-%d')
+            support_name = record.order.outed_by.username
+
+            if support_name not in date_support_data[date_str]:
+                date_support_data[date_str][support_name] = {
+                    'total': 0,
+                    'payment': 0,
+                    'commission': 0,
+                    'orders': []  # ✅ 保留点击事件所需订单详情
+                }
+
+            date_support_data[date_str][support_name]['total'] += float(record.support_payment + record.commission)
+            date_support_data[date_str][support_name]['payment'] += float(record.support_payment)
+            date_support_data[date_str][support_name]['commission'] += float(record.commission)
+            date_support_data[date_str][support_name]['orders'].append({
+                'order_number': record.order.order_number,
+                'amount': float(record.order.recharge_option.amount) if record.order.recharge_option else 0,
+                'payment': float(record.support_payment),
+                'commission': float(record.commission),
+                'created_time': record.created_time.strftime('%Y-%m-%d %H:%M') if record.created_time else None
+            })
 
         # 处理数据
-        dates = sorted({g['date'] for g in groups})
-        supports = list({g['order__outed_by__username'] for g in groups})
+        all_dates = sorted(date_support_data.keys())
+        all_supports = sorted({support for date_data in date_support_data.values() for support in date_data.keys()})
 
-        # ✅ 生成颜色列表（确保每个客服有固定颜色）
         support_colors = {
-            support: f'hsl({i * 360 / len(supports)}, 70%, 50%)'
-            for i, support in enumerate(supports)
+            support: f'hsl({i * 360 / len(all_supports)}, 70%, 50%)'
+            for i, support in enumerate(all_supports)
         }
 
-        # ✅ 构建系列数据（只显示总金额）
+        # 构建系列数据
         series = []
-        for support in supports:
+        for support in all_supports:
+            series_data = []
+            for date in all_dates:
+                if support in date_support_data[date]:
+                    series_data.append(date_support_data[date][support]['total'])
+                else:
+                    series_data.append(None)
+
             series.append({
                 'name': support,
                 'type': 'bar',
-                'data': []
+                'data': series_data,
+                'itemStyle': {'color': support_colors[support]}
             })
-
-            for date in dates:
-                record = next(
-                    (g for g in groups if g['date'] == date and g['order__outed_by__username'] == support),
-                    None
-                )
-                series[-1]['data'].append(float(record['total_amount']) if record else 0)
-
-        # 构建详情数据（保留明细）
-        details = defaultdict(dict)
-        for date in dates:
-            date_str = date.strftime('%m-%d')
-            date_orders = queryset.filter(created_time__date=date)
-
-            for order in date_orders:
-                support_name = order.order.outed_by.username
-                if support_name not in details[date_str]:
-                    details[date_str][support_name] = []
-
-                details[date_str][support_name].append({
-                    "order_number": order.order.order_number,
-                    "payment": float(order.support_payment),
-                    "commission": float(order.commission),
-                    "order_amount": float(order.order.recharge_option.amount) if order.order.recharge_option else 0
-                })
 
         return JsonResponse({
             "status": True,
             "data": {
-                "dates": [date.strftime('%m-%d') for date in dates],
+                "dates": all_dates,
                 "series": series,
-                "details": details,
-                "colors": support_colors  # ✅ 返回颜色映射
+                "tooltip_data": {  # 悬停数据
+                    date: {
+                        support: {
+                            k: v for k, v in data.items() if k != 'orders'
+                        }
+                        for support, data in date_data.items()
+                    }
+                    for date, date_data in date_support_data.items()
+                },
+                "details": {  # ✅ 点击事件数据
+                    date: {
+                        support: data['orders']
+                        for support, data in date_data.items()
+                    }
+                    for date, date_data in date_support_data.items()
+                },
+                "colors": support_colors
             }
         })
 
