@@ -412,7 +412,7 @@ def chart_supplier(request):
 
                 details[date_str][supplier_name].append({
                     "order_number": order.order.order_number,
-                    "amount": float(order.transactions.supplier_payment) if order.transactions.supplier_payment else 0,
+                    "amount": float(order.supplier_payment),
                     "commission": float(order.commission)
                 })
 
@@ -435,7 +435,7 @@ def chart_supplier(request):
 
 
 def chart_support(request):
-    """客服统计"""
+    """客服统计（合并显示垫付和提成）"""
     try:
         current_admin = request.userinfo.get_root_admin()
         if not current_admin:
@@ -450,10 +450,14 @@ def chart_support(request):
 
         queryset, start_date, end_date, _ = filter_by_date_range(request, queryset)
 
-        # 按日期和客服分组统计
+        # ✅ 按日期和客服分组统计（合并计算总金额）
         groups = queryset.annotate(
             date=TruncDate('created_time')
         ).values('date', 'order__outed_by__username').annotate(
+            total_amount=Coalesce(
+                Sum(F('support_payment') + F('commission')),  # ✅ 合并计算
+                Value(0, DecimalField())
+            ),
             total_payment=Coalesce(Sum('support_payment'), Value(0, DecimalField())),
             total_commission=Coalesce(Sum('commission'), Value(0, DecimalField())),
             order_count=Count('order', distinct=True)
@@ -463,25 +467,29 @@ def chart_support(request):
         dates = sorted({g['date'] for g in groups})
         supports = list({g['order__outed_by__username'] for g in groups})
 
-        # 构建系列数据
+        # ✅ 生成颜色列表（确保每个客服有固定颜色）
+        support_colors = {
+            support: f'hsl({i * 360 / len(supports)}, 70%, 50%)'
+            for i, support in enumerate(supports)
+        }
+
+        # ✅ 构建系列数据（只显示总金额）
         series = []
         for support in supports:
-            support_data = {
+            series.append({
                 'name': support,
-                'amounts': []
-            }
+                'type': 'bar',
+                'data': []
+            })
+
             for date in dates:
                 record = next(
                     (g for g in groups if g['date'] == date and g['order__outed_by__username'] == support),
                     None
                 )
-                if record:
-                    support_data['amounts'].append(float(record['total_payment'] + record['total_commission']))
-                else:
-                    support_data['amounts'].append(0)
-            series.append(support_data)
+                series[-1]['data'].append(float(record['total_amount']) if record else 0)
 
-        # 构建详情数据
+        # 构建详情数据（保留明细）
         details = defaultdict(dict)
         for date in dates:
             date_str = date.strftime('%m-%d')
@@ -494,17 +502,18 @@ def chart_support(request):
 
                 details[date_str][support_name].append({
                     "order_number": order.order.order_number,
-                    "amount": float(order.order.recharge_option.amount) if order.order.recharge_option else 0,
+                    "payment": float(order.support_payment),
                     "commission": float(order.commission),
-                    "support_payment": float(order.support_payment)
+                    "order_amount": float(order.order.recharge_option.amount) if order.order.recharge_option else 0
                 })
 
         return JsonResponse({
             "status": True,
             "data": {
                 "dates": [date.strftime('%m-%d') for date in dates],
-                "supports": series,
-                "details": details
+                "series": series,
+                "details": details,
+                "colors": support_colors  # ✅ 返回颜色映射
             }
         })
 

@@ -842,3 +842,13 @@ Traceback (most recent call last):
   File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py", line 260, in chart_consumer
     print('123',queryset.created_time)
 AttributeError: 'QuerySet' object has no attribute 'created_time'
+2025-04-10 17:49:45 - web - ERROR - 供应商统计错误: 'TransactionRecord' object has no attribute 'transactions'
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py", line 415, in chart_supplier
+    "amount": float(order.transactions.supplier_payment) if order.transactions.supplier_payment else 0,
+AttributeError: 'TransactionRecord' object has no attribute 'transactions'
+2025-04-10 18:19:42 - web - ERROR - 供应商统计错误: 'TransactionRecord' object has no attribute 'transactions'
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py", line 415, in chart_supplier
+    "amount": float(order.transactions.supplier_payment) if order.transactions.supplier_payment else 0,
+AttributeError: 'TransactionRecord' object has no attribute 'transactions'

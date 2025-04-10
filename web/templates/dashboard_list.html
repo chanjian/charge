@@ -160,9 +160,10 @@
                     <table class="table table-bordered table-hover">
                         <thead>
                             <tr>
-                                <th>客服</th>
+                                <th>客服名称</th>
                                 <th>订单号</th>
-                                <th>金额</th>
+                                <th>订单原价</th>
+                                <th>客服垫付金额</th>
                                 <th>提成</th>
                             </tr>
                         </thead>
@@ -554,40 +555,69 @@ function initSupportChart() {
     const chart = echarts.init(chartDom);
     chartInstances.supportChart = chart;
 
-    // 显示加载动画
-    chart.showLoading({
-        text: '加载中...',
-        color: '#52c41a',
-        textColor: '#333',
-        maskColor: 'rgba(255, 255, 255, 0.3)'
-    });
+    showLoading(chart);
 
     $.ajax({
-        url: '{% url "chart_support" %}',  // 替换为您的实际URL
+        url: '{% url "chart_support" %}',
         type: 'GET',
-        dataType: 'json',
+        dataType: 'JSON',
+        data: getQueryParams(),
         success: function(response) {
             if (!response.status) {
                 showError(chart, response.error || '数据加载失败');
                 return;
             }
 
+            // ✅ 优化后的配置
             const option = {
                 tooltip: {
                     trigger: 'axis',
-                    axisPointer: {
-                        type: 'shadow'
-                    },
+                    axisPointer: { type: 'shadow' },
                     formatter: function(params) {
-                        return `
-                            <b>${params[0].name}</b><br/>
-                            客服: ${params[0].seriesName}<br/>
-                            总金额: ${params[0].value}元
-                        `;
+                        let html = `<div style="margin-bottom:5px;font-weight:bold">${params[0].name}</div>`;
+                        params.forEach(param => {
+                            const supportName = param.seriesName;
+                            const details = chart._details[param.name]?.[supportName] || [];
+
+                            // 计算总额
+                            let totalPayment = 0;
+                            let totalCommission = 0;
+                            details.forEach(item => {
+                                totalPayment += item.payment || 0;
+                                totalCommission += item.commission || 0;
+                            });
+
+                            html += `
+                                <div style="margin:10px 0;border-bottom:1px dashed #eee;padding-bottom:5px">
+                                    <div>
+                                        <span style="display:inline-block;width:12px;height:12px;background:${param.color};margin-right:5px"></span>
+                                        <strong>${supportName}</strong>
+                                    </div>
+                                    <div style="margin-left:17px;color:#666">
+                                        <div>总金额: <span style="color:#333">${param.value.toFixed(2)}元</span></div>
+                                        <div>垫付: <span style="color:#ff4d4f">${totalPayment.toFixed(2)}元</span></div>
+                                        <div>提成: <span style="color:#52c41a">${totalCommission.toFixed(2)}元</span></div>
+                                        <div>订单数: ${details.length}笔</div>
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        return html;
                     }
                 },
                 legend: {
-                    data: response.data.supports
+                    data: response.data.series.map(item => item.name),
+                    type: 'scroll',
+                    bottom: 0,
+                    formatter: function(name) {
+                        return name.length > 6 ? name.substring(0, 6) + '...' : name;
+                    }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '15%',
+                    containLabel: true
                 },
                 xAxis: {
                     type: 'category',
@@ -600,32 +630,62 @@ function initSupportChart() {
                     type: 'value',
                     name: '金额(元)'
                 },
-                series: response.data.supports.map(support => {
-                    return {
-                        name: support.name,
-                        type: 'bar',
-                        data: support.amounts,
+                series: response.data.series.map((item, index) => ({
+                    name: item.name,
+                    type: 'bar',
+                    data: item.data,
+                    itemStyle: {
+                        color: response.data.colors[item.name] || '#5470c6' // ✅ 使用分配的颜色
+                    },
+                    emphasis: {
                         itemStyle: {
-                            color: '#52c41a'  // 统一使用绿色
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
                         }
-                    };
-                })
+                    }
+                }))
             };
 
             chart.setOption(option);
-            chart.hideLoading();
+            hideLoading(chart);
 
             // 存储详情数据
             chart._details = response.data.details;
 
-            // 点击事件 - 显示详情
+            // 添加点击事件（查看详情）
             chart.on('click', function(params) {
-                showDetails('support', params);
+                const date = params.name;
+                const supportName = params.seriesName;
+                const details = chart._details[date]?.[supportName] || [];
+
+                const $tbody = $('#supportDetailsBody');
+                $tbody.empty();
+
+                if (details.length === 0) {
+                    $tbody.append('<tr><td colspan="5" class="text-center">无订单详情</td></tr>');
+                } else {
+                    details.forEach(item => {
+                        $tbody.append(`
+                            <tr>
+                                <td>${supportName}</td>
+                                <td>${item.order_number}</td>
+                                <td>${item.order_amount.toFixed(2)}元</td>
+                                <td style="color:#ff4d4f">${item.payment.toFixed(2)}元</td>
+                                <td style="color:#52c41a">${item.commission.toFixed(2)}元</td>
+                            </tr>
+                        `);
+                    });
+                }
+
+                $('#supportDetails').show();
             });
+
         },
         error: function(xhr) {
-            chart.hideLoading();
-            showError(chart, '请求失败: ' + xhr.statusText);
+            showError(chart, '请求失败');
+            console.error("请求错误:", xhr.responseText);
+            hideLoading(chart);
         }
     });
 }
