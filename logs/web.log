@@ -813,3 +813,32 @@ Traceback (most recent call last):
   File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py", line 313, in chart_consumer
     date_str = group['date'].strftime('%m-%d') if group['date'] else '未知日期'
 KeyError: 'date'
+2025-04-10 13:26:52 - web - ERROR - 消费者统计错误: 'str' object has no attribute 'date'
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py", line 267, in chart_consumer
+    if not end_date or end_date.date() < now.date():
+AttributeError: 'str' object has no attribute 'date'
+2025-04-10 13:27:48 - web - ERROR - 消费者统计错误: Cannot use None as a query value
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py", line 276, in chart_consumer
+    groups = queryset.annotate(
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\query.py", line 941, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\query.py", line 961, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\query.py", line 968, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\sql\query.py", line 1396, in add_q
+    clause, _ = self._add_q(q_object, self.used_aliases)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\sql\query.py", line 1415, in _add_q
+    child_clause, needed_inner = self.build_filter(
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\sql\query.py", line 1306, in build_filter
+    condition = self.build_lookup(lookups, reffed_expression, value)
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\vens\lib\site-packages\django\db\models\sql\query.py", line 1201, in build_lookup
+    raise ValueError("Cannot use None as a query value")
+ValueError: Cannot use None as a query value
+2025-04-10 13:39:52 - web - ERROR - 消费者统计错误: 'QuerySet' object has no attribute 'created_time'
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py", line 260, in chart_consumer
+    print('123',queryset.created_time)
+AttributeError: 'QuerySet' object has no attribute 'created_time'

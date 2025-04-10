@@ -80,8 +80,8 @@ urlpatterns = [
     path('dashboard/',chart.dashboard_list,name="dashboard_list"),
     path('chart/bar/', chart.chart_bar,name='chart_bar'),
     path('chart/consumer/', chart.chart_consumer, name='chart_consumer'),
-    # path('chart/pie/internal/', chart.chart_pie_internal,name='chart_pie_internal'),
-    # path('chart/pie/external/', chart.chart_pie_external,name='chart_pie_external'),
+    path('chart/supplier/', chart.chart_supplier, name='chart_supplier'),
+    path('chart/support/', chart.chart_support, name='chart_support'),
 
 
 ]
