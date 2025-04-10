@@ -422,11 +422,26 @@ def chart_supplier(request):
 
         return JsonResponse({
             "status": True,
-            "data": {
-                "x_axis": [d.strftime('%m-%d') for d in dates],
-                "series": series,
-                "order_details": order_details
+    "data": {
+        "dates": ["01-01", "01-02"],  # 日期列表
+        "suppliers": [  # 供应商列表
+            {
+                "name": "供应商A",
+                "amounts": [1000, 1500]  # 对应日期的金额
             }
+        ],
+        "details": {  # 详情数据
+            "01-01": {  # 日期
+                "供应商A": [  # 供应商名称
+                    {
+                        "order_number": "ORD001",
+                        "amount": 500.00,
+                        "commission": 50.00
+                    }
+                ]
+            }
+        }
+    }
         })
 
     except Exception as e:
@@ -510,12 +525,27 @@ def chart_support(request):
                 })
 
         return JsonResponse({
-            "status": True,
-            "data": {
-                "x_axis": [d.strftime('%m-%d') for d in dates],
-                "series": series,
-                "order_details": order_details
+             "status": True,
+    "data": {
+        "dates": ["01-01", "01-02"],  # 日期列表
+        "supports": [  # 客服列表
+            {
+                "name": "客服A",
+                "amounts": [800, 950]  # 对应日期的金额
             }
+        ],
+        "details": {  # 详情数据
+            "01-01": {  # 日期
+                "客服A": [  # 客服名称
+                    {
+                        "order_number": "ORD001",
+                        "amount": 300.00,
+                        "commission": 30.00
+                    }
+                ]
+            }
+        }
+    }
         })
 
     except Exception as e:

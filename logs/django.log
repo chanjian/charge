@@ -25108,3 +25108,41 @@ django.urls.exceptions.NoReverseMatch: Reverse for 'chart_consumer_detail' not f
 2025-04-10 14:51:31 - django.server - INFO - "GET /chart/support/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1037
 2025-04-10 14:51:32 - django.server - INFO - "GET /chart/consumer/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 8371
 2025-04-10 14:51:32 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1677
+2025-04-10 15:23:05 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 25690
+2025-04-10 15:23:05 - django.server - INFO - "GET /chart/supplier/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 577
+2025-04-10 15:23:05 - django.server - INFO - "GET /chart/support/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1037
+2025-04-10 15:23:05 - django.server - INFO - "GET /chart/consumer/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 8371
+2025-04-10 15:23:05 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1677
+2025-04-10 15:23:51 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 28742
+2025-04-10 15:23:52 - django.server - INFO - "GET /chart/supplier/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 577
+2025-04-10 15:23:52 - django.server - INFO - "GET /chart/support/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1037
+2025-04-10 15:23:52 - django.server - INFO - "GET /chart/consumer/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 8371
+2025-04-10 15:23:52 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1677
+2025-04-10 16:01:59 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 24060
+2025-04-10 16:02:10 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 23971
+2025-04-10 16:02:12 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 23971
+2025-04-10 16:02:30 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-10 16:02:34 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 23971
+2025-04-10 16:02:35 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 23971
+2025-04-10 16:02:37 - django.server - INFO - "GET /customer/list/ HTTP/1.1" 200 16406
+2025-04-10 16:02:38 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 23971
+2025-04-10 16:03:42 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 27305
+2025-04-10 16:03:48 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 28465
+2025-04-10 16:03:48 - django.server - INFO - "GET /chart/supplier/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 577
+2025-04-10 16:03:48 - django.server - INFO - "GET /chart/support/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1037
+2025-04-10 16:03:48 - django.server - INFO - "GET /chart/consumer/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 8371
+2025-04-10 16:03:48 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1677
+2025-04-10 17:14:55 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 24477
+2025-04-10 17:14:56 - django.server - INFO - "GET /chart/supplier/ HTTP/1.1" 200 577
+2025-04-10 17:14:56 - django.server - INFO - "GET /chart/support/ HTTP/1.1" 200 1037
+2025-04-10 17:14:56 - django.server - INFO - "GET /chart/consumer/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 8371
+2025-04-10 17:14:56 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1677
+2025-04-10 17:15:58 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py changed, reloading.
+2025-04-10 17:15:59 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-10 17:15:59 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 24477
+2025-04-10 17:15:59 - django.server - INFO - "GET /chart/supplier/ HTTP/1.1" 200 242
+2025-04-10 17:16:00 - django.server - INFO - "GET /chart/support/ HTTP/1.1" 200 1037
+2025-04-10 17:16:00 - django.server - INFO - "GET /chart/consumer/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 8371
+2025-04-10 17:16:00 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1677
+2025-04-10 17:17:54 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py changed, reloading.
+2025-04-10 17:17:55 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
