@@ -243,7 +243,7 @@ def chart_bar(request):
 
 
 def chart_consumer(request):
-    """消费者消费统计"""
+    """消费者消费统计（按日期分组，每个日期下按消费者显示）"""
     try:
         current_admin = request.userinfo.get_root_admin()
         if not current_admin:
@@ -258,15 +258,11 @@ def chart_consumer(request):
 
         queryset, _, _, _ = filter_by_date_range(request, queryset)
 
-        # 按日期分组
-        date_groups = queryset.annotate(
-            date=TruncDate('created_time')
-        ).values('date').annotate(
+        # 按创建日期和消费者分组
+        groups = queryset.annotate(
+            date=TruncDate('created_time')  # 使用TruncDate处理created_time
+        ).values('date', 'consumer__username').annotate(
             order_count=Count('id'),
-            total_amount=Coalesce(
-                Sum('recharge_option__amount'),
-                Value(0, output_field=DecimalField())
-            ),
             final_amount=Coalesce(
                 Sum(
                     F('recharge_option__amount') * F('consumer__level__percent') / 100,
@@ -274,76 +270,48 @@ def chart_consumer(request):
                 ),
                 Value(0, output_field=DecimalField())
             )
-        ).order_by('date')
+        ).order_by('date', 'consumer__username')
 
-        # 按消费者分组（用于表格展示）
-        consumer_groups = queryset.values(
-            'created_time',
-            'consumer__username'
-        ).annotate(
-            order_count=Count('id'),
-            total_amount=Coalesce(
-                Sum('recharge_option__amount'),
-                Value(0, output_field=DecimalField())
-            ),
-            final_amount=Coalesce(
-                Sum(
-                    F('recharge_option__amount') * F('consumer__level__percent') / 100,
-                    output_field=DecimalField()
-                ),
-                Value(0, output_field=DecimalField())
-            )
-        ).order_by('created_time', 'consumer__username')
+        # 组织数据
+        date_list = sorted(list({g['date'] for g in groups if g['date']}))
+        consumer_list = sorted(list({g['consumer__username'] for g in groups if g['consumer__username']}))
 
-        # 组织图表数据
-        results = []
-        consumer_details = {}
+        # 准备series数据
+        series_data = {consumer: [] for consumer in consumer_list}
+        x_axis = []
 
-        for group in date_groups:
-            date_str = group['date'].strftime('%m-%d') if group['date'] else '未知日期'
-            results.append({
-                'date': date_str,
-                'order_count': group['order_count'],
-                'total_amount': float(group['total_amount']),
-                'final_amount': float(group['final_amount'])
-            })
+        for date in date_list:
+            date_str = date.strftime('%m-%d')
+            x_axis.append(date_str)
 
-        # 组织消费者详情数据
-        for group in consumer_groups:
-            date_str = group['created_time'].strftime('%m-%d') if group['created_time'] else '未知日期'
-            if date_str not in consumer_details:
-                consumer_details[date_str] = []
+            # 初始化每个消费者在该日期的数据为0
+            for consumer in consumer_list:
+                series_data[consumer].append(0)
 
-            consumer_details[date_str].append({
-                'username': group['consumer__username'],
-                'order_count': group['order_count'],
-                'total_amount': float(group['total_amount']),
-                'final_amount': float(group['final_amount'])
-            })
+            # 填充实际数据
+            date_groups = [g for g in groups if g['date'] == date]
+            for g in date_groups:
+                consumer = g['consumer__username']
+                series_data[consumer][-1] = float(g['final_amount'])
+
+        # 构建series（只包含有数据的消费者）
+        series = []
+        for consumer in consumer_list:
+            if any(amount > 0 for amount in series_data[consumer]):
+                series.append({
+                    "name": consumer,
+                    "type": "bar",
+                    "data": series_data[consumer],
+                    "tooltip": {
+                        "valueFormatter": "function(value) {return value + ' 元';}"
+                    }
+                })
 
         return JsonResponse({
             "status": True,
             "data": {
-                "x_axis": [item['date'] for item in results],
-                "series": [
-                    {
-                        "name": "实际支付金额",
-                        "type": "bar",
-                        "data": [item['final_amount'] for item in results],
-                        "itemStyle": {"color": "#32CD32"},
-                        "tooltip": {
-                            "formatter": """function(params) {
-                                return `
-                                    <b>${params.name}</b><br/>
-                                    实际支付: ${params.value}元<br/>
-                                    订单数: ${results[params.dataIndex].order_count}<br/>
-                                    总消费: ${results[params.dataIndex].total_amount}元
-                                `;
-                            }"""
-                        }
-                    }
-                ],
-                "consumers": consumer_details
+                "x_axis": x_axis,
+                "series": series
             }
         })
 

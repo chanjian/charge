@@ -24833,3 +24833,8 @@ django.urls.exceptions.NoReverseMatch: Reverse for 'chart_consumer_detail' not f
 2025-04-10 12:33:15 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1674
 2025-04-10 12:33:56 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py changed, reloading.
 2025-04-10 12:33:57 - django.utils.autoreload - INFO - Watching for file changes with StatReloader
+2025-04-10 12:33:57 - django.server - INFO - "GET /dashboard/ HTTP/1.1" 200 20300
+2025-04-10 12:33:57 - django.server - INFO - "GET /chart/bar/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 1674
+2025-04-10 12:33:57 - django.server - INFO - "GET /chart/consumer/?date_field=created_time&start_date=&end_date= HTTP/1.1" 200 3107
+2025-04-10 12:43:15 - django.utils.autoreload - INFO - D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py changed, reloading.
+2025-04-10 12:43:16 - django.utils.autoreload - INFO - Watching for file changes with StatReloader

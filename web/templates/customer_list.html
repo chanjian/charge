@@ -50,7 +50,7 @@
         <thead>
         <tr>
             <th>ID</th>
-            <th>用户名</th>
+            <th>用户名(用户类型)</th>
             <th>手机号</th>
             <th>账户余额</th>
             <th>级别</th>
@@ -68,7 +68,7 @@
         {% for row in queryset %}
             <tr row-id="{{ row.id }}">
                 <td>{{ row.id }}</td>
-                <td>{{ row.username }}</td>
+                <td>{{ row.username }}  ({{ row.get_usertype_display }})</td>
                 <td>{{ row.mobile }}</td>
                 <td>{{ row.account }}</td>
                 <td>{{ row.level.title }}（{{ row.level.percent }}%）</td>
