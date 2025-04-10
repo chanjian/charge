@@ -3,6 +3,10 @@ import random
 from django.core.exceptions import ValidationError
 from django.db import models
 from decimal import Decimal
+from django.db.models import (
+    Count, Sum, Q, F, Case, When, Value,
+    IntegerField, DecimalField
+)
 
 class ActiveBaseModel(models.Model):
     active = models.SmallIntegerField(verbose_name="状态", default=1, choices=((1, "激活"), (0, "删除"),))

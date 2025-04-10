@@ -896,3 +896,33 @@ Traceback (most recent call last):
   File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py", line 542, in chart_support
     created_time__date=datetime.datetime.strptime(date_str, '%m-%d').date(),
 AttributeError: type object 'datetime.datetime' has no attribute 'datetime'
+2025-04-11 00:21:16 - web - ERROR - 其他圈子出库统计错误: 'NoneType' object has no attribute 'get_usertype_display'
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py", line 618, in chart_other_out_self
+    'out_admin_type': record.order.outed_by.get_usertype_display(),  # 出库人类型
+AttributeError: 'NoneType' object has no attribute 'get_usertype_display'
+2025-04-11 00:21:17 - web - ERROR - 其他圈子出库统计错误: 'NoneType' object has no attribute 'get_usertype_display'
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py", line 618, in chart_other_out_self
+    'out_admin_type': record.order.outed_by.get_usertype_display(),  # 出库人类型
+AttributeError: 'NoneType' object has no attribute 'get_usertype_display'
+2025-04-11 00:22:50 - web - ERROR - 其他圈子出库统计错误: 'NoneType' object has no attribute 'usertype'
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py", line 618, in chart_other_out_self
+    'out_admin_type': record.order.outed_by.usertype,  # 出库人类型
+AttributeError: 'NoneType' object has no attribute 'usertype'
+2025-04-11 00:22:50 - web - ERROR - 其他圈子出库统计错误: 'NoneType' object has no attribute 'usertype'
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py", line 618, in chart_other_out_self
+    'out_admin_type': record.order.outed_by.usertype,  # 出库人类型
+AttributeError: 'NoneType' object has no attribute 'usertype'
+2025-04-11 00:26:27 - web - ERROR - 其他圈子出库统计错误: 'NoneType' object has no attribute 'usertype'
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py", line 618, in chart_other_out_self
+    'out_admin_type': record.order.outed_by.usertype if record.order.outed_by.usertype else 0,  # 出库人类型
+AttributeError: 'NoneType' object has no attribute 'usertype'
+2025-04-11 00:26:27 - web - ERROR - 其他圈子出库统计错误: 'NoneType' object has no attribute 'usertype'
+Traceback (most recent call last):
+  File "D:\Python_Project\CC_Project\SemiAutomaticChargeSystem\web\views\chart.py", line 618, in chart_other_out_self
+    'out_admin_type': record.order.outed_by.usertype if record.order.outed_by.usertype else 0,  # 出库人类型
+AttributeError: 'NoneType' object has no attribute 'usertype'

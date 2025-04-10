@@ -178,24 +178,43 @@
 
     <!-- 在dashboard_list.html的适当位置添加 -->
 <div class="row">
-    <!-- 其他圈子出库到本圈 -->
+    <!-- 其他圈子出库本圈订单 -->
     <div class="col-md-6">
         <div class="panel panel-default">
-            <div class="panel-heading">外部入圈订单统计</div>
+            <div class="panel-heading">
+                其他圈子出库本圈订单
+                <div class="pull-right">
+                    <small>应付款统计</small>
+                </div>
+            </div>
             <div class="panel-body">
-                <!-- 确认这个div的id正确 -->
                 <div id="chartOtherOutSelf" class="chart-container" style="height:400px;"></div>
                 <div id="otherOutSelfDetails" style="display:none;margin-top:20px">
-                    <!-- 详情表格... -->
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>出库方</th>
+                                <th>类型</th>
+                                <th>订单号</th>
+                                <th>原价</th>
+                                <th>最终价</th>
+                                <th>跨圈费</th>
+                                <th>消费者</th>
+                                <th>状态</th>
+                                <th>时间</th>
+                            </tr>
+                        </thead>
+                        <tbody id="otherOutSelfDetailsBody"></tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 本圈出库到其他圈子 -->
+    <!-- 本圈出库其他圈子订单 -->
     <div class="col-md-6">
         <div class="panel panel-default">
-            <div class="panel-heading">出圈订单统计</div>
+            <div class="panel-heading">本圈出库其他圈子订单</div>
             <div class="panel-body">
                 <!-- 确认这个div的id正确 -->
                 <div id="chartSelfOutOther" class="chart-container" style="height:400px;"></div>
@@ -848,12 +867,10 @@ function initOtherOutSelfChart() {
     const chart = echarts.init(chartDom);
     chartInstances.otherOutSelfChart = chart;
 
-    // 增强加载动画
     chart.showLoading({
-        text: '正在加载外部入圈数据...',
+        text: '正在加载数据...',
         color: '#1890ff',
-        textColor: '#333',
-        maskColor: 'rgba(255, 255, 255, 0.8)'
+        textColor: '#333'
     });
 
     $.ajax({
@@ -862,46 +879,56 @@ function initOtherOutSelfChart() {
         dataType: 'json',
         data: getQueryParams(),
         success: function(response) {
-            console.log('其他圈子出库响应:', response); // 调试输出
-
             if (!response.status) {
-                const errorMsg = response.error || '加载外部入圈数据失败';
-                console.error(errorMsg);
-                showError(chart, errorMsg);
+                showError(chart, response.error || '加载数据失败');
                 return;
             }
-
-            if (!response.data || !response.data.series || !response.data.dates) {
-                const errorMsg = '数据格式错误: 缺少必要字段';
-                console.error(errorMsg, response);
-                showError(chart, errorMsg);
-                return;
-            }
-
-            // 调试输出数据
-            console.log('日期数据:', response.data.dates);
-            console.log('系列数据:', response.data.series);
 
             const option = {
                 tooltip: {
                     trigger: 'axis',
                     axisPointer: {
-                        type: 'shadow',
-                        shadowStyle: {
-                            color: 'rgba(150, 150, 150, 0.1)'
-                        }
+                        type: 'shadow'
                     },
                     formatter: function(params) {
-                        // ...保持原来的tooltip内容...
+                        const date = params[0].axisValue;
+                        const hoverData = response.data.tooltip_data[date] || {};
+
+                        let html = `
+                            <div style="font-weight:bold;margin-bottom:8px;border-bottom:1px solid #eee;padding-bottom:5px">
+                                ${date} 外部入圈订单
+                            </div>
+                        `;
+
+                        params.forEach(param => {
+                            const admin = param.seriesName;
+                            const data = hoverData[admin];
+
+                            if (!data) return '';
+
+                            html += `
+                                <div style="margin:8px 0;padding-bottom:8px;border-bottom:1px dashed #eee">
+                                    <div style="display:flex;align-items:center">
+                                        <span style="display:inline-block;width:12px;height:12px;background:${param.color};margin-right:8px;"></span>
+                                        <strong>${admin}</strong>
+                                    </div>
+                                    <div style="margin-left:20px;margin-top:5px;color:#555">
+                                        <div>订单数: <b>${data.order_count}笔</b></div>
+                                        <div>原价总计: ${data.original_amount.toFixed(2)}元</div>
+                                        <div style="color:#1890ff">应付款: ${data.payment.toFixed(2)}元</div>
+                                        <div style="color:#ff4d4f">跨圈费: ${data.cross_fee.toFixed(2)}元</div>
+                                    </div>
+                                </div>
+                            `;
+                        });
+
+                        return html;
                     }
                 },
                 legend: {
                     data: response.data.series.map(item => item.name),
                     type: 'scroll',
-                    bottom: 0,
-                    textStyle: {
-                        fontSize: 12
-                    }
+                    bottom: 0
                 },
                 grid: {
                     left: '3%',
@@ -914,50 +941,29 @@ function initOtherOutSelfChart() {
                     data: response.data.dates,
                     axisLabel: {
                         rotate: 30,
-                        fontSize: 12,
-                        interval: 0,
-                        formatter: function(value) {
-                            return value; // 确保日期显示完整
-                        }
-                    },
-                    axisLine: {
-                        lineStyle: {
-                            color: '#DDD'
-                        }
-                    },
-                    axisTick: {
-                        alignWithLabel: true
+                        interval: 0
                     }
                 },
                 yAxis: {
                     type: 'value',
                     name: '应付款金额(元)',
-                    nameTextStyle: {
-                        padding: [0, 0, 0, 35]
-                    },
                     axisLine: {
-                        show: true,
-                        lineStyle: {
-                            color: '#DDD'
-                        }
-                    },
-                    axisTick: {
                         show: true
-                    },
-                    splitLine: {
-                        lineStyle: {
-                            type: 'dashed'
-                        }
                     }
                 },
                 series: response.data.series.map(item => ({
                     name: item.name,
                     type: 'bar',
                     barWidth: '60%',
-                    data: item.data.map(val => val === null ? 0 : val), // 确保null转为0显示
+                    data: item.data,
                     itemStyle: {
-                        color: response.data.colors[item.name] || '#1890ff',
+                        color: response.data.colors[item.name],
                         borderRadius: [4, 4, 0, 0]
+                    },
+                    label: {
+                        show: true,
+                        position: 'top',
+                        formatter: '{c}元'
                     },
                     emphasis: {
                         itemStyle: {
@@ -965,29 +971,11 @@ function initOtherOutSelfChart() {
                             shadowOffsetX: 0,
                             shadowColor: 'rgba(0, 0, 0, 0.5)'
                         }
-                    },
-                    label: {
-                        show: true,
-                        position: 'top',
-                        formatter: '{c}元',
-                        color: '#666'
                     }
-                })),
-                dataZoom: [{
-                    type: 'inside',
-                    start: 0,
-                    end: 100
-                }]
+                }))
             };
 
-            console.log('图表配置:', option); // 调试输出配置
             chart.setOption(option);
-
-            // 强制重绘
-            setTimeout(() => {
-                chart.resize();
-            }, 200);
-
             chart.hideLoading();
 
             // 存储详情数据
@@ -995,19 +983,49 @@ function initOtherOutSelfChart() {
 
             // 点击事件
             chart.on('click', function(params) {
-                console.log('图表点击事件:', params);
-                // ...保持原来的点击处理代码...
+                const date = params.name;
+                const admin = params.seriesName;
+                const details = chart._details[date]?.[admin] || [];
+
+                const $tbody = $('#otherOutSelfDetailsBody');
+                $tbody.empty();
+
+                if (details.length === 0) {
+                    $tbody.append('<tr><td colspan="9" class="text-center">无订单详情</td></tr>');
+                } else {
+                    details.forEach(item => {
+                        $tbody.append(`
+                            <tr>
+                                <td>${item.out_admin}</td>
+                                <td>${item.out_admin_type}</td>
+                                <td>${item.order_number}</td>
+                                <td>${item.original_amount.toFixed(2)}元</td>
+                                <td>${item.final_price.toFixed(2)}元</td>
+                                <td>${item.cross_fee.toFixed(2)}元</td>
+                                <td>${item.consumer}</td>
+                                <td>${item.order_status}</td>
+                                <td>${item.time}</td>
+                            </tr>
+                        `);
+                    });
+                }
+
+                $('#otherOutSelfDetails').show();
             });
 
+            // 强制重绘
+            setTimeout(() => chart.resize(), 100);
         },
-        error: function(xhr, status, error) {
-            const errorMsg = `请求失败: ${xhr.statusText}`;
-            console.error(errorMsg, xhr.responseText);
-            showError(chart, errorMsg);
-            chart.hideLoading();
+        error: function(xhr) {
+            showError(chart, '请求失败: ' + xhr.statusText);
         }
     });
 }
+
+// 页面加载初始化
+$(document).ready(function() {
+    initOtherOutSelfChart();
+});
 
 // 初始化本圈出库到其他圈子图表
 function initSelfOutOtherChart() {
