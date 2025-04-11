@@ -402,7 +402,7 @@ def chart_supplier(request):
         all_suppliers = sorted({supplier for date_data in date_supplier_data.values() for supplier in date_data.keys()})
 
         supplier_colors = {
-            supplier: f'hsl({i * 360 / len(all_suppliers)}, 70%, 50%)'
+            supplier: f'hsl({i * 360 / len(all_suppliers)}, 50%, 65%)' # 饱和度50%，亮度65%
             for i, supplier in enumerate(all_suppliers)
         }
 
@@ -507,7 +507,7 @@ def chart_support(request):
 
         # 生成颜色映射
         support_colors = {
-            support: f'hsl({i * 360 / len(all_supports)}, 70%, 50%)'
+            support: f'hsl({i * 360 / len(all_supports)}, 50%, 65%)'
             for i, support in enumerate(all_supports)
         }
 
@@ -624,7 +624,7 @@ def chart_other_out_self(request):
                 'cross_fee': float(record.cross_fee),
                 'consumer': record.order.consumer.username,
                 'out_admin': record.to_user.username,
-                'out_admin_type': record.order.outed_by.usertype if record.order.outed_by.usertype else 0,  # 出库人类型
+                'out_admin_type': record.order.outed_by.get_usertype_display() if record.order.outed_by.usertype else 0,  # 出库人类型
                 # 'time': localtime(record.created_time).strftime('%Y-%m-%d %H:%M'),
                 'time': local_time.strftime('%Y-%m-%d %H:%M'),  # 使用转换后的时间
                 'order_status': record.order.get_order_status_display()
@@ -638,8 +638,13 @@ def chart_other_out_self(request):
         })
 
         # 生成颜色映射
+        # admin_colors = {
+        #     admin: f'hsl({i * 360 / len(all_admins)}, 50%, 65%)'
+        #     for i, admin in enumerate(all_admins)
+        # }
+        # ✅ 修改后的颜色生成（柔和的蓝绿色系）
         admin_colors = {
-            admin: f'hsl({i * 360 / len(all_admins)}, 70%, 50%)'
+            admin: f'hsl({120 + i * 60 % 360}, 40%, 70%)'  # 从绿色(120°)开始，间隔60°
             for i, admin in enumerate(all_admins)
         }
 
@@ -699,7 +704,7 @@ def chart_other_out_self(request):
 
 
 def chart_self_out_other(request):
-    """本圈出库到其他圈子的订单统计"""
+    """本圈出库其他圈子订单统计（完整版）"""
     try:
         current_admin = request.userinfo.get_root_admin()
         if not current_admin:
@@ -707,8 +712,9 @@ def chart_self_out_other(request):
 
         # 查询本圈出库到其他圈子的订单
         queryset = TransactionRecord.objects.filter(
-            Q(from_user=current_admin) &  # 出库方是本圈
-            ~Q(to_user=current_admin)  # 入库方不是本圈
+            Q(to_user=current_admin) &  # 出库方是本圈
+            ~Q(from_user=current_admin) &  # 入库方不是本圈
+            Q(order__outed_by__isnull=False)  # 确保outed_by存在
         ).select_related(
             'order',
             'order__recharge_option',
@@ -723,19 +729,25 @@ def chart_self_out_other(request):
         # 构建核心数据结构
         date_admin_data = defaultdict(lambda: defaultdict(lambda: {
             'order_count': 0,
-            'original_amount': 0,  # 订单原价总和
-            'receivable': 0,  # 应收款总和（对方圈子给消费者的最终价格）
-            'cross_fee': 0,  # 跨圈费总和
-            'orders': []  # 订单详情
+            'original_amount': 0,
+            'receivable': 0,
+            'cross_fee': 0,
+            'orders': []
         }))
 
         for record in queryset:
-            date_str = record.created_time.strftime('%m-%d')
-            admin_name = record.to_user.username  # 入库方管理员名称
+            local_time = localtime(record.created_time)  # 转换为本地时区
+            date_str = local_time.strftime('%m-%d')  # 使用本地时间格式化
+            admin_name = record.from_user.username
+
+            # 安全获取出库人类型
+            out_admin_type = '未知'
+            if record.order.outed_by:
+                out_admin_type = record.order.outed_by.get_usertype_display()  # 使用get_xxx_display()方法
 
             # 计算对方圈子给消费者的最终价格
             final_price = (record.order.recharge_option.amount *
-                           record.order.consumer.level.percent / 100)
+                         record.order.consumer.level.percent / 100)
 
             # 累加统计数据
             date_admin_data[date_str][admin_name]['order_count'] += 1
@@ -743,29 +755,38 @@ def chart_self_out_other(request):
             date_admin_data[date_str][admin_name]['receivable'] += float(final_price)
             date_admin_data[date_str][admin_name]['cross_fee'] += float(record.cross_fee)
 
-            # 存储订单详情
+            # 存储完整订单详情
             date_admin_data[date_str][admin_name]['orders'].append({
                 'order_number': record.order.order_number,
                 'original_amount': float(record.order.recharge_option.amount),
-                'receivable': float(final_price),
+                'final_price': float(final_price),
                 'cross_fee': float(record.cross_fee),
                 'consumer': record.order.consumer.username,
-                'in_admin': record.to_user.username,
-                'time': record.created_time.strftime('%Y-%m-%d %H:%M')
+                'in_admin': record.from_user.username,
+                'out_admin_type': out_admin_type,
+                'time': local_time.strftime('%Y-%m-%d %H:%M'),
+                'order_status': record.order.get_order_status_display()
             })
 
-        # 准备图表数据（与chart_other_out_self类似，主要区别在receivable字段）
+        # 准备图表数据
         all_dates = sorted(date_admin_data.keys())
         all_admins = sorted({
             admin for date_data in date_admin_data.values()
             for admin in date_data.keys()
         })
 
+        # 生成颜色映射
+        # admin_colors = {
+        #     admin: f'hsl({i * 360 / len(all_admins)}, 70%, 50%)'
+        #     for i, admin in enumerate(all_admins)
+        # }
+        # ✅ 修改后的颜色生成（柔和的蓝绿色系）
         admin_colors = {
-            admin: f'hsl({i * 360 / len(all_admins)}, 70%, 50%)'
+            admin: f'hsl({180 + i * 60 % 360}, 40%, 70%)'  # 从绿色(120°)开始，间隔60°
             for i, admin in enumerate(all_admins)
         }
 
+        # 构建系列数据
         series = []
         for admin in all_admins:
             series_data = []
@@ -779,37 +800,34 @@ def chart_self_out_other(request):
                 'name': admin,
                 'type': 'bar',
                 'data': series_data,
-                'itemStyle': {'color': admin_colors[admin]}
+                'itemStyle': {'color': admin_colors[admin]},
+                'emphasis': {'itemStyle': {'shadowBlur': 10}}
             })
-
-        tooltip_data = {
-            date: {
-                admin: {
-                    'order_count': data['order_count'],
-                    'original_amount': data['original_amount'],
-                    'receivable': data['receivable'],
-                    'cross_fee': data['cross_fee']
-                }
-                for admin, data in date_data.items()
-            }
-            for date, date_data in date_admin_data.items()
-        }
-
-        details_data = {
-            date: {
-                admin: data['orders']
-                for admin, data in date_data.items()
-            }
-            for date, date_data in date_admin_data.items()
-        }
 
         return JsonResponse({
             "status": True,
             "data": {
                 "dates": all_dates,
                 "series": series,
-                "tooltip_data": tooltip_data,
-                "details": details_data,
+                "tooltip_data": {
+                    date: {
+                        admin: {
+                            'order_count': data['order_count'],
+                            'original_amount': data['original_amount'],
+                            'receivable': data['receivable'],
+                            'cross_fee': data['cross_fee']
+                        }
+                        for admin, data in date_data.items()
+                    }
+                    for date, date_data in date_admin_data.items()
+                },
+                "details": {
+                    date: {
+                        admin: data['orders']
+                        for admin, data in date_data.items()
+                    }
+                    for date, date_data in date_admin_data.items()
+                },
                 "colors": admin_colors
             }
         })

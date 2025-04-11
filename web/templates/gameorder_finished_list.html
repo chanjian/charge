@@ -140,7 +140,11 @@
         <td class="copyable" data-value="{{ row.order_number }}">{{ row.order_number }}</td>
         <td class="copyable" data-value="{{ row.created_time|date:'Y-m-d H:i:s' }}">{{ row.created_time|date:"Y-m-d H:i:s" }}</td>
         <td class="copyable" data-value="{{ row.updated_time|date:'Y-m-d H:i:s' }}">{{ row.updated_time|date:"Y-m-d H:i:s" }}</td>
-        <td class="copyable" data-value="{{ row.finished_time|date:'Y-m-d H:i:s' }}">{{ row.finished_time|date:"Y-m-d H:i:s" }}</td>
+        <td class="copyable" data-value="{{ row.finished_time|date:'Y-m-d H:i:s' }}">{% if row.finished_time %}
+        {{ row.finished_time|date:"Y-m-d H:i:s" }}
+    {% else %}
+        空值(原始:{{ row.finished_time }})
+    {% endif %}</td>
         <td class="copyable" data-value="{{ row.get_order_status_display }}">{{ row.get_order_status_display }}</td>
         <td>
     <!-- 原有操作按钮... -->
