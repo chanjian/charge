@@ -166,7 +166,7 @@ NB_MENU = {
             'children': [
                 {'text': "数据详情", 'url': "/dashboard/", 'name': "dashboard_list"},
                 {'text': "客户管理", 'url': "/customer/list/", 'name': "customer_list"},
-                {'text': "交易记录", 'url': "/policy/list/", 'name': "policy_list"},
+                {'text': "交易记录", 'url': "/transaction/list/", 'name': "transaction_list"},
             ]
         },
 
@@ -177,7 +177,6 @@ NB_MENU = {
             'children': [
                 {'text': "等级管理", 'url': "/level/list/", 'name': "level_list"},
                 {'text': "客户管理", 'url': "/customer/list/", 'name': "customer_list"},
-                {'text': "交易记录", 'url': "/policy/list/", 'name': "policy_list"},
             ]
         },
 
@@ -202,7 +201,7 @@ NB_MENU = {
             'children': [
                 {'text': "数据详情", 'url': "/dashboard/", 'name': "dashboard_list"},
                 {'text': "客户管理", 'url': "/customer/list/", 'name': "customer_list"},
-                {'text': "交易记录", 'url': "/policy/list/", 'name': "policy_list"},
+                {'text': "交易记录", 'url': "/transaction/list/", 'name': "transaction_list"},
             ]
         },
 
@@ -213,7 +212,6 @@ NB_MENU = {
                 {'text': "等级管理", 'url': "/level/list/", 'name': "level_list"},
                 {'text': "价格策略", 'url': "/policy/list/", 'name': "policy_list"},
                 {'text': "客户管理", 'url': "/customer/list/", 'name': "customer_list"},
-                {'text': "交易记录", 'url': "/policy/list/", 'name': "policy_list"},
             ]
         },
 
@@ -244,7 +242,7 @@ NB_MENU = {
             'icon': "fa-bed",
             'children': [
                 {'text': "数据详情", 'url': "/dashboard/", 'name': "dashboard_list"},
-                {'text': "交易记录", 'url': "/policy/list/", 'name': "policy_list"},
+                {'text': "交易记录", 'url': "/transaction/list/", 'name': "transaction_list"},
             ]
         },
 
@@ -273,7 +271,7 @@ NB_MENU = {
             'icon': "fa-bed",
             'children': [
                 {'text': "数据详情", 'url': "/dashboard/", 'name': "dashboard_list"},
-                {'text': "交易记录", 'url': "/policy/list/", 'name': "policy_list"},
+                {'text': "交易记录", 'url': "/transaction/list/", 'name': "transaction_list"},
             ]
         },
 
@@ -303,7 +301,7 @@ NB_MENU = {
             'icon': "fa-bed",
             'children': [
                 {'text': "数据详情", 'url': "/dashboard/", 'name': "dashboard_list"},
-                {'text': "交易记录", 'url': "/policy/list/", 'name': "policy_list"},
+                {'text': "交易记录", 'url': "/transaction/list/", 'name': "transaction_list"},
             ]
         },
 
@@ -346,6 +344,8 @@ PERMISSION_PUBLIC = {
     "chart_supplier":{"供应商仪表盘":"123","parent":None},
     "chart_self_out_other":{"本圈出库他圈仪表盘":"123","parent":None},
     "chart_other_out_self":{"他圈出库本圈仪表盘":"123","parent":None},
+
+    "transaction_list":{"交易记录列表":"123","parent":None},
 
 
 }

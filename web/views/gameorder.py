@@ -1,6 +1,7 @@
 from django.conf import settings
 from django import forms
 from django.db.models import Q
+from utils import tencent
 from utils.media_path import get_upload_path
 from utils.pager import Pagination
 from utils.qr_code_to_link import qr_code_to_link
@@ -15,6 +16,11 @@ from decimal import Decimal, InvalidOperation
 from django.http import JsonResponse
 from web.models import GameDenomination
 from django.utils import timezone
+from django.forms.models import model_to_dict
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from web.models import GameOrder, OrderEditLog
+
 import logging
 logger = logging.getLogger('web')
 
@@ -556,6 +562,9 @@ def gameorder_add(request):
     order.created_by = request.userinfo  # 或 request.userinfo
     order.save()
 
+    #对相应的消费者进行扣款
+    final = models.GameOrder.objects.filter()
+
     messages.add_message(request, messages.SUCCESS, "新建订单成功")
     return redirect('gameorder_list')
 
@@ -591,14 +600,7 @@ def gameorder_load_charge_options(request):
         return JsonResponse({'status': False, 'error': str(e)}, status=500)
 
 
-from django.forms.models import model_to_dict
-from django.forms.models import model_to_dict
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from web.models import GameOrder, OrderEditLog
 
-
-# from web.forms import GameOrderAddModelForm
 
 
 def gameorder_edit(request, pk):
@@ -784,33 +786,44 @@ from django.http import HttpResponseForbidden
 
 def gameorder_out(request, pk):
     """ 完成订单（出库操作） """
-    with transaction.atomic():
-        # 获取订单和操作用户
-        order = get_object_or_404(GameOrder, pk=pk)
-        operator = request.userinfo
-        qb_discount = request.GET.get('qb_discount', 80)
-        print('qb_discount', qb_discount)
+    try:
+        with transaction.atomic():
+            # 获取订单和操作用户
+            order = get_object_or_404(GameOrder, pk=pk)
+            operator = request.userinfo
+            qb_discount = request.GET.get('qb_discount', 80)
+            print('qb_discount', qb_discount)
 
-        # 验证操作权限
-        if not operator.usertype in ['ADMIN', 'SUPPORT', 'SUPPLIER']:
-            return HttpResponseForbidden("无操作权限")
+            # 验证操作权限
+            if not operator.usertype in ['ADMIN', 'SUPPORT', 'SUPPLIER']:
+                return HttpResponseForbidden("无操作权限")
 
-        # 计算核心费用项
-        fee_details = calculate_fees(order, operator,qb_discount)
+            # 计算核心费用项
+            fee_details = calculate_fees(order, operator,qb_discount)
 
-        # 创建交易记录
-        create_transaction_records(order, operator, fee_details,qb_discount)
+            # 创建交易记录
+            create_transaction_records(order, operator, fee_details,qb_discount)
 
-        # 更新订单状态
-        order.order_status = 2  # 已完成
-        order.outed_by = operator
-        order.finished_time = timezone.now()
-        order.save()
+            # 更新订单状态
+            order.order_status = 2  # 已完成
+            order.outed_by = operator
+            order.finished_time = timezone.now()
+            order.save()
 
-        # 更新相关账户余额
-        update_account_balances(fee_details)
+            # 更新相关账户余额
+            update_account_balances(fee_details)
 
-        # return JsonResponse({'status': 'success', 'fee_details': fee_details})
+            # return JsonResponse({'status': 'success', 'fee_details': fee_details})
+            # 下发短信通知客户订单成功
+            # 2.发送短信 + 生成短信内容
+            # sms_str =  "{}你好，您的订单{}已经为您充值成功，请您在6小时内查收并确认收货。".format(order.consumer.username,order.order_number)
+            sms_str= order.consumer.username,order.order_number
+            mobile = order.consumer.mobile
+            is_success = tencent.send_sms(mobile, sms_str)
+
+            return redirect('gameorder_list')
+    except Exception as e:
+        messages.add_message(request,settings.MESSAGE_DANGER_TAG,'出库失败，{}'.format(str(e)))
         return redirect('gameorder_list')
 
 

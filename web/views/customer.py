@@ -94,7 +94,10 @@ def customer_add(request):
     if not form.is_valid():
         return render(request, 'form2.html', {'form': form})
 
-    form.instance.parent = user_object
+    if not request.userinfo.usertype == 'SUPERADMIN':
+        form.instance.parent = user_object
+    else:
+        form.instance.parent = None
     form.save()
 
     messages.add_message(request, messages.SUCCESS, "添加客户成功")

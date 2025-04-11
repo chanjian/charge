@@ -1,6 +1,6 @@
 from collections import defaultdict
 from datetime import datetime
-
+from utils.time_group import get_time_grouping
 from django.db.models.functions import TruncDate, ExtractMonth, Coalesce
 from django.shortcuts import render, redirect
 from django.db.models import (
@@ -41,8 +41,6 @@ def chart_bar(request):
         if not current_admin:
             return JsonResponse({"status": False, "error": "管理员不存在"}, status=400)
 
-
-
         # 2. 构建基础查询集（确保所有数值表达式有明确类型）
         queryset = TransactionRecord.objects.filter(
             Q(from_user=current_admin) | Q(to_user=current_admin),
@@ -61,7 +59,8 @@ def chart_bar(request):
         )
 
         # 3. 应用日期过滤
-        queryset, start_date, end_date, _ = filter_by_date_range(request, queryset)
+        queryset, start_str, end_str, date_field = filter_by_date_range(request, queryset)
+
         # for i in queryset:
         #     # print('123',i.created_time)
         #     local_time = timezone.localtime(i.created_time)
@@ -565,7 +564,7 @@ def chart_support(request):
 
 
 def chart_other_out_self(request):
-    """其他圈子出库本圈订单统计（完整版）"""
+    """其他圈子出库本圈订单统计（分组柱状图版）"""
     try:
         current_admin = request.userinfo.get_root_admin()
         if not current_admin:
@@ -581,7 +580,7 @@ def chart_other_out_self(request):
             'order__recharge_option',
             'order__outed_by',
             'order__consumer__level',
-            'from_user'
+            'to_user'  # 关键修改：使用to_user作为出库方标识
         )
 
         # 应用日期过滤
@@ -597,18 +596,16 @@ def chart_other_out_self(request):
         }))
 
         for record in queryset:
-            local_time = localtime(record.created_time)  # 转换为本地时区
-            date_str = local_time.strftime('%m-%d')  # 使用本地时间格式化
-            admin_name = record.from_user.username
+            local_time = localtime(record.created_time)
+            date_str = local_time.strftime('%m-%d')
+            admin_name = record.to_user.username  # 关键修改：使用出库方名称
 
-            # 安全获取出库人类型
-            out_admin_type = '未知'
-            if record.order.outed_by:
-                out_admin_type = record.order.outed_by.get_usertype_display()  # 使用get_xxx_display()方法
+            # 获取出库人类型
+            out_admin_type = record.order.outed_by.get_usertype_display() if record.order.outed_by else '未知'
 
-            # 计算本圈给消费者的最终价格
+            # 计算最终价格
             final_price = (record.order.recharge_option.amount *
-                           record.order.consumer.level.percent / 100)
+                         record.order.consumer.level.percent / 100)
 
             # 累加统计数据
             date_admin_data[date_str][admin_name]['order_count'] += 1
@@ -616,7 +613,7 @@ def chart_other_out_self(request):
             date_admin_data[date_str][admin_name]['payment'] += float(final_price)
             date_admin_data[date_str][admin_name]['cross_fee'] += float(record.cross_fee)
 
-            # 存储完整订单详情
+            # 存储订单详情
             date_admin_data[date_str][admin_name]['orders'].append({
                 'order_number': record.order.order_number,
                 'original_amount': float(record.order.recharge_option.amount),
@@ -624,9 +621,8 @@ def chart_other_out_self(request):
                 'cross_fee': float(record.cross_fee),
                 'consumer': record.order.consumer.username,
                 'out_admin': record.to_user.username,
-                'out_admin_type': record.order.outed_by.get_usertype_display() if record.order.outed_by.usertype else 0,  # 出库人类型
-                # 'time': localtime(record.created_time).strftime('%Y-%m-%d %H:%M'),
-                'time': local_time.strftime('%Y-%m-%d %H:%M'),  # 使用转换后的时间
+                'out_admin_type': out_admin_type,
+                'time': local_time.strftime('%Y-%m-%d %H:%M'),
                 'order_status': record.order.get_order_status_display()
             })
 
@@ -637,18 +633,13 @@ def chart_other_out_self(request):
             for admin in date_data.keys()
         })
 
-        # 生成颜色映射
-        # admin_colors = {
-        #     admin: f'hsl({i * 360 / len(all_admins)}, 50%, 65%)'
-        #     for i, admin in enumerate(all_admins)
-        # }
-        # ✅ 修改后的颜色生成（柔和的蓝绿色系）
+        # 生成颜色映射（更鲜明的颜色）
         admin_colors = {
-            admin: f'hsl({120 + i * 60 % 360}, 40%, 70%)'  # 从绿色(120°)开始，间隔60°
+            admin: f'hsl({i * 360 / len(all_admins)}, 65%, 65%)'
             for i, admin in enumerate(all_admins)
         }
 
-        # 构建系列数据
+        # 构建系列数据（每个圈子一个系列）
         series = []
         for admin in all_admins:
             series_data = []
@@ -656,14 +647,20 @@ def chart_other_out_self(request):
                 if admin in date_admin_data[date]:
                     series_data.append(date_admin_data[date][admin]['payment'])
                 else:
-                    series_data.append(None)
+                    series_data.append(0)  # 没有数据时显示0
 
             series.append({
                 'name': admin,
                 'type': 'bar',
                 'data': series_data,
                 'itemStyle': {'color': admin_colors[admin]},
-                'emphasis': {'itemStyle': {'shadowBlur': 10}}
+                'emphasis': {'itemStyle': {'shadowBlur': 10}},
+                # 添加标签显示
+                'label': {
+                    'show': True,
+                    'position': 'top',
+                    'formatter': '{c}元'
+                }
             })
 
         return JsonResponse({
@@ -671,25 +668,8 @@ def chart_other_out_self(request):
             "data": {
                 "dates": all_dates,
                 "series": series,
-                "tooltip_data": {
-                    date: {
-                        admin: {
-                            'order_count': data['order_count'],
-                            'original_amount': data['original_amount'],
-                            'payment': data['payment'],
-                            'cross_fee': data['cross_fee']
-                        }
-                        for admin, data in date_data.items()
-                    }
-                    for date, date_data in date_admin_data.items()
-                },
-                "details": {
-                    date: {
-                        admin: data['orders']
-                        for admin, data in date_data.items()
-                    }
-                    for date, date_data in date_admin_data.items()
-                },
+                "admins": all_admins,  # 新增：返回所有圈子列表
+                "tooltip_data": date_admin_data,
                 "colors": admin_colors
             }
         })

@@ -16,7 +16,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from web.views import account,level,customer,gameorder,phoneorder,gamename,gamedenomination,dashboard,chart,policy
+from web.views import account, level, customer, gameorder, phoneorder, gamename, gamedenomination, dashboard, chart, \
+    policy, transaction
 
 from django.conf import settings
 from django.urls import path, re_path
@@ -85,6 +86,8 @@ urlpatterns = [
     path('chart/self/out/other',chart.chart_self_out_other,name='chart_self_out_other'),
     path('chart/other/out/self',chart.chart_other_out_self,name='chart_other_out_self'),
 
+
+    path('transaction/list/',transaction.transaction_list,name='transaction_list'),
 
 ]
 

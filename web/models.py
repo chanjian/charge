@@ -262,11 +262,12 @@ class TransactionRecord(ActiveBaseModel):
     charge_type_class_mapping = {
         'recharge': "success",  # 充值 -> 绿色
         'deduction': "danger",  # 扣款 -> 红色
+
         'system_fee': "default",  # 系统费用 -> 默认
-        'cross_circle_fee': "info",  # 跨圈借调费 -> 蓝色
-        'commission': "primary",  # 提成费用 -> 深蓝
+        'order_complete': "info",  # 跨圈借调费 -> 蓝色
+        'order_cancel': "primary",  # 提成费用 -> 深蓝
         'order_create': "warning",  # 创建订单 -> 黄色
-        'order_cancel': "secondary",  # 取消订单 -> 灰色
+        # 'order_cancel': "secondary",  # 取消订单 -> 灰色
     }
     TRANSACTION_TYPE_CHOICES = (
         # 账户操作类
