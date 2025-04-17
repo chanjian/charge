@@ -41,7 +41,6 @@ def dashboard_list(request):
 
 
 from django.db.models import Q, Count, Sum, F, Value
-from django.db.models.functions import TruncDate, TruncHour
 from django.db.models import DecimalField
 from django.http import JsonResponse
 
@@ -53,7 +52,7 @@ def chart_bar(request):
         if not current_admin:
             return JsonResponse({"status": False, "error": "管理员不存在"}, status=400)
 
-        # 基础查询集
+        # 基础查询集 查询出库亦或者入库都是本圈所为且订单状态为1，且订单是已支付状态即2
         queryset = TransactionRecord.objects.filter(
             Q(from_user=current_admin) | Q(to_user=current_admin),
             active=1,
@@ -123,11 +122,7 @@ def chart_bar(request):
         total_stats['admin_profit'] = calculate_profit(queryset, 'ADMIN')
         total_stats['support_profit'] = calculate_profit(queryset, 'SUPPORT')
         total_stats['supplier_profit'] = calculate_profit(queryset, 'SUPPLIER')
-        total_stats['total_profit'] = (
-                total_stats['admin_profit'] +
-                total_stats['support_profit'] +
-                total_stats['supplier_profit']
-        )
+        total_stats['total_profit'] = (total_stats['admin_profit'] +total_stats['support_profit'] +total_stats['supplier_profit'])
 
         # 准备系列数据
         series = [
@@ -139,8 +134,7 @@ def chart_bar(request):
             {"name": "系统费", "type": "bar", "data": [float(total_stats['system_fee'])]},
             {"name": "三方借调费", "type": "bar", "data": [float(total_stats['cross_fee'])]},
             {"name": "客服佣金", "type": "bar", "data": [float(total_stats['commission'])]},
-            {"name": "客服垫付资金", "type": "bar", "data": [float(total_stats['support_payment'])],
-             "color": "#FFA500"},
+            {"name": "客服垫付资金", "type": "bar", "data": [float(total_stats['support_payment'])],"color": "#FFA500"},
             {"name": "供应商结算", "type": "bar", "data": [float(total_stats['supplier_payment'])], "color": "#32CD32"},
             {"name": "管理员垫付", "type": "bar", "data": [float(total_stats['admin_payment'])], "color": "#9370DB"},
             {"name": "总利润", "type": "bar", "data": [float(total_stats['total_profit'])]},
@@ -152,8 +146,7 @@ def chart_bar(request):
         # 收集订单详情
         order_details = []
         for record in queryset:
-            final_price = (record.order.recharge_option.amount *
-                           record.order.consumer.level.percent / 100)
+            final_price = (record.order.recharge_option.amount * record.order.consumer.level.percent / 100)
             profit = final_price - record.system_fee - record.cross_fee
 
             if record.order.outed_by.usertype == 'SUPPORT':
@@ -196,35 +189,35 @@ def chart_bar(request):
             "detail": str(e)
         }, status=500)
 
-def calculate_profit(queryset, user_type):
-    """计算指定类型的利润"""
-    # base_expr = ExpressionWrapper(
-    #     (F('order__recharge_option__amount') *
-    #      F('order__consumer__level__percent') / 100 -
-    #      F('system_fee') -
-    #      F('cross_fee'),
-    #      output_field=DecimalField()
-    # )
-    base_expr = ExpressionWrapper(
-        F('order__recharge_option__amount') * F('order__consumer__level__percent') / 100 - F('system_fee') - F(
-            'cross_fee'),
-        output_field=DecimalField()
-    )
-
-    if user_type == 'SUPPORT':
-        base_expr = base_expr - F('support_payment') - F('commission')
-    elif user_type == 'SUPPLIER':
-        base_expr = base_expr - F('supplier_payment')
-    elif user_type == 'ADMIN':
-        base_expr = base_expr - F('admin_payment')
-
-    return queryset.filter(
-        order__outed_by__usertype=user_type
-    ).annotate(
-        calc_profit=base_expr
-    ).aggregate(
-        total=Coalesce(Sum('calc_profit'), Value(0, output_field=DecimalField()))
-    )['total']
+# def calculate_profit(queryset, user_type):
+#     """计算指定类型的利润"""
+#     # base_expr = ExpressionWrapper(
+#     #     (F('order__recharge_option__amount') *
+#     #      F('order__consumer__level__percent') / 100 -
+#     #      F('system_fee') -
+#     #      F('cross_fee'),
+#     #      output_field=DecimalField()
+#     # )
+#     base_expr = ExpressionWrapper(
+#         F('order__recharge_option__amount') * F('order__consumer__level__percent') / 100 - F('system_fee') - F(
+#             'cross_fee'),
+#         output_field=DecimalField()
+#     )
+#
+#     if user_type == 'SUPPORT':
+#         base_expr = base_expr - F('support_payment') - F('commission')
+#     elif user_type == 'SUPPLIER':
+#         base_expr = base_expr - F('supplier_payment')
+#     elif user_type == 'ADMIN':
+#         base_expr = base_expr - F('admin_payment')
+#
+#     return queryset.filter(
+#         order__outed_by__usertype=user_type
+#     ).annotate(
+#         calc_profit=base_expr
+#     ).aggregate(
+#         total=Coalesce(Sum('calc_profit'), Value(0, output_field=DecimalField()))
+#     )['total']
 
 
 def chart_consumer(request):

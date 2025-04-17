@@ -406,8 +406,11 @@ function initBarChart() {
                 legend: {
                     data: response.data.series.map(s => s.name),
                     bottom: 0,
-                    type:'scroll',
-                    padding: [5, 50]
+                    orient: 'horizontal',  // 水平排列图例
+                    itemWidth: 40,  // 设置图例项宽度
+                    itemHeight: 14,  // 设置图例项高度
+                    itemGap: 20,  // 设置图例项之间的间距
+                    left: 'center',  // 使图例居中显示
                 },
                 grid: {
                     left: '3%',
@@ -427,70 +430,34 @@ function initBarChart() {
                 },
                 yAxis: {
                     type: 'value',
-                    // 在这里获取 seriesName，确保它在这个作用域内有定义
-                    name: response.data.series.length > 0? (response.data.series[0].name.includes('订单')? '数量(笔)' : '金额(元)') : ''
+                    name: response.data.series.length > 0 ? (response.data.series[0].name.includes('订单') ? '数量(笔)' : '金额(元)') : ''
                 },
                 series: response.data.series.map(s => ({
-                   ...s,
-                    barWidth: 60  // 固定宽度
+                    ...s,
+                    barWidth: 60,  // 固定宽度
+                    label: {
+                        show: true,  // 显示每个柱状图的数值标签
+                        position: 'top',  // 显示在柱状图上方
+                        formatter: function(param) {
+                            return param.value.toFixed(2);  // 显示柱状图对应的数值，保留两位小数
+                        }
+                    }
                 }))
             };
 
             chart.setOption(option);
             chart.hideLoading();
 
-            // 点击事件 - 显示所有订单详情
-            chart.on('click', function(params) {
-                const details = response.data.tooltip_data["汇总"] || [];
-
-                const $tbody = $('#barChartDetailsBody').empty();
-                if (details.length === 0) {
-                    $tbody.append('<tr><td colspan="10" class="text-center">无订单详情</td></tr>');
-                } else {
-                    details.forEach(item => {
-                        $tbody.append(`<tr>
-                            <td>${item.order_number}</td>
-                            <td>${item.out_admin}</td>
-                            <td>${item.out_admin_type}</td>
-                            <td>${item.original_amount.toFixed(2)}元</td>
-                            <td>${item.final_price.toFixed(2)}元</td>
-                            <td>${item.system_fee.toFixed(2)}元</td>
-                            <td>${item.cross_fee.toFixed(2)}元</td>
-                            <td><strong style="color:${item.profit >= 0? '#52c41a' : '#f5222d'}">
-                                ${item.profit.toFixed(2)}元</strong></td>
-                            <td>${item.consumer}</td>
-                            <td>${item.time}</td>
-                        </tr>`);
-                    });
-                }
-                $("#barChartDetails").show();
-            });
-
             setTimeout(() => chart.resize(), 100);
         },
         error: function(xhr) {
-            showError(chart, '请求失败:'+ xhr.statusText);
+            showError(chart, '请求失败:' + xhr.statusText);
         }
     });
 }
 
-function showChartError(chart, message) {
-    chart.setOption({
-        graphic: {
-            elements: [{
-                type: 'text',
-                left: 'center',
-                top: 'middle',
-                style: {
-                    text: message,
-                    fontSize: 16,
-                    fontWeight: 'bold',
-                    fill: '#ff4d4f'
-                }
-            }]
-        }
-    });
-}
+
+
 
 // 初始化页面时加载图表
 // $(document).ready(function() {
