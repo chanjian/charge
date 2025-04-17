@@ -406,11 +406,8 @@ function initBarChart() {
                 legend: {
                     data: response.data.series.map(s => s.name),
                     bottom: 0,
-                    orient: 'horizontal',  // 水平排列图例
-                    itemWidth: 40,  // 设置图例项宽度
-                    itemHeight: 14,  // 设置图例项高度
-                    itemGap: 20,  // 设置图例项之间的间距
-                    left: 'center',  // 使图例居中显示
+                    // type:'scroll',
+                    padding: [5, 50],
                 },
                 grid: {
                     left: '3%',
@@ -430,28 +427,49 @@ function initBarChart() {
                 },
                 yAxis: {
                     type: 'value',
-                    name: response.data.series.length > 0 ? (response.data.series[0].name.includes('订单') ? '数量(笔)' : '金额(元)') : ''
+                    // 在这里获取 seriesName，确保它在这个作用域内有定义
+                    name: response.data.series.length > 0? (response.data.series[0].name.includes('订单')? '数量(笔)' : '金额(元)') : ''
                 },
                 series: response.data.series.map(s => ({
-                    ...s,
-                    barWidth: 60,  // 固定宽度
-                    label: {
-                        show: true,  // 显示每个柱状图的数值标签
-                        position: 'top',  // 显示在柱状图上方
-                        formatter: function(param) {
-                            return param.value.toFixed(2);  // 显示柱状图对应的数值，保留两位小数
-                        }
-                    }
+                   ...s,
+                    barWidth: 60  // 固定宽度
                 }))
             };
 
             chart.setOption(option);
             chart.hideLoading();
 
+            // 点击事件 - 显示所有订单详情
+            chart.on('click', function(params) {
+                const details = response.data.tooltip_data["汇总"] || [];
+
+                const $tbody = $('#barChartDetailsBody').empty();
+                if (details.length === 0) {
+                    $tbody.append('<tr><td colspan="10" class="text-center">无订单详情</td></tr>');
+                } else {
+                    details.forEach(item => {
+                        $tbody.append(`<tr>
+                            <td>${item.order_number}</td>
+                            <td>${item.out_admin}</td>
+                            <td>${item.out_admin_type}</td>
+                            <td>${item.original_amount.toFixed(2)}元</td>
+                            <td>${item.final_price.toFixed(2)}元</td>
+                            <td>${item.system_fee.toFixed(2)}元</td>
+                            <td>${item.cross_fee.toFixed(2)}元</td>
+                            <td><strong style="color:${item.profit >= 0? '#52c41a' : '#f5222d'}">
+                                ${item.profit.toFixed(2)}元</strong></td>
+                            <td>${item.consumer}</td>
+                            <td>${item.time}</td>
+                        </tr>`);
+                    });
+                }
+                $("#barChartDetails").show();
+            });
+
             setTimeout(() => chart.resize(), 100);
         },
         error: function(xhr) {
-            showError(chart, '请求失败:' + xhr.statusText);
+            showError(chart, '请求失败:'+ xhr.statusText);
         }
     });
 }
@@ -459,17 +477,6 @@ function initBarChart() {
 
 
 
-// 初始化页面时加载图表
-// $(document).ready(function() {
-//     initBarChart();
-//
-//     // 表单提交时刷新图表
-//     $('form').on('submit', function(e) {
-//         e.preventDefault();
-//         initBarChart();
-//         return false;
-//     });
-// });
 
 // 修改后的消费者图表函数（完整版）
 function initConsumerChart() {
@@ -531,7 +538,8 @@ function initConsumerChart() {
                 xAxis: {
                     type: 'category',
                     data: response.data.dates,
-                    axisLabel: { rotate: 0 }
+                    axisLabel: { rotate: 0 },
+                    show: false,
                 },
                 yAxis: {
                     type: 'value',
@@ -651,7 +659,8 @@ function initSupplierChart() {
                 xAxis: {
                     type: 'category',
                     data: response.data.dates,
-                    axisLabel: { rotate: 0 }
+                    axisLabel: { rotate: 0 },
+                    show: false,
                 },
                 yAxis: {
                     type: 'value',
@@ -770,7 +779,8 @@ function initSupportChart() {
                 xAxis: {
                     type: 'category',
                     data: response.data.dates,
-                    axisLabel: { rotate: 0 }
+                    axisLabel: { rotate: 0 },
+                    show: false,
                 },
                 yAxis: {
                     type: 'value',
@@ -892,7 +902,8 @@ function initSelfOutOtherChart() {
                 xAxis: {
                     type: 'category',
                     data: response.data.dates,
-                    axisLabel: { rotate: 0 }
+                    axisLabel: { rotate: 0 },
+                    show: false,
                 },
                 yAxis: {
                     type: 'value',
@@ -956,20 +967,30 @@ function initSelfOutOtherChart() {
 
 function initOtherOutSelfChart() {
     const chartDom = document.getElementById('chartOtherOutSelf');
-    if (!chartDom) return console.error('找不到图表容器 chartOtherOutSelf');
+    // 检查图表容器是否存在，如果不存在则打印错误信息并返回
+    if (!chartDom) {
+        return console.error('找不到图表容器 chartOtherOutSelf');
+    }
 
     const chart = echarts.init(chartDom);
     chartInstances.otherOutSelfChart = chart;
     chart.showLoading();
+
+    // 保存上次点击的管理员信息
+    let lastClickedAdmin = null;
 
     $.ajax({
         url: '{% url "chart_other_out_self" %}',
         type: 'GET',
         dataType: 'json',
         data: getQueryParams(),
-        success: function(response) {
-            if (!response.status) return showError(chart, response.error || '加载数据失败');
+        success: function (response) {
+            // 如果请求数据失败，显示错误信息并返回
+            if (!response.status) {
+                return showError(chart, response.error || '加载数据失败');
+            }
 
+            // 构建 ECharts 图表的配置项
             const option = {
                 title: {
                     text: `外部入圈订单统计 (${response.data.date_range})`,
@@ -977,7 +998,7 @@ function initOtherOutSelfChart() {
                 },
                 tooltip: {
                     trigger: 'item',
-                    formatter: function(params) {
+                    formatter: function (params) {
                         const admin = params.seriesName;
                         const data = response.data.tooltip_data["汇总"][admin] || {};
 
@@ -1014,23 +1035,26 @@ function initOtherOutSelfChart() {
                 xAxis: {
                     type: 'category',
                     data: response.data.dates,
-                    axisLabel: { rotate: 0 }  // 不需要旋转
+                    axisLabel: {
+                        rotate: 0,  // 不需要旋转
+                        show: false  // 隐藏x轴标签（因为柱子内部已显示）
+                    }
                 },
                 yAxis: {
                     type: 'value',
                     name: '应付款金额(元)'
                 },
                 series: response.data.series.map(series => ({
-                    ...series,
-                    barWidth: 40  // 固定宽度
+                   ...series,
+                    barWidth: 40,  // 固定宽度
                 }))
             };
 
             chart.setOption(option);
             chart.hideLoading();
 
-            // 点击事件
-            chart.on('click', function(params) {
+            // 点击事件处理函数
+            chart.on('click', function (params) {
                 const admin = params.seriesName;
                 const details = response.data.tooltip_data["汇总"][admin]?.orders || [];
 
@@ -1053,19 +1077,24 @@ function initOtherOutSelfChart() {
                         </tr>`);
                     });
                 }
-                $("#otherOutSelfDetails").show();
+                // 处理表格显示逻辑
+                if (lastClickedAdmin === admin) {
+                    // 点击的是同一个管理员，切换显示状态
+                    $("#otherOutSelfDetails").toggle();
+                } else {
+                    // 点击的是不同管理员，显示新表格
+                    $("#otherOutSelfDetails").show();
+                    lastClickedAdmin = admin;
+                }
             });
 
             setTimeout(() => chart.resize(), 100);
         },
-        error: function(xhr) {
-            showError(chart, '请求失败: ' + xhr.statusText);
+        error: function (xhr) {
+            showError(chart, '请求失败:'+ xhr.statusText);
         }
     });
 }
-
-
-
 
 
 //初始化本圈出库其他圈子订单图表
