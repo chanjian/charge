@@ -59,6 +59,8 @@ urlpatterns = [
 
     path('gameorder/list/',gameorder.gameorder_list,name='gameorder_list'),
     path('gameorder/finished/list/',gameorder.gameorder_finished_list,name='gameorder_finished_list'),
+    path('gameorder/deleted/list/',gameorder.gameorder_deleted_list,name='gameorder_deleted_list'),
+    path('gameorder/timeout/list/',gameorder.gameorder_timeout_list,name='gameorder_timeout_list'),
     path('gameorder/add/',gameorder.gameorder_add,name='gameorder_add'),
     path('gameorder/edit/<int:pk>/',gameorder.gameorder_edit,name='gameorder_edit'),
     path('gameorder/delete/',gameorder.gameorder_delete,name='gameorder_delete'),

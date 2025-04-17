@@ -12,5 +12,5 @@ django.setup()  # 伪造让django启动
 from web import models
 from utils.encrypt import md5
 
-models.UserInfo.objects.create(username='root1',usertype='ADMIN',password=md5("root1"), mobile="16605643502")
+models.UserInfo.objects.create(username='root10',usertype='ADMIN',password=md5("123"), mobile="16645462585652")
 

@@ -66,10 +66,13 @@ class AuthMiddleware(MiddlewareMixin):
         if current_name not in user_permission_dict:
             # return HttpResponse("无权访问")
 
-            if request.is_ajax():
-                return JsonResponse({"status":False,'detail':'无权访问'})
-            else:
-                return render(request, 'permission.html')
+            # if request.is_ajax():
+            #     return JsonResponse({"status":False,'detail':'无权访问'})
+            # else:
+            #     return render(request, 'permission.html')
+
+            return render(request, 'permission.html')
+
 
         # 4.有权限
         text_list = []  # ["创建订单","订单列表"]

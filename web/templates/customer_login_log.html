@@ -19,11 +19,11 @@
     <form method="get"  class="form-inline" style="margin-bottom: 20px;">
         <div class="form-group">
             <label for="start_date" class="control-label">开始日期</label>
-            <input type="date" class="form-control" id="start_date" name="start_date" value="{{ request.GET.start_date }}">
+            <input type="date" class="form-control" id="start_date" name="start_date_str" value="{{ start_date_str }}">
         </div>
         <div class="form-group" style="margin-left: 10px;">
             <label for="end_date" class="control-label">结束日期</label>
-            <input type="date" class="form-control" id="end_date" name="end_date" value="{{ request.GET.end_date }}">
+            <input type="date" class="form-control" id="end_date" name="end_date_str" value="{{ end_date_str }}">
         </div>
         <div class="form-group" style="margin-left: 10px;">
             <button type="submit" class="btn btn-primary">筛选</button>
@@ -58,8 +58,8 @@
         {% for row in pager.queryset %}
             <tr>
                 <td>{{ row.id }}</td>
-            <td>{{ row.customer_id }}</td>
-            <td>{{ row.customer }}</td>
+            <td>{{ row.user.id }}</td>
+            <td>{{ row.user.username}}</td>
             <td>{{ row.login_time|date:"Y-m-d H:i:s"}}</td>
             <td>{{ row.login_ip }}</td>
             <td>{{ row.login_city }}</td>
@@ -69,29 +69,7 @@
             <td>{{ row.login_device_type }}</td>
             <td>{{ row.login_os }}</td>
             <td>{{ row.login_browser }}</td>
-{#                <td>#}
-{#                    <span class="btn btn-xs btn-{{ row.charge_type|color }}">{{ row.get_charge_type_display }}</span>#}
-{#                </td>#}
-{#                {% if row.charge_type == 1 or row.charge_type == 3 %}#}
-{#                <td>+{{ row.amount }}</td>#}
-{#            {% else %}#}
-{#                    <td>-{{ row.amount }}</td>#}
-{#            {% endif %}#}
-{#                <td>#}
-{#                    {% if row.order_oid %}#}
-{#                        {{ row.order_oid }}#}
-{#                    {% else %}#}
-{#                        -#}
-{#                    {% endif %}#}
-{#                </td>#}
-{#                <td>{{ row.create_datetime|date:"Y-m-d H:i:s" }}</td>#}
-{#                <td>#}
-{#                    {% if row.memo %}#}
-{#                        {{ row.memo }}#}
-{#                    {% else %}#}
-{#                        -#}
-{#                    {% endif %}#}
-{#                </td>#}
+
             </tr>
         {% endfor %}
 

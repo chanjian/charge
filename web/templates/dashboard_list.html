@@ -16,6 +16,8 @@
         background: #f5f5f5;
         border-radius: 4px;
     }
+
+
 </style>
 {% endblock %}
 
@@ -42,14 +44,14 @@
             <!-- 日期范围 -->
             <div class="form-group">
                 <label class="control-label">开始日期</label>
-                <input type="date" class="form-control" name="start_date"
-                       value="{{ start_date }}">
+                <input type="date" class="form-control" name="start_date_str"
+                       value="{{ start_date_str }}">
             </div>
 
             <div class="form-group" style="margin-left: 10px;">
                 <label class="control-label">结束日期</label>
-                <input type="date" class="form-control" name="end_date"
-                       value="{{ end_date }}">
+                <input type="date" class="form-control" name="end_date_str"
+                       value="{{ end_date_str }}">
             </div>
 
             <!-- 操作按钮 -->
@@ -104,20 +106,19 @@
             <div class="panel-heading">消费者消费统计</div>
             <div class="panel-body">
                 <div id="chartConsumer" class="chart-container"></div>
-                <div id="orderDetails" style="margin-top: 20px; display: none;">
+                <div id="consumerDetails" style="margin-top: 20px; display: none;">
                     <table class="table table-bordered table-hover">
                         <thead>
                             <tr>
                                 <th>消费者</th>
                                 <th>订单号</th>
-                                <th>创建时间</th>
-                                <th>完成时间</th>
-                                <th>订单面额</th>
+                                <th>订单原价</th>
+                                <th>实际支付价格</th>
                                 <th>折扣(%)</th>
-                                <th>实际支付</th>
+                                <th>时间</th>
                             </tr>
                         </thead>
-                        <tbody id="orderDetailsBody"></tbody>
+                        <tbody id="consumerDetailsBody"></tbody>
                     </table>
                 </div>
             </div>
@@ -141,6 +142,7 @@
                                 <th>订单号</th>
                                 <th>订单原价</th>
                                 <th>应付供应商账款金额</th>
+                                <th>时间</th>
                             </tr>
                         </thead>
                         <tbody id="supplierDetailsBody"></tbody>
@@ -165,6 +167,8 @@
                                 <th>订单原价</th>
                                 <th>客服垫付金额</th>
                                 <th>提成</th>
+                                <th>应付客服账款金额</th>
+                                <th>时间</th>
                             </tr>
                         </thead>
                         <tbody id="supportDetailsBody"></tbody>
@@ -178,6 +182,42 @@
 
     <!-- 在dashboard_list.html的适当位置添加 -->
 <div class="row">
+
+
+    <!-- 本圈出库其他圈子订单 -->
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                本圈出库其他圈子订单
+                <div class="pull-right">
+                    <small>应收款统计</small>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div id="chartSelfOutOther" class="chart-container" style="height:400px;"></div>
+                <div id="selfOutOtherDetails" style="display:none;margin-top:20px">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>入库方管事人</th>
+                            <th>类型</th>
+                            <th>订单号</th>
+                            <th>原价</th>
+                            <th>实际支付价格</th>
+                            <th>跨圈费</th>
+                            <th>最终应收款</th>
+                            <th>消费者</th>
+                            <th>状态</th>
+                            <th>时间</th>
+                        </tr>
+                        </thead>
+                        <tbody id="selfOutOtherDetailsBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- 其他圈子出库本圈订单 -->
     <div class="col-md-6">
         <div class="panel panel-default">
@@ -197,8 +237,9 @@
                                 <th>类型</th>
                                 <th>订单号</th>
                                 <th>原价</th>
-                                <th>最终价</th>
+                                <th>实际支付价格</th>
                                 <th>跨圈费</th>
+                                <th>最终应支付</th>
                                 <th>消费者</th>
                                 <th>状态</th>
                                 <th>时间</th>
@@ -211,38 +252,6 @@
         </div>
     </div>
 
-    <!-- 本圈出库其他圈子订单 -->
-    <div class="col-md-6">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                本圈出库其他圈子订单
-                <div class="pull-right">
-                    <small>应收款统计</small>
-                </div>
-            </div>
-            <div class="panel-body">
-                <div id="chartSelfOutOther" class="chart-container" style="height:400px;"></div>
-                <div id="selfOutOtherDetails" style="display:none;margin-top:20px">
-                    <table class="table table-bordered table-hover">
-                        <thead>
-                        <tr>
-                            <th>入库方</th>
-                            <th>类型</th>
-                            <th>订单号</th>
-                            <th>原价</th>
-                            <th>最终价</th>
-                            <th>跨圈费</th>
-                            <th>消费者</th>
-                            <th>状态</th>
-                            <th>时间</th>
-                        </tr>
-                        </thead>
-                        <tbody id="selfOutOtherDetailsBody"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 </div>
@@ -254,7 +263,7 @@
 // 全局图表实例
 var chartInstances = {};
 
-// 初始化所有图表
+//初始化所有图表
 function initCharts() {
     initBarChart();
     initConsumerChart();  // 新增
@@ -275,8 +284,8 @@ function initCharts() {
 function getQueryParams() {
     return {
         date_field: $('[name="date_field"]').val(),
-        start_date: $('[name="start_date"]').val(),
-        end_date: $('[name="end_date"]').val()
+        start_date: $('[name="start_date_str"]').val(),
+        end_date: $('[name="end_date_str"]').val()
     };
 }
 
@@ -343,126 +352,207 @@ $(document).ready(function() {
 });
 
 
-
 function initBarChart() {
     const chartDom = document.getElementById('chartBar');
-    if (!chartDom) {
-        console.error('错误: 找不到图表容器 #chartBar');
-        return;
-    }
-    chartInstances.barChart = echarts.init(chartDom);
+    if (!chartDom) return console.error('找不到图表容器 chartBar');
 
-    // 初始化默认配置
-    const option = {
-        tooltip: {
-            trigger: 'axis',
-            axisPointer: { type: 'shadow' }
-        },
-        legend: {
-            data: [] // 初始为空，从后端获取
-        },
-        toolbox: {
-                    feature: {
-                        saveAsImage: {}
-                    }
-        },
-        grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
-        },
-        xAxis: {
-            type: 'category',
-            data: [] // 初始为空，从后端获取
-        },
-        yAxis: {
-            type: 'value',
-            axisLabel: {
-                formatter: '{value} 元'
-            }
-        },
-        series: [] // 初始为空，从后端获取
-    };
+    const chart = echarts.init(chartDom);
+    chartInstances.barChart = chart;
+    chart.showLoading();
 
-    // 显示加载动画
-    showLoading(chartInstances.barChart);
-
-    // 使用AJAX获取数据
     $.ajax({
         url: '{% url "chart_bar" %}',
         type: 'GET',
-        dataType: 'JSON',
+        dataType: 'json',
         data: getQueryParams(),
         success: function(response) {
-            if (!response.status) {
-                showError(chartInstances.barChart, response.error || '数据加载失败');
+            if (!response.status) return showError(chart, response.error || '加载数据失败');
 
-                return;
-            }
+            const option = {
+                title: {
+                    text: `交易流水统计 (${response.data.date_range})`,
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: function(params) {
+                        const seriesName = params.seriesName;
+                        const value = params.value;
+                        const stats = response.data.total_stats;
 
-            // 更新图表配置
-            option.legend.data = response.data.series.map(item => item.name);
-            option.xAxis.data = response.data.x_axis;
-            option.series = response.data.series;
+                        let html = `<div style="font-weight:bold;margin-bottom:8px;">
+                            ${response.data.date_range} 汇总数据</div>`;
 
-            // 设置图表选项
-            chartInstances.barChart.setOption(option);
-            hideLoading(chartInstances.barChart);
+                        html += `<div style="margin:5px 0;">
+                            <span style="display:inline-block;width:12px;height:12px;
+                                background:${params.color};margin-right:8px;"></span>
+                            <strong>${seriesName}:</strong> ${value}
+                            ${seriesName.includes('订单')? '笔' : '元'}
+                        </div>`;
+
+                        // 添加相关统计信息
+                        if (seriesName === '总利润') {
+                            html += `<div style="margin-top:10px;color:#555">
+                                <div>总流水: ${stats.total_amount.toFixed(2)}元</div>
+                                <div>系统费: ${stats.system_fee.toFixed(2)}元</div>
+                                <div>三方借调费: ${stats.cross_fee.toFixed(2)}元</div>
+                                <div>总支出: ${(stats.support_payment + stats.supplier_payment + stats.admin_payment).toFixed(2)}元</div>
+                            </div>`;
+                        }
+
+                        return html;
+                    }
+                },
+                legend: {
+                    data: response.data.series.map(s => s.name),
+                    bottom: 0,
+                    type:'scroll',
+                    padding: [5, 50]
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '15%',
+                    containLabel: true
+                },
+                toolbox: {
+                    feature: {
+                        saveAsImage: {}
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    data: response.data.dates,
+                    axisLabel: { show: false }  // 隐藏日期标签，因为我们只显示一个汇总柱状图
+                },
+                yAxis: {
+                    type: 'value',
+                    // 在这里获取 seriesName，确保它在这个作用域内有定义
+                    name: response.data.series.length > 0? (response.data.series[0].name.includes('订单')? '数量(笔)' : '金额(元)') : ''
+                },
+                series: response.data.series.map(s => ({
+                   ...s,
+                    barWidth: 60  // 固定宽度
+                }))
+            };
+
+            chart.setOption(option);
+            chart.hideLoading();
+
+            // 点击事件 - 显示所有订单详情
+            chart.on('click', function(params) {
+                const details = response.data.tooltip_data["汇总"] || [];
+
+                const $tbody = $('#barChartDetailsBody').empty();
+                if (details.length === 0) {
+                    $tbody.append('<tr><td colspan="10" class="text-center">无订单详情</td></tr>');
+                } else {
+                    details.forEach(item => {
+                        $tbody.append(`<tr>
+                            <td>${item.order_number}</td>
+                            <td>${item.out_admin}</td>
+                            <td>${item.out_admin_type}</td>
+                            <td>${item.original_amount.toFixed(2)}元</td>
+                            <td>${item.final_price.toFixed(2)}元</td>
+                            <td>${item.system_fee.toFixed(2)}元</td>
+                            <td>${item.cross_fee.toFixed(2)}元</td>
+                            <td><strong style="color:${item.profit >= 0? '#52c41a' : '#f5222d'}">
+                                ${item.profit.toFixed(2)}元</strong></td>
+                            <td>${item.consumer}</td>
+                            <td>${item.time}</td>
+                        </tr>`);
+                    });
+                }
+                $("#barChartDetails").show();
+            });
+
+            setTimeout(() => chart.resize(), 100);
         },
-        error: function(xhr, status, error) {
-            showError(chartInstances.barChart, '数据加载失败: ' + error);
-            console.log("完整错误响应:", xhr.responseText);
-        // 然后你可以复制完整的错误信息
-        },
-        complete: function() {
-            // 无论成功失败都隐藏加载动画（如果之前没隐藏）
-            hideLoading(chartInstances.barChart);
+        error: function(xhr) {
+            showError(chart, '请求失败:'+ xhr.statusText);
         }
     });
 }
 
-    // 切换图表类型
-    $('#barChartType').change(function() {
-        const type = $(this).val();
-        const option = chartInstances.barChart.getOption();
-        option.series.forEach(series => {
-            series.type = type;
-        });
-        chartInstances.barChart.setOption(option);
+function showChartError(chart, message) {
+    chart.setOption({
+        graphic: {
+            elements: [{
+                type: 'text',
+                left: 'center',
+                top: 'middle',
+                style: {
+                    text: message,
+                    fontSize: 16,
+                    fontWeight: 'bold',
+                    fill: '#ff4d4f'
+                }
+            }]
+        }
     });
+}
 
+// 初始化页面时加载图表
+// $(document).ready(function() {
+//     initBarChart();
+//
+//     // 表单提交时刷新图表
+//     $('form').on('submit', function(e) {
+//         e.preventDefault();
+//         initBarChart();
+//         return false;
+//     });
+// });
 
+// 修改后的消费者图表函数（完整版）
 function initConsumerChart() {
     const chartDom = document.getElementById('chartConsumer');
-    if (!chartDom) return;
+    if (!chartDom) return console.error('找不到图表容器');
 
     const chart = echarts.init(chartDom);
     chartInstances.consumerChart = chart;
+    chart.showLoading();
 
-    showLoading(chart);
+    // 保存上次点击的消费者名称
+    let lastClickedConsumer = null;
 
     $.ajax({
         url: '{% url "chart_consumer" %}',
         type: 'GET',
-        dataType: 'JSON',
+        dataType: 'json',
         data: getQueryParams(),
         success: function(response) {
-            if (!response.status) {
-                showError(chart, response.error || '数据加载失败');
-                console.error("错误响应:", response);
-                return;
-            }
+            if (!response.status) return showError(chart, response.error || '加载数据失败');
 
             const option = {
+                title: {
+                    text: `消费者消费统计 (${response.data.date_range})`,
+                    left: 'center'
+                },
                 tooltip: {
-                    trigger: 'axis',
-                    axisPointer: {type: 'shadow'}
+                    trigger: 'item',
+                    formatter: function(params) {
+                        const consumer = params.seriesName;
+                        const data = response.data.tooltip_data["汇总"][consumer] || {};
+
+                        return `
+                            <div style="font-weight:bold;margin-bottom:8px;">
+                                ${response.data.date_range} 汇总数据
+                            </div>
+                            <div style="margin:8px 0;">
+                                <span style="display:inline-block;width:12px;height:12px;
+                                    background:${params.color};margin-right:8px;"></span>
+                                <strong>${consumer}</strong>
+                            </div>
+                            <div style="margin-left:20px;color:#555">
+                                <div>订单数: <b>${data.order_count || 0}笔</b></div>
+                                <div style="color:#722ed1">消费金额总计: ${(data.total_consumption || 0).toFixed(2)}元</div>
+                            </div>
+                        `;
+                    }
                 },
                 legend: {
-                    data: response.data.series.map(item => item.name),
-                    type: 'scroll',
-                    orient: 'horizontal',
+                    data: response.data.consumers,
                     bottom: 0
                 },
                 grid: {
@@ -473,298 +563,117 @@ function initConsumerChart() {
                 },
                 xAxis: {
                     type: 'category',
-                    data: response.data.x_axis
-                },
-                yAxis: {
-                    type: 'value',
-                    name: '实际支付金额(元)'
-                },
-                series: response.data.series
-            };
-
-            chart.setOption(option);
-            hideLoading(chart);
-
-            // 存储订单详情数据
-            chart._orderDetails = response.data.order_details;
-
-            // 添加点击事件
-            chart.on('click', function(params) {
-                showOrderDetails(params);
-            });
-        },
-        error: function(xhr) {
-            showError(chart, '请求失败');
-            console.error("请求错误:", xhr.responseText);
-            hideLoading(chart);
-        }
-    });
-}
-
-// 显示消费者订单详情
-function showOrderDetails(params) {
-    if (!params || !params.seriesName || !params.name) return;
-
-    const details = chartInstances.consumerChart._orderDetails[params.name];
-    if (!details) return;
-
-    const $tbody = $('#orderDetailsBody');
-    $tbody.empty();
-
-    // 过滤出当前消费者的订单
-    const consumerOrders = details.filter(
-        order => order.consumer === params.seriesName
-    );
-
-    consumerOrders.forEach(order => {
-        const formatTime = (timeStr) => {
-        if (!timeStr) return 'N/A';
-        const date = new Date(timeStr);
-        return date.toLocaleString('zh-CN', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: false
-        }).replace(/\//g, '-');
-    };
-
-        $tbody.append(`
-            <tr>
-                <td>${order.consumer}</td>
-                <td>${order.order_number}</td>
-                <td>${formatTime(order.created_time)}</td>
-                <td>${formatTime(order.finished_time)}</td>
-                <td>${order.amount.toFixed(2)}</td>
-                <td>${order.discount}</td>
-                <td>${order.final_price.toFixed(2)}</td>
-            </tr>
-        `);
-    });
-
-    $('#orderDetails').show();
-}
-
-
-// 初始化客服图表（精确版）
-function initSupportChart() {
-    const chartDom = document.getElementById('chartSupport');
-    if (!chartDom) return;
-
-    const chart = echarts.init(chartDom);
-    chartInstances.supportChart = chart;
-
-    showLoading(chart);
-
-    $.ajax({
-        url: '{% url "chart_support" %}',
-        type: 'GET',
-        dataType: 'JSON',
-        data: getQueryParams(),
-        success: function(response) {
-            if (!response.status) {
-                showError(chart, response.error || '数据加载失败');
-                return;
-            }
-
-            const option = {
-                tooltip: {
-                    trigger: 'axis',
-                    axisPointer: {
-                        type: 'shadow',
-                        shadowStyle: { color: 'rgba(0,0,0,0.05)' }
-                    },
-                    formatter: function(params) {
-                        const date = params[0].axisValue;
-                        const hoverData = response.data.tooltip_data[date] || {};
-
-                        let html = `<div style="font-weight:bold;margin-bottom:8px">${date}</div>`;
-
-                        params.forEach(param => {
-                            const supportName = param.seriesName;
-                            const data = hoverData[supportName];
-
-                            if (!data) return '';
-
-                            html += `
-                                <div style="margin:8px 0;padding-bottom:8px;border-bottom:1px dashed #eee">
-                                    <div style="display:flex;align-items:center">
-                                        <span style="display:inline-block;
-                                            width:12px;
-                                            height:12px;
-                                            background:${param.color};
-                                            margin-right:8px;
-                                            border-radius:2px">
-                                        </span>
-                                        <strong>${supportName}</strong>
-                                    </div>
-                                    <div style="margin-left:20px;margin-top:4px;color:#666">
-                                        <div style="color:#ff4d4f">垫付金额: ${data.support_payment.toFixed(2)}元</div>
-                                        <div style="color:#52c41a">提成金额: ${data.commission.toFixed(2)}元</div>
-                                        <div>处理订单数: ${data.order_count}笔</div>
-                                    </div>
-                                </div>
-                            `;
-                        });
-
-                        return html;
-                    }
-                },
-                legend: {
-                    data: response.data.series.map(s => s.name),
-                    type: 'scroll',
-                    bottom: 0,
-                    textStyle: { fontSize: 12 }
-                },
-                grid: {
-                    left: '3%',
-                    right: '4%',
-                    bottom: '15%',
-                    containLabel: true
-                },
-                xAxis: {
-                    type: 'category',
                     data: response.data.dates,
-                    axisLabel: {
-                        rotate: 30,
-                        fontSize: 12
-                    }
+                    axisLabel: { rotate: 0 }
                 },
                 yAxis: {
                     type: 'value',
-                    name: '垫付金额(元)',
-                    axisLine: { show: true }
+                    name: '消费金额(元)'
                 },
                 series: response.data.series.map(series => ({
                     ...series,
-                    emphasis: {
-                        itemStyle: {
-                            shadowBlur: 10,
-                            shadowOffsetX: 0,
-                            shadowColor: 'rgba(0, 0, 0, 0.3)'
-                        }
-                    }
+                    barWidth: 40
                 }))
             };
 
             chart.setOption(option);
-            hideLoading(chart);
+            chart.hideLoading();
 
-            // 存储详情数据
-            chart._details = response.data.details;
-
-            // 点击事件
+            // 点击事件处理
             chart.on('click', function(params) {
-                if (params.value === null) return;
+                const currentConsumer = params.seriesName;
+                const details = response.data.tooltip_data["汇总"][currentConsumer]?.orders || [];
+                const $tbody = $('#consumerDetailsBody').empty();
 
-                const date = params.name;
-                const support = params.seriesName;
-                const details = chart._details[date]?.[support] || [];
-
-                const $tbody = $('#supportDetailsBody');
-                $tbody.empty();
-
+                // 填充表格数据
                 if (details.length === 0) {
                     $tbody.append('<tr><td colspan="6" class="text-center">无订单详情</td></tr>');
                 } else {
                     details.forEach(item => {
                         $tbody.append(`
                             <tr>
-                                <td>${support}</td>
+                                <td>${currentConsumer}</td>
                                 <td>${item.order_number}</td>
-
-                                <td>${item.amount.toFixed(2)}元</td>
-                                <td style="color:rgba(255,77,79,0.93)">${item.support_payment.toFixed(2)}元</td>
-                                <td style="color:#52c41a">${item.commission.toFixed(2)}元</td>
+                                <td>${item.original_amount.toFixed(2)}元</td>
+                                <td style="color:#ff4d4f; font-weight: bold">${item.final_price.toFixed(2)}元</td>
+                                <td>${item.consumer_level}%</td>
+                                <td>${item.created_time || '未知时间'}</td>
                             </tr>
                         `);
                     });
                 }
 
-                $('#supportDetails').show();
+                // 处理表格显示逻辑
+                if (lastClickedConsumer === currentConsumer) {
+                    // 点击的是同一个消费者，切换显示状态
+                    $("#consumerDetails").toggle();
+                } else {
+                    // 点击的是不同消费者，显示新表格
+                    $("#consumerDetails").show();
+                    lastClickedConsumer = currentConsumer;
+                }
             });
+
+            setTimeout(() => chart.resize(), 100);
         },
         error: function(xhr) {
             showError(chart, '请求失败: ' + xhr.statusText);
-            hideLoading(chart);
         }
     });
 }
 
 
-// 初始化供应商图表（与客服图表逻辑相同，仅字段不同）
-// 初始化供应商图表
+
+// 修改后的供应商图表函数（完整版）
 function initSupplierChart() {
     const chartDom = document.getElementById('chartSupplier');
-    if (!chartDom) return;
+    if (!chartDom) return console.error('找不到图表容器');
 
     const chart = echarts.init(chartDom);
     chartInstances.supplierChart = chart;
+    chart.showLoading();
 
-    showLoading(chart);
+    // 保存上次点击的供应商名称
+    let lastClickedSupplier = null;
 
     $.ajax({
         url: '{% url "chart_supplier" %}',
         type: 'GET',
-        dataType: 'JSON',
+        dataType: 'json',
         data: getQueryParams(),
         success: function(response) {
-            if (!response.status) {
-                showError(chart, response.error || '数据加载失败');
-                return;
-            }
-
-
+            if (!response.status) return showError(chart, response.error || '加载数据失败');
 
             const option = {
+                title: {
+                    text: `供应商结算统计 (${response.data.date_range})`,
+                    left: 'center'
+                },
                 tooltip: {
-                    trigger: 'axis',
-                    axisPointer: {
-                        type: 'shadow',
-                        shadowStyle: { color: 'rgba(0,0,0,0.05)' }
-                    },
+                    trigger: 'item',
                     formatter: function(params) {
-                        const date = params[0].axisValue;
-                        const hoverData = response.data.tooltip_data[date] || {};
+                        const supplier = params.seriesName;
+                        const data = response.data.tooltip_data["汇总"][supplier] || {};
 
-                        let html = `<div style="font-weight:bold;margin-bottom:8px">${date}</div>`;
-
-                        params.forEach(param => {
-                            const supplierName = param.seriesName;
-                            const data = hoverData[supplierName];
-
-                            if (!data) return '';
-
-                            html += `
-                                <div style="margin:8px 0;padding-bottom:8px;border-bottom:1px dashed #eee">
-                                    <div style="display:flex;align-items:center">
-                                        <span style="display:inline-block;
-                                            width:12px;
-                                            height:12px;
-                                            background:${param.color};
-                                            margin-right:8px;
-                                            border-radius:2px">
-                                        </span>
-                                        <strong>${supplierName}</strong>
-                                    </div>
-                                    <div style="margin-left:20px;margin-top:4px;color:#666">
-                                        <div>结算总额: <b>${data.total.toFixed(2)}元</b></div>
-                                        <div>订单数: ${data.order_count}笔</div>
-                                    </div>
-                                </div>
-                            `;
-                        });
-
-                        return html;
+                        return `
+                            <div style="font-weight:bold;margin-bottom:8px;">
+                                ${response.data.date_range} 汇总数据
+                            </div>
+                            <div style="margin:8px 0;">
+                                <span style="display:inline-block;width:12px;height:12px;
+                                    background:${params.color};margin-right:8px;"></span>
+                                <strong>${supplier}</strong>
+                            </div>
+                            <div style="margin-left:20px;color:#555">
+                                <div>处理订单数: <b>${data.order_count || 0}笔</b></div>
+                                <div style="color:#1890ff">结算金额总计: ${(data.total_payment || 0).toFixed(2)}元</div>
+                            </div>
+                        `;
                     }
                 },
                 legend: {
-                    data: response.data.series.map(s => s.name),
-                    type: 'scroll',
-                    bottom: 0,
-                    textStyle: { fontSize: 12 }
+                    data: response.data.suppliers,
+                    bottom: 0
                 },
                 grid: {
                     left: '3%',
@@ -775,110 +684,309 @@ function initSupplierChart() {
                 xAxis: {
                     type: 'category',
                     data: response.data.dates,
-                    axisLabel: {
-                        rotate: 30,
-                        fontSize: 12
-                    }
+                    axisLabel: { rotate: 0 }
                 },
                 yAxis: {
                     type: 'value',
-                    name: '结算金额(元)',
-                    axisLine: { show: true }
+                    name: '结算金额(元)'
                 },
                 series: response.data.series.map(series => ({
                     ...series,
-                    emphasis: {
-                        itemStyle: {
-                            shadowBlur: 10,
-                            shadowOffsetX: 0,
-                            shadowColor: 'rgba(0, 0, 0, 0.3)'
-                            // shadowColor: 'rgba(100,100,100,0.3)'
-                        }
-                    }
-
+                    barWidth: 40
                 }))
             };
 
             chart.setOption(option);
-            hideLoading(chart);
+            chart.hideLoading();
 
-            // 存储点击事件所需数据
-            chart._details = response.data.details;
-
-            // 点击事件
+            // 点击事件处理
             chart.on('click', function(params) {
-                if (params.value === null) return;
+                const currentSupplier = params.seriesName;
+                const details = response.data.tooltip_data["汇总"][currentSupplier]?.orders || [];
+                const $tbody = $('#supplierDetailsBody').empty();
 
-                const date = params.name;
-                const supplier = params.seriesName;
-                const details = chart._details[date]?.[supplier] || [];
-
-                const $tbody = $('#supplierDetailsBody');
-                $tbody.empty();
-
+                // 填充表格数据
                 if (details.length === 0) {
                     $tbody.append('<tr><td colspan="5" class="text-center">无订单详情</td></tr>');
                 } else {
                     details.forEach(item => {
                         $tbody.append(`
                             <tr>
-                                <td>${supplier}</td>
+                                <td>${currentSupplier}</td>
                                 <td>${item.order_number}</td>
-
                                 <td>${item.amount.toFixed(2)}元</td>
-                                <td>${item.payment.toFixed(2)}元</td>
+                                <td style="color:#ff4d4f; font-weight: bold">${item.payment.toFixed(2)}元</td>
+                                <td>${item.created_time || '未知时间'}</td>
                             </tr>
                         `);
                     });
                 }
 
-                $('#supplierDetails').show();
+                // 处理表格显示逻辑
+                if (lastClickedSupplier === currentSupplier) {
+                    // 点击的是同一个供应商，切换显示状态
+                    $("#supplierDetails").toggle();
+                } else {
+                    // 点击的是不同供应商，显示新表格
+                    $("#supplierDetails").show();
+                    lastClickedSupplier = currentSupplier;
+                }
             });
+
+            setTimeout(() => chart.resize(), 100);
         },
         error: function(xhr) {
             showError(chart, '请求失败: ' + xhr.statusText);
-            hideLoading(chart);
+        }
+    });
+}
+
+//修改后的客服图表函数（完整版）
+function initSupportChart() {
+    const chartDom = document.getElementById('chartSupport');
+    if (!chartDom) return console.error('找不到图表容器');
+
+    const chart = echarts.init(chartDom);
+    chartInstances.supportChart = chart;
+    chart.showLoading();
+
+    // 保存上次点击的客服名称
+    let lastClickedSupport = null;
+
+    $.ajax({
+        url: '{% url "chart_support" %}',
+        type: 'GET',
+        dataType: 'json',
+        data: getQueryParams(),
+        success: function(response) {
+            if (!response.status) return showError(chart, response.error || '加载数据失败');
+
+            const option = {
+                title: {
+                    text: `客服统计 (${response.data.date_range})`,
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: function(params) {
+                        const support = params.seriesName;
+                        const data = response.data.tooltip_data["汇总"][support] || {};
+
+                        return `
+                            <div style="font-weight:bold;margin-bottom:8px;">
+                                ${response.data.date_range} 汇总数据
+                            </div>
+                            <div style="margin:8px 0;">
+                                <span style="display:inline-block;width:12px;height:12px;
+                                    background:${params.color};margin-right:8px;"></span>
+                                <strong>${support}</strong>
+                            </div>
+                            <div style="margin-left:20px;color:#555">
+                                <div>处理订单数: <b>${data.order_count || 0}笔</b></div>
+                                <div>垫付金额总计: ${(data.support_payment || 0).toFixed(2)}元</div>
+                                <div>提成金额总计: ${(data.commission || 0).toFixed(2)}元</div>
+                                <div style="color:#ff4d4f">最终应支付金额总计: ${(data.final_support_payment || 0).toFixed(2)}元</div>
+                            </div>
+                        `;
+                    }
+                },
+                legend: {
+                    data: response.data.supports,
+                    bottom: 0
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '15%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    data: response.data.dates,
+                    axisLabel: { rotate: 0 }
+                },
+                yAxis: {
+                    type: 'value',
+                    name: '垫付金额(元)'
+                },
+                series: response.data.series.map(series => ({
+                    ...series,
+                    barWidth: 40
+                }))
+            };
+
+            chart.setOption(option);
+            chart.hideLoading();
+
+            // 点击事件处理
+            chart.on('click', function(params) {
+                const currentSupport = params.seriesName;
+                const details = response.data.tooltip_data["汇总"][currentSupport]?.orders || [];
+                const $tbody = $('#supportDetailsBody').empty();
+
+                // 填充表格数据
+                if (details.length === 0) {
+                    $tbody.append('<tr><td colspan="6" class="text-center">无订单详情</td></tr>');
+                } else {
+                    details.forEach(item => {
+                        $tbody.append(`
+                            <tr>
+                                <td>${currentSupport}</td>
+                                <td>${item.order_number}</td>
+                                <td>${item.amount.toFixed(2)}元</td>
+                                <td style="font-weight: bold">${item.support_payment.toFixed(2)}元</td>
+                                <td style="font-weight: bold">${item.commission.toFixed(2)}元</td>
+                                <td style="color:rgba(255,77,79,0.93); font-weight: bold">${item.final_support_payment.toFixed(2)}元</td>
+                                <td>${item.created_time || '未知时间'}</td>
+                            </tr>
+                        `);
+                    });
+                }
+
+                // 处理表格显示逻辑
+                if (lastClickedSupport === currentSupport) {
+                    // 点击的是同一个客服，切换显示状态
+                    $("#supportDetails").toggle();
+                } else {
+                    // 点击的是不同客服，显示新表格
+                    $("#supportDetails").show();
+                    lastClickedSupport = currentSupport;
+                }
+            });
+
+            setTimeout(() => chart.resize(), 100);
+        },
+        error: function(xhr) {
+            showError(chart, '请求失败: ' + xhr.statusText);
         }
     });
 }
 
 
-// ✅ 通用详情展示函数（优化版）
-function showDetails(type, params) {
-    const chart = chartInstances[`${type}Chart`];
-    if (!chart || !chart._details) return;
+function initSelfOutOtherChart() {
+    const chartDom = document.getElementById('chartSelfOutOther');
+    if (!chartDom) return console.error('找不到图表容器 chartSelfOutOther');
 
-    const date = params.name;
-    const name = params.seriesName;
-    const details = chart._details[date]?.[name] || [];
-    const tbodyId = `${type}DetailsBody`;
-    const $tbody = $(`#${tbodyId}`);
+    const chart = echarts.init(chartDom);
+    chartInstances.selfOutOtherChart = chart;
+    chart.showLoading();
 
-    $tbody.empty();
+    // 保存上次点击的信息
+    let lastClickedAdmin = null;
 
-    if (details.length === 0) {
-        $tbody.append(`<tr><td colspan="6" class="text-center">无订单数据</td></tr>`);
-    } else {
-        details.forEach(item => {
-            $tbody.append(`
-                <tr>
-                    <td>${name}</td>
-                    <td>${item.order_number}</td>
-                    <td>${item.created_time || 'N/A'}</td>
-                    <td>${item.amount.toFixed(2)}元</td>
-                    <td style="color:#ff4d4f">${item.payment.toFixed(2)}元</td>
-                    <td style="color:#52c41a">${item.commission.toFixed(2)}元</td>
-                </tr>
-            `);
-        });
-    }
+    $.ajax({
+        url: '{% url "chart_self_out_other" %}',
+        type: 'GET',
+        dataType: 'json',
+        data: getQueryParams(),
+        success: function(response) {
+            if (!response.status) return showError(chart, response.error || '加载数据失败');
 
-    $(`#${type}Details`).show();
+            const option = {
+                title: {
+                    text: `本圈出库订单统计 (${response.data.date_range})`,
+                    left: 'center'
+                },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: function(params) {
+                        const admin = params.seriesName;
+                        const data = response.data.tooltip_data["汇总"][admin] || {};
+
+                        return `
+                            <div style="font-weight:bold;margin-bottom:8px;">
+                                ${response.data.date_range} 汇总数据
+                            </div>
+                            <div style="margin:8px 0;">
+                                <span style="display:inline-block;width:12px;height:12px;
+                                    background:${params.color};margin-right:8px;"></span>
+                                <strong>${admin}</strong>
+                            </div>
+                            <div style="margin-left:20px;color:#555">
+                                <div>总订单数: <b>${data.order_count || 0}笔</b></div>
+                                <div>原价总计: ${(data.original_amount || 0).toFixed(2)}元</div>
+                                <div>实际支付价格总计: ${(data.receivable || 0).toFixed(2)}元</div>
+                                <div style="color:#ff4d4f">跨圈费总计: ${(data.cross_fee || 0).toFixed(2)}元</div>
+                                <div style="color:#52c41a">应收款总计: ${(data.final_receivable || 0).toFixed(2)}元</div>
+                            </div>
+                        `;
+                    }
+                },
+                legend: {
+                    data: response.data.admins,
+                    bottom: 0
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '15%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    data: response.data.dates,
+                    axisLabel: { rotate: 0 }
+                },
+                yAxis: {
+                    type: 'value',
+                    name: '应收款金额(元)'
+                },
+                series: response.data.series.map(series => ({
+                    ...series,
+                    barWidth: 40
+                }))
+            };
+
+            chart.setOption(option);
+            chart.hideLoading();
+
+            // 点击事件处理
+            chart.on('click', function(params) {
+                const currentAdmin = params.seriesName;
+                const details = response.data.tooltip_data["汇总"][currentAdmin]?.orders || [];
+                const $tbody = $('#selfOutOtherDetailsBody').empty();
+
+                // 填充表格数据
+                if (details.length === 0) {
+                    $tbody.append('<tr><td colspan="9" class="text-center">无订单详情</td></tr>');
+                } else {
+                    details.forEach(item => {
+                        $tbody.append(`<tr>
+                            <td>${item.in_admin}</td>
+                            <td>${item.out_admin_type}</td>
+                            <td>${item.order_number}</td>
+                            <td>${item.original_amount.toFixed(2)}元</td>
+                            <td>${item.receivable.toFixed(2)}元</td>
+                            <td>${item.cross_fee.toFixed(2)}元</td>
+<!--                            <td style="color:rgba(255,77,79,0.93)">${item.final_receivable.toFixed(2)}元</td>-->
+                            <td><strong style="color:rgba(255,77,79,0.93)">${item.final_receivable.toFixed(2)}元</strong></td>
+                            <td>${item.consumer}</td>
+                            <td>${item.order_status}</td>
+                            <td>${item.time}</td>
+                        </tr>`);
+                    });
+                }
+
+                // 处理表格显示逻辑
+                if (lastClickedAdmin === currentAdmin) {
+                    // 点击的是同一个管理员，切换显示状态
+                    $("#selfOutOtherDetails").toggle();
+                } else {
+                    // 点击的是不同管理员，显示新表格
+                    $("#selfOutOtherDetails").show();
+                    lastClickedAdmin = currentAdmin;
+                }
+            });
+
+            setTimeout(() => chart.resize(), 100);
+        },
+        error: function(xhr) {
+            showError(chart, '请求失败: ' + xhr.statusText);
+        }
+    });
 }
 
 
-
-// 初始化其他圈子出库本圈订单图表
 function initOtherOutSelfChart() {
     const chartDom = document.getElementById('chartOtherOutSelf');
     if (!chartDom) return console.error('找不到图表容器 chartOtherOutSelf');
@@ -895,42 +1003,39 @@ function initOtherOutSelfChart() {
         success: function(response) {
             if (!response.status) return showError(chart, response.error || '加载数据失败');
 
-            // 计算每个日期下的柱子数量和位置
-            const barGap = '20%'; // 柱子间距
-            const barCategoryGap = '30%'; // 类目间距
-            const barWidth = Math.max(20, 80 / response.data.admins.length); // 动态宽度
-
             const option = {
+                title: {
+                    text: `外部入圈订单统计 (${response.data.date_range})`,
+                    left: 'center'
+                },
                 tooltip: {
-                    trigger: 'axis',
-                    axisPointer: { type: 'shadow' },
+                    trigger: 'item',
                     formatter: function(params) {
-                        let html = `<div style="font-weight:bold;margin-bottom:8px;border-bottom:1px solid #eee;padding-bottom:5px">
-                            ${params[0].axisValue} 外部入圈订单</div>`;
+                        const admin = params.seriesName;
+                        const data = response.data.tooltip_data["汇总"][admin] || {};
 
-                        params.forEach(param => {
-                            const admin = param.seriesName;
-                            const data = response.data.tooltip_data[param.axisValue]?.[admin] || {};
+                        return `
+                            <div style="font-weight:bold;margin-bottom:8px;">
+                                ${response.data.date_range} 汇总数据
+                            </div>
+                            <div style="margin:8px 0;">
+                                <span style="display:inline-block;width:12px;height:12px;
+                                    background:${params.color};margin-right:8px;"></span>
+                                <strong>${admin}</strong>
+                            </div>
+                            <div style="margin-left:20px;color:#555">
+                                <div>总订单数: <b>${data.order_count || 0}笔</b></div>
+                                <div>原价总计: ${(data.original_amount || 0).toFixed(2)}元</div>
+                                <div>实际支付价格总计: ${(data.payment || 0).toFixed(2)}元</div>
+                                <div style="color:#ff4d4f">跨圈费总计: ${(data.cross_fee || 0).toFixed(2)}元</div>
+                                <div style="color:#1890ff">应付款总计: ${(data.final_payment || 0).toFixed(2)}元</div>
 
-                            html += `<div style="margin:8px 0;padding-bottom:8px;border-bottom:1px dashed #eee">
-                                <div style="display:flex;align-items:center">
-                                    <span style="display:inline-block;width:12px;height:12px;background:${param.color};margin-right:8px;"></span>
-                                    <strong>${admin}</strong>
-                                </div>
-                                <div style="margin-left:20px;margin-top:5px;color:#555">
-                                    <div>订单数: <b>${data.order_count || 0}笔</b></div>
-                                    <div>原价总计: ${(data.original_amount || 0).toFixed(2)}元</div>
-                                    <div style="color:#1890ff">应付款: ${(data.payment || 0).toFixed(2)}元</div>
-                                    <div style="color:#ff4d4f">跨圈费: ${(data.cross_fee || 0).toFixed(2)}元</div>
-                                </div>
-                            </div>`;
-                        });
-                        return html;
+                            </div>
+                        `;
                     }
                 },
                 legend: {
                     data: response.data.admins,
-                    type: 'scroll',
                     bottom: 0
                 },
                 grid: {
@@ -942,32 +1047,25 @@ function initOtherOutSelfChart() {
                 xAxis: {
                     type: 'category',
                     data: response.data.dates,
-                    axisLabel: { rotate: 30, interval: 0 },
-                    axisPointer: {
-                        type: 'shadow'
-                    }
+                    axisLabel: { rotate: 0 }  // 不需要旋转
                 },
                 yAxis: {
                     type: 'value',
-                    name: '应付款金额(元)',
-                    axisLine: { show: true }
+                    name: '应付款金额(元)'
                 },
                 series: response.data.series.map(series => ({
                     ...series,
-                    barWidth: barWidth,
-                    barGap: barGap,
-                    barCategoryGap: barCategoryGap
+                    barWidth: 40  // 固定宽度
                 }))
             };
 
             chart.setOption(option);
             chart.hideLoading();
 
-            // 点击事件（保持不变）
+            // 点击事件
             chart.on('click', function(params) {
-                const date = params.name;
                 const admin = params.seriesName;
-                const details = response.data.tooltip_data[date]?.[admin]?.orders || [];
+                const details = response.data.tooltip_data["汇总"][admin]?.orders || [];
 
                 const $tbody = $('#otherOutSelfDetailsBody').empty();
                 if (details.length === 0) {
@@ -979,15 +1077,16 @@ function initOtherOutSelfChart() {
                             <td>${item.out_admin_type}</td>
                             <td>${item.order_number}</td>
                             <td>${item.original_amount.toFixed(2)}元</td>
-                            <td>${item.final_price.toFixed(2)}元</td>
+                            <td>${item.payment.toFixed(2)}元</td>
                             <td>${item.cross_fee.toFixed(2)}元</td>
+                            <td><strong style="color:rgba(255,77,79,0.93)">${item.final_payment.toFixed(2)}元</strong></td>
                             <td>${item.consumer}</td>
                             <td>${item.order_status}</td>
                             <td>${item.time}</td>
                         </tr>`);
                     });
                 }
-                $('#otherOutSelfDetails').show();
+                $("#otherOutSelfDetails").show();
             });
 
             setTimeout(() => chart.resize(), 100);
@@ -999,143 +1098,143 @@ function initOtherOutSelfChart() {
 }
 
 
-// 初始化本圈出库其他圈子订单图表
-function initSelfOutOtherChart() {
-    const chartDom = document.getElementById('chartSelfOutOther');
-    if (!chartDom) return console.error('找不到图表容器 chartSelfOutOther');
-
-    const chart = echarts.init(chartDom);
-    chartInstances.selfOutOtherChart = chart;
-    chart.showLoading();
-
-    $.ajax({
-        url: '{% url "chart_self_out_other" %}',
-        type: 'GET',
-        dataType: 'json',
-        data: getQueryParams(),
-        success: function(response) {
-            if (!response.status) return showError(chart, response.error || '加载数据失败');
-
-            // ✅ 完全保持与initOtherOutSelfChart相同的宽度计算逻辑
-            const barGap = '20%';
-            const barCategoryGap = '30%';
-            const barWidth = Math.max(20, 80 / response.data.series.length); // 使用series长度计算
-
-            const option = {
-                tooltip: {
-                    trigger: 'axis',
-                    axisPointer: { type: 'shadow' },
-                    formatter: function(params) {
-                        let html = `<div style="font-weight:bold;margin-bottom:8px;border-bottom:1px solid #eee;padding-bottom:5px">
-                            ${params[0].axisValue} 本圈出库订单</div>`;
-
-                        params.forEach(param => {
-                            const admin = param.seriesName;
-                            const data = response.data.tooltip_data[param.axisValue]?.[admin] || {};
-
-                            html += `<div style="margin:8px 0;padding-bottom:8px;border-bottom:1px dashed #eee">
-                                <div style="display:flex;align-items:center">
-                                    <span style="display:inline-block;width:12px;height:12px;background:${param.color};margin-right:8px;"></span>
-                                    <strong>${admin}</strong>
-                                </div>
-                                <div style="margin-left:20px;margin-top:5px;color:#555">
-                                    <div>订单数: <b>${data.order_count || 0}笔</b></div>
-                                    <div>原价总计: ${(data.original_amount || 0).toFixed(2)}元</div>
-                                    <div style="color:#52c41a">应收款: ${(data.receivable || 0).toFixed(2)}元</div>
-                                    <div style="color:#ff4d4f">跨圈费: ${(data.cross_fee || 0).toFixed(2)}元</div>
-                                </div>
-                            </div>`;
-                        });
-                        return html;
-                    }
-                },
-                legend: {
-                    data: response.data.series.map(item => item.name),
-                    type: 'scroll',
-                    bottom: 0
-                },
-                grid: {
-                    left: '3%',
-                    right: '4%',
-                    bottom: '15%',
-                    containLabel: true
-                },
-                xAxis: {
-                    type: 'category',
-                    data: response.data.dates,
-                    axisLabel: {
-                        rotate: 30,
-                        interval: 0
-                    },
-                    axisPointer: {
-                        type: 'shadow'
-                    }
-                },
-                yAxis: {
-                    type: 'value',
-                    name: '应收款金额(元)',
-                    axisLine: { show: true }
-                },
-                // ✅ 关键修改：完全相同的柱子配置
-                series: response.data.series.map(series => ({
-                    ...series,
-                    barWidth: barWidth,
-                    barGap: barGap,
-                    barCategoryGap: barCategoryGap,
-                    label: {
-                        show: true,
-                        position: 'top',
-                        formatter: function(params) {
-                            return params.value > 0 ? params.value.toFixed(2) + '元' : '';
-                        }
-                    }
-                }))
-            };
-
-            chart.setOption(option);
-            chart.hideLoading();
-
-            // 点击事件
-            chart.on('click', function(params) {
-                const date = params.name;
-                const admin = params.seriesName;
-                const details = response.data.details[date]?.[admin] || [];
-
-                const $tbody = $('#selfOutOtherDetailsBody').empty();
-                if (details.length === 0) {
-                    $tbody.append('<tr><td colspan="9" class="text-center">无订单详情</td></tr>');
-                } else {
-                    details.forEach(item => {
-                        $tbody.append(`<tr>
-                            <td>${item.in_admin}</td>
-                            <td>${item.out_admin_type}</td>
-                            <td>${item.order_number}</td>
-                            <td>${item.original_amount.toFixed(2)}元</td>
-                            <td>${item.final_price.toFixed(2)}元</td>
-                            <td>${item.cross_fee.toFixed(2)}元</td>
-                            <td>${item.consumer}</td>
-                            <td>${item.order_status}</td>
-                            <td>${item.time}</td>
-                        </tr>`);
-                    });
-                }
-                $('#selfOutOtherDetails').show();
-            });
-
-            setTimeout(() => chart.resize(), 100);
-        },
-        error: function(xhr) {
-            showError(chart, '请求失败: ' + xhr.statusText);
-        }
-    });
-}
-
-// 页面加载初始化
-$(document).ready(function() {
-    initSelfOutOtherChart();
-});
 
 
+
+//初始化本圈出库其他圈子订单图表
+
+
+
+// function initOtherOutSelfChart() {
+//     const chartDom = document.getElementById('chartOtherOutSelf');
+//     if (!chartDom) return console.error('找不到图表容器 chartOtherOutSelf');
+//
+//     const chart = echarts.init(chartDom);
+//     chartInstances.otherOutSelfChart = chart;
+//     chart.showLoading();
+//
+//     // 设置默认隐藏表格状态
+//     let lastClickedParams = null;  // 用于保存上次点击的柱状图信息
+//
+//     $.ajax({
+//
+//         type: 'GET',
+//         dataType: 'json',
+//         data: getQueryParams(),
+//         success: function(response) {
+//             if (!response.status) return showError(chart, response.error || '加载数据失败');
+//
+//             // 计算每个日期下的柱子数量和位置
+//             const barGap = '20%'; // 柱子间距
+//             const barCategoryGap = '30%'; // 类目间距
+//             const barWidth = Math.max(20, 80 / response.data.admins.length); // 动态宽度
+//
+//             const option = {
+//                 tooltip: {
+//                     trigger: 'item', // **修改点1**: 将 'axis' 改为 'item'，使tooltip只在悬停在某个柱状图上时显示
+//                     axisPointer: { type: 'shadow' },
+//                     formatter: function(params) {
+//                         const date = params.name; // 当前柱状图的日期
+//                         const admin = params.seriesName; // 当前柱状图的管理员
+//                         const data = response.data.tooltip_data[date]?.[admin] || {}; // 获取对应日期和管理员的数据
+//
+//                         let html = `<div style="font-weight:bold;margin-bottom:8px;border-bottom:1px solid #eee;padding-bottom:5px">
+//                             ${date} 外部入圈订单</div>`;
+//
+//                         html += `<div style="margin:8px 0;padding-bottom:8px;border-bottom:1px dashed #eee">
+//                             <div style="display:flex;align-items:center">
+//                                 <span style="display:inline-block;width:12px;height:12px;background:${params.color};margin-right:8px;"></span>
+//                                 <strong>${admin}</strong>
+//                             </div>
+//                             <div style="margin-left:20px;margin-top:5px;color:#555">
+//                                 <div>订单数: <b>${data.order_count || 0}笔</b></div>
+//                                 <div>原价总计: ${(data.original_amount || 0).toFixed(2)}元</div>
+//                                 <div style="color:#1890ff">应付款: ${(data.payment+data.cross_fee || 0).toFixed(2)}元</div>
+//                                 <div style="color:#ff4d4f">跨圈费: ${(data.cross_fee || 0).toFixed(2)}元</div>
+//                             </div>
+//                         </div>`;
+//                         return html;
+//                     }
+//                 },
+//                 legend: {
+//                     data: response.data.admins,
+//                     type: 'scroll',
+//                     bottom: 0
+//                 },
+//                 grid: {
+//                     left: '3%',
+//                     right: '4%',
+//                     bottom: '15%',
+//                     containLabel: true
+//                 },
+//                 xAxis: {
+//                     type: 'category',
+//                     data: response.data.dates,
+//                     axisLabel: { rotate: 30, interval: 0 },
+//                     axisPointer: {
+//                         type: 'shadow'
+//                     }
+//                 },
+//                 yAxis: {
+//                     type: 'value',
+//                     name: '应付款金额(元)',
+//                     axisLine: { show: true }
+//                 },
+//                 series: response.data.series.map(series => ({
+//                     ...series,
+//                     barWidth: barWidth,
+//                     barGap: barGap,
+//                     barCategoryGap: barCategoryGap
+//                 }))
+//             };
+//
+//             chart.setOption(option);
+//             chart.hideLoading();
+//
+//             // 点击事件（保持不变）
+//             chart.on('click', function(params) {
+//                 const date = params.name;
+//                 const admin = params.seriesName;
+//                 const details = response.data.tooltip_data[date]?.[admin]?.orders || [];
+//
+//                 const $tbody = $('#otherOutSelfDetailsBody').empty();
+//                 if (details.length === 0) {
+//                     $tbody.append('<tr><td colspan="9" class="text-center">无订单详情</td></tr>');
+//                 } else {
+//                     details.forEach(item => {
+//                         $tbody.append(`<tr>
+//                             <td>${item.out_admin}</td>
+//                             <td>${item.out_admin_type}</td>
+//                             <td>${item.order_number}</td>
+//                             <td>${item.original_amount.toFixed(2)}元</td>
+//                             <td>${item.final_price.toFixed(2)}元</td>
+//                             <td>${item.cross_fee.toFixed(2)}元</td>
+//                             <td>${item.consumer}</td>
+//                             <td>${item.order_status}</td>
+//                             <td>${item.time}</td>
+//                         </tr>`);
+//                     });
+//                 }
+//                // 判断是否点击了相同的柱状图
+//                 if (lastClickedParams && lastClickedParams.name === date && lastClickedParams.seriesName === admin) {
+//                     // 如果是同一个柱状图，切换表格显示状态
+//                     $("#otherOutSelfDetails").toggle();  // 切换显示或隐藏表格
+//                 } else {
+//                     // 如果是不同的柱状图，显示表格
+//                     $("#otherOutSelfDetails").show();  // 显示表格
+//                 }
+//
+//                 // 更新最后点击的柱状图信息
+//                 lastClickedParams = { name: date, seriesName: admin };
+//             });
+//
+//             setTimeout(() => chart.resize(), 100);
+//         },
+//         error: function(xhr) {
+//             showError(chart, '请求失败: ' + xhr.statusText);
+//         }
+//     });
+// }
 
 </script>
 {% endblock %}

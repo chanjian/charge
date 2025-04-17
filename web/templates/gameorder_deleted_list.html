@@ -1,0 +1,624 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% load permission %}
+{% load math_filters %}
+
+{% block content %}
+<div style="margin-bottom: 5px" class="clearfix">
+    <div class="left" style="margin-right: 20px;">
+        {% add_permission request 'gameorder_add' %}
+    </div>
+
+    {% include 'tag/time_filter.html' %}
+
+    <div class="right">
+        <form class="form-inline" method="get">
+            <div class="form-group">
+                <input name="keyword" type="text" class="form-control" placeholder="请输订单号或消费者用户名" value="{{ keyword }}">
+            </div>
+            <button type="submit" class="btn btn-default">
+                <span class="glyphicon glyphicon-search"></span>
+            </button>
+        </form>
+    </div>
+</div>
+
+
+
+
+<table class="table table-bordered">
+    <thead>
+    <tr>
+<!--        <th>ID</th>-->
+        <th>充值系统</th>
+        <th>Q区orV区</th>
+        <th>游戏名称</th>
+        <th>充值选项</th>
+        <th>原价</th>
+        <th>充值折扣</th>
+        <th>折扣后金额</th>
+        <th>说明文案</th>
+        <th style="width: 150px;">充值链接</th>
+        <th>充值二维码</th>
+        <th>订单消费者</th>
+        <th>订单入库人</th>
+        <th>订单出库人</th>
+        <th>订单号</th>
+        <th>订单创建时间</th>
+        <th>订单更新时间</th>
+        <th>订单结束时间</th>
+        <th>订单状态</th>
+        <th>订单编辑记录</th>
+<!--        {% if request|has_permission:"customer_edit,customer_delete" %}-->
+<!--&lt;!&ndash;        <th>操作</th>&ndash;&gt;-->
+<!--        {% endif %}-->
+    </tr>
+    </thead>
+    <tbody>
+    {% for row in pager.queryset %}
+    <tr row-id="{{ row.id }}">
+<!--        <td class="copyable" data-value="{{ row.id }}">{{ row.id }}</td>-->
+        <td class="copyable" data-value="{{ row.get_platform_display }}">{{ row.get_platform_display }}</td>
+        <td class="copyable" data-value="{{ row.get_QV_display }}">{{ row.get_QV_display }}</td>
+        <td class="copyable" data-value="{{ row.game.name }}">{{ row.game.name }}</td>
+        <td class="copyable" data-value="{{ row.recharge_option }}">{{ row.recharge_option }}</td>
+        <td class="copyable" data-value="{{ row.price_info.original }}">{{ row.price_info.original }}</td>
+        <td class="copyable" data-value="{{ row.price_info.discount_percent }}%">{{ row.price_info.discount_percent }}%
+        </td>
+        <td class="copyable" data-value="{{ row.price_info.final }}元">{{ row.price_info.final }}元</td>
+        <td class="copyable" data-value="{{ row.description_text }}">{{ row.description_text }}</td>
+        <td class="copyable link-cell" data-value="{{ row.recharge_link|default:'' }}">
+            {% if row.recharge_link %}
+            <div class="link-text">{{ row.recharge_link }}</div>
+            {% else %}
+            <div>-</div>
+            {% endif %}
+        </td>
+        <td class="qrcode-cell">
+            {% if row.qr_code %}
+            <div class="qrcode-wrapper" data-url="\{{ row.qr_code }}">
+                <img src="\{{ row.qr_code }}" class="qrcode-img">
+            </div>
+            {% else %}
+            -
+            {% endif %}
+        </td>
+        <td class="copyable" data-value="{{ row.consumer.username }}">{{ row.consumer.username }}</td>
+        <td class="copyable" data-value="{{ row.created_by.username }}">{{ row.created_by.username }}</td>
+        <td class="copyable" data-value="{{ row.outed_by.username }}">{{ row.outed_by.username }}</td>
+        <td class="copyable" data-value="{{ row.order_number }}">{{ row.order_number }}</td>
+        <td class="copyable" data-value="{{ row.created_time|date:'Y-m-d H:i:s' }}">{{ row.created_time|date:"Y-m-d H:i:s" }}</td>
+        <td class="copyable" data-value="{{ row.updated_time|date:'Y-m-d H:i:s' }}">{{ row.updated_time|date:"Y-m-d H:i:s" }}</td>
+        <td class="copyable" data-value="{{ row.finished_time|date:'Y-m-d H:i:s' }}">{% if row.finished_time %}
+        {{ row.finished_time|date:"Y-m-d H:i:s" }}
+    {% else %}
+        空值(原始:{{ row.finished_time }})
+    {% endif %}</td>
+        <td class="copyable" data-value="{{ row.get_order_status_display }}">{{ row.get_order_status_display }}</td>
+        <td>
+    <!-- 原有操作按钮... -->
+    <a href="{% url 'gameorder_edit_log' row.id %}"
+       class="btn btn-default btn-xs"
+       title="查看修改记录">
+        <i class="glyphicon glyphicon-time"></i> 修改记录
+    </a>
+</td>
+<!--        {% if request|has_permission:"gameorder_edit,gameorder_delete" %}-->
+<!--        <td>-->
+<!--            {% edit_permission request 'gameorder_edit' pk=row.id %}-->
+<!--            {% delete_permission request 'gameorder_delete' pk=row.id %}-->
+<!--<a href="{% url 'gameorder_out' row.id %}" class="btn btn-xs btn-warning"-->
+<!--           onclick="return confirm('确认出库吗？')">出库</a>-->
+<!--        </td>-->
+<!--        {% endif %}-->
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<ul class="pagination">
+    {{ pager.html }}
+</ul>
+
+<!-- 删除确认模态框 -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="alert alert-danger alert-dismissible fade in" role="alert">
+            <h4>是否确定要删除！</h4>
+            <p>此操作不可撤销，请谨慎操作。</p>
+            <p>
+                <button type="button" class="btn btn-danger" id="btnConfirmDelete">确 定</button>
+                <button type="button" class="btn btn-default" id="btnCancelDelete">取 消</button>
+                <span style="color: red" id="deleteError"></span>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{% static 'js/delete_modal.js' %}"></script>
+<script>
+    var DELETE_ID;
+    var DELETE_URL = "{% url 'gameorder_delete' %}";
+    $(document).ready(function () {
+        // =============== 通用复制功能 ===============
+        function copyToClipboard(text) {
+            var $temp = $('<textarea>').css({
+                position: 'fixed',
+                left: '-9999px'
+            }).val(text);
+
+            $('body').append($temp);
+            $temp.select();
+
+            try {
+                document.execCommand('copy');
+                return true;
+            } catch (err) {
+                console.error("复制失败:", err);
+                return false;
+            } finally {
+                $temp.remove();
+            }
+        }
+
+        function showToast(message) {
+            var $toast = $(`<div class="toast-message">${message}</div>`);
+            $('body').append($toast);
+            setTimeout(() => $toast.fadeOut(() => $toast.remove()), 2000);
+        }
+
+        function getCopyValue($element) {
+            // 优先使用data-value属性
+            var value = $element.data('value');
+
+            // 如果没有data-value，则获取元素文本
+            if (value === undefined) {
+                value = $element.text().trim();
+            }
+
+            // 处理特殊值
+            if (value === '-' || value === '') {
+                return null;
+            }
+
+            return value;
+        }
+
+
+// 更新点击事件处理
+        $(document).on('click', '.apply-solution', function () {
+            const orderNumbers = $(this).data('orders');
+            const urlParams = new URLSearchParams(window.location.search);
+
+            // 设置应用参数
+            urlParams.set('applied_orders', orderNumbers);
+            urlParams.delete('qb_page'); // 清除分页
+
+            // 保留其他必要参数
+            ['date_field', 'start_date', 'end_date', 'keyword'].forEach(param => {
+                if (urlParams.has(param)) urlParams.set(param, urlParams.get(param));
+            });
+
+            window.location.search = urlParams.toString();
+        });
+
+
+        // 为所有可复制元素绑定点击事件
+        $(document).on('click', '.copyable', function (e) {
+            // 如果点击的是链接，不触发复制
+            if ($(e.target).is('a') || $(e.target).closest('a').length) {
+                return;
+            }
+
+            var value = getCopyValue($(this));
+            if (value === null) return;
+
+            // 添加点击反馈
+            $(this).addClass('copy-clicked');
+            setTimeout(() => $(this).removeClass('copy-clicked'), 200);
+
+            if (copyToClipboard(value)) {
+                showToast('已复制: ' + (value.length > 50 ? value.substring(0, 50) + '...' : value));
+            } else {
+                showToast('复制失败');
+            }
+        });
+
+        // 为复制按钮绑定事件
+        $(document).on('click', '.copy-btn', function () {
+            var value = $(this).data('value');
+            if (!value) return;
+
+            if (copyToClipboard(value)) {
+                showToast('已复制文案');
+            } else {
+                showToast('复制失败');
+            }
+        });
+
+
+        // =============== 二维码图片复制功能 ===============
+        $(document).on('click', '.qrcode-wrapper', function () {
+            var imgUrl = $(this).data('url');
+            if (!imgUrl) return;
+
+            // 预加载图片
+            var $img = $('<img>').attr('src', imgUrl).css({
+                position: 'fixed',
+                left: '-9999px'
+            });
+
+            $('body').append($img);
+
+            $img.on('load', function () {
+                // 现代浏览器处理
+                if (navigator.clipboard && window.ClipboardItem) {
+                    var canvas = document.createElement('canvas');
+                    canvas.width = this.naturalWidth;
+                    canvas.height = this.naturalHeight;
+                    var ctx = canvas.getContext('2d');
+
+                    // 平滑绘制
+                    requestAnimationFrame(() => {
+                        ctx.drawImage(this, 0, 0);
+
+                        canvas.toBlob(function (blob) {
+                            navigator.clipboard.write([
+                                new ClipboardItem({'image/png': blob})
+                            ]).then(function () {
+                                showToast('二维码已复制');
+                            }).catch(function () {
+                                showFallback(imgUrl);
+                            });
+                        }, 'image/png');
+                    });
+                } else {
+                    showFallback(imgUrl);
+                }
+
+                $img.remove();
+            });
+
+            $img.on('error', function () {
+                showToast('图片加载失败');
+                $img.remove();
+            });
+        });
+
+        // 降级方案
+        function showFallback(imgUrl) {
+            var $modal = $(`
+            <div class="qrcode-fallback">
+                <div class="fallback-content">
+                    <p>请右键下方图片选择"复制图片"</p>
+                    <img src="${imgUrl}" class="fallback-img">
+                    <button class="btn btn-sm btn-close">关闭</button>
+                </div>
+            </div>
+        `);
+
+            $modal.find('.btn-close').click(function () {
+                $modal.remove();
+            });
+
+            $('body').append($modal);
+        }
+    });
+
+</script>
+
+<style>
+    /* 通用表格样式 */
+    .table {
+        width: 100%;
+        margin-bottom: 20px;
+        border-collapse: collapse;
+    }
+
+    .table th, .table td {
+        padding: 8px;
+        border: 1px solid #ddd;
+        vertical-align: middle;
+    }
+
+    .table th {
+        background-color: #f5f5f5;
+        text-align: center;
+    }
+
+    /* 可复制单元格样式 */
+    .copyable {
+        cursor: pointer;
+        position: relative;
+        transition: background-color 0.2s;
+    }
+
+    .copyable:hover {
+        background-color: #f5f5f5;
+    }
+
+    .copy-clicked {
+        background-color: #e0e0e0;
+    }
+
+    /* 特殊单元格样式 */
+    .link-cell {
+        padding: 8px !important;
+        max-width: 150px;
+    }
+
+    .link-text {
+        word-wrap: break-word;
+        white-space: normal;
+        overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        max-height: 60px;
+        line-height: 1.2;
+    }
+
+    .qrcode-cell {
+        padding: 8px !important;
+        text-align: center;
+    }
+
+    .qrcode-wrapper {
+        cursor: pointer;
+        display: inline-block;
+        padding: 5px;
+        border-radius: 4px;
+        transition: background-color 0.2s;
+    }
+
+    .qrcode-wrapper:hover {
+        background-color: #f5f5f5;
+    }
+
+    .qrcode-img {
+        height: 80px;
+        display: block;
+        margin: 0 auto;
+    }
+
+    /* 按钮样式 */
+    .btn-sm {
+        padding: 3px 8px;
+        font-size: 12px;
+    }
+
+    .copy-btn {
+        margin: 2px;
+        padding: 3px 8px;
+    }
+
+    /* 提示信息 */
+    .toast-message {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 4px;
+        z-index: 9999;
+        animation: fadeIn 0.3s;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* 降级弹窗 */
+    .qrcode-fallback {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 9999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .fallback-content {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        max-width: 90%;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .fallback-img {
+        max-width: 100%;
+        max-height: 60vh;
+        display: block;
+        margin: 15px auto;
+        border: 1px solid #ddd;
+    }
+
+    .btn-close {
+        margin-top: 10px;
+        background: #f0f0f0;
+        border: 1px solid #ddd;
+    }
+
+    /* QB结果表格样式 */
+    .qb-results {
+        margin-top: 20px;
+        margin-bottom: 30px;
+    }
+
+    .qb-results h4 {
+        margin-bottom: 15px;
+    }
+
+    .qb-order-details {
+        margin: 0;
+        padding-left: 20px;
+    }
+
+    .qb-order-details li {
+        list-style-type: disc;
+        margin-bottom: 3px;
+    }
+
+    /* 订单号显示样式 */
+    .order-numbers-cell {
+        padding: 8px !important;
+        min-width: 200px;
+    }
+
+    .order-numbers-wrapper {
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    .order-number-item {
+        padding: 3px 5px;
+        margin-bottom: 3px;
+        border-bottom: 1px solid #eee;
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    .order-number-item:hover {
+        background-color: #f5f5f5;
+    }
+
+    .order-number-item small {
+        opacity: 0.7;
+        font-size: 0.8em;
+    }
+
+    /* 紧凑型订单明细样式 */
+    .compact-order-details {
+        line-height: 1.5;
+        padding: 5px;
+    }
+
+    .order-line {
+        padding: 2px 0;
+        border-bottom: 1px dashed #eee;
+    }
+
+    .order-line:last-child {
+        border-bottom: none;
+    }
+
+    .order-total {
+        margin-top: 5px;
+        padding-top: 5px;
+        border-top: 1px solid #ddd;
+        font-size: 1.05em;
+    }
+
+    /* 强制宽度设置 */
+    .order-amount-cell {
+        width: 300px !important; /* 固定宽度 */
+        min-width: 300px !important;
+        max-width: 300px !important;
+        padding: 8px 12px !important;
+    }
+
+    .order-amount-wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .order-line {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap; /* 允许换行 */
+        line-height: 1.5;
+    }
+
+    .order-line > span {
+        margin: 0 2px;
+    }
+
+    .qb, .price {
+        font-weight: bold;
+        white-space: nowrap;
+    }
+
+    .operator {
+        color: #666;
+    }
+
+    .order-total {
+        margin-top: 6px;
+        padding-top: 6px;
+        border-top: 1px solid #eee;
+        text-align: right;
+        font-size: 1.05em;
+    }
+
+    /* 响应式调整 */
+    @media (max-width: 1200px) {
+        .order-amount-cell {
+            width: 280px !important;
+            min-width: 280px !important;
+            max-width: 280px !important;
+        }
+    }
+
+    @media (max-width: 992px) {
+        .order-amount-cell {
+            width: 240px !important;
+            min-width: 240px !important;
+            max-width: 240px !important;
+        }
+    }
+
+    .order-numbers-cell {
+        padding: 8px !important;
+        min-width: 200px;
+    }
+
+    .order-numbers-list {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    .order-number-row {
+        line-height: 1.4;
+        padding: 2px 0;
+        white-space: nowrap; /* 防止内容换行 */
+        overflow: hidden; /* 隐藏溢出内容 */
+        text-overflow: ellipsis; /* 超出显示省略号 */
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .order-number-row:last-child {
+        border-bottom: none;
+    }
+
+    .order-number {
+        font-weight: 500;
+    }
+
+    .order-details {
+        font-size: 0.85em;
+        color: #666;
+        margin-left: 2px;
+    }
+
+</style>
+{% endblock %}

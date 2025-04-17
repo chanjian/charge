@@ -3,6 +3,7 @@ import random
 from django.core.exceptions import ValidationError
 from django.db import models
 from decimal import Decimal
+from user_agents import parse
 from django.db.models import (
     Count, Sum, Q, F, Case, When, Value,
     IntegerField, DecimalField
@@ -11,7 +12,7 @@ from django.db.models import (
 class ActiveBaseModel(models.Model):
     active = models.SmallIntegerField(verbose_name="状态", default=1, choices=((1, "激活"), (0, "删除"),))
     created_time = models.DateTimeField(verbose_name="创建时间", auto_now_add=True,null=True,blank=True)
-    updated_time = models.DateTimeField(verbose_name="更新时间", auto_now=True)
+    updated_time = models.DateTimeField(verbose_name="更新时间", auto_now=True,null=True, blank=True)
     finished_time = models.DateTimeField(verbose_name="结束时间",blank=True,null=True)
 
     class Meta:
@@ -98,8 +99,8 @@ class UserInfo(ActiveBaseModel):
             return self.parent.get_root_admin()
         return None  # 如果没有管理员则返回None
 
-class LoginLog(models.Model):
-    """登录日志"""
+class LoginLog(ActiveBaseModel):
+    """登录日志主表"""
     login_time = models.DateTimeField(verbose_name="登录时间", auto_now_add=True)
     login_ip = models.CharField(verbose_name="登录ip", max_length=18)
     login_city = models.CharField(verbose_name="登录城市", max_length=64, null=True, blank=True)
@@ -110,6 +111,56 @@ class LoginLog(models.Model):
     map_location = models.CharField(verbose_name="地图定位", max_length=256, null=True, blank=True)
     exact_address = models.CharField(verbose_name="精确地址", max_length=256, null=True, blank=True)
     user = models.ForeignKey(to=UserInfo, verbose_name="用户", on_delete=models.CASCADE, related_name='loginlog')
+
+    class Meta:
+        ordering = ['-login_time']
+        verbose_name = "登录日志"
+
+    def get_best_result(self):
+        """获取最佳检测结果"""
+        return self.ip_detection_results.filter(is_valid=True).first()
+
+    def get_all_results(self):
+        """获取所有检测结果"""
+        return self.ip_detection_results.all()
+
+    def __str__(self):
+        return f"Login log for {self.user.username} at {self.login_time}"
+
+
+class IPDetectionResult(models.Model):
+    """IP检测详细结果"""
+    login_log = models.ForeignKey(
+        LoginLog,
+        on_delete=models.CASCADE,
+        related_name='ip_detection_results'
+    )
+
+    # 检测服务商信息
+    provider_name = models.CharField(verbose_name="服务商", max_length=64)
+    detection_time = models.DateTimeField(verbose_name="检测时间", auto_now_add=True)
+    is_valid = models.BooleanField(verbose_name="是否有效", default=False)
+    error_message = models.TextField(verbose_name="错误信息", null=True, blank=True)
+
+    # 检测结果详情
+    raw_data = models.JSONField(verbose_name="原始数据", default=dict)  # 存储完整的API返回数据
+    country = models.CharField(verbose_name="国家", max_length=64, null=True, blank=True)
+    region = models.CharField(verbose_name="地区", max_length=64, null=True, blank=True)
+    city = models.CharField(verbose_name="城市", max_length=64, null=True, blank=True)
+    latitude = models.FloatField(verbose_name="纬度", null=True, blank=True)
+    longitude = models.FloatField(verbose_name="经度", null=True, blank=True)
+    isp = models.CharField(verbose_name="ISP", max_length=128, null=True, blank=True)
+
+    # 新增字段
+    map_url = models.CharField(verbose_name="地图链接", max_length=256, null=True, blank=True)
+    exact_address = models.CharField(verbose_name="精确地址", max_length=256, null=True, blank=True)
+
+    class Meta:
+        ordering = ['detection_time']
+        verbose_name = "IP检测结果"
+
+    def __str__(self):
+        return f"{self.provider_name} - {self.city if self.is_valid else '失败'}"
 
 class GameName(ActiveBaseModel):
     name = models.CharField(max_length=50, verbose_name='游戏名称')
@@ -179,7 +230,7 @@ class GameOrder(ActiveBaseModel):
         (1, '待支付'),
         (2, '已支付'),
         (3, '超时'),
-        (4, '撤单'),
+        (4, '删除'),
     )
     order_status = models.SmallIntegerField(verbose_name='订单状态', choices=order_status_choice, default=1)  # 新增
     game = models.ForeignKey(GameName, on_delete=models.PROTECT, verbose_name='游戏名称',default=None,null=True)
@@ -285,6 +336,7 @@ class TransactionRecord(ActiveBaseModel):
         ('order_create', '创建订单'),
         ('order_cancel', '取消订单'),
         ('order_complete', '完成订单'),
+        ('order_outtime', '超时订单'),
 
     )
 

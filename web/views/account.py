@@ -1,12 +1,18 @@
 from django.shortcuts import render, redirect,HttpResponse
+
+from utils.info.create_loginlog import LoginInfoService
 from utils.response import BaseResponse
 from web import models
 from django.http import JsonResponse
 from django.conf import settings
 from web.forms.account import LoginForm,SmsLoginForm,MobileForm
-
-from utils.info.device_detector import DeviceDetector
 from utils.info.geoip_providers import GeoIPService
+from django.shortcuts import render, redirect
+from django.conf import settings
+# from web.forms import LoginForm
+from web.models import UserInfo,LoginLog
+from utils.info.geoip_providers import GeoIPService
+from web.tasks import process_login_info  # 直接导入任务函数
 import logging
 logger = logging.getLogger('web')
 
@@ -21,64 +27,33 @@ def login(request):
     if not form.is_valid():
         return render(request, "login.html", {'form': form})
 
-    data_dict = form.cleaned_data
+    # 用户认证
+    try:
+        data_dict = form.cleaned_data
+        user_object = UserInfo.objects.filter(active=1).filter(**data_dict).first()
 
-    user_object = models.UserInfo.objects.filter(active=1).filter(**data_dict).first()
+        # 2.1 校验失败
+        if not user_object:
+            return render(request, "login.html", {'form': form, 'error': "用户名或密码错误"})
 
-    # 2.1 校验失败
-    if not user_object:
-        return render(request, "login.html", {'form': form, 'error': "用户名或密码错误"})
+        # 2.2 校验成功，用户信息写入 session + 进入项目后台
+        request.session[settings.SESSION_KEY] = {'usertype': user_object.usertype, 'username': user_object.username, 'id': user_object.id}
 
-    # 2.2 校验成功，用户信息写入 session + 进入项目后台
-    request.session[settings.SESSION_KEY] = {'usertype':user_object.usertype,'username': user_object.username, 'id': user_object.id}
+        # 3. 创建登录记录
+        login_log = LoginInfoService.create_login_record(request, user_object)
 
-    # 3. 获取客户端信息并保存到 LoginLog
-    # try:
-    #     # 获取客户端 IP 地址
-    #     ip = GeoIPService.get_client_ip(request)
-    #     print(f"IP: {ip}")  # 调试
-    #
-    #     # 获取地理位置信息
-    #     geo_data = GeoIPService.get_location(request)  # 传递 request 对象
-    #     print(f"Geo Data: {geo_data}")  # 调试
-    #     if 'error' not in geo_data:
-    #         # 从多个服务商数据中融合城市信息
-    #         login_city = geo_data.get('city', '未知')
-    #         login_province = geo_data.get('region', '未知')
-    #         map_location = geo_data.get('baidu_map_url', '未知')
-    #         exact_address = geo_data.get('exact_address', '未知')
-    #     else:
-    #         login_city = '未知'
-    #         login_province = '未知'
-    #         map_location = '未知'
-    #         exact_address = '未知'
-    #
-    #     # 获取设备信息
-    #     device_info = DeviceDetector.get_advanced_device_info(request)
-    #     print(f"Device Info: {device_info}")  # 调试
-    #     login_device_type = device_info['device']['type']  # 使用设备类型
-    #     login_os = device_info['os']['family']
-    #     login_browser = device_info['browser']['family']
-    #
-    #     # 创建 LoginLog 记录
-    #     login_log = models.LoginLog.objects.create(
-    #         login_ip=ip,
-    #         login_city=login_city,
-    #         login_province=login_province,
-    #         login_device_type=login_device_type,
-    #         login_os=login_os,
-    #         login_browser=login_browser,
-    #         map_location=map_location,
-    #         exact_address=exact_address,
-    #
-    #     )
-    #     print(f"Login Log Created: {login_log.id}")  # 调试
-    #
-    # except Exception as e:
-    #     logger.error("Failed to save login log: %s", str(e), exc_info=True)
-    #     print(f"Error: {e}")  # 调试
+        # 调用异步任务处理登录信息
+        process_login_info.delay(login_log.id, request.META.get('HTTP_USER_AGENT', ''))
+        logger.info(f"用户 {user_object.username} 登录成功")
 
-    return redirect("/home/")
+        return redirect("/home/")
+
+    except Exception as e:
+        logger.error(f"登录处理失败: {str(e)}", exc_info=True)
+        return render(request, "login.html", {
+            "form": form,
+            "error": "系统错误，请稍后再试"
+        })
 
 
 def sms_login(request):
@@ -105,10 +80,22 @@ def sms_login(request):
         return JsonResponse(res.dict)
 
     # 4. 校验成功，用户信息写入session+进入项目后台
-    mapping = {"1": "ADMIN", "2": "CUSTOMER"}
     request.session[settings.NB_SESSION_KEY] = {'name': user_object.username, 'id': user_object.id}
     res.status = True
     res.data = settings.LOGIN_HOME
+
+    # 5. 创建登录记录（异步处理设备信息和IP定位）
+    print("===== request.META KEYS =====")
+    for key in sorted(request.META):
+        print(key)
+    ip = GeoIPService.get_client_ip(request)
+    print('Extracted IP:', ip)  # 此时应该能看出问题
+    # try:
+    #     LoginInfoService.create_login_record(request, user_object)
+    # except Exception as e:
+    #     logger.error(f"创建登录记录失败（不影响登录）: {str(e)}", exc_info=True)
+    #     # 即使记录失败也不影响用户登录
+
     return JsonResponse(res.dict)
 
 

@@ -1,17 +1,22 @@
-
 from user_agents import parse
 import json
 import logging
 
 logger = logging.getLogger(__name__)
+
+
 class DeviceDetector:
     @staticmethod
     def get_advanced_device_info(request):
-        """获取设备信息"""
+        """获取完整的设备信息"""
         ua_string = request.META.get('HTTP_USER_AGENT', '')
+        return DeviceDetector.parse_user_agent(ua_string, request)
+
+    @staticmethod
+    def parse_user_agent(ua_string, request=None):
+        """解析User-Agent字符串"""
         user_agent = parse(ua_string)
 
-        # 基础设备信息
         device_info = {
             'browser': {
                 'family': user_agent.browser.family,
@@ -27,6 +32,7 @@ class DeviceDetector:
                 'family': user_agent.device.family,
                 'brand': user_agent.device.brand,
                 'model': user_agent.device.model,
+                'type': DeviceDetector._get_device_type(user_agent),
             },
             'is_mobile': user_agent.is_mobile,
             'is_tablet': user_agent.is_tablet,
@@ -36,23 +42,21 @@ class DeviceDetector:
             'ua_string': ua_string,
         }
 
-        # 判断设备类型
-        if device_info['is_mobile']:
-            device_type = "Mobile"
-        elif device_info['is_tablet']:
-            device_type = "Tablet"
-        elif device_info['is_pc']:
-            device_type = "PC"
-        else:
-            device_type = "Unknown"
-
-        # 将设备类型添加到 device_info 中
-        device_info['device']['type'] = device_type
-
-        # 添加客户端屏幕信息
-        DeviceDetector._parse_screen_info(request, device_info)
+        if request:
+            DeviceDetector._parse_screen_info(request, device_info)
 
         return device_info
+
+    @staticmethod
+    def _get_device_type(user_agent):
+        """获取设备类型"""
+        if user_agent.is_mobile:
+            return "Mobile"
+        if user_agent.is_tablet:
+            return "Tablet"
+        if user_agent.is_pc:
+            return "PC"
+        return "Unknown"
 
     @staticmethod
     def _parse_screen_info(request, device_info):

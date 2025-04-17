@@ -231,17 +231,19 @@ def customer_charge(request,pk):
         queryset = queryset.filter(con)
 
     # 日期过滤
-    queryset, start_date, end_date, pager = filter_by_date_range(request, queryset)
+    package = filter_by_date_range(request, queryset)
+    queryset =  package.pop('queryset')
 
     pager = Pagination(request,queryset)
     form = CustomerChargeModelForm()
     context = {
+        **package,
         'pager':pager,
         'form':form,
         'pk':pk,
     }
-    # return render(request,'customer_charge.html',context)
-    return render(request, 'customer_charge.html', locals())
+    return render(request,'customer_charge.html',context)
+    # return render(request, 'customer_charge.html', locals())
 
 
 def customer_charge_add(request,pk):
@@ -282,13 +284,22 @@ class CustomerLoginLogForm(BootStrapModelForm):
 
 def customer_login_log(request,pk):
 
-    queryset = models.LoginLog.objects.filter(UserInfo_id=pk,UserInfo__active=1).select_related('UserInfo').order_by('-id')
-    pager = Pagination(request, queryset)
+    queryset = models.LoginLog.objects.filter(user_id=pk, user__active=1).select_related('user').order_by('-id')
+
 
     # 调用封装好的函数进行日期过滤
     from utils.time_filter import filter_by_date_range
-    queryset, start_date, end_date, pager = filter_by_date_range(request, queryset)
+    package = filter_by_date_range(request, queryset)
+    queryset = package.pop('queryset')
 
+    print(locals())
+
+    pager = Pagination(request, queryset)
+    context = {
+        **package,
+        'pager':pager
+    }
     form = CustomerLoginLogForm()
-    return render(request,'customer_login_log.html',locals())
+    # return render(request,'customer_login_log.html',locals())
+    return render(request, 'customer_login_log.html', context)
 

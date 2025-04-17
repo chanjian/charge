@@ -51,7 +51,8 @@ def gameorder_list(request):
         queryset = queryset.filter(con)
 
     # 日期过滤
-    queryset, start_date_str, end_date_str, date_fields = filter_by_date_range(request, queryset)
+    package = filter_by_date_range(request, queryset)
+    queryset = package.pop('queryset')
 
     # 初始化qb_results为空列表
     qb_results = []
@@ -134,6 +135,7 @@ def gameorder_list(request):
         del cleaned_query['applied_orders']
 
     context = {
+        **package,
         # 最重要的两个数据，分别用于订单循环和命中查询循环
         'pager': pager,
         'qb_results': qb_results,  # 现在这个变量总是有定义
@@ -143,8 +145,7 @@ def gameorder_list(request):
         'qb_discount': request.GET.get('qb_discount', '75'),
         'max_combine': request.GET.get('max_combine', '4'),
 
-        'start_date': start_date_str,  # 格式: 'YYYY-MM-DD'
-        'end_date': end_date_str,  # 格式: 'YYYY-MM-DD'
+
         'date_field': request.GET.get('date_field', 'created_time'),
 
         'tolerance': request.GET.get('tolerance', '10'),
@@ -160,7 +161,7 @@ def gameorder_finished_list(request):
 
     # 基础查询集
     if usertype == 'CUSTOMER':
-        queryset = models.GameOrder.objects.filter(consumer=request.userinfo).exclude(order_status=1).all()
+        queryset = models.GameOrder.objects.filter(consumer=request.userinfo).filter(order_status=2).all()
     # else:
     #     queryset = models.GameOrder.objects.filter(active=1).exclude(order_status=1).select_related(
     #         'consumer__level').annotate(
@@ -172,9 +173,9 @@ def gameorder_finished_list(request):
     #         )
     #     ).order_by('-is_creator', 'user_discount_percent', '-id')
     elif usertype in ['SUPPORT','SUPPLIER']:
-        queryset = models.GameOrder.objects.filter(outed_by__username=request.userinfo.username).exclude(order_status=1).all()
+        queryset = models.GameOrder.objects.filter(outed_by__username=request.userinfo.username).filter(order_status=2).all()
     else:
-        queryset = models.GameOrder.objects.exclude(order_status=1).all()
+        queryset = models.GameOrder.objects.filter(order_status=2).all()
 
     # 关键字查询
     con = Q()
@@ -185,7 +186,8 @@ def gameorder_finished_list(request):
         queryset = queryset.filter(con)
 
     # 日期过滤
-    queryset, start_date_str, end_date_str, date_fields = filter_by_date_range(request, queryset)
+    package = filter_by_date_range(request, queryset)
+    queryset = package.pop('queryset')
 
     # 分页处理
     pager = Pagination(request, queryset)
@@ -196,21 +198,63 @@ def gameorder_finished_list(request):
         del cleaned_query['applied_orders']
 
     context = {
+        **package,
         # 最重要的两个数据，分别用于订单循环和命中查询循环
         'pager': pager,
         'keyword': keyword,
         'qb_target': request.GET.get('qb_target'),
         'qb_discount': request.GET.get('qb_discount', '75'),
         'max_combine': request.GET.get('max_combine', '4'),
-
-        'start_date': start_date_str,  # 格式: 'YYYY-MM-DD'
-        'end_date': end_date_str,  # 格式: 'YYYY-MM-DD'
         'date_field': request.GET.get('date_field', 'created_time'),
 
         'tolerance': request.GET.get('tolerance', '10'),
         'cleaned_query': cleaned_query.urlencode(),
     }
     return render(request, 'gameorder_finished_list.html', context)
+
+
+def gameorder_deleted_list(request):
+    keyword = request.GET.get('keyword', '').strip()
+    usertype = request.userdict.usertype
+
+    # 基础查询集
+    if usertype == 'CUSTOMER':
+        queryset = models.GameOrder.objects.filter(consumer=request.userinfo).filter(order_status=4).all()
+
+    elif usertype in ['SUPPORT','SUPPLIER']:
+        queryset = models.GameOrder.objects.filter(outed_by__username=request.userinfo.username).filter(order_status=4).all()
+    else:
+        queryset = models.GameOrder.objects.filter(order_status=4).all()
+
+    # 关键字查询
+    con = Q()
+    if keyword:
+        con.connector = 'OR'
+        con.children.append(('consumer__username__contains', keyword))
+        con.children.append(('order_number__contains', keyword))
+        queryset = queryset.filter(con)
+
+    # 日期过滤
+    package = filter_by_date_range(request, queryset)
+    queryset = package.pop('queryset')
+
+    # 分页处理
+    pager = Pagination(request, queryset)
+
+
+
+    context = {
+        **package,
+
+        'pager': pager,
+        'keyword': keyword,
+
+        'date_field': request.GET.get('date_field', 'created_time'),
+    }
+    return render(request, 'gameorder_deleted_list.html', context)
+
+def gameorder_timeout_list(request):
+    pass
 
 
 def find_qb_combinations(request, qb_target, orders, qb_discount, max_combine=4):
@@ -483,7 +527,7 @@ class GameOrderAddModelForm(BootStrapForm, forms.ModelForm):
         self.fields['recharge_option'].queryset = GameDenomination.objects.none()
         if self.request.userinfo.usertype == 'ADMIN':
             self.fields['consumer'].queryset = UserInfo.objects.filter(
-                parent__username=self.request.userinfo.username).filter(active=1).all()
+                parent__username=self.request.userinfo.username).filter(usertype='CUSTOMER').filter(active=1).all()
         else:
             self.fields['consumer'].queryset = UserInfo.objects.filter(username=self.request.userinfo.username)
 
@@ -509,6 +553,11 @@ class GameOrderAddModelForm(BootStrapForm, forms.ModelForm):
             ).order_by('amount')
 
 
+
+
+from decimal import Decimal
+
+
 def gameorder_add(request):
     if request.method == 'GET':
         form = GameOrderAddModelForm(request=request)
@@ -529,9 +578,6 @@ def gameorder_add(request):
 
         try:
             # 获取存储路径
-            # qr_code_path = get_upload_path(qr_code_file,username)
-            # # full_path = os.path.join(settings.MEDIA_ROOT, qr_code_path)
-            # full_path = os.path.join(settings.MEDIA_ROOT, qr_code_path)
             qr_code_path, full_path = get_upload_path(qr_code_file, username)
 
             # 保存文件
@@ -550,20 +596,57 @@ def gameorder_add(request):
             form.instance.recharge_link = qr_link
             form.instance.qr_code = qr_code_path
 
-
-
         except Exception as e:
             form.add_error('consumer', f'文件处理出错: {str(e)}')
             print(e)
             return render(request, 'gameorder_form.html', {'form': form})
 
-    # 保存订单
-    order = form.save(commit=False)
-    order.created_by = request.userinfo  # 或 request.userinfo
-    order.save()
+    # 开始事务处理
+    try:
+        with transaction.atomic():
 
-    #对相应的消费者进行扣款
-    final = models.GameOrder.objects.filter()
+            # 获取消费者对象并加锁，防止其他事务并发操作
+            consumer_object = form.cleaned_data['consumer']  # 获取消费者信息（假设已经通过表单提交）
+            cus_object = models.UserInfo.objects.filter(id=consumer_object.id).select_for_update().first()
+
+            # 根据消费者等级计算折扣后的价格
+            # real_price = Decimal(form.cleaned_data['price_info']['final'])  # 确保是Decimal类型
+            real_price = Decimal(cus_object.level.percent/100) * form.cleaned_data['recharge_option'].amount
+
+            # 判断消费者账户余额是否足够
+            print(cus_object.account)
+            print(real_price)
+            if cus_object.account < real_price:
+                form.add_error('consumer', "账户余额不足")
+                return render(request, 'gameorder_form.html', {'form': form})
+
+            # 创建订单
+            order = form.save(commit=False)
+            order.created_by = request.userinfo  # 或 request.userinfo
+            order.save()  # 保存订单
+
+            # 扣除余额
+            cus_object.account -= real_price
+            cus_object.save()  # 更新余额
+
+            # 更新订单信息
+            order.real_price = real_price
+            order.save()  # 更新订单
+
+            # 生成交易记录
+            models.TransactionRecord.objects.create(
+                charge_type='order_create',  # 这表示扣款类型
+                amount=real_price,
+                customer_id=consumer_object.id,  # 使用消费者的 ID
+                order=order,
+                creator=request.userinfo,  # 操作的管理员
+                memo="订单支付扣款"
+            )
+
+    except Exception as e:
+        # 如果出现异常，返回错误信息
+        form.add_error('consumer', "创建订单失败: {}".format(str(e)))
+        return render(request, 'gameorder_form.html', {'form': form})
 
     messages.add_message(request, messages.SUCCESS, "新建订单成功")
     return redirect('gameorder_list')
@@ -729,7 +812,7 @@ def gameorder_delete(request):
             return JsonResponse(res.dict)
 
         # 执行软删除（设置active=0）
-        models.GameOrder.objects.filter(id=cid).update(active=0)
+        models.GameOrder.objects.filter(id=cid).update(active=0,order_status=4)
 
         # 可以在这里添加相关的交易记录（如果需要）
         # 例如记录删除操作到TransactionRecord
@@ -794,9 +877,13 @@ def gameorder_out(request, pk):
             qb_discount = request.GET.get('qb_discount', 80)
             print('qb_discount', qb_discount)
 
+
             # 验证操作权限
             if not operator.usertype in ['ADMIN', 'SUPPORT', 'SUPPLIER']:
                 return HttpResponseForbidden("无操作权限")
+
+            # 记录消费者初始账户余额，以便回滚
+            initial_balance = order.consumer.account
 
             # 计算核心费用项
             fee_details = calculate_fees(order, operator,qb_discount)
@@ -824,6 +911,13 @@ def gameorder_out(request, pk):
             return redirect('gameorder_list')
     except Exception as e:
         messages.add_message(request,settings.MESSAGE_DANGER_TAG,'出库失败，{}'.format(str(e)))
+
+        # 退还消费者的钱，恢复扣款的金额
+        if order.consumer:
+            # 退还订单实际支付金额
+            order = get_object_or_404(GameOrder, pk=pk)
+            order.consumer.account += order.real_price  # 恢复实际支付金额
+            order.consumer.save()
         return redirect('gameorder_list')
 
 
@@ -956,7 +1050,7 @@ def create_transaction_records(order, operator, fees,qb_discount):
         # 通过判断跨圈管理员字段是否为空来判断是否跨圈
         'is_cross_circle': bool(fees.get('cross_admin')),
         # 交易ID
-        't_id': generate_trade_number(),  # 使用生成器
+        # 't_id': generate_trade_number(),  # 使用生成器
         'from_user':order.consumer.get_root_admin(),
         'to_user': operator.get_root_admin(),
     }
@@ -999,7 +1093,15 @@ def create_transaction_records(order, operator, fees,qb_discount):
     else:
         fee_fields['admin_payment'] = order.price_info['original'] * qb_discount
 
-    return TransactionRecord.objects.create(**{**base_data, **fee_fields})
+    # 创建 TransactionRecord 实例
+    transaction_record = TransactionRecord.objects.create(**{**base_data, **fee_fields})
+    # 调用模型中的 generate_tid 方法生成交易编号
+    transaction_record.t_id = transaction_record.generate_tid()
+    # 保存实例，更新 t_id 字段
+    transaction_record.save()
+
+    # return TransactionRecord.objects.create(**{**base_data, **fee_fields})
+    return transaction_record
 
 
 def update_account_balances(fees):
@@ -1015,3 +1117,8 @@ def update_account_balances(fees):
         UserInfo.objects.filter(pk=fees['operator'].pk).update(
             account=F('account') + fees['supplier_payment']
         )
+
+
+
+
+

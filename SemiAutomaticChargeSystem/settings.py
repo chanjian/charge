@@ -80,9 +80,22 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-
+        }
     }
-}
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'charge',  # 数据库名字
+#         'USER': 'root',
+#         'PASSWORD': '123456',
+#         'HOST': '127.0.0.1',  # ip
+#         'PORT': 3306,
+#     }
+# }
+
+
 
 
 # Password validation
@@ -186,6 +199,8 @@ NB_MENU = {
             'children': [
                 {'text': "待支付游戏订单", 'url': "/gameorder/list/", 'name': "gameorder_list"},
                 {'text': "已处理游戏订单", 'url': "/gameorder/finished/list/", 'name': "gameorder_finished_list"},
+{'text': "已删除游戏订单", 'url': "/gameorder/deleted/list/", 'name': "gameorder_deleted_list"},
+                {'text': "已超时游戏订单", 'url': "/gameorder/timeout/list/", 'name': "gameorder_timeout_list"},
                 {'text': "游戏名称", 'url': "/gamename/list/", 'name': "gamename_list"},
                 {'text': "游戏面额", 'url': "/gamedenomination/list/", 'name': "gamedenomination_list"},
                 # {'text': "城市列表", 'url': "/city/list/", 'name': "city_list"},
@@ -221,6 +236,8 @@ NB_MENU = {
             'children': [
                 {'text': "待支付游戏订单", 'url': "/gameorder/list/", 'name': "gameorder_list"},
                 {'text': "已处理游戏订单", 'url': "/gameorder/finished/list/", 'name': "gameorder_finished_list"},
+                {'text': "已删除游戏订单", 'url': "/gameorder/deleted/list/", 'name': "gameorder_deleted_list"},
+                {'text': "已超时游戏订单", 'url': "/gameorder/timeout/list/", 'name': "gameorder_timeout_list"},
                 {'text': "游戏名称", 'url': "/gamename/list/", 'name': "gamename_list"},
                 {'text': "游戏面额", 'url': "/gamedenomination/list/", 'name': "gamedenomination_list"},
             ]
@@ -252,6 +269,8 @@ NB_MENU = {
             'children': [
                 {'text': "待支付游戏订单", 'url': "/gameorder/list/", 'name': "gameorder_list"},
                 {'text': "已处理游戏订单", 'url': "/gameorder/finished/list/", 'name': "gameorder_finished_list"},
+{'text': "已删除游戏订单", 'url': "/gameorder/deleted/list/", 'name': "gameorder_deleted_list"},
+                {'text': "已超时游戏订单", 'url': "/gameorder/timeout/list/", 'name': "gameorder_timeout_list"},
             ]
         },
 
@@ -383,7 +402,9 @@ PERMISSION = {
         "gameorder_delete": {"text": "删除游戏订单", 'parent': 'gameorder_list'},
         "gameorder_load_charge_options": {"text": "批量上传价格策略", 'parent': 'gameorder_list'},
 
-        "gameorder_finished_list": {"text": "客户列表", 'parent': None},
+        "gameorder_finished_list": {"text": "已处理游戏订单", 'parent': None},
+"gameorder_deleted_list": {"text": "已删除游戏订单", 'parent': None},
+"gameorder_timeout_list": {"text": "已超时游戏订单", 'parent': None},
 
         "gamename_list": {"text": "游戏名称列表", 'parent': None},
         "gamename_add": {"text": "添加游戏名称", 'parent': 'gamename_list'},
@@ -434,7 +455,9 @@ PERMISSION = {
         "gameorder_load_charge_options": {"text": "批量上传价格策略", 'parent': 'gameorder_list'},
         "gameorder_out": {"text": "出库游戏订单", 'parent': 'gameorder_list'},
 
-        "gameorder_finished_list": {"text": "客户列表", 'parent': None},
+                "gameorder_finished_list": {"text": "已处理游戏订单", 'parent': None},
+"gameorder_deleted_list": {"text": "已删除游戏订单", 'parent': None},
+"gameorder_timeout_list": {"text": "已超时游戏订单", 'parent': None},
 
         "gamename_list": {"text": "游戏名称列表", 'parent': None},
         "gamedenomination_list": {"text": "游戏面额表", 'parent': None},
@@ -454,7 +477,9 @@ PERMISSION = {
         "gameorder_load_charge_options": {"text": "批量上传价格策略", 'parent': 'gameorder_list'},
         "gameorder_out": {"text": "出库游戏订单", 'parent': 'gameorder_list'},
 
-        "gameorder_finished_list": {"text": "客户列表", 'parent': None},
+                "gameorder_finished_list": {"text": "已处理游戏订单", 'parent': None},
+"gameorder_deleted_list": {"text": "已删除游戏订单", 'parent': None},
+"gameorder_timeout_list": {"text": "已超时游戏订单", 'parent': None},
 
         "gamename_list": {"text": "游戏名称列表", 'parent': None},
         "gamedenomination_list": {"text": "游戏面额表", 'parent': None},
@@ -615,8 +640,10 @@ LOGGING = {
 import os
 # 用于定义 用户上传文件（媒体文件）的本地存储路径
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-print('BASE_DIR:',BASE_DIR)
+# print('BASE_DIR:',BASE_DIR)
 MEDIA_URL = "/media/"
+
+IPGEOLOCATION_API_KEY = ''
 
 
 SYS_FEE = 1
@@ -624,3 +651,19 @@ THIRD_FEE = 0.5
 
 DEFAULT_QB_DISCOUNT = 0.75
 DEFAULT_DISCOUNT = 0.8
+
+# Celery配置
+CELERY_BROKER_URL = 'redis://:chanjian8888@127.0.0.1:6379/11'  # Broker配置
+CELERY_RESULT_BACKEND = 'redis://:chanjian8888@127.0.0.1:6379/12'  # Backend配置
+CELERY_TIMEZONE = 'Asia/Shanghai'  # 时区配置
+CELERY_ENABLE_UTC = False  # 不使用UTC
+CELERY_TASK_SERIALIZER = 'json'  # 任务序列化方式
+CELERY_RESULT_SERIALIZER = 'json'  # 结果序列化方式
+CELERY_ACCEPT_CONTENT = ['json']  # 指定接受的内容类型
+CELERY_TASK_TRACK_STARTED = True  # 启用任务跟踪
+CELERY_TASK_TIME_LIMIT = 30 * 60  # 任务超时时间(30分钟)
+CELERY_RESULT_EXPIRES = 24 * 60 * 60  # 结果过期时间(24小时)
+
+CELERY_TASK_ALWAYS_EAGER = False
+
+

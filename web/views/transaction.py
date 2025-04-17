@@ -26,16 +26,16 @@ def transaction_list(request):
     # # 调用封装好的函数进行日期过滤
     # queryset, start_date, end_date, _ = filter_by_date_range(request, queryset)
     # 日期过滤
-    queryset, start_date_str, end_date_str, date_fields = filter_by_date_range(request, queryset)
+    package = filter_by_date_range(request, queryset)
+    queryset = package.pop('queryset')
 
     pager = Pagination(request, queryset)
 
 
     context = {
+        **package,
         'pager':pager,
         'keyword':keyword,
-        'start_date': start_date_str,  # 格式: 'YYYY-MM-DD'
-        'end_date': end_date_str,  # 格式: 'YYYY-MM-DD'
         'date_field': request.GET.get('date_field', 'created_time'),
     }
     # print(start_date,end_date,queryset)
