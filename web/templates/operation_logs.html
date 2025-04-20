@@ -1,0 +1,248 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <!-- 警告消息容器 -->
+    <div id="alertContainer"></div>
+
+    <div class="row">
+        <!-- 左侧表格区域 -->
+        <div class="col-md-8">
+            <!-- 当前管理员出库其他圈子的表格 -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5><i class="fas fa-share-square"></i> 当前圈子出库其他圈子的详情</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>对方管理员</th>
+                                    <th>订单金额</th>
+                                    <th>服务费</th>
+                                    <th>应收款</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in self_out_other_object %}
+                                <tr>
+                                    <td>{{ item.lender.username }}</td>
+                                    <td>¥{{ item.payment|default:"0.00" }}</td>
+                                    <td>¥{{ item.crossfee_amount|default:"0.00" }}</td>
+                                    <td class="font-weight-bold">¥{{ item.final_payment|default:"0.00" }}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-success clear-btn"
+                                                data-id="{{ item.id }}"
+                                                data-type="self_out"
+                                                data-target="{{ item.lender.username }}"
+                                                {% if not item.final_payment %}disabled title="已清空"{% endif %}>
+                                            <i class="fas fa-eraser"></i> 清空
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-4">
+                                        <i class="far fa-folder-open fa-2x"></i>
+                                        <p class="mt-2">暂无出库记录</p>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 其他圈子出库当前管理员的表格 -->
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5><i class="fas fa-inbox"></i> 其他圈子出库当前圈子的详情</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>对方管理员</th>
+                                    <th>订单金额</th>
+                                    <th>服务费</th>
+                                    <th>应收款</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in other_out_self_object %}
+                                <tr>
+                                    <td>{{ item.borrower.username }}</td>
+                                    <td>¥{{ item.payment|default:"0.00" }}</td>
+                                    <td>¥{{ item.crossfee_amount|default:"0.00" }}</td>
+                                    <td class="font-weight-bold">¥{{ item.final_payment|default:"0.00" }}</td>
+                                    <td>
+                                        <button class="btn btn-sm btn-success clear-btn"
+                                                data-id="{{ item.id }}"
+                                                data-type="other_out"
+                                                data-target="{{ item.borrower.username }}"
+                                                {% if not item.final_payment %}disabled title="已清空"{% endif %}>
+                                            <i class="fas fa-eraser"></i> 清空
+                                        </button>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-4">
+                                        <i class="far fa-folder-open fa-2x"></i>
+                                        <p class="mt-2">暂无入库记录</p>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右侧操作记录区域 -->
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-header bg-secondary text-white">
+                    <h5><i class="fas fa-history"></i> 操作记录</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="p-3" style="max-height: 800px; overflow-y: auto;">
+                        {% if operation_logs %}
+                        <ul class="list-group list-group-flush">
+                            {% for log in operation_logs %}
+                            <li class="list-group-item py-2">
+                                <div class="d-flex justify-content-between">
+                                    <small class="text-muted">{{ log.timestamp|date:"m-d H:i" }}</small>
+                                    <span class="badge badge-{% if log.action_type == 'CLEAR' %}danger{% else %}info{% endif %}">
+                                        {{ log.get_action_type_display }}
+                                    </span>
+                                </div>
+                                <div class="mt-1">{{ log.action }}</div>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                        <div class="text-center py-5 text-muted">
+                            <i class="far fa-clock fa-2x"></i>
+                            <p class="mt-2">暂无操作记录</p>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 清空确认模态框 -->
+<div class="modal fade" id="confirmClearModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="fas fa-exclamation-circle text-warning"></i> 确认清空</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>确认要清空与 <strong id="targetAdminName" class="text-primary"></strong> 的应收账款吗？</p>
+                <p class="text-muted small">此操作将记录在操作历史中且不可撤销。</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <i class="fas fa-times"></i> 取消
+                </button>
+                <button type="button" class="btn btn-primary" id="confirmClear">
+                    <i class="fas fa-check"></i> 确认清空
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(document).ready(function() {
+    let currentItemId = null;
+    let currentItemType = null;
+    let currentTargetName = null;
+
+    // 显示提示信息
+    function showAlert(message, type='success') {
+        const alert = `
+        <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+            <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+            ${message}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        `;
+        $('#alertContainer').html(alert);
+
+        // 5秒后自动消失
+        setTimeout(() => {
+            $('.alert').alert('close');
+        }, 5000);
+    }
+
+    // 清空按钮点击事件
+    $('.clear-btn:not(:disabled)').click(function() {
+        currentItemId = $(this).data('id');
+        currentItemType = $(this).data('type');
+        currentTargetName = $(this).data('target');
+
+        $('#targetAdminName').text(currentTargetName);
+        $('#confirmClearModal').modal('show');
+    });
+
+    // 确认清空按钮点击事件
+    $('#confirmClear').click(function() {
+        const $btn = $(this);
+        $btn.prop('disabled', true).html(`
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            处理中...
+        `);
+
+        $.ajax({
+            url: '{% url "crossfee_clear" %}',
+            method: 'POST',
+            data: {
+                id: currentItemId,
+                type: currentItemType,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function(response) {
+                $('#confirmClearModal').modal('hide');
+
+                if(response.success) {
+                    showAlert(response.message || '清空操作成功完成！');
+                    // 刷新整个页面以更新数据和操作记录
+                    setTimeout(() => location.reload(), 1000);
+                } else {
+                    showAlert(response.message || '操作失败，请重试', 'danger');
+                }
+            },
+            error: function(xhr) {
+                $('#confirmClearModal').modal('hide');
+                const errorMsg = xhr.responseJSON?.message || '服务器错误，请稍后重试';
+                showAlert(errorMsg, 'danger');
+            },
+            complete: function() {
+                $btn.prop('disabled', false).html(`
+                    <i class="fas fa-check"></i> 确认清空
+                `);
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

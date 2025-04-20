@@ -1125,7 +1125,7 @@ def calculate_fees(order, operator, qb_discount):
             lender=in_admin,
             borrower=out_admin,
             defaults={
-                'fee_amount': Decimal('0'),
+                'crossfee_amount': Decimal('0'),
                 'payment': Decimal('0')
             }
         )
@@ -1135,7 +1135,7 @@ def calculate_fees(order, operator, qb_discount):
             lender=in_admin,
             borrower=out_admin
         ).update(
-            fee_amount=F('fee_amount') + Decimal('0.5'),
+            crossfee_amount=F('crossfee_amount') + Decimal('0.5'),
             payment=F('payment') + payment
         )
         print("跨圈记录已更新")

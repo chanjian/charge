@@ -131,6 +131,32 @@ class CrossCircleFee(ActiveBaseModel):
         return self.crossfee_amount + self.payment
 
 
+class OperationLog(models.Model):
+    user = models.ForeignKey(
+        UserInfo,
+        on_delete=models.CASCADE,
+        related_name='operation_logs',
+        verbose_name="操作用户"
+    )
+    action = models.CharField(max_length=255, verbose_name="操作内容")
+    timestamp = models.DateTimeField(auto_now_add=True, verbose_name="操作时间")
+    related_object_id = models.PositiveIntegerField(null=True, blank=True, verbose_name="关联对象ID")
+    related_object_type = models.CharField(
+        max_length=50,
+        null=True,
+        blank=True,
+        verbose_name="关联对象类型"
+    )
+    is_own_action = models.BooleanField(default=False, verbose_name="是否本人操作")
+
+    class Meta:
+        verbose_name = "操作记录"
+        verbose_name_plural = "操作记录"
+        ordering = ['-timestamp']
+
+    def __str__(self):
+        return f"{self.user.username} - {self.action} - {self.timestamp}"
+
 
 
 

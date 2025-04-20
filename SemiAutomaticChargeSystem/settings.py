@@ -180,7 +180,7 @@ NB_MENU = {
             'children': [
 {'text': "个人中心", 'url': "/profile/", 'name': "profile"},
                 {'text': "数据详情", 'url': "/dashboard/", 'name': "dashboard_list"},
-                {'text': "客户管理", 'url': "/customer/list/", 'name': "customer_list"},
+                {'text': "用户管理", 'url': "/customer/list/", 'name': "customer_list"},
                 {'text': "交易记录", 'url': "/transaction/list/", 'name': "transaction_list"},
             ]
         },
@@ -191,7 +191,7 @@ NB_MENU = {
             'icon': "fa-users",
             'children': [
                 {'text': "等级管理", 'url': "/level/list/", 'name': "level_list"},
-                {'text': "客户管理", 'url': "/customer/list/", 'name': "customer_list"},
+                # {'text': "管理", 'url': "/customer/list/", 'name': "customer_list"},
             ]
         },
 
@@ -219,9 +219,9 @@ NB_MENU = {
             'children': [
                 {'text': "个人中心", 'url': "/profile/", 'name': "profile"},
                 {'text': "数据详情", 'url': "/dashboard/", 'name': "dashboard_list"},
-                {'text': "客户管理", 'url': "/customer/list/", 'name': "customer_list"},
+                {'text': "用户管理", 'url': "/customer/list/", 'name': "customer_list"},
                 {'text': "跨圈费管理", 'url': "/crossfee/manage/", 'name': "crossfee_manage"},
-                {'text': "跨圈费清空", 'url': "/crossfee/clear/", 'name': "crossfee_clear"},
+
                 {'text': "交易记录", 'url': "/transaction/list/", 'name': "transaction_list"},
             ]
         },
@@ -232,7 +232,7 @@ NB_MENU = {
             'children': [
                 {'text': "等级管理", 'url': "/level/list/", 'name': "level_list"},
                 {'text': "价格策略", 'url': "/policy/list/", 'name': "policy_list"},
-                {'text': "客户管理", 'url': "/customer/list/", 'name': "customer_list"},
+                # {'text': "客户管理", 'url': "/customer/list/", 'name': "customer_list"},
             ]
         },
 
@@ -437,6 +437,7 @@ PERMISSION = {
 
         'crossfee_manage':{'text':'跨圈费管理','parent':None},
 'crossfee_clear':{'text':'跨圈费管理','parent':None},
+'get_operation_logs':{'text':'跨圈费管理','parent':None},
 
 
         'dashboard_list':{'text':'数据看板','parent':None},

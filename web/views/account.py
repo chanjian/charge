@@ -1,5 +1,6 @@
 from io import BytesIO
 
+from django.db import transaction
 from django.db.models import Sum
 from django.shortcuts import render, redirect,HttpResponse
 
@@ -14,7 +15,7 @@ from utils.info.geoip_providers import GeoIPService
 from django.shortcuts import render, redirect
 from django.conf import settings
 # from web.forms import LoginForm
-from web.models import UserInfo, LoginLog, TransactionRecord
+from web.models import UserInfo, LoginLog, TransactionRecord, OperationLog, CrossCircleFee
 from utils.info.geoip_providers import GeoIPService
 from web.tasks import process_login_info  # 直接导入任务函数
 import logging
@@ -206,60 +207,80 @@ def profile(request):
 
 
 def crossfee_manage(request):
-
+    """ 跨圈费总览视图 """
     user_object = request.userinfo
-    # 查询所有入库人是其他管理员的圈子，而出库人，是当前查看的管理员的圈子
-    self_out_other_object = models.CrossCircleFee.objects.exclude(lender=user_object).filter(borrower=user_object).all()
-    # 查询所有入口人是当前查看人的圈子，出库人，不是当前查看人的圈子
-    other_out_self_object = models.CrossCircleFee.objects.filter(lender=user_object).exclude(borrower=user_object).all()
+
+    # 查询所有入库人是其他管理员的圈子，而出库人是当前查看的管理员的圈子
+    self_out_other_object = CrossCircleFee.objects.exclude(
+        lender=user_object
+    ).filter(
+        borrower=user_object
+    ).select_related('lender')
+
+    # 查询所有入库人是当前查看人的圈子，出库人不是当前查看人的圈子
+    other_out_self_object = CrossCircleFee.objects.filter(
+        lender=user_object
+    ).exclude(
+        borrower=user_object
+    ).select_related('borrower')
+
+    # 获取最近的操作记录
+    operation_logs = OperationLog.objects.filter(
+        user=user_object
+    ).order_by('-timestamp')[:20]
+
+    print(self_out_other_object)
+    print(other_out_self_object)
 
     context = {
-        'self_out_other_object':self_out_other_object,
-        'other_out_self_object':other_out_self_object,
+        'self_out_other_object': self_out_other_object,
+        'other_out_self_object': other_out_self_object,
+        'operation_logs': operation_logs,
     }
-    return render(request,'crossfee_manage.html',context)
-
-
-from django.http import JsonResponse
-from django.views.decorators.http import require_POST
-from django.utils import timezone
-
+    return render(request, 'crossfee_manage.html', context)
 
 
 def crossfee_clear(request):
     try:
-        item_id = request.POST.get('id')
-        item_type = request.POST.get('type')
+        cid = request.GET.get('cid')
+        if not cid:
+            return JsonResponse({'status': False, 'detail': '缺少必要参数'})
 
-        # 根据类型获取对应的记录
-        if item_type == 'self_out':
-            item = models.CrossCircleFee.objects.get(id=item_id, borrower=request.userinfo)
-        else:
-            item = models.CrossCircleFee.objects.get(id=item_id, lender=request.userinfo)
+        with transaction.atomic():
+            user = request.userinfo
+            item = CrossCircleFee.objects.get(id=cid)
 
-        # 创建操作记录
-        if item_type == 'self_out':
-            log_message = f"管理员 {request.userinfo.username} 清空了应向 {item.lender.username} 收取的费用"
-        else:
-            log_message = f"管理员 {request.userinfo.username} 清空了应支付给 {item.borrower.username} 的费用"
+            # 检查权限
+            if item.borrower != user and item.lender != user:
+                return JsonResponse({'status': False, 'detail': '您无权操作此记录'})
 
-        models.OperationLog.objects.create(
-            user=request.userinfo,
-            action=log_message,
-            timestamp=timezone.now()
-        )
+            other_user = item.lender if item.borrower == user else item.borrower
+            original_amount = item.crossfee_amount + item.payment
 
-        # 清空金额
-        item.payment = 0
-        item.fee_amount = 0
-        item.save()
+            # 创建操作记录 - 添加"我"字前缀
+            OperationLog.objects.create(
+                user=user,
+                action=f"我已确认收到与 {other_user.username} 的款项 (金额: ¥{original_amount:.2f})",
+                related_object_id=item.id,
+                related_object_type='CrossCircleFee',
+                is_own_action=True  # 添加标记表示是自己的操作
+            )
 
-        return JsonResponse({'success': True})
+            # 创建对方的操作记录
+            OperationLog.objects.create(
+                user=other_user,
+                action=f"{user.username} 已确认收到您的款项 (金额: ¥{original_amount:.2f})",
+                related_object_id=item.id,
+                related_object_type='CrossCircleFee',
+                is_own_action=False  # 标记为他人的操作
+            )
+
+            # 清空金额
+            item.crossfee_amount = 0
+            item.payment = 0
+            item.save()
+
+            return JsonResponse({'status': True, 'detail': '确认收款成功'})
 
     except Exception as e:
-        return JsonResponse({'success': False, 'message': str(e)})
-
-
-def get_operation_logs(request):
-    logs = models.OperationLog.objects.filter(user=request.userinfo).order_by('-timestamp')
-    return render(request, 'partials/operation_logs.html', {'logs': logs})
+        return JsonResponse({'status': False, 'detail': f'服务器错误: {str(e)}'})

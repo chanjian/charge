@@ -40,6 +40,7 @@ urlpatterns = [
 
     path('crossfee/manage/',account.crossfee_manage,name='crossfee_manage'),
     path('crossfee/clear/',account.crossfee_clear,name='crossfee_clear'),
+# path('crossfee/logs/', account.get_operation_logs, name='get_operation_logs'),
 
     path('policy/list/', policy.policy_list, name="policy_list"),
     path('policy/add/', policy.policy_add, name="policy_add"),
