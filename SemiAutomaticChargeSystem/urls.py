@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path
 from web.views import account, level, customer, gameorder, phoneorder, gamename, gamedenomination, dashboard, chart, \
     policy, transaction
-
+from web.views import tools
 from django.conf import settings
 from django.urls import path, re_path
 from django.views.static import serve
@@ -97,6 +97,9 @@ urlpatterns = [
 
 
     path('transaction/list/',transaction.transaction_list,name='transaction_list'),
+
+
+    path('qbsearch/',tools.qbsearch,name='qbsearch')
 
 ]
 

@@ -3,6 +3,8 @@
 {% load permission %}
 {% load color %}
 
+{% block title %}交易记录列表{% endblock %}
+
 {% block css %}
     <style>
         .error-message {
@@ -13,11 +15,7 @@
 {% endblock %}
 
 {% block content %}
-{#    <div style="margin-bottom: 5px" class="clearfix">#}
-{#        <button class="btn btn-success" id="btnAdd">#}
-{#            <span class="glyphicon glyphicon-plus-sign"></span> 新建#}
-{#        </button>#}
-{#    </div>#}
+
 
     <div class="right">
             <form class="form-inline" method="get">
@@ -105,10 +103,12 @@
                 <td>
                     <span class="btn btn-xs btn-{{ row.charge_type|color }}">{{ row.get_charge_type_display }}</span>
                 </td>
-                {% if row.charge_type == 1 or row.charge_type == 3 %}
+                {% if row.charge_type == 'recharge' or row.charge_type == 'order_outtime' %}
                 <td>+{{ row.amount }}</td>
-            {% else %}
+            {% elif row.charge_type == 'deduction' or row.charge_type == 'order_create'  %}
                     <td>-{{ row.amount }}</td>
+                {% else  %}
+                <td>{{ row.amount }}</td>
             {% endif %}
                 <td>
                     {% if row.order.order_number %}

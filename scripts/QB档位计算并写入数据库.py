@@ -1,7 +1,7 @@
 import itertools
 import os
 import django
-from NB_Platform import settings
+from SemiAutomaticChargeSystem import settings
 # 设置 Django 环境
 # os.environ.setdefault("DJANGO_SETTINGS_MODULE", "your_project.settings")
 

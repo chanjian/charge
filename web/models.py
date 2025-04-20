@@ -379,7 +379,7 @@ class TransactionRecord(ActiveBaseModel):
 
         'system_fee': "default",  # 系统费用 -> 默认
         'order_complete': "info",  # 跨圈借调费 -> 蓝色
-        'order_cancel': "primary",  # 提成费用 -> 深蓝
+        'order_delete': "primary",  # 提成费用 -> 深蓝
         'order_create': "warning",  # 创建订单 -> 黄色
         # 'order_cancel': "secondary",  # 取消订单 -> 灰色
     }
@@ -388,16 +388,9 @@ class TransactionRecord(ActiveBaseModel):
         ('recharge', '充值'),
         ('deduction', '扣款'),
 
-        # # 订单交易类
-        # ('system_fee', '系统费用'),
-        # ('cross_circle_fee', '跨圈借调费'),
-        # ('commission', '提成费用'),
-        # ('advance_pay', '垫付款项'),
-        # ('supplier_pay', '供应商结算'),
-
         # 订单状态类
         ('order_create', '创建订单'),
-        ('order_cancel', '取消订单'),
+        ('order_delete', '删除订单'),
         ('order_complete', '完成订单'),
         ('order_outtime', '超时订单'),
 
@@ -442,3 +435,20 @@ class TransactionRecord(ActiveBaseModel):
         time_part = now.strftime("%Y%m%d%H%M%S")
         random_part = str(random.randint(100, 999))  # 3位随机数
         return f"T{time_part}{random_part}"
+
+
+class QbSearch(models.Model):
+    qb = models.IntegerField(verbose_name="QB数量")
+    combo = models.CharField(max_length=255, verbose_name="组合")
+    points = models.IntegerField(verbose_name="合计点券")
+    calculation = models.TextField(verbose_name="计算过程")
+
+    class Meta:
+        db_table = "combinations"  # 自定义表名
+        unique_together = [("qb", "combo")]  # 设置联合唯一约束
+        indexes = [
+            models.Index(fields=["qb"], name="qb_index"),  # 为 qb 字段创建索引
+        ]
+
+    def __str__(self):
+        return f"QB: {self.qb} | 组合: {self.combo} | 点券: {self.points}"

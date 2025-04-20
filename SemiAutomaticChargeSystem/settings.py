@@ -249,6 +249,16 @@ NB_MENU = {
             ]
         },
 
+        {
+            'text': "快捷工具",
+            'icon': "fa-bolt",
+            'children': [
+                {'text': "QB命中匹配", 'url': "/qbsearch/", 'name': "qbsearch"},
+                # {'text': "价格策略", 'url': "/policy/list/", 'name': "policy_list"},
+                # {'text': "客户管理", 'url': "/customer/list/", 'name': "customer_list"},
+            ]
+        },
+
         # {
         #     'text': "话费订单管理",
         #     'icon': "fa-bed",
@@ -432,6 +442,7 @@ PERMISSION = {
 
     "ADMIN": {
         "home": {"text": "主页", 'parent': None},
+"qbsearch": {"text": "QB匹配策略", 'parent': None},
         'order_list':{'text':'订单展示','parent':'order'},
         'order_add':{'text':'创建订单','parent':'home'},
 

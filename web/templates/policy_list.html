@@ -1,6 +1,9 @@
 {% extends 'layout.html' %}
 {% load static %}
 {% load permission %}
+
+{% block title %}价格策略列表{% endblock %}
+
 {% block content %}
     <div style="margin-bottom: 5px">
         {% add_permission request 'policy_add'  %}
