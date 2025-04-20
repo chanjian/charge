@@ -25,37 +25,31 @@
 
 <div class="box">
     <h2 style="text-align: center;">用户登录</h2>
-    <form method="post" novalidate>
+     <form method="post" novalidate>
         {% csrf_token %}
-        {% for field in form %}
-            <div class="form-group" style="position: relative;margin-bottom: 25px">
-                <label>{{ field.label }}</label>
-                {{ field }}
-                <span style="color: red;position: absolute;">{{ field.errors.0 }}</span>
+        <div class="form-group">
+            <label>用户名</label>
+            {{ form.username }}
+            <span style="color: red;">{{ form.username.errors.0 }}</span>
+        </div>
+        <div class="form-group">
+            <label>密码</label>
+            {{ form.password }}
+            <span style="color: red;">{{ form.password.errors.0 }}</span>
+        </div>
+        <div class="form-group">
+            <label for="id_code">图片验证码</label>
+            <div class="row">
+                <div class="col-xs-7">
+                    {{ form.code }}
+                    <span style="color: red;">{{ form.code.errors.0 }}</span>
+                </div>
+                <div class="col-xs-5">
+                    <img id="image_code" src="/image/code/" style="width: 125px;">
+                </div>
             </div>
+        </div>
 
-        {% endfor %}
-    {{ form.errors.username.0 }}
-    {{ form.errors.password.0 }}
-
-{#        <div class="form-group">#}
-{#            <label>角色</label>#}
-{#            <select class="form-control" name="role">#}
-{#                <option value="2">客户</option>#}
-{#                <option value="1">管理员</option>#}
-{#            </select>#}
-{#            {{ form.role }}#}
-{#        </div>#}
-{#        <div class="form-group">#}
-{#            <label>用户名</label>#}
-{#            <input type="text" class="form-control" placeholder="用户名" name="username"/>#}
-{#            {{ form.username }}#}
-{#        </div>#}
-{#        <div class="form-group">#}
-{#            <label>密码</label>#}
-{#            <input type="password" class="form-control" placeholder="密码" name="password"/>#}
-{#            {{ form.password }}#}
-{#        </div>#}
         <button type="submit" class="btn btn-primary">登 录</button>
         <span style="color: red;">{{ error }}</span>
 

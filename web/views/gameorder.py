@@ -1,14 +1,12 @@
 from django.conf import settings
-from django import forms
 from django.db.models import Q
-from utils import tencent
 from utils.media_path import get_upload_path
 from utils.pager import Pagination
 from utils.qr_code_to_link import qr_code_to_link
 from utils.response import BaseResponse
 from utils.time_filter import filter_by_date_range
 from web import models
-from web.models import GameOrder, GameDenomination, TransactionRecord, UserInfo, Level, PricePolicy
+from web.models import GameOrder, GameDenomination, TransactionRecord, UserInfo, Level, PricePolicy, CrossCircleFee
 from decimal import Decimal, getcontext
 from django.db.models import Case, When, Value, IntegerField, F
 from itertools import combinations
@@ -20,10 +18,141 @@ from django.forms.models import model_to_dict
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from web.models import GameOrder, OrderEditLog
+from datetime import datetime
+from django.db import transaction
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponseForbidden
+from django import forms
+from web.models import OrderEditLog
 
 import logging
 logger = logging.getLogger('web')
 
+
+def gameorder_alllist(request):
+    keyword = request.GET.get('keyword', '').strip()
+    usertype = request.userdict.usertype
+
+
+    queryset = models.GameOrder.objects.all().select_related('consumer__level').annotate(
+            user_discount_percent=F('consumer__level__percent'),
+            is_creator=Case(
+                When(created_by=request.userinfo, then=Value(1)),
+                default=Value(0),
+                output_field=IntegerField()
+            )
+        ).order_by('-is_creator', 'user_discount_percent', '-id')
+
+    # 关键字查询
+    con = Q()
+    if keyword:
+        con.connector = 'OR'
+        con.children.append(('consumer__username__contains', keyword))
+        con.children.append(('order_number__contains', keyword))
+        queryset = queryset.filter(con)
+
+    # 日期过滤
+    # package = filter_by_date_range(request, queryset)
+    # queryset = package.pop('queryset')
+
+    # 初始化qb_results为空列表
+    qb_results = []
+
+    # 处理应用方案逻辑
+    applied_orders = request.GET.get('applied_orders')
+    if applied_orders:
+        # 分割订单号并过滤主查询集
+        applied_order_list = applied_orders.split(',')
+        queryset = queryset.filter(order_number__in=applied_order_list)
+
+        try:
+            # 获取这些订单的详细信息
+            applied_orders_data = []
+            for order in queryset:
+                applied_orders_data.append({
+                    'id': order.id,
+                    'amount': Decimal(str(order.recharge_option.amount)),
+                    'discount': Decimal(str(order.consumer.level.percent)) / Decimal('100'),
+                    'order_number': order.order_number,
+                    'consumer_admin': order.consumer.parent if order.consumer.parent else None,
+                })
+
+            # 直接构建单个结果
+            if applied_orders_data:
+                qb_target = sum(o['amount'] for o in applied_orders_data)
+                result = find_qb_combinations(
+                    request=request,
+                    orders=applied_orders_data,
+                    qb_target=qb_target,
+                    qb_discount=Decimal(request.GET.get('qb_discount', '75')) / 100,
+                    max_combine=len(applied_orders_data)
+                )
+                qb_results = result[:1] if result else []
+
+        except Exception as e:
+            logger.error(f"构建应用方案出错: {e}")
+
+    # 正常QB匹配逻辑
+    elif request.GET.get('qb_target'):
+        try:
+            qb_target = Decimal(request.GET.get('qb_target'))
+            qb_discount = Decimal(request.GET.get('qb_discount', '75')) / Decimal('100')
+            max_combine = int(request.GET.get('max_combine', '4'))
+
+            valid_orders = queryset.filter(
+                recharge_option__isnull=False,
+                consumer__level__percent__gt=qb_discount * 100
+            ).select_related('recharge_option', 'consumer__level')
+
+            orders = [
+                {
+                    'id': o.id,
+                    'amount': Decimal(str(o.recharge_option.amount)),
+                    'discount': Decimal(str(o.consumer.level.percent)) / Decimal('100'),
+                    'order_number': o.order_number,
+                    'consumer_admin': o.consumer.parent if o.consumer.parent else None,
+                }
+                for o in valid_orders
+            ]
+
+            qb_results = find_qb_combinations(
+                request=request,
+                orders=orders,
+                qb_target=qb_target,
+                qb_discount=qb_discount,
+                max_combine=max_combine
+            )
+
+        except (ValueError, TypeError, AttributeError) as e:
+            logger.error(f"QB匹配错误: {e}")
+            qb_results = []
+
+    # 分页处理
+    pager = Pagination(request, queryset)
+
+    # 准备清除应用方案的链接参数
+    cleaned_query = request.GET.copy()
+    if 'applied_orders' in cleaned_query:
+        del cleaned_query['applied_orders']
+
+    context = {
+        'queryset': queryset,
+        # 最重要的两个数据，分别用于订单循环和命中查询循环
+        'pager': pager,
+        'qb_results': qb_results,  # 现在这个变量总是有定义
+
+        'keyword': keyword,
+        'qb_target': request.GET.get('qb_target'),
+        'qb_discount': request.GET.get('qb_discount', '75'),
+        'max_combine': request.GET.get('max_combine', '4'),
+
+        'date_field': request.GET.get('date_field', 'created_time'),
+
+        'tolerance': request.GET.get('tolerance', '10'),
+        'applied_orders': applied_orders,
+        'cleaned_query': cleaned_query.urlencode(),
+    }
+    return render(request, 'gameorder_list.html', context)
 
 def gameorder_list(request):
     keyword = request.GET.get('keyword', '').strip()
@@ -254,7 +383,43 @@ def gameorder_deleted_list(request):
     return render(request, 'gameorder_deleted_list.html', context)
 
 def gameorder_timeout_list(request):
-    pass
+    keyword = request.GET.get('keyword', '').strip()
+    usertype = request.userdict.usertype
+
+    # 基础查询集
+    if usertype == 'CUSTOMER':
+        queryset = models.GameOrder.objects.filter(consumer=request.userinfo).filter(order_status=3).all()
+
+    elif usertype in ['SUPPORT', 'SUPPLIER']:
+        queryset = models.GameOrder.objects.filter(outed_by__username=request.userinfo.username).filter(
+            order_status=3).all()
+    else:
+        queryset = models.GameOrder.objects.filter(order_status=3).all()
+
+    # 关键字查询
+    con = Q()
+    if keyword:
+        con.connector = 'OR'
+        con.children.append(('consumer__username__contains', keyword))
+        con.children.append(('order_number__contains', keyword))
+        queryset = queryset.filter(con)
+
+    # 日期过滤
+    package = filter_by_date_range(request, queryset)
+    queryset = package.pop('queryset')
+
+    # 分页处理
+    pager = Pagination(request, queryset)
+
+    context = {
+        **package,
+
+        'pager': pager,
+        'keyword': keyword,
+
+        'date_field': request.GET.get('date_field', 'created_time'),
+    }
+    return render(request, 'gameorder_deleted_list.html', context)
 
 
 def find_qb_combinations(request, qb_target, orders, qb_discount, max_combine=4):
@@ -528,8 +693,9 @@ class GameOrderAddModelForm(BootStrapForm, forms.ModelForm):
         if self.request.userinfo.usertype == 'ADMIN':
             self.fields['consumer'].queryset = UserInfo.objects.filter(
                 parent__username=self.request.userinfo.username).filter(usertype='CUSTOMER').filter(active=1).all()
-        else:
+        elif self.request.userinfo.usertype == 'CUSTOMER':
             self.fields['consumer'].queryset = UserInfo.objects.filter(username=self.request.userinfo.username)
+
 
         # 如果有初始数据，设置对应的选项
         if 'game' in self.data and 'platform' in self.data:
@@ -634,14 +800,19 @@ def gameorder_add(request):
             order.save()  # 更新订单
 
             # 生成交易记录
-            models.TransactionRecord.objects.create(
+            transaction_record = models.TransactionRecord.objects.create(
                 charge_type='order_create',  # 这表示扣款类型
                 amount=real_price,
                 customer_id=consumer_object.id,  # 使用消费者的 ID
                 order=order,
                 creator=request.userinfo,  # 操作的管理员
-                memo="订单支付扣款"
+                memo="订单创建扣款"
             )
+
+            # 调用模型中的 generate_tid 方法生成交易编号
+            transaction_record.t_id = transaction_record.generate_tid()
+            # 保存实例，更新 t_id 字段
+            transaction_record.save()
 
     except Exception as e:
         # 如果出现异常，返回错误信息
@@ -825,9 +996,6 @@ def gameorder_delete(request):
         return JsonResponse(res.dict)
 
 
-from django import forms
-from web.models import OrderEditLog
-
 
 class OrderEditLogForm(forms.ModelForm):
     class Meta:
@@ -862,11 +1030,6 @@ def gameorder_edit_log(request, pk):
     return render(request, 'gameorder_edit_log.html', context)
 
 
-from django.db import transaction
-from django.shortcuts import get_object_or_404
-from django.http import HttpResponseForbidden
-
-
 def gameorder_out(request, pk):
     """ 完成订单（出库操作） """
     try:
@@ -882,14 +1045,15 @@ def gameorder_out(request, pk):
             if not operator.usertype in ['ADMIN', 'SUPPORT', 'SUPPLIER']:
                 return HttpResponseForbidden("无操作权限")
 
-            # 记录消费者初始账户余额，以便回滚
-            initial_balance = order.consumer.account
 
             # 计算核心费用项
-            fee_details = calculate_fees(order, operator,qb_discount)
+            fee_details = calculate_fees(order, operator, qb_discount)
 
-            # 创建交易记录
-            create_transaction_records(order, operator, fee_details,qb_discount)
+            # 更新相关账户余额
+            update_account_balances(fee_details)
+
+            # 创建出库交易记录
+            create_transaction_records(order, operator, fee_details, qb_discount)
 
             # 更新订单状态
             order.order_status = 2  # 已完成
@@ -897,37 +1061,25 @@ def gameorder_out(request, pk):
             order.finished_time = timezone.now()
             order.save()
 
-            # 更新相关账户余额
-            update_account_balances(fee_details)
+            # return redirect('gameorder_list')
 
-            # return JsonResponse({'status': 'success', 'fee_details': fee_details})
-            # 下发短信通知客户订单成功
-            # 2.发送短信 + 生成短信内容
-            # sms_str =  "{}你好，您的订单{}已经为您充值成功，请您在6小时内查收并确认收货。".format(order.consumer.username,order.order_number)
-            sms_str= order.consumer.username,order.order_number
-            mobile = order.consumer.mobile
-            is_success = tencent.send_sms(mobile, sms_str)
-
-            return redirect('gameorder_list')
     except Exception as e:
         messages.add_message(request,settings.MESSAGE_DANGER_TAG,'出库失败，{}'.format(str(e)))
 
-        # 退还消费者的钱，恢复扣款的金额
-        if order.consumer:
-            # 退还订单实际支付金额
-            order = get_object_or_404(GameOrder, pk=pk)
-            order.consumer.account += order.real_price  # 恢复实际支付金额
-            order.consumer.save()
-        return redirect('gameorder_list')
+
+    return redirect('gameorder_list')
 
 
-def calculate_fees(order, operator,qb_discount):
+def calculate_fees(order, operator, qb_discount):
     """ 计算费用明细 """
     price_info = order.price_info  # 假设已实现价格计算
     # 入库人所属圈子的管理员
     in_admin = order.created_by.get_root_admin()
+    print('in_admin: ',in_admin,type(in_admin))
     # 出库人所属圈子的管理员
     out_admin = operator.get_root_admin()
+    print('out_admin: ',out_admin,type(out_admin))
+
     is_same_circle = (in_admin == out_admin)
 
 
@@ -935,33 +1087,13 @@ def calculate_fees(order, operator,qb_discount):
     fees = {
         'operator': operator,  # 加入操作者对象
         'system_fee': Decimal(settings.SYS_FEE),  # 示例系统费
-        'cross_circle_fee': Decimal('0'),
+        'cross_circle_fee': Decimal(0),
 
         'commission': Decimal(0),
         'support_payment': Decimal(0),
         'supplier_payment': Decimal(0),
         'cross_admin': None
     }
-
-    # 获取操作者对应的等级配置
-    # try:
-    #     # 由于，只有客服，供应商，消费者有等级。另外，只有客服，供应商，管理员可以出库。因此，符合条件的只有客服和供应商，故而，此处考虑这两种角色
-    #     # operator_level = Level.objects.get(
-    #     #     # 当前用户对象的创建者，即管理员
-    #     #     creator=operator.get_root_admin(),
-    #     #     level_type=operator.usertype,  # 假设usertype与LEVEL_TYPE_CHOICES匹配
-    #     #     active=1
-    #     # )
-    #     operator_level = operator.level
-    #
-    #     # 对于供应商，此处获取的折扣，是为了计算订单完成时，应该结算给供应商多少钱
-    #     # 对于客服，此处获取的折扣，是为了计算订单完成时，应该结算给客服的提成是多少钱
-    #     discount = Decimal(operator_level.percent) / 100  # 将百分比转为小数（如90%→0.9）
-    # except Level.DoesNotExist:
-    #     # 而当找不到的时候，即try失败的时候，说明此时的用户是管理员身份
-    #     # 而对于管理员，并没有折扣的需求，暂定默认费率（根据业务需求设置）
-    #     discount = Decimal('0.9') if operator.usertype == 'ADMIN' else Decimal('0.8')
-    #     operator_level = None
 
     try:
         qb_discount = Decimal(str(qb_discount))
@@ -984,13 +1116,34 @@ def calculate_fees(order, operator,qb_discount):
 
     # 5. 跨圈逻辑
     if not is_same_circle:
+        # 如果入库，出库不属于同一个圈子
         fees['cross_circle_fee'] = Decimal(settings.THIRD_FEE)
         fees['cross_admin'] = out_admin
+
+        # 使用 get_or_create 来获取或创建跨圈记录
+        cross_circle_object, created = CrossCircleFee.objects.get_or_create(
+            lender=in_admin,
+            borrower=out_admin,
+            defaults={
+                'fee_amount': Decimal('0'),
+                'payment': Decimal('0')
+            }
+        )
+
+        payment = order.price_info['final']
+        CrossCircleFee.objects.filter(
+            lender=in_admin,
+            borrower=out_admin
+        ).update(
+            fee_amount=F('fee_amount') + Decimal('0.5'),
+            payment=F('payment') + payment
+        )
+        print("跨圈记录已更新")
 
 
     if operator.usertype == 'SUPPORT':
         # 跨圈客服提成（可能费率不同）
-        fees['commission'] = price_info['original'] * operator_level.percent
+        fees['commission'] = price_info['original'] * discount
         fees['support_payment'] = price_info['original'] * qb_discount
     elif operator.usertype == 'SUPPLIER':
         # 跨圈供应商结算（可能比例不同）
@@ -1002,25 +1155,10 @@ def calculate_fees(order, operator,qb_discount):
     return fees
 
 
-import random
-from datetime import datetime
 
 
-def generate_trade_number():
-    """生成交易号：T + 年月日 + 6位随机数"""
-    date_part = datetime.now()
-    random_part = "".join([str(random.randint(0, 9)) for _ in range(6)])
-    return f"T{date_part}{random_part}"
-
-
-def create_transaction_records(order, operator, fees,qb_discount):
+def create_transaction_records(order, operator, fees, qb_discount):
     """创建交易记录（适配Level模型）"""
-    # 获取当前出库人，即客服或者供应商的等级
-
-    # try:
-    #     operator_level = Level.objects.get(creator=operator.get_root_admin(),level_type=operator.usertype,active=1)
-    # except:
-    #     pass
 
     try:
         qb_discount = Decimal(str(qb_discount))
@@ -1028,6 +1166,7 @@ def create_transaction_records(order, operator, fees,qb_discount):
         qb_discount = Decimal(settings.DEFAULT_QB_DISCOUNT)
 
     discount = Decimal(settings.DEFAULT_DISCOUNT)  # 默认折扣
+
     operator_level = None
     if operator.usertype in ['SUPPORT', 'SUPPLIER']:
         try:
@@ -1065,18 +1204,18 @@ def create_transaction_records(order, operator, fees,qb_discount):
         'finished_time': datetime.now(),
     }
 
-    # 4. 获取操作者等级（安全方式）
-    operator_level = None
-    if operator.usertype in ['SUPPORT', 'SUPPLIER']:
-        try:
-            operator_level = operator.level  # 直接通过外键获取
-            if operator_level:  # 确保存在
-                discount = Decimal(str(operator_level.percent)) / 100
-            else:
-                discount = Decimal('0.8')  # 默认折扣
-        except Exception as e:
-            discount = Decimal('0.8')
-            operator_level = None
+    # # 4. 获取操作者等级（安全方式）
+    # operator_level = None
+    # if operator.usertype in ['SUPPORT', 'SUPPLIER']:
+    #     try:
+    #         operator_level = operator.level  # 直接通过外键获取
+    #         if operator_level:  # 确保存在
+    #             discount = Decimal(str(operator_level.percent)) / 100
+    #         else:
+    #             discount = Decimal('0.8')  # 默认折扣
+    #     except Exception as e:
+    #         discount = Decimal('0.8')
+    #         operator_level = None
 
     # 跨圈订单特殊处理
     if base_data['is_cross_circle']:
@@ -1109,15 +1248,74 @@ def update_account_balances(fees):
     # 这里需要根据实际支付关系更新相关账户
     # 例如：扣除客服垫付款、增加供应商结算款等
     # 使用F()表达式保证原子操作
-    if fees['support_payment'] > 0:
-        UserInfo.objects.filter(pk=fees['operator'].pk).update(
-            account=F('account') + fees['support_payment']
-        )
-    if fees['supplier_payment'] > 0:
-        UserInfo.objects.filter(pk=fees['operator'].pk).update(
-            account=F('account') + fees['supplier_payment']
-        )
 
+    operator = fees['operator']
+
+    if operator.usertype == 'ADMIN':
+        operator.account = operator.account + fees['system_fee']
+        operator.save()  # 确保保存更新
+    else:
+        admin = fees['operator'].parent
+        admin.account = admin.account + fees['system_fee']
+        admin.save()  # 确保保存更新
+
+        if operator.usertype == 'SUPPORT':
+            operator.account = operator.account + fees['support_payment'] + fees['commission']
+            operator.save()  # 确保保存更新
+        elif operator.usertype == 'SUPPLIER':
+            operator.account = operator.account + fees['supplier_payment']
+            operator.save()  # 确保保存更新
+
+
+# def update_account_balances(fees):
+#     """ 更新账户余额（示例逻辑） """
+#     # 这里需要根据实际支付关系更新相关账户
+#     # 例如：扣除客服垫付款、增加供应商结算款等
+#     # 使用F()表达式保证原子操作
+#
+#
+#     if fees['operator'].usertype == 'ADMIN':
+#         UserInfo.objects.filter(pk=fees['operator'].pk).update(
+#             account=F('account') + fees['system_fee']
+#         )
+#     else:
+#         admin = fees['operator'].parent
+#         UserInfo.objects.filter(pk=admin.pk).update(
+#             account=F('account') + fees['system_fee']
+#         )
+#
+#         if fees['operator'].usertype == 'SUPPORT':
+#             UserInfo.objects.filter(pk=fees['operator'].pk).update(
+#                 account=F('account') + fees['support_payment']
+#             )
+#         elif fees['operator'].usertype == 'SUPPLIER':
+#             UserInfo.objects.filter(pk=fees['operator'].pk).update(
+#                 account=F('account') + fees['supplier_payment']
+#             )
+
+# def update_account_balances(fees):
+#     """ 更新账户余额（示例逻辑） """
+#     # 这里需要根据实际支付关系更新相关账户
+#     # 例如：扣除客服垫付款、增加供应商结算款等
+#     # 使用F()表达式保证原子操作
+#     if fees['operator'].usertype == 'SUPPORT':
+#         UserInfo.objects.filter(pk=fees['operator'].pk).update(
+#             account=F('account') + fees['support_payment']
+#         )
+#     if fees['operator'].usertype == 'SUPPLIER':
+#         UserInfo.objects.filter(pk=fees['operator'].pk).update(
+#             account=F('account') + fees['supplier_payment']
+#         )
+#
+#     if fees['operator'].usertype == 'ADMIN':
+#         UserInfo.objects.filter(pk=fees['operator'].pk).update(
+#             account=F('account') + fees['system_fee']
+#         )
+#     else:
+#         admin = fees['operator'].parent
+#         UserInfo.objects.filter(pk=admin.pk).update(
+#             account=F('account') + fees['system_fee']
+#         )
 
 
 

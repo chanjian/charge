@@ -1,21 +1,18 @@
-import traceback
 from collections import defaultdict
-from datetime import datetime
-from utils.time_group import get_time_grouping
 from django.db.models.functions import TruncDate, ExtractMonth, Coalesce
 from django.shortcuts import render, redirect
 from django.db.models import (
     Count, Sum, Q, F, Case, When, Value,
     IntegerField, DecimalField
 )
-from django.db.models.functions import TruncDate
-from django.http import JsonResponse
 from django.utils.timezone import localtime
-
 from utils.time_filter import filter_by_date_range
 from web.models import TransactionRecord, GameOrder
 from django.db.models import ExpressionWrapper
 from django.utils import timezone
+from django.db.models import Q, Count, Sum, F, Value
+from django.db.models import DecimalField
+from django.http import JsonResponse
 import logging
 logger = logging.getLogger('web')
 
@@ -40,9 +37,7 @@ def dashboard_list(request):
     return render(request, 'dashboard_list.html',context)
 
 
-from django.db.models import Q, Count, Sum, F, Value
-from django.db.models import DecimalField
-from django.http import JsonResponse
+
 
 
 def chart_bar(request):
@@ -57,7 +52,8 @@ def chart_bar(request):
             Q(from_user=current_admin) | Q(to_user=current_admin),
             active=1,
             order__isnull=False,
-            order__order_status=2
+            order__outed_by__usertype__in = ['ADMIN','SUPPORT','SUPPLIER'], #确保出库人类型在这三个之间
+            order__order_status=2,
         ).select_related(
             'order', 'order__recharge_option', 'order__consumer',
             'order__created_by', 'order__outed_by', 'order__consumer__level'
@@ -72,16 +68,26 @@ def chart_bar(request):
         # 计算累计统计数据
         total_stats = {
             'total_orders': queryset.count(),
-            'admin_orders': queryset.filter(order__outed_by__usertype__in=['ADMIN', 'SUPERADMIN']).count(),
-            'support_orders': queryset.filter(order__outed_by__usertype='SUPPORT').count(),
-            'supplier_orders': queryset.filter(order__outed_by__usertype='SUPPLIER').count(),
-            'total_amount': queryset.aggregate(total=Sum('order__recharge_option__amount', output_field=DecimalField()))['total'] or 0,
-           'system_fee': queryset.aggregate(total=Sum('system_fee', output_field=DecimalField()))['total'] or 0,
-            'cross_fee': queryset.aggregate(total=Sum('cross_fee', output_field=DecimalField()))['total'] or 0,
-            'commission': queryset.aggregate(total=Sum('commission', output_field=DecimalField()))['total'] or 0,
-           'support_payment': queryset.filter(order__outed_by__usertype='SUPPORT').aggregate(total=Sum('support_payment', output_field=DecimalField()))['total'] or 0,
-           'supplier_payment': queryset.filter(order__outed_by__usertype='SUPPLIER').aggregate(total=Sum('supplier_payment', output_field=DecimalField()))['total'] or 0,
-            'admin_payment': queryset.filter(order__outed_by__usertype__in=['ADMIN', 'SUPERADMIN']).aggregate(total=Sum('admin_payment', output_field=DecimalField()))['total'] or 0,
+            # 本圈管理员出库本圈订单数     条件：出库人类型是管理员 且 出库人所属圈子的管理员名字和当前的登录用户一致
+            'admin_orders': queryset.filter(order__outed_by__usertype ='ADMIN').filter(from_user=current_admin).filter(to_user=current_admin).count(),
+            # 本圈客服出库本圈订单数  条件：出库人类型是客服 且 出库人所属圈子的管理员名字和当前的登录用户一致
+            'support_orders': queryset.filter(order__outed_by__usertype='SUPPORT').filter(from_user=current_admin).filter(to_user=current_admin).count(),
+            # 本圈供应商出库本圈订单数  条件：出库人类型是供应商 且 出库人所属圈子的管理员名字和当前的登录用户一致
+            'supplier_orders': queryset.filter(order__outed_by__usertype='SUPPLIER').filter(from_user=current_admin).filter(to_user=current_admin).count(),
+            # 其他圈出库本圈订单数     条件：出库人所属圈子的管理员名字和当前的登录用户不一致
+            'other_out_self_orders': queryset.filter(~Q(to_user=current_admin)).count(),
+            # 本圈出库其他圈订单数     条件：出库人所属圈子的管理员名字和当前的登录用户不一致
+            'self_out_other_orders': queryset.filter(~Q(from_user=current_admin)).filter(Q(to_user=current_admin)).count(),
+            # 本圈应支付系统费   条件： 出库人是本圈的
+           'system_fee': queryset.filter(to_user=current_admin).aggregate(total=Sum('system_fee', output_field=DecimalField()))['total'] or 0,
+            # 本圈应支付三方借调费  条件：本圈出库其他圈子订单的合计三方借调费   不包含其他圈子出库本圈的借调费
+            'cross_fee': queryset.filter(~Q(from_user=current_admin)).filter(Q(to_user=current_admin)).aggregate(total=Sum('cross_fee', output_field=DecimalField()))['total'] or 0,
+            # 总流水
+           #  'total_amount':queryset.aggregate(total=Sum('order__recharge_option__amount', output_field=DecimalField()))['total'] or 0,
+           #  'commission': queryset.aggregate(total=Sum('commission', output_field=DecimalField()))['total'] or 0,
+           # 'support_payment': queryset.filter(order__outed_by__usertype='SUPPORT').aggregate(total=Sum('support_payment', output_field=DecimalField()))['total'] or 0,
+           # 'supplier_payment': queryset.filter(order__outed_by__usertype='SUPPLIER').aggregate(total=Sum('supplier_payment', output_field=DecimalField()))['total'] or 0,
+           #  'admin_payment': queryset.filter(order__outed_by__usertype__in=['ADMIN', 'SUPERADMIN']).aggregate(total=Sum('admin_payment', output_field=DecimalField()))['total'] or 0,
         }
 
         # 计算利润
@@ -119,33 +125,31 @@ def chart_bar(request):
                 total=Coalesce(Sum('calc_profit'), Value(0, output_field=DecimalField()))
             )['total'] or 0
 
-        total_stats['admin_profit'] = calculate_profit(queryset, 'ADMIN')
-        total_stats['support_profit'] = calculate_profit(queryset, 'SUPPORT')
-        total_stats['supplier_profit'] = calculate_profit(queryset, 'SUPPLIER')
-        total_stats['total_profit'] = (
-                total_stats['admin_profit'] +
-                total_stats['support_profit'] +
-                total_stats['supplier_profit']
-        )
+        # total_stats['admin_profit'] = calculate_profit(queryset, 'ADMIN')
+        # total_stats['support_profit'] = calculate_profit(queryset, 'SUPPORT')
+        # total_stats['supplier_profit'] = calculate_profit(queryset, 'SUPPLIER')
+        # total_stats['total_profit'] = (total_stats['admin_profit'] +total_stats['support_profit'] +total_stats['supplier_profit'])
 
         # 准备系列数据
         series = [
             {"name": "总出库订单数", "type": "bar", "data": [float(total_stats['total_orders'])]},
-            {"name": "管理员出库订单", "type": "bar", "data": [float(total_stats['admin_orders'])]},
-            {"name": "客服出库订单", "type": "bar", "data": [float(total_stats['support_orders'])]},
-            {"name": "供应商出库订单", "type": "bar", "data": [float(total_stats['supplier_orders'])]},
-            {"name": "总流水", "type": "bar", "data": [float(total_stats['total_amount'])]},
+            {"name": "本圈管理员出库本圈订单", "type": "bar", "data": [float(total_stats['admin_orders'])]},
+            {"name": "本圈客服出库本圈订单", "type": "bar", "data": [float(total_stats['support_orders'])]},
+            {"name": "本圈供应商出库本圈订单", "type": "bar", "data": [float(total_stats['supplier_orders'])]},
+
+            {"name": "圈外出库本圈订单", "type": "bar", "data": [float(total_stats['other_out_self_orders'])]},
+            {"name": "本圈出库圈外订单", "type": "bar", "data": [float(total_stats['self_out_other_orders'])]},
+            # {"name": "总流水", "type": "bar", "data": [float(total_stats['total_amount'])]},
             {"name": "系统费", "type": "bar", "data": [float(total_stats['system_fee'])]},
             {"name": "三方借调费", "type": "bar", "data": [float(total_stats['cross_fee'])]},
-            {"name": "客服佣金", "type": "bar", "data": [float(total_stats['commission'])]},
-            {"name": "客服垫付资金", "type": "bar", "data": [float(total_stats['support_payment'])],
-             "color": "#FFA500"},
-            {"name": "供应商结算", "type": "bar", "data": [float(total_stats['supplier_payment'])], "color": "#32CD32"},
-            {"name": "管理员垫付", "type": "bar", "data": [float(total_stats['admin_payment'])], "color": "#9370DB"},
-            {"name": "总利润", "type": "bar", "data": [float(total_stats['total_profit'])]},
-            {"name": "管理员创造的利润", "type": "bar", "data": [float(total_stats['admin_profit'])]},
-            {"name": "客服创造的利润", "type": "bar", "data": [float(total_stats['support_profit'])]},
-            {"name": "供应商创造的利润", "type": "bar", "data": [float(total_stats['supplier_profit'])]}
+            # {"name": "客服佣金", "type": "bar", "data": [float(total_stats['commission'])]},
+            # {"name": "客服垫付资金", "type": "bar", "data": [float(total_stats['support_payment'])],"color": "#FFA500"},
+            # {"name": "供应商结算", "type": "bar", "data": [float(total_stats['supplier_payment'])], "color": "#32CD32"},
+            # {"name": "管理员垫付", "type": "bar", "data": [float(total_stats['admin_payment'])], "color": "#9370DB"},
+            # {"name": "总利润", "type": "bar", "data": [float(total_stats['total_profit'])]},
+            # {"name": "管理员创造的利润", "type": "bar", "data": [float(total_stats['admin_profit'])]},
+            # {"name": "客服创造的利润", "type": "bar", "data": [float(total_stats['support_profit'])]},
+            # {"name": "供应商创造的利润", "type": "bar", "data": [float(total_stats['supplier_profit'])]}
         ]
 
         # 收集订单详情
@@ -194,49 +198,20 @@ def chart_bar(request):
             "error": "数据加载失败",
             "detail": str(e)
         }, status=500)
-# def calculate_profit(queryset, user_type):
-#     """计算指定类型的利润"""
-#     # base_expr = ExpressionWrapper(
-#     #     (F('order__recharge_option__amount') *
-#     #      F('order__consumer__level__percent') / 100 -
-#     #      F('system_fee') -
-#     #      F('cross_fee'),
-#     #      output_field=DecimalField()
-#     # )
-#     base_expr = ExpressionWrapper(
-#         F('order__recharge_option__amount') * F('order__consumer__level__percent') / 100 - F('system_fee') - F(
-#             'cross_fee'),
-#         output_field=DecimalField()
-#     )
-#
-#     if user_type == 'SUPPORT':
-#         base_expr = base_expr - F('support_payment') - F('commission')
-#     elif user_type == 'SUPPLIER':
-#         base_expr = base_expr - F('supplier_payment')
-#     elif user_type == 'ADMIN':
-#         base_expr = base_expr - F('admin_payment')
-#
-#     return queryset.filter(
-#         order__outed_by__usertype=user_type
-#     ).annotate(
-#         calc_profit=base_expr
-#     ).aggregate(
-#         total=Coalesce(Sum('calc_profit'), Value(0, output_field=DecimalField()))
-#     )['total']
+
 
 
 def chart_consumer(request):
     """消费者消费统计（统一风格重构）"""
     try:
-        current_admin = request.userinfo.get_root_admin()
-        if not current_admin:
-            return JsonResponse({"status": False, "error": "管理员不存在"}, status=400)
+        current_user = request.userinfo
+        if not current_user:
+            return JsonResponse({"status": False, "error": "用户不存在"}, status=400)
 
         # 查询基础数据
         queryset = GameOrder.objects.filter(
             order_status=2,  # 已完成订单
-            consumer__parent=current_admin,
-            active=True
+            active=1,
         ).select_related('consumer', 'recharge_option', 'consumer__level')
 
         # 应用日期过滤
@@ -244,6 +219,15 @@ def chart_consumer(request):
         queryset = date_filter['queryset']
         start_date = date_filter['start_date_str']
         end_date = date_filter['end_date_str']
+
+        # 根据用户类型添加不同的过滤条件
+        if current_user.usertype in ['SUPERADMIN', 'ADMIN']:
+            queryset = queryset.filter(consumer__parent=current_user)
+        elif current_user.usertype == 'CUSTOMER':
+            # 消费者只能看到自己的数据
+            queryset = queryset.filter(consumer=current_user)
+        else:
+            return JsonResponse({"status": False, "error": "无权访问"}, status=403)
 
         # 统一数据结构
         consumer_data = defaultdict(lambda: {
@@ -321,9 +305,9 @@ def chart_consumer(request):
 def chart_supplier(request):
     """供应商统计（统一时间范围处理）"""
     try:
-        current_admin = request.userinfo.get_root_admin()
-        if not current_admin:
-            return JsonResponse({"status": False, "error": "管理员不存在"}, status=400)
+        current_user = request.userinfo
+        if not current_user:
+            return JsonResponse({"status": False, "error": "用户不存在"}, status=400)
 
         # 查询基础数据
         queryset = TransactionRecord.objects.filter(
@@ -331,8 +315,24 @@ def chart_supplier(request):
             order__isnull=False,
             order__order_status=2,
             order__outed_by__usertype='SUPPLIER',
+
             charge_type='order_complete',
         ).select_related('order', 'order__outed_by', 'order__recharge_option')
+
+        # 根据用户类型添加不同的过滤条件
+        if current_user.usertype in ['SUPERADMIN', 'ADMIN']:
+            # 管理员只能看到自己创建的供应商的数据
+            queryset = queryset.filter(
+                order__outed_by__usertype='SUPPLIER',
+                order__outed_by__parent=current_user  # 供应商的创建者是当前管理员
+            )
+        elif current_user.usertype == 'SUPPLIER':
+            # 供应商只能看到自己的数据
+            queryset = queryset.filter(
+                order__outed_by=current_user  # 订单的出库人是当前供应商
+            )
+        else:
+            return JsonResponse({"status": False, "error": "无权访问"}, status=403)
 
         # 应用日期过滤
         date_filter = filter_by_date_range(request, queryset)
@@ -348,10 +348,10 @@ def chart_supplier(request):
             'orders': []
         })
 
-        # 处理数据
+        # 处理数据 - 简化逻辑，因为查询集已经按权限过滤
         for record in queryset:
+            # 现在所有记录都符合权限要求，直接使用outed_by的用户名
             supplier_name = record.order.outed_by.username if record.order and record.order.outed_by else "未知供应商"
-
             # 累加统计数据
             supplier_data[supplier_name]['total_payment'] += float(record.supplier_payment)
             supplier_data[supplier_name]['order_count'] += 1
@@ -414,9 +414,9 @@ def chart_supplier(request):
 def chart_support(request):
     """客服统计（统一时间范围处理）"""
     try:
-        current_admin = request.userinfo.get_root_admin()
-        if not current_admin:
-            return JsonResponse({"status": False, "error": "管理员不存在"}, status=400)
+        current_user = request.userinfo
+        if not current_user:
+            return JsonResponse({"status": False, "error": "用户不存在"}, status=400)
 
         # 查询基础数据
         queryset = TransactionRecord.objects.filter(
@@ -426,6 +426,21 @@ def chart_support(request):
             order__outed_by__usertype='SUPPORT',
             charge_type='order_complete',
         ).select_related('order', 'order__outed_by', 'order__recharge_option')
+
+        # 根据用户类型添加不同的过滤条件
+        if current_user.usertype in ['SUPERADMIN', 'ADMIN']:
+            # 管理员只能看到自己创建的供应商的数据
+            queryset = queryset.filter(
+                order__outed_by__usertype='SUPPORT',
+                order__outed_by__parent=current_user  # 供应商的创建者是当前管理员
+            )
+        elif current_user.usertype == 'SUPPORT':
+            # 供应商只能看到自己的数据
+            queryset = queryset.filter(
+                order__outed_by=current_user  # 订单的出库人是当前供应商
+            )
+        else:
+            return JsonResponse({"status": False, "error": "无权访问"}, status=403)
 
         # 应用日期过滤
         date_filter = filter_by_date_range(request, queryset)

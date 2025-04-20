@@ -106,3 +106,18 @@ def has_permission(request, others):
         if status:
             return True
     return False
+
+
+@register.simple_tag
+def out_permission(request, name, *args, **kwargs):
+    # 4.无权限，返回空
+    if not check_permission(request, name):
+        return ""
+
+    # 5.有权限，通过"customer_add"反向生成URL
+    url = reverse(name, args=args, kwargs=kwargs)
+    tpl = """
+    <a href="{}?qb_discount={{ request.GET.qb_discount }}" class="btn btn-xs btn-warning" onclick="return confirm('确认出库吗？')">出库
+    </a>
+    """.format(url)
+    return mark_safe(tpl)

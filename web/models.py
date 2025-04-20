@@ -99,6 +99,43 @@ class UserInfo(ActiveBaseModel):
             return self.parent.get_root_admin()
         return None  # 如果没有管理员则返回None
 
+class CrossCircleFee(ActiveBaseModel):
+    """ 跨圈借调费（独立表，多对多关联管理员圈子） """
+
+    lender = models.ForeignKey(
+        UserInfo,
+        on_delete=models.PROTECT,
+        related_name='lent_cross_fees',
+        verbose_name="借出方管理员（入库人圈子）",
+        # limit_choices_to={'usertype__in': ['SUPERADMIN', 'ADMIN']}  # 仅限管理员
+    )
+    borrower = models.ForeignKey(
+        UserInfo,
+        on_delete=models.PROTECT,
+        related_name='borrowed_cross_fees',
+        verbose_name="借入方管理员（出库人圈子）",
+        # limit_choices_to={'usertype__in': ['SUPERADMIN', 'ADMIN']}  # 仅限管理员
+    )
+    crossfee_amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        verbose_name="跨圈借调费金额",
+        help_text="基于订单金额和借调规则计算得出",
+        default=0,
+    )
+    payment = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="应收账款")
+
+    @property
+    def final_payment(self):
+
+        return self.crossfee_amount + self.payment
+
+
+
+
+
+
+
 class LoginLog(ActiveBaseModel):
     """登录日志主表"""
     login_time = models.DateTimeField(verbose_name="登录时间", auto_now_add=True)

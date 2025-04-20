@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-t(pn-!g7pnh3r)vj8)%a4rj7^stwi%v2w-^lyql^kd*s3m=^5-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.31.47','127.0.0.1']
+ALLOWED_HOSTS = ['192.168.31.22','127.0.0.1']
 
 
 # Application definition
@@ -167,7 +167,8 @@ LOGIN_URL = "/login/"
 WHITE_URL = [
     '/login/',
     '/sms/login/',
-    '/sms/send/'
+    '/sms/send/',
+    '/image/code/',
 ]
 
 
@@ -175,8 +176,9 @@ NB_MENU = {
     'SUPERADMIN': [
         {
             'text': "数据看板",
-            'icon': "fa-bed",
+            'icon': "fa-table",
             'children': [
+{'text': "个人中心", 'url': "/profile/", 'name': "profile"},
                 {'text': "数据详情", 'url': "/dashboard/", 'name': "dashboard_list"},
                 {'text': "客户管理", 'url': "/customer/list/", 'name': "customer_list"},
                 {'text': "交易记录", 'url': "/transaction/list/", 'name': "transaction_list"},
@@ -186,7 +188,7 @@ NB_MENU = {
 
         {
             'text': "用户信息",
-            'icon': "fa-bed",
+            'icon': "fa-users",
             'children': [
                 {'text': "等级管理", 'url': "/level/list/", 'name': "level_list"},
                 {'text': "客户管理", 'url': "/customer/list/", 'name': "customer_list"},
@@ -195,11 +197,12 @@ NB_MENU = {
 
         {
             'text': "游戏订单管理",
-            'icon': "fa-bed",
+            'icon': "fa-solid fa-gamepad",
             'children': [
+{'text': "所有游戏订单", 'url': "/gameorder/alllist/", 'name': "gameorder_alllist"},
                 {'text': "待支付游戏订单", 'url': "/gameorder/list/", 'name': "gameorder_list"},
                 {'text': "已处理游戏订单", 'url': "/gameorder/finished/list/", 'name': "gameorder_finished_list"},
-{'text': "已删除游戏订单", 'url': "/gameorder/deleted/list/", 'name': "gameorder_deleted_list"},
+                {'text': "已删除游戏订单", 'url': "/gameorder/deleted/list/", 'name': "gameorder_deleted_list"},
                 {'text': "已超时游戏订单", 'url': "/gameorder/timeout/list/", 'name': "gameorder_timeout_list"},
                 {'text': "游戏名称", 'url': "/gamename/list/", 'name': "gamename_list"},
                 {'text': "游戏面额", 'url': "/gamedenomination/list/", 'name': "gamedenomination_list"},
@@ -212,17 +215,20 @@ NB_MENU = {
     'ADMIN': [
         {
             'text': "数据看板",
-            'icon': "fa-bed",
+            'icon': "fa-table",
             'children': [
+                {'text': "个人中心", 'url': "/profile/", 'name': "profile"},
                 {'text': "数据详情", 'url': "/dashboard/", 'name': "dashboard_list"},
                 {'text': "客户管理", 'url': "/customer/list/", 'name': "customer_list"},
+                {'text': "跨圈费管理", 'url': "/crossfee/manage/", 'name': "crossfee_manage"},
+                {'text': "跨圈费清空", 'url': "/crossfee/clear/", 'name': "crossfee_clear"},
                 {'text': "交易记录", 'url': "/transaction/list/", 'name': "transaction_list"},
             ]
         },
 
         {
             'text': "用户信息",
-            'icon': "fa-bed",
+            'icon': "fa-users",
             'children': [
                 {'text': "等级管理", 'url': "/level/list/", 'name': "level_list"},
                 {'text': "价格策略", 'url': "/policy/list/", 'name': "policy_list"},
@@ -232,7 +238,7 @@ NB_MENU = {
 
         {
             'text': "游戏订单管理",
-            'icon': "fa-bed",
+            'icon': "fa-solid fa-gamepad",
             'children': [
                 {'text': "待支付游戏订单", 'url': "/gameorder/list/", 'name': "gameorder_list"},
                 {'text': "已处理游戏订单", 'url': "/gameorder/finished/list/", 'name': "gameorder_finished_list"},
@@ -243,21 +249,22 @@ NB_MENU = {
             ]
         },
 
-        {
-            'text': "话费订单管理",
-            'icon': "fa-bed",
-            'children': [
-                {'text': "待支付话费订单", 'url': "/logging_module/pratice/", 'name': "logging_module_practice"},
-                {'text': "已处理话费订单", 'url': "/logging_module/pratice/settings/", 'name': "logging_module_practice_settings"},
-                # {'text': "价格策略", 'url': "/policy/list/", 'name': "policy_list"},
-            ]
-        },
+        # {
+        #     'text': "话费订单管理",
+        #     'icon': "fa-bed",
+        #     'children': [
+        #         {'text': "待支付话费订单", 'url': "/logging_module/pratice/", 'name': "logging_module_practice"},
+        #         {'text': "已处理话费订单", 'url': "/logging_module/pratice/settings/", 'name': "logging_module_practice_settings"},
+        #         # {'text': "价格策略", 'url': "/policy/list/", 'name': "policy_list"},
+        #     ]
+        # },
     ],
     'CUSTOMER': [
         {
             'text': "数据看板",
-            'icon': "fa-bed",
+            'icon': "fa-table",
             'children': [
+                {'text': "个人中心", 'url': "/profile/", 'name': "profile"},
                 {'text': "数据详情", 'url': "/dashboard/", 'name': "dashboard_list"},
                 {'text': "交易记录", 'url': "/transaction/list/", 'name': "transaction_list"},
             ]
@@ -265,30 +272,31 @@ NB_MENU = {
 
         {
             'text': "游戏订单管理",
-            'icon': "fa-bed",
+            'icon': "fa-solid fa-gamepad",
             'children': [
                 {'text': "待支付游戏订单", 'url': "/gameorder/list/", 'name': "gameorder_list"},
                 {'text': "已处理游戏订单", 'url': "/gameorder/finished/list/", 'name': "gameorder_finished_list"},
-{'text': "已删除游戏订单", 'url': "/gameorder/deleted/list/", 'name': "gameorder_deleted_list"},
+                {'text': "已删除游戏订单", 'url': "/gameorder/deleted/list/", 'name': "gameorder_deleted_list"},
                 {'text': "已超时游戏订单", 'url': "/gameorder/timeout/list/", 'name': "gameorder_timeout_list"},
             ]
         },
 
-        {
-            'text': "话费订单管理",
-            'icon': "fa-bed",
-            'children': [
-                {'text': "待支付话费订单", 'url': "/logging_module/pratice/", 'name': "logging_module_practice"},
-                {'text': "已处理话费订单", 'url': "/logging_module/pratice/settings/",'name': "logging_module_practice_settings"},
-            ]
-        },
+        # {
+        #     'text': "话费订单管理",
+        #     'icon': "fa-bed",
+        #     'children': [
+        #         {'text': "待支付话费订单", 'url': "/logging_module/pratice/", 'name': "logging_module_practice"},
+        #         {'text': "已处理话费订单", 'url': "/logging_module/pratice/settings/",'name': "logging_module_practice_settings"},
+        #     ]
+        # },
     ],
 
     'SUPPORT': [
         {
             'text': "数据看板",
-            'icon': "fa-bed",
+            'icon': "fa-table",
             'children': [
+{'text': "个人中心", 'url': "/profile/", 'name': "profile"},
                 {'text': "数据详情", 'url': "/dashboard/", 'name': "dashboard_list"},
                 {'text': "交易记录", 'url': "/transaction/list/", 'name': "transaction_list"},
             ]
@@ -297,28 +305,29 @@ NB_MENU = {
 
         {
             'text': "游戏订单管理",
-            'icon': "fa-bed",
+            'icon': "fa-solid fa-gamepad",
             'children': [
                 {'text': "待支付游戏订单", 'url': "/gameorder/list/", 'name': "gameorder_list"},
                 {'text': "已处理游戏订单", 'url': "/gameorder/finished/list/", 'name': "gameorder_finished_list"},
             ]
         },
 
-        {
-            'text': "话费订单管理",
-            'icon': "fa-bed",
-            'children': [
-                {'text': "待支付话费订单", 'url': "/logging_module/pratice/", 'name': "logging_module_practice"},
-                {'text': "已处理话费订单", 'url': "/logging_module/pratice/settings/", 'name': "logging_module_practice_settings"},
-            ]
-        },
+        # {
+        #     'text': "话费订单管理",
+        #     'icon': "fa-bed",
+        #     'children': [
+        #         {'text': "待支付话费订单", 'url': "/logging_module/pratice/", 'name': "logging_module_practice"},
+        #         {'text': "已处理话费订单", 'url': "/logging_module/pratice/settings/", 'name': "logging_module_practice_settings"},
+        #     ]
+        # },
     ],
 
     'SUPPLIER': [
         {
             'text': "数据看板",
-            'icon': "fa-bed",
+            'icon': "fa-table",
             'children': [
+{'text': "个人中心", 'url': "/profile/", 'name': "profile"},
                 {'text': "数据详情", 'url': "/dashboard/", 'name': "dashboard_list"},
                 {'text': "交易记录", 'url': "/transaction/list/", 'name': "transaction_list"},
             ]
@@ -327,29 +336,30 @@ NB_MENU = {
 
         {
             'text': "游戏订单管理",
-            'icon': "fa-bed",
+            'icon': "fa-solid fa-gamepad",
             'children': [
                 {'text': "待支付游戏订单", 'url': "/gameorder/list/", 'name': "gameorder_list"},
                 {'text': "已处理游戏订单", 'url': "/gameorder/finished/list/", 'name': "gameorder_finished_list"},
             ]
         },
 
-        {
-            'text': "话费订单管理",
-            'icon': "fa-bed",
-            'children': [
-                {'text': "待支付话费订单", 'url': "/logging_module/pratice/", 'name': "logging_module_practice"},
-                {'text': "已处理话费订单", 'url': "/logging_module/pratice/settings/", 'name': "logging_module_practice_settings"},
-            ]
-        },
+        # {
+        #     'text': "话费订单管理",
+        #     'icon': "fa-bed",
+        #     'children': [
+        #         {'text': "待支付话费订单", 'url': "/logging_module/pratice/", 'name': "logging_module_practice"},
+        #         {'text': "已处理话费订单", 'url': "/logging_module/pratice/settings/", 'name': "logging_module_practice_settings"},
+        #     ]
+        # },
     ],
 
 }
 
 PERMISSION_PUBLIC = {
     # "home": {"text": "主页", 'parent': None},
-
+    "image_code": {"text": "图片验证码", 'parent': None},
     "logout": {"text": "注销", 'parent': None},
+"profile": {"text": "个人中心", 'parent': None},
     "media": {"text": "用户上传的媒体文件", 'parent': None},
     "client_info_view": {"text": "info", 'parent': None},
     # "sms_send": {"text": "发送短信", 'parent': None},
@@ -375,6 +385,8 @@ PERMISSION = {
         'order_list':{'text':'订单展示','parent':'order'},
         'order_add':{'text':'创建订单','parent':'home'},
 
+
+
         "policy_list":{"text":"价格策略列表","parent":None},
         "policy_add": {"text": "创建价格策略", 'parent': 'policy_list'},
         "policy_edit": {"text": "编辑价格策略", 'parent': 'policy_list'},
@@ -395,12 +407,12 @@ PERMISSION = {
         "customer_charge_add": {"text": "添加客户交易记录", 'parent': 'customer_list'},
         "customer_login_log": {"text": "客户登录记录", 'parent': 'customer_list'},
 
-
+"gameorder_alllist": {"text": "所有游戏订单", 'parent': None},
         "gameorder_list": {"text": "游戏订单", 'parent': None},
         "gameorder_add": {"text": "创建游戏订单", 'parent': 'gameorder_list'},
         "gameorder_edit": {"text": "编辑游戏订单", 'parent': 'gameorder_list'},
         "gameorder_delete": {"text": "删除游戏订单", 'parent': 'gameorder_list'},
-        "gameorder_load_charge_options": {"text": "批量上传价格策略", 'parent': 'gameorder_list'},
+        "gameorder_load_charge_options": {"text": "充值档位", 'parent': 'gameorder_list'},
 
         "gameorder_finished_list": {"text": "已处理游戏订单", 'parent': None},
 "gameorder_deleted_list": {"text": "已删除游戏订单", 'parent': None},
@@ -422,6 +434,10 @@ PERMISSION = {
         "home": {"text": "主页", 'parent': None},
         'order_list':{'text':'订单展示','parent':'order'},
         'order_add':{'text':'创建订单','parent':'home'},
+
+        'crossfee_manage':{'text':'跨圈费管理','parent':None},
+'crossfee_clear':{'text':'跨圈费管理','parent':None},
+
 
         'dashboard_list':{'text':'数据看板','parent':None},
 
@@ -474,8 +490,8 @@ PERMISSION = {
         "gameorder_add": {"text": "创建游戏订单", 'parent': 'gameorder_list'},
         "gameorder_edit": {"text": "编辑游戏订单", 'parent': 'gameorder_list'},
         "gameorder_delete": {"text": "删除游戏订单", 'parent': 'gameorder_list'},
-        "gameorder_load_charge_options": {"text": "批量上传价格策略", 'parent': 'gameorder_list'},
-        "gameorder_out": {"text": "出库游戏订单", 'parent': 'gameorder_list'},
+        "gameorder_load_charge_options": {"text": "充值档位", 'parent': 'gameorder_list'},
+        # "gameorder_out": {"text": "出库游戏订单", 'parent': 'gameorder_list'},
 
                 "gameorder_finished_list": {"text": "已处理游戏订单", 'parent': None},
 "gameorder_deleted_list": {"text": "已删除游戏订单", 'parent': None},
@@ -494,10 +510,10 @@ PERMISSION = {
         'dashboard_list':{'text':'数据看板','parent':None},
 
         "gameorder_list": {"text": "游戏订单", 'parent': None},
-        "gameorder_add": {"text": "创建游戏订单", 'parent': 'gameorder_list'},
-        "gameorder_edit": {"text": "编辑游戏订单", 'parent': 'gameorder_list'},
-        "gameorder_delete": {"text": "删除游戏订单", 'parent': 'gameorder_list'},
-        "gameorder_load_charge_options": {"text": "批量上传价格策略", 'parent': 'gameorder_list'},
+        # "gameorder_add": {"text": "创建游戏订单", 'parent': 'gameorder_list'},
+        # "gameorder_edit": {"text": "编辑游戏订单", 'parent': 'gameorder_list'},
+        # "gameorder_delete": {"text": "删除游戏订单", 'parent': 'gameorder_list'},
+        # "gameorder_load_charge_options": {"text": "批量上传价格策略", 'parent': 'gameorder_list'},
         "gameorder_out": {"text": "出库游戏订单", 'parent': 'gameorder_list'},
 
         "gameorder_finished_list": {"text": "客户列表", 'parent': None},
@@ -514,10 +530,10 @@ PERMISSION = {
         'dashboard_list':{'text':'数据看板','parent':None},
 
         "gameorder_list": {"text": "游戏订单", 'parent': None},
-        "gameorder_add": {"text": "创建游戏订单", 'parent': 'gameorder_list'},
-        "gameorder_edit": {"text": "编辑游戏订单", 'parent': 'gameorder_list'},
-        "gameorder_delete": {"text": "删除游戏订单", 'parent': 'gameorder_list'},
-        "gameorder_load_charge_options": {"text": "批量上传价格策略", 'parent': 'gameorder_list'},
+        # "gameorder_add": {"text": "创建游戏订单", 'parent': 'gameorder_list'},
+        # "gameorder_edit": {"text": "编辑游戏订单", 'parent': 'gameorder_list'},
+        # "gameorder_delete": {"text": "删除游戏订单", 'parent': 'gameorder_list'},
+        # "gameorder_load_charge_options": {"text": "批量上传价格策略", 'parent': 'gameorder_list'},
         "gameorder_out": {"text": "出库游戏订单", 'parent': 'gameorder_list'},
 
         "gameorder_finished_list": {"text": "客户列表", 'parent': None},

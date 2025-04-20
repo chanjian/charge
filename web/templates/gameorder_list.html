@@ -20,9 +20,12 @@
 
 {% block content %}
 <div style="margin-bottom: 5px" class="clearfix">
+
     <div class="left" style="margin-right: 20px;">
         {% add_permission request 'gameorder_add' %}
     </div>
+
+
 
     {% if messages %}
         <div class="top-message">
@@ -35,60 +38,10 @@
         </div>
     {% endif %}
 
-    <!-- 日期筛选表单 -->
-    <div class="left">
-        <form method="get" class="form-inline" style="margin-bottom: 20px;">
-            <!-- 隐藏字段保持当前date_field -->
-            <input type="hidden" name="date_field" value="{{ request.GET.date_field|default:'created_time' }}">
 
-            <!-- 时间字段选择 -->
-            <div class="form-group">
-                <label class="control-label">时间字段</label>
-                <select name="date_field" class="form-control" style="width: 120px; margin-left: 5px;"
-                        onchange="this.form.submit()">
-                    <option value="created_time" {% if request.GET.date_field == 'created_time' %}selected{% endif %}>创建时间</option>
-                    <option value="updated_time" {% if request.GET.date_field == 'updated_time' %}selected{% endif %}>更新时间</option>
-                    <option value="finished_time" {% if request.GET.date_field == 'finished_time' %}selected{% endif %}>结束时间</option>
-                </select>
-            </div>
+    {% include "tag/time_filter.html" %}
 
-            <!-- 日期范围 -->
-            <div class="form-group">
-                <label class="control-label">开始日期</label>
-                <input type="date" class="form-control" name="start_date_str"
-                       value="{{ start_date_str }}">
-            </div>
-
-            <div class="form-group" style="margin-left: 10px;">
-                <label class="control-label">结束日期</label>
-                <input type="date" class="form-control" name="end_date_str"
-                       value="{{ end_date_str }}">
-            </div>
-
-            <!-- 操作按钮 -->
-            <div class="form-group" style="margin-left: 10px;">
-                <button type="submit" class="btn btn-primary">筛选</button>
-                <a href="?" class="btn btn-default" style="margin-left: 5px;">重置</a>
-            </div>
-
-
-            <!-- 快捷筛选（保持为链接但携带所有参数） -->
-            <div class="form-group" style="margin-left: 20px;">
-                <label class="control-label">快捷筛选</label>
-                <!-- 近3天 - 不需要传递start_date和end_date，days_range会自动计算 -->
-                <a href="?date_field={{ request.GET.date_field|default:'created_time' }}&days_range=3"
-                   class="btn btn-default {% if request.GET.days_range == '3' %}active{% endif %}">近3天</a>
-                <!-- 近一周 -->
-                <a href="?date_field={{ request.GET.date_field|default:'created_time' }}&days_range=7"
-                   class="btn btn-default {% if request.GET.days_range == '7' %}active{% endif %}">近一周</a>
-                <!-- 近一月 -->
-                <a href="?date_field={{ request.GET.date_field|default:'created_time' }}&days_range=30"
-                   class="btn btn-default {% if request.GET.days_range == '30' %}active{% endif %}">近一月</a>
-            </div>
-        </form>
-    </div>
-
-    <div class="right">
+     <div class="right">
         <form class="form-inline" method="get">
             <div class="form-group">
                 <input name="keyword" type="text" class="form-control" placeholder="请输订单号或消费者用户名" value="{{ keyword }}">
@@ -100,6 +53,7 @@
     </div>
 </div>
 
+    {% if request.userinfo.usertype in "SUPERADMIN ADMIN " %}
 <!-- QB匹配表单 - 简洁版 -->
 <div class="qb-match-form" style="margin-bottom: 10px;">
     <form method="get" class="form-inline" id="qbMatchForm">
@@ -155,6 +109,7 @@
         {% endif %}
     </form>
 </div>
+    {% endif %}
 
 
 <!-- QB匹配结果表格 -->
@@ -293,9 +248,11 @@
         <th>游戏名称</th>
         <th>充值选项</th>
         <th>原价</th>
+        {% if request.userinfo.usertype in "SUPERADMIN ADMIN CUSTOMER" %}
         <th>充值折扣</th>
         <th>折扣后金额</th>
         <th>说明文案</th>
+        {% endif %}
         <th style="width: 150px;">充值链接</th>
         <th>充值二维码</th>
         <th>订单消费者</th>
@@ -304,8 +261,10 @@
         <th>订单创建时间</th>
         <th>订单更新时间</th>
         <th>订单状态</th>
+        {% if request.userinfo.usertype in "SUPERADMIN ADMIN CUSTOMER " %}
         <th>订单编辑记录</th>
-        {% if request|has_permission:"customer_edit,customer_delete" %}
+        {% endif %}
+        {% if request|has_permission:"gameorder_edit,gameorder_delete,,gameorder_out" %}
         <th>操作</th>
         {% endif %}
     </tr>
@@ -319,10 +278,13 @@
         <td class="copyable" data-value="{{ row.game.name }}">{{ row.game.name }}</td>
         <td class="copyable" data-value="{{ row.recharge_option }}">{{ row.recharge_option }}</td>
         <td class="copyable" data-value="{{ row.price_info.original }}">{{ row.price_info.original }}</td>
-        <td class="copyable" data-value="{{ row.price_info.discount_percent }}%">{{ row.price_info.discount_percent }}%
-        </td>
+        {% if request.userinfo.usertype in "SUPERADMIN ADMIN CUSTOMER" %}
+        <td class="copyable" data-value="{{ row.price_info.discount_percent }}%">{{ row.price_info.discount_percent }}%</td>
         <td class="copyable" data-value="{{ row.price_info.final }}元">{{ row.price_info.final }}元</td>
+        {% endif %}
+        {% if request.userinfo.usertype in "SUPERADMIN ADMIN CUSTOMER" %}
         <td class="copyable" data-value="{{ row.description_text }}">{{ row.description_text }}</td>
+        {% endif %}
         <td class="copyable link-cell" data-value="{{ row.recharge_link|default:'' }}">
             {% if row.recharge_link %}
             <div class="link-text">{{ row.recharge_link }}</div>
@@ -347,20 +309,21 @@
         <td class="copyable" data-value="{{ row.updated_time|date:'Y-m-d H:i:s' }}">{{ row.updated_time|date:"Y-m-d H:i:s" }}
         </td>
         <td class="copyable" data-value="{{ row.get_order_status_display }}">{{ row.get_order_status_display }}</td>
+        {% if request.userinfo.usertype in "SUPERADMIN ADMIN CUSTOMER " %}
         <td>
-    <!-- 原有操作按钮... -->
-    <a href="{% url 'gameorder_edit_log' row.id %}"
+        <!-- 原有操作按钮... -->
+        <a href="{% url 'gameorder_edit_log' row.id %}"
        class="btn btn-default btn-xs"
        title="查看修改记录">
         <i class="glyphicon glyphicon-time"></i> 修改记录
-    </a>
-</td>
-        {% if request|has_permission:"gameorder_edit,gameorder_delete" %}
+        </a>
+        </td>
+        {% endif %}
+        {% if request|has_permission:"gameorder_edit,gameorder_delete,gameorder_out" %}
         <td>
             {% edit_permission request 'gameorder_edit' pk=row.id %}
             {% delete_permission request 'gameorder_delete' pk=row.id %}
-<a href="{% url 'gameorder_out' row.id %}?qb_discount={{ request.GET.qb_discount }}" class="btn btn-xs btn-warning"
-           onclick="return confirm('确认出库吗？')">出库</a>
+             {% out_permission request 'gameorder_out' pk=row.id %}
         </td>
         {% endif %}
     </tr>

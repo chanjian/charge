@@ -15,3 +15,20 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 # Load task modules from all registered Django app configs.
 app.autodiscover_tasks()
 
+
+
+from celery.schedules import crontab
+
+
+app.conf.beat_schedule = {
+    'check-timeout-orders-every-hour': {
+        'task': 'web.tasks.check_orders_timeout',
+        'schedule': crontab(minute=48),  # 每小时整点执行
+    },
+}
+
+# 使用这个命令启动
+# celery -A SemiAutomaticChargeSystem.celery  worker --loglevel=info --pool=solo
+
+# 使用这个启动定时任务
+# celery -A SemiAutomaticChargeSystem.celery beat -l debug

@@ -1,0 +1,179 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <!-- 左侧表格区域 -->
+        <div class="col-md-8">
+            <!-- 当前管理员出库其他圈子的表格 -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5>当前圈子出库其他圈子的详情</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>对方管理员</th>
+                                    <th>订单金额</th>
+                                    <th>三方服务费</th>
+                                    <th>应收账款</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in self_out_other_object %}
+                                <tr>
+                                    <td>{{ item.lender.username }}</td>
+                                    <td>{{ item.payment }}</td>
+                                    <td>{{ item.crossfee_amount }}</td>  <!-- 假设三方服务费字段，根据实际情况调整 -->
+                                    <td>{{ item.final_payment }}</td>
+                                    <td>
+                                         <a href="{% url 'crossfee_clear'  %}" class="btn btn-danger btn-xs clear-btn">清空</a>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="5" class="text-center">暂无数据</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 其他圈子出库当前管理员的表格 -->
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5>其他圈子出库当前圈子的详情</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>对方管理员</th>
+                                    <th>订单金额</th>
+                                    <th>三方服务费</th>
+                                    <th>应收账款</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in other_out_self_object %}
+                                <tr>
+                                    <td>{{ item.borrower.username }}</td>
+                                    <td>{{ item.payment }}</td>
+                                    <td>{{ item.crossfee_amount }}</td>  <!-- 假设三方服务费字段，根据实际情况调整 -->
+                                    <td>{{ item.final_payment }}</td>
+                                    <td>
+                                        <a href="{% url 'crossfee_clear'  %}" class="btn btn-danger btn-xs clear-btn">清空</a>
+                                    </td>
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                    <td colspan="5" class="text-center">暂无数据</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 右侧操作记录区域 -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-secondary text-white">
+                    <h5>操作记录</h5>
+                </div>
+                <div class="card-body">
+                    <div id="operationLogs" style="max-height: 800px; overflow-y: auto;">
+                        <!-- 操作记录将通过AJAX动态加载 -->
+                        <p class="text-muted">操作记录将显示在这里...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 清空确认模态框 -->
+<div class="modal fade" id="confirmClearModal" tabindex="-1" role="dialog" aria-labelledby="confirmClearModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmClearModalLabel">确认清空</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>确认要清空与 <strong id="targetAdminName"></strong> 的应收账款吗？</p>
+                <p>此操作将生成一条清空记录，且不可撤销。</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="confirmClear">确认清空</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(document).ready(function() {
+    let currentItemId = null;
+    let currentItemType = null;
+
+    // 清空按钮点击事件
+    $('.clear-btn').click(function() {
+        currentItemId = $(this).data('id');
+        currentItemType = $(this).data('type');
+        const targetName = $(this).data('target');
+
+        $('#targetAdminName').text(targetName);
+        $('#confirmClearModal').modal('show');
+    });
+
+    // 确认清空按钮点击事件
+    $('#confirmClear').click(function() {
+        $.ajax({
+            url: '/crossfee/clear/',  // 根据你的实际URL调整
+            method: 'POST',
+            data: {
+                id: currentItemId,
+                type: currentItemType,
+                csrfmiddlewaretoken: '{{ csrf_token }}'
+            },
+            success: function(response) {
+                if(response.success) {
+                    // 刷新页面或更新表格
+                    location.reload();
+                } else {
+                    alert('操作失败: ' + response.message);
+                }
+            },
+            error: function() {
+                alert('请求失败，请重试');
+            }
+        });
+    });
+
+    // 加载操作记录
+    function loadOperationLogs() {
+        $.get('/crossfee/logs/', function(data) {
+            $('#operationLogs').html(data);
+        });
+    }
+
+    // 初始加载操作记录
+    loadOperationLogs();
+});
+</script>
+{% endblock %}

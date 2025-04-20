@@ -18,10 +18,8 @@ logger = logging.getLogger('web')
 def customer_list(request):
     usertype = request.userdict.usertype
     user_object = models.UserInfo.objects.filter(username=request.userdict.username).first()
-    if usertype == 'SUPERADMIN':
-        queryset = models.UserInfo.objects.filter().all()
-    else:
-        queryset = models.UserInfo.objects.filter(parent=user_object)
+
+    queryset = models.UserInfo.objects.filter().all()
 
 
 
@@ -36,10 +34,20 @@ def customer_list(request):
     queryset = queryset.filter(con).filter(active=1).select_related('level','parent')
     # queryset = models.UserInfo.objects.filter(con).filter(active=1).select_related('level')
     obj = Pagination(request, queryset)
+
+    queryset_admin = queryset.filter(usertype='ADMIN')
+    queryset_customer = queryset.filter(parent=user_object).filter(usertype='CUSTOMER')
+    queryset_supplier = queryset.filter(parent=user_object).filter(usertype='SUPPLIER')
+    queryset_support = queryset.filter(parent=user_object).filter(usertype='SUPPORT')
+
     context = {
         "queryset": queryset[obj.start:obj.end],
         "pager_string": obj.html(),
-        "keyword": keyword
+        "keyword": keyword,
+        'queryset_admin': queryset_admin,
+        'queryset_customer': queryset_customer,
+        'queryset_supplier': queryset_supplier,
+        'queryset_support': queryset_support,
     }
 
     return render(request, 'customer_list.html', context)

@@ -86,9 +86,11 @@
         <th>游戏名称</th>
         <th>充值选项</th>
         <th>原价</th>
+        {% if request.userinfo.usertype in "SUPERADMIN ADMIN CUSTOMER " %}
         <th>充值折扣</th>
         <th>折扣后金额</th>
         <th>说明文案</th>
+        {% endif %}
         <th style="width: 150px;">充值链接</th>
         <th>充值二维码</th>
         <th>订单消费者</th>
@@ -114,10 +116,11 @@
         <td class="copyable" data-value="{{ row.game.name }}">{{ row.game.name }}</td>
         <td class="copyable" data-value="{{ row.recharge_option }}">{{ row.recharge_option }}</td>
         <td class="copyable" data-value="{{ row.price_info.original }}">{{ row.price_info.original }}</td>
-        <td class="copyable" data-value="{{ row.price_info.discount_percent }}%">{{ row.price_info.discount_percent }}%
-        </td>
+        {% if request.userinfo.usertype in "SUPERADMIN ADMIN CUSTOMER " %}
+        <td class="copyable" data-value="{{ row.price_info.discount_percent }}%">{{ row.price_info.discount_percent }}%</td>
         <td class="copyable" data-value="{{ row.price_info.final }}元">{{ row.price_info.final }}元</td>
         <td class="copyable" data-value="{{ row.description_text }}">{{ row.description_text }}</td>
+        {% endif %}
         <td class="copyable link-cell" data-value="{{ row.recharge_link|default:'' }}">
             {% if row.recharge_link %}
             <div class="link-text">{{ row.recharge_link }}</div>

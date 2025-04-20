@@ -23,6 +23,12 @@ class LoginForm(forms.Form):
         widget=forms.PasswordInput(attrs={"class": "form-control", "placeholder": "密码"},render_value=True)
     )
 
+    code = forms.CharField(
+        label="图片验证码",
+        widget=forms.TextInput(attrs={"class": "form-control", "placeholder": "图片验证码"}),
+        required=True
+    )
+
     # def clean_username(self):
     #     return
 

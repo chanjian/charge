@@ -46,6 +46,11 @@
         </div>
     </div>
 
+<div class="panel panel-default">
+    <div class="panel-heading">
+          <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+            管理员列表
+      </div>
     <table class="table table-bordered">
         <thead>
         <tr>
@@ -65,7 +70,7 @@
         </tr>
         </thead>
         <tbody>
-        {% for row in queryset %}
+        {% for row in queryset_admin %}
             <tr row-id="{{ row.id }}">
                 <td>{{ row.id }}</td>
                 <td>{{ row.username }}  ({{ row.get_usertype_display }})</td>
@@ -94,6 +99,173 @@
 
         </tbody>
     </table>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+          <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+            消费者列表
+      </div>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>用户名(用户类型)</th>
+            <th>手机号</th>
+            <th>账户余额</th>
+            <th>级别</th>
+            <th>注册时间</th>
+            <th>交易记录</th>
+            <th>登录记录</th>
+            <th>创建者</th>
+            <th>重置密码</th>
+            {% if request|has_permission:"customer_edit,customer_delete" %}
+            <th>操作</th>
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in queryset_customer %}
+            <tr row-id="{{ row.id }}">
+                <td>{{ row.id }}</td>
+                <td>{{ row.username }}  ({{ row.get_usertype_display }})</td>
+                <td>{{ row.mobile }}</td>
+                <td>{{ row.account }}</td>
+                <td>{{ row.level.title }}（{{ row.level.percent }}%）</td>
+                <td>{{ row.created_time|date:"Y-m-d H:i:s" }}</td>
+                <td>
+                    <a href="{% url 'customer_charge' pk=row.id %}">交易记录</a>
+                </td>
+                <td>
+                    <a href="{% url 'customer_login_log' pk=row.id %}">登录记录</a>
+                </td>
+                <td>{{ row.parent }}</td>
+                <td>
+                    <a href="{% url 'customer_reset' pk=row.id %}">重置密码</a>
+                </td>
+                {% if request|has_permission:"customer_edit,customer_delete" %}
+                <td>
+                    {% edit_permission request 'customer_edit' pk=row.id %}
+                    {% delete_permission request 'customer_delete' pk=row.id %}
+                </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+          <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+            供应商列表
+      </div>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>用户名(用户类型)</th>
+            <th>手机号</th>
+            <th>账户余额</th>
+            <th>级别</th>
+            <th>注册时间</th>
+            <th>交易记录</th>
+            <th>登录记录</th>
+            <th>创建者</th>
+            <th>重置密码</th>
+            {% if request|has_permission:"customer_edit,customer_delete" %}
+            <th>操作</th>
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in queryset_supplier %}
+            <tr row-id="{{ row.id }}">
+                <td>{{ row.id }}</td>
+                <td>{{ row.username }}  ({{ row.get_usertype_display }})</td>
+                <td>{{ row.mobile }}</td>
+                <td>{{ row.account }}</td>
+                <td>{{ row.level.title }}（{{ row.level.percent }}%）</td>
+                <td>{{ row.created_time|date:"Y-m-d H:i:s" }}</td>
+                <td>
+                    <a href="{% url 'customer_charge' pk=row.id %}">交易记录</a>
+                </td>
+                <td>
+                    <a href="{% url 'customer_login_log' pk=row.id %}">登录记录</a>
+                </td>
+                <td>{{ row.parent }}</td>
+                <td>
+                    <a href="{% url 'customer_reset' pk=row.id %}">重置密码</a>
+                </td>
+                {% if request|has_permission:"customer_edit,customer_delete" %}
+                <td>
+                    {% edit_permission request 'customer_edit' pk=row.id %}
+                    {% delete_permission request 'customer_delete' pk=row.id %}
+                </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+          <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+            客服列表
+      </div>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>用户名(用户类型)</th>
+            <th>手机号</th>
+            <th>账户余额</th>
+            <th>级别</th>
+            <th>注册时间</th>
+            <th>交易记录</th>
+            <th>登录记录</th>
+            <th>创建者</th>
+            <th>重置密码</th>
+            {% if request|has_permission:"customer_edit,customer_delete" %}
+            <th>操作</th>
+            {% endif %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for row in queryset_support %}
+            <tr row-id="{{ row.id }}">
+                <td>{{ row.id }}</td>
+                <td>{{ row.username }}  ({{ row.get_usertype_display }})</td>
+                <td>{{ row.mobile }}</td>
+                <td>{{ row.account }}</td>
+                <td>{{ row.level.title }}（{{ row.level.percent }}%）</td>
+                <td>{{ row.created_time|date:"Y-m-d H:i:s" }}</td>
+                <td>
+                    <a href="{% url 'customer_charge' pk=row.id %}">交易记录</a>
+                </td>
+                <td>
+                    <a href="{% url 'customer_login_log' pk=row.id %}">登录记录</a>
+                </td>
+                <td>{{ row.parent }}</td>
+                <td>
+                    <a href="{% url 'customer_reset' pk=row.id %}">重置密码</a>
+                </td>
+                {% if request|has_permission:"customer_edit,customer_delete" %}
+                <td>
+                    {% edit_permission request 'customer_edit' pk=row.id %}
+                    {% delete_permission request 'customer_delete' pk=row.id %}
+                </td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+
+        </tbody>
+    </table>
+</div>
 
     <ul class="pagination">
         {{ pager_string }}

@@ -34,7 +34,12 @@ urlpatterns = [
     path('sms/send/', account.sms_send, name="sms_send"),
     path('logout/', account.logout, name="logout"),
     path('home/', account.home, name="home"),
-    path('order/',account.order,name='order'),
+
+    path('image/code/', account.image_code,name='image_code'),
+    path('profile/', account.profile, name='profile'),
+
+    path('crossfee/manage/',account.crossfee_manage,name='crossfee_manage'),
+    path('crossfee/clear/',account.crossfee_clear,name='crossfee_clear'),
 
     path('policy/list/', policy.policy_list, name="policy_list"),
     path('policy/add/', policy.policy_add, name="policy_add"),
@@ -57,6 +62,7 @@ urlpatterns = [
     path('customer/charge/<int:pk>/add/', customer.customer_charge_add, name="customer_charge_add"),
     path('customer/login/log/<int:pk>/',customer.customer_login_log,name='customer_login_log'),
 
+    path('gameorder/alllist/',gameorder.gameorder_alllist,name='gameorder_alllist'),
     path('gameorder/list/',gameorder.gameorder_list,name='gameorder_list'),
     path('gameorder/finished/list/',gameorder.gameorder_finished_list,name='gameorder_finished_list'),
     path('gameorder/deleted/list/',gameorder.gameorder_deleted_list,name='gameorder_deleted_list'),
