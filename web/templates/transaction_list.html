@@ -103,7 +103,7 @@
                 <td>
                     <span class="btn btn-xs btn-{{ row.charge_type|color }}">{{ row.get_charge_type_display }}</span>
                 </td>
-                {% if row.charge_type == 'recharge' or row.charge_type == 'order_outtime' %}
+                {% if row.charge_type == 'recharge' or row.charge_type == 'order_outtime' or row.charge_type == 'order_delete' %}
                 <td>+{{ row.amount }}</td>
             {% elif row.charge_type == 'deduction' or row.charge_type == 'order_create'  %}
                     <td>-{{ row.amount }}</td>

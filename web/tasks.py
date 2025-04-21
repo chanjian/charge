@@ -56,4 +56,19 @@ def check_orders_timeout():
             order.order_status = 3
             order.save()
 
+            # 生成TransactionRecord
+            transaction_record = models.TransactionRecord.objects.create(
+                charge_type='order_outtime',  # 这表示扣款类型
+                amount=real_price,
+                customer_id=consumer_object.id,  # 使用消费者的 ID
+                order=order,
+                # creator=request.userinfo,  # 操作的管理员
+                memo="超时订单，系统自动标记"
+            )
+
+            # 调用模型中的 generate_tid 方法生成交易编号
+            transaction_record.t_id = transaction_record.generate_tid()
+            # 保存实例，更新 t_id 字段
+            transaction_record.save()
+
     return f"成功标记 {len(timeout_orders)} 个超时订单，并归还相应余额。\n订单号如下：\n{order_numbers}"

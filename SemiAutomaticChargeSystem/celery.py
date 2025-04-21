@@ -23,7 +23,7 @@ from celery.schedules import crontab
 app.conf.beat_schedule = {
     'check-timeout-orders-every-hour': {
         'task': 'web.tasks.check_orders_timeout',
-        'schedule': crontab(minute=48),  # 每小时整点执行
+        'schedule': crontab(minute=52),  # 每小时整点执行
     },
 }
 

@@ -400,7 +400,7 @@ class TransactionRecord(ActiveBaseModel):
     amount = models.DecimalField(verbose_name="金额", default=0, max_digits=10, decimal_places=2)
     t_id = models.CharField(verbose_name="交易编号", max_length=64, null=True, blank=True, db_index=True)
     customer = models.ForeignKey(verbose_name="客户", to="UserInfo",related_name='customer_userinfo', on_delete=models.CASCADE, null=True, blank=True)
-    creator = models.ForeignKey(verbose_name="管理员", to="UserInfo", related_name='creator_userinfo',on_delete=models.CASCADE, null=True, blank=True)
+    operator = models.ForeignKey(verbose_name="操作人员", to="UserInfo", related_name='creator_userinfo',on_delete=models.CASCADE, null=True, blank=True)
     memo = models.TextField(verbose_name="备注", null=True, blank=True)
 
     # 关联信息（可选）
@@ -409,9 +409,9 @@ class TransactionRecord(ActiveBaseModel):
 
 
     # 入库人所属圈子的管理员
-    from_user = models.ForeignKey(verbose_name="入库人圈子管理员",to="UserInfo", on_delete=models.PROTECT, related_name='in_transactions', null=True,blank=True)
+    from_admin = models.ForeignKey(verbose_name="入库人圈子管理员",to="UserInfo", on_delete=models.PROTECT, related_name='in_transactions', null=True,blank=True)
     # 出库人所属圈子的管理员
-    to_user = models.ForeignKey(verbose_name="出库人圈子管理员",to="UserInfo", on_delete=models.PROTECT, related_name='out_transactions', null=True,blank=True)
+    to_admin = models.ForeignKey(verbose_name="出库人圈子管理员",to="UserInfo", on_delete=models.PROTECT, related_name='out_transactions', null=True,blank=True)
 
     # 费用明细（新增核心字段）
     system_fee = models.DecimalField(max_digits=10, decimal_places=2, default=0, verbose_name="系统费用")
@@ -424,7 +424,7 @@ class TransactionRecord(ActiveBaseModel):
 
     class Meta:
         indexes = [
-            models.Index(fields=['from_user', 'charge_type']),
+            models.Index(fields=['from_admin', 'charge_type']),
             models.Index(fields=['is_cross_circle', 'created_time']),
         ]
 

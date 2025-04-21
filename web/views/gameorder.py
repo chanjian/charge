@@ -23,6 +23,7 @@ from django.db import transaction
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponseForbidden
 from django import forms
+from decimal import Decimal
 from web.models import OrderEditLog
 
 import logging
@@ -695,6 +696,8 @@ class GameOrderAddModelForm(BootStrapForm, forms.ModelForm):
                 parent__username=self.request.userinfo.username).filter(usertype='CUSTOMER').filter(active=1).all()
         elif self.request.userinfo.usertype == 'CUSTOMER':
             self.fields['consumer'].queryset = UserInfo.objects.filter(username=self.request.userinfo.username)
+            # 直接默认选中当前消费者
+            self.initial['consumer'] = self.request.userinfo
 
 
         # 如果有初始数据，设置对应的选项
@@ -721,7 +724,7 @@ class GameOrderAddModelForm(BootStrapForm, forms.ModelForm):
 
 
 
-from decimal import Decimal
+
 
 
 def gameorder_add(request):
@@ -805,7 +808,7 @@ def gameorder_add(request):
                 amount=real_price,
                 customer_id=consumer_object.id,  # 使用消费者的 ID
                 order=order,
-                creator=request.userinfo,  # 操作的管理员
+                operator=request.userinfo,  # 操作人
                 memo="订单创建扣款"
             )
 
@@ -977,19 +980,45 @@ def gameorder_delete(request):
 
     try:
         # 检查订单是否存在且是激活状态
-        exists = models.GameOrder.objects.filter(id=cid, active=1).exists()
-        if not exists:
+        order = models.GameOrder.objects.filter(id=cid, active=1).first()
+        if not order:
             res = BaseResponse(status=False, detail="要删除的订单不存在或已被删除")
             return JsonResponse(res.dict)
 
-        # 执行软删除（设置active=0）
-        models.GameOrder.objects.filter(id=cid).update(active=0,order_status=4)
+        # 执行事务，对订单软删除，同时归还用户账款，两者是原子型操作
+        with transaction.atomic():
+            # 执行软删除（设置active=0）
+            models.GameOrder.objects.filter(id=cid).update(active=0,order_status=4)
 
-        # 可以在这里添加相关的交易记录（如果需要）
-        # 例如记录删除操作到TransactionRecord
+            # 获取对应的消费者对象
+            consumer_object = order.consumer
+            # 计算已扣除的金额，通过price_info属性获取
+            price_info = order.price_info
+            real_price = price_info['final']
 
-        res = BaseResponse(status=True, detail="订单删除成功")
-        return JsonResponse(res.dict)
+            # 归还余额
+            consumer_object.account += real_price
+            consumer_object.save()
+
+
+            # 可以在这里添加相关的交易记录（如果需要）
+            # 例如记录删除操作到TransactionRecord
+            transaction_record = models.TransactionRecord.objects.create(
+                charge_type='order_delete',  # 这表示扣款类型
+                amount=real_price,
+                customer_id=consumer_object.id,  # 使用消费者的 ID
+                order=order,
+                creator=request.userinfo,  # 操作的管理员
+                memo="删除订单"
+            )
+
+            # 调用模型中的 generate_tid 方法生成交易编号
+            transaction_record.t_id = transaction_record.generate_tid()
+            # 保存实例，更新 t_id 字段
+            transaction_record.save()
+
+            res = BaseResponse(status=True, detail="订单删除成功")
+            return JsonResponse(res.dict)
 
     except Exception as e:
         res = BaseResponse(status=False, detail=f"删除订单时出错: {str(e)}")
@@ -1035,8 +1064,10 @@ def gameorder_out(request, pk):
     try:
         with transaction.atomic():
             # 获取订单和操作用户
-            order = get_object_or_404(GameOrder, pk=pk)
+            # order = get_object_or_404(GameOrder, pk=pk)
+            order = models.GameOrder.objects.filter(id=pk).first()
             operator = request.userinfo
+            # 出库人筛选qb订单时输入的回收qb的折扣
             qb_discount = request.GET.get('qb_discount', 80)
             print('qb_discount', qb_discount)
 
@@ -1047,13 +1078,13 @@ def gameorder_out(request, pk):
 
 
             # 计算核心费用项
-            fee_details = calculate_fees(order, operator, qb_discount)
+            fee_details = fees_transactionsrecord_account(order, operator, qb_discount)
 
             # 更新相关账户余额
-            update_account_balances(fee_details)
+            # update_account_balances(fee_details)
 
-            # 创建出库交易记录
-            create_transaction_records(order, operator, fee_details, qb_discount)
+            # # 创建出库交易记录
+            # create_transaction_records(order, operator, fee_details, qb_discount)
 
             # 更新订单状态
             order.order_status = 2  # 已完成
@@ -1070,7 +1101,7 @@ def gameorder_out(request, pk):
     return redirect('gameorder_list')
 
 
-def calculate_fees(order, operator, qb_discount):
+def fees_transactionsrecord_account(order, operator, qb_discount):
     """ 计算费用明细 """
     price_info = order.price_info  # 假设已实现价格计算
     # 入库人所属圈子的管理员
@@ -1087,18 +1118,27 @@ def calculate_fees(order, operator, qb_discount):
     fees = {
         'operator': operator,  # 加入操作者对象
         'system_fee': Decimal(settings.SYS_FEE),  # 示例系统费
-        'cross_circle_fee': Decimal(0),
-
+        # 'system_fee': Decimal(0),  # 示例系统费
+        'cross_fee': Decimal(0),
         'commission': Decimal(0),
         'support_payment': Decimal(0),
         'supplier_payment': Decimal(0),
-        'cross_admin': None
+
+        'charge_type': 'order_complete',
+        'finished_time': timezone.now(),
+        'order': order,
+        'customer': order.consumer,
+        'to_admin': out_admin,
+        'memo': "出库订单"
     }
+
+
 
     try:
         qb_discount = Decimal(str(qb_discount))
     except (InvalidOperation, ValueError):
         qb_discount = Decimal(settings.DEFAULT_QB_DISCOUNT)
+
 
     discount = Decimal(settings.DEFAULT_DISCOUNT)  # 默认折扣
     operator_level = None
@@ -1117,8 +1157,8 @@ def calculate_fees(order, operator, qb_discount):
     # 5. 跨圈逻辑
     if not is_same_circle:
         # 如果入库，出库不属于同一个圈子
-        fees['cross_circle_fee'] = Decimal(settings.THIRD_FEE)
-        fees['cross_admin'] = out_admin
+        fees['cross_fee'] = Decimal(settings.THIRD_FEE)
+        fees['to_admin'] = out_admin
 
         # 使用 get_or_create 来获取或创建跨圈记录
         cross_circle_object, created = CrossCircleFee.objects.get_or_create(
@@ -1130,133 +1170,50 @@ def calculate_fees(order, operator, qb_discount):
             }
         )
 
-        payment = order.price_info['final']
+        # 这里的payment，即此订单给消费者的价格
+        payment = price_info['final']
         CrossCircleFee.objects.filter(
             lender=in_admin,
             borrower=out_admin
         ).update(
-            crossfee_amount=F('crossfee_amount') + Decimal('0.5'),
+            crossfee_amount=F('crossfee_amount') + fees['cross_fee'],
             payment=F('payment') + payment
         )
         print("跨圈记录已更新")
 
 
     if operator.usertype == 'SUPPORT':
-        # 跨圈客服提成（可能费率不同）
+        # 客服提成： 订单原价 * 管理员给客服设置的折扣
         fees['commission'] = price_info['original'] * discount
+        # 客服的账款计算： 订单原价 * 检索qb数量匹配时设置的折扣，即收货折扣
         fees['support_payment'] = price_info['original'] * qb_discount
     elif operator.usertype == 'SUPPLIER':
-        # 跨圈供应商结算（可能比例不同）
+        # 供应商的账款计算：订单原价 * 管理员给供应商设置的折扣
         fees['supplier_payment'] = price_info['original'] * discount
     else:
         # 其他类型（如管理员）
+        # 账款计算： 订单原价 * 检索qb数量匹配时设置的折扣，即收货折扣
         fees['admin_payment'] = price_info['original'] * qb_discount
 
-    return fees
 
 
-
-
-def create_transaction_records(order, operator, fees, qb_discount):
-    """创建交易记录（适配Level模型）"""
-
-    try:
-        qb_discount = Decimal(str(qb_discount))
-    except (InvalidOperation, ValueError):
-        qb_discount = Decimal(settings.DEFAULT_QB_DISCOUNT)
-
-    discount = Decimal(settings.DEFAULT_DISCOUNT)  # 默认折扣
-
-    operator_level = None
-    if operator.usertype in ['SUPPORT', 'SUPPLIER']:
-        try:
-            operator_level = operator.level  # 直接通过外键获取
-            print('operator_level', operator_level)
-            if operator_level:  # 确保存在
-                discount = Decimal(str(operator_level.percent)) / 100
-            else:
-                discount = Decimal('0.8')  # 默认折扣
-        except Exception as e:
-            discount = Decimal('0.8')
-            operator_level = None
-
-    base_data = {
-        'order': order,
-        'customer': order.consumer,
-        # 即此订单的出库人，即操作人
-        'creator': operator,
-        'charge_type':'order_complete',
-        # 通过判断跨圈管理员字段是否为空来判断是否跨圈
-        'is_cross_circle': bool(fees.get('cross_admin')),
-        # 交易ID
-        # 't_id': generate_trade_number(),  # 使用生成器
-        'from_user':order.consumer.get_root_admin(),
-        'to_user': operator.get_root_admin(),
-    }
-
-    # 费用明细
-    fee_fields = {
-        'system_fee': fees.get('system_fee', 0),
-        'cross_fee': Decimal('0'),
-        'commission': fees.get('commission', 0),
-        'support_payment': fees.get('support_payment', 0),
-        'supplier_payment': fees.get('supplier_payment', 0),
-        'finished_time': datetime.now(),
-    }
-
-    # # 4. 获取操作者等级（安全方式）
-    # operator_level = None
-    # if operator.usertype in ['SUPPORT', 'SUPPLIER']:
-    #     try:
-    #         operator_level = operator.level  # 直接通过外键获取
-    #         if operator_level:  # 确保存在
-    #             discount = Decimal(str(operator_level.percent)) / 100
-    #         else:
-    #             discount = Decimal('0.8')  # 默认折扣
-    #     except Exception as e:
-    #         discount = Decimal('0.8')
-    #         operator_level = None
-
-    # 跨圈订单特殊处理
-    if base_data['is_cross_circle']:
-        fee_fields['cross_fee'] = Decimal(settings.THIRD_FEE)  # 只有跨圈订单收取
-
-    # 根据操作者类型调整逻辑
-    if operator.usertype == 'SUPPORT':
-        fee_fields['commission'] = order.price_info['original'] * discount
-        fee_fields['support_payment'] = order.price_info['original'] * qb_discount
-
-    elif operator.usertype == 'SUPPLIER':
-        fee_fields['supplier_payment'] = order.price_info['original'] * discount
-
-    else:
-        fee_fields['admin_payment'] = order.price_info['original'] * qb_discount
 
     # 创建 TransactionRecord 实例
-    transaction_record = TransactionRecord.objects.create(**{**base_data, **fee_fields})
+    transaction_record = TransactionRecord.objects.create(**fees)
     # 调用模型中的 generate_tid 方法生成交易编号
     transaction_record.t_id = transaction_record.generate_tid()
     # 保存实例，更新 t_id 字段
     transaction_record.save()
 
-    # return TransactionRecord.objects.create(**{**base_data, **fee_fields})
-    return transaction_record
-
-
-def update_account_balances(fees):
-    """ 更新账户余额（示例逻辑） """
-    # 这里需要根据实际支付关系更新相关账户
-    # 例如：扣除客服垫付款、增加供应商结算款等
-    # 使用F()表达式保证原子操作
-
+    # 更新余额
     operator = fees['operator']
 
     if operator.usertype == 'ADMIN':
-        operator.account = operator.account + fees['system_fee']
+        operator.account = operator.account - fees['system_fee']
         operator.save()  # 确保保存更新
     else:
         admin = fees['operator'].parent
-        admin.account = admin.account + fees['system_fee']
+        admin.account = admin.account - fees['system_fee']
         admin.save()  # 确保保存更新
 
         if operator.usertype == 'SUPPORT':
@@ -1265,6 +1222,111 @@ def update_account_balances(fees):
         elif operator.usertype == 'SUPPLIER':
             operator.account = operator.account + fees['supplier_payment']
             operator.save()  # 确保保存更新
+
+    return transaction_record
+
+
+
+#
+# def create_transaction_records(order, operator, fees, qb_discount):
+#     """创建交易记录（适配Level模型）"""
+#
+#     try:
+#         qb_discount = Decimal(str(qb_discount))
+#     except (InvalidOperation, ValueError):
+#         qb_discount = Decimal(settings.DEFAULT_QB_DISCOUNT)
+#
+#     discount = Decimal(settings.DEFAULT_DISCOUNT)  # 默认折扣
+#
+#     operator_level = None
+#     if operator.usertype in ['SUPPORT', 'SUPPLIER']:
+#         try:
+#             operator_level = operator.level  # 直接通过外键获取
+#             print('operator_level', operator_level)
+#             if operator_level:  # 确保存在
+#                 discount = Decimal(str(operator_level.percent)) / 100
+#             else:
+#                 discount = Decimal('0.8')  # 默认折扣
+#         except Exception as e:
+#             discount = Decimal('0.8')
+#             operator_level = None
+#
+#     base_data = {
+#         'order': order,
+#         'customer': order.consumer,
+#         # 即此订单的出库人，即操作人
+#         'creator': operator,
+#         'charge_type':'order_complete',
+#         # 通过判断跨圈管理员字段是否为空来判断是否跨圈
+#         'is_cross_circle': bool(fees.get('cross_admin')),
+#         # 交易ID
+#         # 't_id': generate_trade_number(),  # 使用生成器
+#         'from_user':order.consumer.get_root_admin(),
+#         'to_user': operator.get_root_admin(),
+#     }
+#
+#     # 费用明细
+#     fee_fields = {
+#         'system_fee': fees.get('system_fee', 0),
+#         'cross_fee': Decimal('0'),
+#         'commission': fees.get('commission', 0),
+#         'support_payment': fees.get('support_payment', 0),
+#         'supplier_payment': fees.get('supplier_payment', 0),
+#         'finished_time': timezone.now(),
+#     }
+#
+#
+#
+#     # 跨圈订单特殊处理
+#     if base_data['is_cross_circle']:
+#         fee_fields['cross_fee'] = Decimal(settings.THIRD_FEE)  # 只有跨圈订单收取
+#
+#     # 根据操作者类型调整逻辑
+#     if operator.usertype == 'SUPPORT':
+#         fee_fields['commission'] = order.price_info['original'] * discount
+#         fee_fields['support_payment'] = order.price_info['original'] * qb_discount
+#
+#     elif operator.usertype == 'SUPPLIER':
+#         fee_fields['supplier_payment'] = order.price_info['original'] * discount
+#
+#     else:
+#         fee_fields['admin_payment'] = order.price_info['original'] * qb_discount
+#
+#     # 创建 TransactionRecord 实例
+#     transaction_record = TransactionRecord.objects.create(**{**base_data, **fee_fields})
+#     # 调用模型中的 generate_tid 方法生成交易编号
+#     transaction_record.t_id = transaction_record.generate_tid()
+#     # 标记交易记录备注
+#     transaction_record.memo = "出库订单"
+#     # 保存实例，更新 t_id 字段
+#     transaction_record.save()
+#
+#     # return TransactionRecord.objects.create(**{**base_data, **fee_fields})
+#     return transaction_record
+
+
+# def update_account_balances(fees):
+#     """ 更新账户余额（示例逻辑） """
+#     # 这里需要根据实际支付关系更新相关账户
+#     # 例如：扣除客服垫付款、增加供应商结算款等
+#     # 使用F()表达式保证原子操作
+#
+#     operator = fees['operator']
+#
+#     if operator.usertype == 'ADMIN':
+#         operator.account = operator.account + fees['system_fee']
+#         operator.save()  # 确保保存更新
+#     else:
+#         admin = fees['operator'].parent
+#         admin.account = admin.account + fees['system_fee']
+#         admin.save()  # 确保保存更新
+#
+#         if operator.usertype == 'SUPPORT':
+#             operator.account = operator.account + fees['support_payment'] + fees['commission']
+#             operator.save()  # 确保保存更新
+#         elif operator.usertype == 'SUPPLIER':
+#             operator.account = operator.account + fees['supplier_payment']
+#             operator.save()  # 确保保存更新
 
 
 # def update_account_balances(fees):
