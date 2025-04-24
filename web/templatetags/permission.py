@@ -63,6 +63,7 @@ def edit_permission(request, name, *args, **kwargs):
     return mark_safe(tpl)
 
 
+# ajax式的模态对话框的delete
 @register.simple_tag
 def delete_permission(request, name, *args, **kwargs):
     # 4.无权限，返回空
@@ -115,9 +116,15 @@ def out_permission(request, name, *args, **kwargs):
         return ""
 
     # 5.有权限，通过"customer_add"反向生成URL
-    url = reverse(name, args=args, kwargs=kwargs)
+    # url = reverse(name, args=args, kwargs=kwargs)
+    # tpl = """
+    # <a href="{}?qb_discount={{ request.GET.qb_discount }}" class="btn btn-xs btn-warning" onclick="return confirm('确认出库吗？')">出库
+    # </a>
+    # """.format(url)
+
+    pk = kwargs.get('pk')
     tpl = """
-    <a href="{}?qb_discount={{ request.GET.qb_discount }}" class="btn btn-xs btn-warning" onclick="return confirm('确认出库吗？')">出库
+    <a cid="{}" class="btn btn-xs btn-warning btn-out" >出库
     </a>
-    """.format(url)
+    """.format(pk)
     return mark_safe(tpl)

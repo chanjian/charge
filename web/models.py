@@ -93,6 +93,7 @@ class UserInfo(ActiveBaseModel):
 
     def get_root_admin(self):
         """获取当前用户的顶级管理员（递归查找父级）"""
+        # 如果当前用户的类型是超级管理员或者管理员，并且没有父级
         if self.usertype in ['SUPERADMIN', 'ADMIN'] and not self.parent:
             return self
         if self.parent:
@@ -317,16 +318,16 @@ class GameOrder(ActiveBaseModel):
         # 充值面额一比一的价格
         original = Decimal(str(self.recharge_option.amount)) if self.recharge_option else Decimal('0')
         # 给消费者的折扣
-        discount = Decimal(str(self.consumer.level.percent))# / Decimal('100') if hasattr(self.consumer,'level') else Decimal('1')
+        customer_discount = Decimal(str(self.consumer.level.percent))# / Decimal('100') if hasattr(self.consumer,'level') else Decimal('1')
         # 消费者最终支付价格
-        final = original * discount / Decimal('100') if hasattr(self.consumer,'level') else Decimal('1')
+        final = original * customer_discount / Decimal('100') if hasattr(self.consumer,'level') else Decimal('1')
         # 最终充值点券到账数目
         points = self.recharge_option.total_currency if self.recharge_option else 0
         composite = round((final * 10) / points, 2) if points > 0 else 0.0
 
         return {
             'original': original,
-            'discount_percent': discount,
+            'discount_percent': customer_discount,
             'final': final,
             'received_points': points,
             'composite_discount': composite
@@ -427,6 +428,13 @@ class TransactionRecord(ActiveBaseModel):
             models.Index(fields=['from_admin', 'charge_type']),
             models.Index(fields=['is_cross_circle', 'created_time']),
         ]
+
+    def save(self, *args, **kwargs):
+        # 如果 t_id 为空，自动生成交易编号
+        print(f"Saving TransactionRecord with t_id: {self.t_id}")
+        if not self.t_id:
+            self.t_id = self.generate_tid()
+        super().save(*args, **kwargs)  # 调用父类的 save() 方法
 
     def generate_tid(self):
         """生成T+年月日时分秒+3位随机数的交易号"""

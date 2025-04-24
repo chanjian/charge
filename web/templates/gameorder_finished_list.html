@@ -159,14 +159,7 @@
         <i class="glyphicon glyphicon-time"></i> 修改记录
     </a>
 </td>
-<!--        {% if request|has_permission:"gameorder_edit,gameorder_delete" %}-->
-<!--        <td>-->
-<!--            {% edit_permission request 'gameorder_edit' pk=row.id %}-->
-<!--            {% delete_permission request 'gameorder_delete' pk=row.id %}-->
-<!--<a href="{% url 'gameorder_out' row.id %}" class="btn btn-xs btn-warning"-->
-<!--           onclick="return confirm('确认出库吗？')">出库</a>-->
-<!--        </td>-->
-<!--        {% endif %}-->
+
     </tr>
     {% endfor %}
     </tbody>

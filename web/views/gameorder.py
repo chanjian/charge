@@ -687,17 +687,24 @@ class GameOrderAddModelForm(BootStrapForm, forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop('request', None)
         super().__init__(*args, **kwargs)
+
         self.fields['recharge_link'].required = False
         self.fields['qr_code'].required = False
+
         # 初始化时设置空的recharge_option queryset
         self.fields['recharge_option'].queryset = GameDenomination.objects.none()
+
         if self.request.userinfo.usertype == 'ADMIN':
             self.fields['consumer'].queryset = UserInfo.objects.filter(
                 parent__username=self.request.userinfo.username).filter(usertype='CUSTOMER').filter(active=1).all()
         elif self.request.userinfo.usertype == 'CUSTOMER':
-            self.fields['consumer'].queryset = UserInfo.objects.filter(username=self.request.userinfo.username)
-            # 直接默认选中当前消费者
-            self.initial['consumer'] = self.request.userinfo
+            # self.fields['consumer'].queryset = UserInfo.objects.filter(username=self.request.userinfo.username)
+            # # 直接默认选中当前消费者
+            # self.initial['consumer'] = self.request.userinfo
+            # 对消费者：隐藏字段并设置默认值为当前用户
+            self.fields['consumer'].widget = forms.HiddenInput()
+            self.fields['consumer'].initial = self.request.userinfo
+            # self.fields['consumer'].disabled = True  # 防止前端修改
 
 
         # 如果有初始数据，设置对应的选项
@@ -1008,21 +1015,24 @@ def gameorder_delete(request):
                 amount=real_price,
                 customer_id=consumer_object.id,  # 使用消费者的 ID
                 order=order,
-                creator=request.userinfo,  # 操作的管理员
+                operator=request.userinfo,  # 操作的人
                 memo="删除订单"
             )
 
-            # 调用模型中的 generate_tid 方法生成交易编号
-            transaction_record.t_id = transaction_record.generate_tid()
-            # 保存实例，更新 t_id 字段
-            transaction_record.save()
+            # # 调用模型中的 generate_tid 方法生成交易编号
+            # transaction_record.t_id = transaction_record.generate_tid()
+            # # 保存实例，更新 t_id 字段
+            # transaction_record.save()
 
             res = BaseResponse(status=True, detail="订单删除成功")
+
             return JsonResponse(res.dict)
 
     except Exception as e:
         res = BaseResponse(status=False, detail=f"删除订单时出错: {str(e)}")
         return JsonResponse(res.dict)
+
+
 
 
 
@@ -1059,25 +1069,39 @@ def gameorder_edit_log(request, pk):
     return render(request, 'gameorder_edit_log.html', context)
 
 
-def gameorder_out(request, pk):
+def gameorder_out(request):
     """ 完成订单（出库操作） """
+    # 验证操作权限
+    # 整个operator当前登录用户对象，也是出库对象，request.userinfo是在 用户登录系统时，就通过中间件获取并存储在request中的
+    operator = request.userinfo
+    if not operator.usertype in ['ADMIN', 'SUPPORT', 'SUPPLIER']:
+        return HttpResponseForbidden("无操作权限")
+
+    cid = request.GET.get('cid', 0)
+
+    # 验证订单ID是否存在
+    if not cid:
+        res = BaseResponse(status=False, detail="请选择要删除的订单")
+        return JsonResponse(res.dict)
+
     try:
+        # 检查订单是否存在且是激活状态
+        order = models.GameOrder.objects.filter(id=cid, active=1).first()
+        if not order:
+            res = BaseResponse(status=False, detail="要删除的订单不存在或已被删除")
+            return JsonResponse(res.dict)
+
+
         with transaction.atomic():
             # 获取订单和操作用户
             # order = get_object_or_404(GameOrder, pk=pk)
-            order = models.GameOrder.objects.filter(id=pk).first()
-            operator = request.userinfo
+            order = models.GameOrder.objects.filter(id=cid).first()
+
             # 出库人筛选qb订单时输入的回收qb的折扣
             qb_discount = request.GET.get('qb_discount', 80)
-            print('qb_discount', qb_discount)
 
 
-            # 验证操作权限
-            if not operator.usertype in ['ADMIN', 'SUPPORT', 'SUPPLIER']:
-                return HttpResponseForbidden("无操作权限")
-
-
-            # 计算核心费用项
+            # 计算核心费用  创建相关的交易记录  同时更新相关用户的account余额
             fee_details = fees_transactionsrecord_account(order, operator, qb_discount)
 
             # 更新相关账户余额
@@ -1088,11 +1112,13 @@ def gameorder_out(request, pk):
 
             # 更新订单状态
             order.order_status = 2  # 已完成
-            order.outed_by = operator
+            order.outed_by = operator    # 出库人为当前的操作人
             order.finished_time = timezone.now()
             order.save()
 
             # return redirect('gameorder_list')
+            res = BaseResponse(status=True, detail="订单出库成功")
+            return JsonResponse(res.dict)
 
     except Exception as e:
         messages.add_message(request,settings.MESSAGE_DANGER_TAG,'出库失败，{}'.format(str(e)))
@@ -1104,15 +1130,14 @@ def gameorder_out(request, pk):
 def fees_transactionsrecord_account(order, operator, qb_discount):
     """ 计算费用明细 """
     price_info = order.price_info  # 假设已实现价格计算
-    # 入库人所属圈子的管理员
+    # 入库人所属圈子的管理员，是一个对象
     in_admin = order.created_by.get_root_admin()
     print('in_admin: ',in_admin,type(in_admin))
-    # 出库人所属圈子的管理员
+    # 出库人所属圈子的管理员，是一个对象
     out_admin = operator.get_root_admin()
     print('out_admin: ',out_admin,type(out_admin))
 
     is_same_circle = (in_admin == out_admin)
-
 
 
     fees = {
@@ -1123,7 +1148,7 @@ def fees_transactionsrecord_account(order, operator, qb_discount):
         'commission': Decimal(0),
         'support_payment': Decimal(0),
         'supplier_payment': Decimal(0),
-
+        'from_admin': in_admin,
         'charge_type': 'order_complete',
         'finished_time': timezone.now(),
         'order': order,
@@ -1132,19 +1157,20 @@ def fees_transactionsrecord_account(order, operator, qb_discount):
         'memo': "出库订单"
     }
 
-
-
     try:
         qb_discount = Decimal(str(qb_discount))
     except (InvalidOperation, ValueError):
         qb_discount = Decimal(settings.DEFAULT_QB_DISCOUNT)
 
 
-    discount = Decimal(settings.DEFAULT_DISCOUNT)  # 默认折扣
+
     operator_level = None
     if operator.usertype in ['SUPPORT', 'SUPPLIER']:
         try:
-            operator_level = operator.level  # 直接通过外键获取
+            # 直接通过外键获取对应的等级
+            # support，即客服，他的等级主要用于计算提成commission
+            #  supplier，即供应商，他的等级主要用于计算这笔订单他自己的应收账款金额
+            operator_level = operator.level
             print('operator_level',operator_level)
             if operator_level:  # 确保存在
                 discount = Decimal(str(operator_level.percent)) / 100
@@ -1153,35 +1179,37 @@ def fees_transactionsrecord_account(order, operator, qb_discount):
         except Exception as e:
             discount = Decimal('0.8')
             operator_level = None
+    else:
+        discount = Decimal(settings.DEFAULT_DISCOUNT)  # 默认折扣
 
     # 5. 跨圈逻辑
     if not is_same_circle:
         # 如果入库，出库不属于同一个圈子
         fees['cross_fee'] = Decimal(settings.THIRD_FEE)
+        # 在交易记录模型中，使用to_admin作为出库人所属圈子管理员的字段
         fees['to_admin'] = out_admin
-
-        # 使用 get_or_create 来获取或创建跨圈记录
-        cross_circle_object, created = CrossCircleFee.objects.get_or_create(
-            lender=in_admin,
-            borrower=out_admin,
-            defaults={
-                'crossfee_amount': Decimal('0'),
-                'payment': Decimal('0')
-            }
-        )
+        fees['is_cross_circle'] = True
 
         # 这里的payment，即此订单给消费者的价格
         payment = price_info['final']
-        CrossCircleFee.objects.filter(
+
+        # 使用 get_or_create 来获取或创建跨圈记录
+        # 创建一张多对多的表来记录不同圈子出库不同圈子的（实际记录的是对应圈子的管理员）记录
+        # 类似于频度计数器，后面前端设置按钮可以清除，不影响原始的交易记录表中的数据
+        # 使用 update_or_create 来优化操作
+        cross_circle_object, created = CrossCircleFee.objects.update_or_create(
             lender=in_admin,
-            borrower=out_admin
-        ).update(
-            crossfee_amount=F('crossfee_amount') + fees['cross_fee'],
-            payment=F('payment') + payment
+            borrower=out_admin,
+            defaults={
+                'crossfee_amount': F('crossfee_amount') + fees['cross_fee'],
+                'payment': F('payment') + payment   # price_info['final']
+            }
         )
+
+        # 输出日志
         print("跨圈记录已更新")
 
-
+    fees['is_cross_circle'] = False
     if operator.usertype == 'SUPPORT':
         # 客服提成： 订单原价 * 管理员给客服设置的折扣
         fees['commission'] = price_info['original'] * discount
@@ -1196,36 +1224,33 @@ def fees_transactionsrecord_account(order, operator, qb_discount):
         fees['admin_payment'] = price_info['original'] * qb_discount
 
 
-
-
     # 创建 TransactionRecord 实例
+    print("Creating TransactionRecord...")
     transaction_record = TransactionRecord.objects.create(**fees)
-    # 调用模型中的 generate_tid 方法生成交易编号
-    transaction_record.t_id = transaction_record.generate_tid()
-    # 保存实例，更新 t_id 字段
-    transaction_record.save()
 
-    # 更新余额
-    operator = fees['operator']
 
+
+
+    # 修改管理员账户更新方式
     if operator.usertype == 'ADMIN':
-        operator.account = operator.account - fees['system_fee']
-        operator.save()  # 确保保存更新
+        # 使用原子操作更新管理员账户
+        models.UserInfo.objects.filter(pk=operator.pk).update(account=F('account') - fees['system_fee'])
     else:
-        admin = fees['operator'].parent
-        admin.account = admin.account - fees['system_fee']
-        admin.save()  # 确保保存更新
+        # admin = operator.parent
+        # 使用原子操作更新出库人的管理员账户
+        models.UserInfo.objects.filter(pk=out_admin.pk).update(account=F('account') - fees['system_fee'])
 
+        # 修改操作者账户更新方式（SUPPORT/SUPPLIER）
         if operator.usertype == 'SUPPORT':
-            operator.account = operator.account + fees['support_payment'] + fees['commission']
-            operator.save()  # 确保保存更新
+            models.UserInfo.objects.filter(pk=operator.pk).update(
+                account=F('account') + fees['support_payment'] + fees['commission']
+            )
         elif operator.usertype == 'SUPPLIER':
-            operator.account = operator.account + fees['supplier_payment']
-            operator.save()  # 确保保存更新
+            models.UserInfo.objects.filter(pk=operator.pk).update(
+                account=F('account') + fees['supplier_payment']
+            )
 
-    return transaction_record
-
-
+    return discount
 
 #
 # def create_transaction_records(order, operator, fees, qb_discount):

@@ -22,20 +22,37 @@
             </div>
         </div>
 
+<!--        {% for field in form %}-->
+<!--            <div class="form-group" id="field-{{ field.name }}"-->
+<!--                 style="display: {% if field.name == 'recharge_option' and form.initial.platform == 'ANDROID' %}none-->
+<!--                               {% elif field.name == 'custom_amount' and form.initial.platform == 'IOS' %}none-->
+<!--                               {% elif field.name == 'recharge_link' %}block-->
+<!--                               {% elif field.name == 'qr_code' %}none-->
+<!--                               {% else %}block{% endif %};">-->
+<!--                {{ field.label_tag }}-->
+<!--                {{ field }}-->
+<!--                {% if field.errors %}-->
+<!--                    <div class="error">{{ field.errors }}</div>-->
+<!--                {% endif %}-->
+<!--            </div>-->
+<!--        {% endfor %}-->
+
         {% for field in form %}
-            <div class="form-group" id="field-{{ field.name }}"
-                 style="display: {% if field.name == 'recharge_option' and form.initial.platform == 'ANDROID' %}none
-                               {% elif field.name == 'custom_amount' and form.initial.platform == 'IOS' %}none
-                               {% elif field.name == 'recharge_link' %}block
-                               {% elif field.name == 'qr_code' %}none
-                               {% else %}block{% endif %};">
-                {{ field.label_tag }}
-                {{ field }}
-                {% if field.errors %}
-                    <div class="error">{{ field.errors }}</div>
-                {% endif %}
-            </div>
+        {% if field.name != 'consumer' or request.userinfo.usertype != 'CUSTOMER' %}
+        <div class="form-group" id="field-{{ field.name }}">
+            {{ field.label_tag }}
+            {{ field }}
+            {% if field.errors %}
+            <div class="error">{{ field.errors }}</div>
+            {% endif %}
+        </div>
+        {% endif %}
         {% endfor %}
+
+        {# 消费者模式下添加隐藏的consumer字段 #}
+        {% if request.userinfo.usertype == 'CUSTOMER' %}
+        {{ form.consumer }}
+        {% endif %}
 
         <button type="submit" class="btn btn-primary">提交订单</button>
     </form>

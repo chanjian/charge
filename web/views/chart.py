@@ -49,7 +49,7 @@ def chart_bar(request):
 
         # 基础查询集
         queryset = TransactionRecord.objects.filter(
-            Q(from_user=current_admin) | Q(to_user=current_admin),
+            Q(from_admin=current_admin) | Q(to_admin=current_admin),
             active=1,
             order__isnull=False,
             order__outed_by__usertype__in = ['ADMIN','SUPPORT','SUPPLIER'], #确保出库人类型在这三个之间
@@ -69,19 +69,19 @@ def chart_bar(request):
         total_stats = {
             'total_orders': queryset.count(),
             # 本圈管理员出库本圈订单数     条件：出库人类型是管理员 且 出库人所属圈子的管理员名字和当前的登录用户一致
-            'admin_orders': queryset.filter(order__outed_by__usertype ='ADMIN').filter(from_user=current_admin).filter(to_user=current_admin).count(),
+            'admin_orders': queryset.filter(order__outed_by__usertype ='ADMIN').filter(from_admin=current_admin).filter(to_admin=current_admin).count(),
             # 本圈客服出库本圈订单数  条件：出库人类型是客服 且 出库人所属圈子的管理员名字和当前的登录用户一致
-            'support_orders': queryset.filter(order__outed_by__usertype='SUPPORT').filter(from_user=current_admin).filter(to_user=current_admin).count(),
+            'support_orders': queryset.filter(order__outed_by__usertype='SUPPORT').filter(from_admin=current_admin).filter(to_admin=current_admin).count(),
             # 本圈供应商出库本圈订单数  条件：出库人类型是供应商 且 出库人所属圈子的管理员名字和当前的登录用户一致
-            'supplier_orders': queryset.filter(order__outed_by__usertype='SUPPLIER').filter(from_user=current_admin).filter(to_user=current_admin).count(),
+            'supplier_orders': queryset.filter(order__outed_by__usertype='SUPPLIER').filter(from_admin=current_admin).filter(to_admin=current_admin).count(),
             # 其他圈出库本圈订单数     条件：出库人所属圈子的管理员名字和当前的登录用户不一致
-            'other_out_self_orders': queryset.filter(~Q(to_user=current_admin)).count(),
+            'other_out_self_orders': queryset.filter(~Q(to_admin=current_admin)).count(),
             # 本圈出库其他圈订单数     条件：出库人所属圈子的管理员名字和当前的登录用户不一致
-            'self_out_other_orders': queryset.filter(~Q(from_user=current_admin)).filter(Q(to_user=current_admin)).count(),
+            'self_out_other_orders': queryset.filter(~Q(from_admin=current_admin)).filter(Q(to_admin=current_admin)).count(),
             # 本圈应支付系统费   条件： 出库人是本圈的
-           'system_fee': queryset.filter(to_user=current_admin).aggregate(total=Sum('system_fee', output_field=DecimalField()))['total'] or 0,
+           'system_fee': queryset.filter(to_admin=current_admin).aggregate(total=Sum('system_fee', output_field=DecimalField()))['total'] or 0,
             # 本圈应支付三方借调费  条件：本圈出库其他圈子订单的合计三方借调费   不包含其他圈子出库本圈的借调费
-            'cross_fee': queryset.filter(~Q(from_user=current_admin)).filter(Q(to_user=current_admin)).aggregate(total=Sum('cross_fee', output_field=DecimalField()))['total'] or 0,
+            'cross_fee': queryset.filter(~Q(from_admin=current_admin)).filter(Q(to_admin=current_admin)).aggregate(total=Sum('cross_fee', output_field=DecimalField()))['total'] or 0,
             # 总流水
            #  'total_amount':queryset.aggregate(total=Sum('order__recharge_option__amount', output_field=DecimalField()))['total'] or 0,
            #  'commission': queryset.aggregate(total=Sum('commission', output_field=DecimalField()))['total'] or 0,
@@ -532,12 +532,12 @@ def chart_self_out_other(request):
 
         # 查询基础数据
         queryset = TransactionRecord.objects.filter(
-            Q(to_user=current_admin) &
-            ~Q(from_user=current_admin) &
+            Q(to_admin=current_admin) &
+            ~Q(from_admin=current_admin) &
             Q(order__outed_by__isnull=False)
         ).select_related(
             'order', 'order__recharge_option',
-            'order__outed_by', 'order__consumer__level', 'from_user'
+            'order__outed_by', 'order__consumer__level', 'from_admin'
         )
 
         # 应用日期过滤
@@ -558,8 +558,8 @@ def chart_self_out_other(request):
         })
 
         # 处理数据
-        for record in queryset:
-            admin_name = record.from_user.username
+        for record in queryset.exclude(from_admin__isnull=True):
+            admin_name = record.from_admin.username
             final_price = (record.order.recharge_option.amount *
                          record.order.consumer.level.percent / 100)
 
@@ -578,7 +578,7 @@ def chart_self_out_other(request):
                 'final_receivable': float(final_price) - float(record.cross_fee),
                 'cross_fee': float(record.cross_fee),
                 'consumer': record.order.consumer.username,
-                'in_admin': record.from_user.username,
+                'in_admin': record.from_admin.username,
                 'out_admin_type': record.order.outed_by.get_usertype_display() if record.order.outed_by else '未知',
                 'time': localtime(getattr(record, date_field)).strftime('%Y-%m-%d %H:%M'),
                 'order_status': record.order.get_order_status_display()
@@ -637,12 +637,12 @@ def chart_other_out_self(request):
 
         # 查询基础数据
         queryset = TransactionRecord.objects.filter(
-            Q(from_user=current_admin) &
-            ~Q(to_user=current_admin) &
+            Q(from_admin=current_admin) &
+            ~Q(to_admin=current_admin) &
             Q(order__outed_by__isnull=False)
         ).select_related(
             'order', 'order__recharge_option',
-            'order__outed_by', 'order__consumer__level', 'to_user'
+            'order__outed_by', 'order__consumer__level', 'to_admin'
         )
 
         # 应用日期过滤
@@ -664,7 +664,7 @@ def chart_other_out_self(request):
 
         # 处理数据
         for record in queryset:
-            admin_name = record.to_user.username
+            admin_name = record.to_admin.username
             final_price = (record.order.recharge_option.amount *
                          record.order.consumer.level.percent / 100)
 
@@ -684,7 +684,7 @@ def chart_other_out_self(request):
                 'final_payment': float(final_price) - float(record.cross_fee),
 
                 'consumer': record.order.consumer.username,
-                'out_admin': record.to_user.username,
+                'out_admin': record.to_admin.username,
                 'out_admin_type': record.order.outed_by.get_usertype_display() if record.order.outed_by else '未知',
                 'time': localtime(getattr(record, date_field)).strftime('%Y-%m-%d %H:%M'),
                 'order_status': record.order.get_order_status_display()

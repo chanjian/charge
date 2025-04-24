@@ -73,7 +73,8 @@ urlpatterns = [
     path('gameorder/delete/',gameorder.gameorder_delete,name='gameorder_delete'),
     path('gameorder/load-options/', gameorder.gameorder_load_charge_options, name='gameorder_load_charge_options'),
     path('gameorder/edit/log/<int:pk>/', gameorder.gameorder_edit_log, name='gameorder_edit_log'),
-    path('gameorder/out/<int:pk>',gameorder.gameorder_out,name='gameorder_out'),
+    # path('gameorder/out/<int:pk>',gameorder.gameorder_out,name='gameorder_out'),
+    path('gameorder/out/', gameorder.gameorder_out, name='gameorder_out'),
 
     path('gamename/list/',gamename.gamename_list,name='gamename_list'),
     path('gamename/add/',gamename.gamename_add,name='gamename_add'),

@@ -55,7 +55,7 @@
     </div>
 </div>
 
-    {% if request.userinfo.usertype in "SUPERADMIN ADMIN " %}
+    {% if request.userinfo.usertype in "SUPERADMIN ADMIN SUPPLIER SUPPORT " %}
 <!-- QB匹配表单 - 简洁版 -->
 <div class="qb-match-form" style="margin-bottom: 10px;">
     <form method="get" class="form-inline" id="qbMatchForm">
@@ -351,6 +351,22 @@
         </div>
     </div>
 </div>
+
+<!-- 出库确认模态框 -->
+<div class="modal fade" id="outModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="alert alert-danger alert-dismissible fade in" role="alert">
+            <h4>是否确定要出库此订单！</h4>
+            <p>此操作不可撤销，请谨慎操作。</p>
+            <p>
+                <button type="button" class="btn btn-danger" id="btnConfirmOut">确 定</button>
+                <button type="button" class="btn btn-default" id="btnCancelOut">取 消</button>
+                <span style="color: red" id="outError"></span>
+            </p>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
 
 {% block js %}
@@ -358,6 +374,60 @@
 <script>
     var DELETE_ID;
     var DELETE_URL = "{% url 'gameorder_delete' %}";
+
+    var OUT_ID;
+    var OUT_URL = "{% url 'gameorder_out' %}";
+
+    $(function () {
+    bindOutEvent();
+    bindConfirmOutEvent();
+});
+
+function bindOutEvent() {
+    $(".btn-out").click(function () {
+        $("#outError").empty();
+
+        $("#outModal").modal('show');
+        var cid = $(this).attr('cid');
+        OUT_ID = cid;
+    });
+
+    $("#btnCancelOut").click(function () {
+        $("#outModal").modal('hide');
+    });
+}
+
+function bindConfirmOutEvent() {
+    $("#btnConfirmOut").click(function () {
+
+        //ajax发送请求  /xxx/xxx/xx?cid=123
+        $.ajax({
+            url: OUT_URL,
+            type: "GET",
+            data: {cid: OUT_ID},
+            dataType: "JSON",
+            success: function (res) {
+                if (res.status) {
+                    // 删除成功
+                    // 方式一：页面的刷新
+                    // location.reload();
+
+                    // 方式二：找到当前数据行，删除
+                    $("tr[row-id='" + OUT_ID + "']").remove();
+                    $("#outModal").modal('hide');
+                } else {
+                    // 删除失败
+                    $("#outError").text(res.detail);
+                }
+            }
+        })
+
+
+    });
+}
+
+
+
     $(document).ready(function () {
         // =============== 通用复制功能 ===============
         function copyToClipboard(text) {
@@ -623,10 +693,7 @@
         font-size: 12px;
     }
 
-    .copy-btn {
-        margin: 2px;
-        padding: 3px 8px;
-    }
+
 
     /* 提示信息 */
     .toast-message {
@@ -700,10 +767,7 @@
         margin-bottom: 15px;
     }
 
-    .qb-order-details {
-        margin: 0;
-        padding-left: 20px;
-    }
+
 
     .qb-order-details li {
         list-style-type: disc;
@@ -716,71 +780,19 @@
         min-width: 200px;
     }
 
-    .order-numbers-wrapper {
-        max-height: 200px;
-        overflow-y: auto;
-    }
 
-    .order-number-item {
-        padding: 3px 5px;
-        margin-bottom: 3px;
-        border-bottom: 1px solid #eee;
-        cursor: pointer;
-        transition: background-color 0.2s;
-    }
-
-    .order-number-item:hover {
-        background-color: #f5f5f5;
-    }
 
     .order-number-item small {
         opacity: 0.7;
         font-size: 0.8em;
     }
 
-    /* 紧凑型订单明细样式 */
-    .compact-order-details {
-        line-height: 1.5;
-        padding: 5px;
-    }
 
-    .order-line {
-        padding: 2px 0;
-        border-bottom: 1px dashed #eee;
-    }
 
-    .order-line:last-child {
-        border-bottom: none;
-    }
 
-    .order-total {
-        margin-top: 5px;
-        padding-top: 5px;
-        border-top: 1px solid #ddd;
-        font-size: 1.05em;
-    }
 
-    /* 强制宽度设置 */
-    .order-amount-cell {
-        width: 300px !important; /* 固定宽度 */
-        min-width: 300px !important;
-        max-width: 300px !important;
-        padding: 8px 12px !important;
-    }
 
-    .order-amount-wrapper {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-    }
 
-    .order-line {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap; /* 允许换行 */
-        line-height: 1.5;
-    }
 
     .order-line > span {
         margin: 0 2px;
@@ -795,13 +807,6 @@
         color: #666;
     }
 
-    .order-total {
-        margin-top: 6px;
-        padding-top: 6px;
-        border-top: 1px solid #eee;
-        text-align: right;
-        font-size: 1.05em;
-    }
 
     /* 响应式调整 */
     @media (max-width: 1200px) {
